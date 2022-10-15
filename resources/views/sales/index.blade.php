@@ -23,11 +23,7 @@
                 </a>
             </div>
         </div>
-        <div class="mt-2">
-            <a class="btn" data-bs-toggle="offcanvas" href="#offcanvasStart" role="button" aria-controls="offcanvasStart">
-                {{ __('header.filter') }}
-            </a>
-        </div>
+
         <div wire:ignore.self class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasStart" aria-labelledby="offcanvasStartLabel" style="visibility: visible;" aria-modal="true" role="dialog">
             <div class="offcanvas-header p-1">
                 <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -43,6 +39,21 @@
                         <input type="date" wire:model="end" class="form-control  not-reverse">
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="row gx-3">
+            <div class="col-lg-1  col-4 mt-2">
+                <a class="btn" data-bs-toggle="offcanvas" href="#offcanvasStart" role="button" aria-controls="offcanvasStart">
+                    {{ __('header.filter') }}
+                </a>
+            </div>
+            <div class="col-lg-3 col-8 mt-2">
+                <select wire:model="UserID" class="form-select">
+                    <option value="">{{ __('header.Users') }}</option>
+                    @foreach ($users as $user)
+                    <option value="{{ $user->id }}">{{ $user->name }}</option>
+                    @endforeach
+                </select>
             </div>
         </div>
         @include('sales.pages.delete')

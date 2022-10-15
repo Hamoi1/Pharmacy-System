@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Sales;
 
+use App\Models\User;
 use App\Models\Sales;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -10,9 +11,9 @@ use Illuminate\Support\Facades\Gate;
 class Index extends Component
 {
     use WithPagination;
-    public $SaleID, $start, $end, $price, $total, $total_paid, $total_debt, $sale_debt_id, $saleView;
+    public $SaleID, $start, $end, $price, $total, $total_paid, $total_debt, $sale_debt_id, $saleView, $UserID;
     protected $paginationTheme = 'bootstrap';
-    protected $queryString = ['start', 'end'];
+    protected $queryString = ['start', 'end', 'UserID' => ['as' => 'user', 'except' => '']];
     public function mount()
     {
         if (!Gate::allows('admin')) {
@@ -25,12 +26,19 @@ class Index extends Component
         if ($this->start && $this->end) {
             $sales = $sales->whereBetween('created_at', [$this->start, $this->end]);
         }
+        if ($this->UserID) {
+            $sales = $sales->where('user_id', $this->UserID);
+        }
         $sales =  $sales->Where('status', '=', 1)->SaleDebtName()->latest()->paginate(10);
-        return view('sales.index', compact('sales'));
+        $users = User::all();
+        return view('sales.index', [
+            'sales' => $sales,
+            'users' => $users,
+        ]);
     }
     public function done()
     {
-        $this->reset();
+        $this->resetExcept('start', 'end', 'UserID');
         $this->resetValidation();
         $this->dispatchBrowserEvent('closeModal');
     }
