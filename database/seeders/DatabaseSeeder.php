@@ -6,6 +6,7 @@ namespace Database\Seeders;
 
 use App\Models\Products;
 use App\Models\Sales;
+use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -140,31 +141,31 @@ class DatabaseSeeder extends Seeder
 
 
         // // \App\Models\User::factory(20)->create();
-        foreach (range(1, 1000) as $index) {
-            $name = fake()->name;
-            $name = Str::replace(' ', '', $name);
-            $name = Str::replace('-', '', $name);
-            $name = Str::replace('.', '', $name);
-            $name = Str::limit($name, 7, '');
+        // foreach (range(1, 1000) as $index) {
+        //     $name = fake()->name;
+        //     $name = Str::replace(' ', '', $name);
+        //     $name = Str::replace('-', '', $name);
+        //     $name = Str::replace('.', '', $name);
+        //     $name = Str::limit($name, 7, '');
 
-            $phone = fake()->phoneNumber;
-            $phone  = Str::remove('+', $phone);
-            $phone  = Str::remove(' ', $phone);
-            $user = \App\Models\User::create([
-                'name' => $name,
-                'username' => fake()->unique()->userName . '-' . $index . $name,
-                'phone' => $phone,
-                'email' => fake()->unique()->safeEmail,
-                'password' => Hash::make('muhammad'),
-                'role' => fake()->numberBetween(1, 2),
-                'status' => fake()->numberBetween(0, 1),
-                'status' => fake()->numberBetween(0, 1),
-                'created_at' => fake()->dateTimeBetween('-1 years', 'now'),
-            ]);
-            $user->user_details()->create([
-                'address' => fake()->randomElement(['ranya', 'sulimany', 'qaladzi', 'hawler', 'Hallshow']),
-            ]);
-        }
+        //     $phone = fake()->phoneNumber;
+        //     $phone  = Str::remove('+', $phone);
+        //     $phone  = Str::remove(' ', $phone);
+        //     $user = \App\Models\User::create([
+        //         'name' => $name,
+        //         'username' => fake()->unique()->userName . '-' . $index . $name,
+        //         'phone' => $phone,
+        //         'email' => fake()->unique()->safeEmail,
+        //         'password' => Hash::make('muhammad'),
+        //         'role' => fake()->numberBetween(1, 2),
+        //         'status' => fake()->numberBetween(0, 1),
+        //         'status' => fake()->numberBetween(0, 1),
+        //         'created_at' => fake()->dateTimeBetween('-1 years', 'now'),
+        //     ]);
+        //     $user->user_details()->create([
+        //         'address' => fake()->randomElement(['ranya', 'sulimany', 'qaladzi', 'hawler', 'Hallshow']),
+        //     ]);
+        // }
         $catagorys_data = [
             [
                 'name' => 'darzi',
@@ -218,17 +219,17 @@ class DatabaseSeeder extends Seeder
         foreach ($catagorys_data as $category) {
             \App\Models\Categorys::create($category);
         }
-        foreach (range(1, 10) as $index) {
+        // foreach (range(1, 10) as $index) {
 
-            $name = fake()->name . fake()->name;
-            $name = Str::replace(' ', '', $name);
-            $name = Str::replace('-', '', $name);
-            $name = Str::limit($name, 6, '');
-            \App\Models\Categorys::create([
-                'name' => $name,
-                'slug' => Str::slug($name),
-            ]);
-        }
+        //     $name = fake()->name . fake()->name;
+        //     $name = Str::replace(' ', '', $name);
+        //     $name = Str::replace('-', '', $name);
+        //     $name = Str::limit($name, 6, '');
+        //     \App\Models\Categorys::create([
+        //         'name' => $name,
+        //         'slug' => Str::slug($name),
+        //     ]);
+        // }
 
         $suppliers = [
             [
@@ -295,29 +296,29 @@ class DatabaseSeeder extends Seeder
         foreach ($suppliers as $supplier) {
             \App\Models\Suppliers::create($supplier);
         }
-        foreach (range(1, 10) as $index) {
-            $name = fake()->name;
-            $name = Str::replace(' ', '', $name);
-            $name = Str::replace('-', '', $name);
-            $name = Str::lower($name);
-            $name = Str::replace('.', '', $name);
-            $name = Str::limit($name, 7, '');
+        // foreach (range(1, 10) as $index) {
+        //     $name = fake()->name;
+        //     $name = Str::replace(' ', '', $name);
+        //     $name = Str::replace('-', '', $name);
+        //     $name = Str::lower($name);
+        //     $name = Str::replace('.', '', $name);
+        //     $name = Str::limit($name, 7, '');
 
-            $phone = fake()->phoneNumber;
-            $phone  = Str::remove('+', $phone);
-            $phone  = Str::remove(' ', $phone);
-            \App\Models\Suppliers::create([
-                'name' => $name,
-                'phone' => $phone,
-                'email' =>  fake()->unique()->safeEmail,
-                'address' => fake()->address,
-            ]);
-        }
+        //     $phone = fake()->phoneNumber;
+        //     $phone  = Str::remove('+', $phone);
+        //     $phone  = Str::remove(' ', $phone);
+        //     \App\Models\Suppliers::create([
+        //         'name' => $name,
+        //         'phone' => $phone,
+        //         'email' =>  fake()->unique()->safeEmail,
+        //         'address' => fake()->address,
+        //     ]);
+        // }
 
         $purches_price = 250;
         $sale_price = 500;
         $barcode = 1;
-        foreach (range(1, 50000) as $index) {
+        foreach (range(1, 20) as $index) {
             $name = fake()->name;
             $name = Str::lower($name);
             $name = Str::replace('.', '', $name);
@@ -332,8 +333,8 @@ class DatabaseSeeder extends Seeder
                 'supplier_id' => fake()->numberBetween(1, 21),
             ]);
         }
-        $barcode2 = 50001;
-        foreach (range(1, 50000) as $index) {
+        $barcode2 = 21;
+        foreach (range(1, 20) as $index) {
             $name = fake()->name;
             $name = Str::lower($name);
             $name = Str::replace('.', '', $name);
@@ -349,8 +350,8 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-        $barcode3 = 100001;
-        foreach (range(1, 10000) as $index) {
+        $barcode3 = 41;
+        foreach (range(1, 20) as $index) {
             $name = fake()->name;
             $name = Str::lower($name);
             $name = Str::replace('.', '', $name);
@@ -366,29 +367,31 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-        foreach (range(1, 10000) as $index) {
+        foreach (range(1, 10) as $index) {
             $number = fake()->unique()->numberBetween(0, 2147483647) . Str::random(1);
             $number = Str::limit($number, 9, '');
             $invoice = Str::start($number, 'inv-');
             $sales = Sales::create([
                 'invoice' => $invoice,
+                'user_id' => User::inRandomOrder()->first()->id,
                 'total' => fake()->numberBetween(1, 1000000),
                 'discount' => fake()->numberBetween(0, 100),
                 'status' => 1,
             ]);
-            foreach (range(1, 10) as $index) {
+            foreach (range(1, 3) as $index) {
                 $sales->sale_details()->create([
                     'product_id' => Products::inRandomOrder()->first()->id,
                     'quantity' => fake()->numberBetween(1, 100),
                 ]);
             }
         }
-        foreach (range(1, 1000) as $index) {
+        foreach (range(1, 4) as $index) {
             $number = fake()->unique()->numberBetween(0, 2147483647) . Str::random(1);
             $number = Str::limit($number, 9, '');
             $invoice = Str::start($number, 'inv-');
             $sales = Sales::create([
                 'invoice' => $invoice,
+                'user_id' => User::inRandomOrder()->first()->id,
                 'total' => fake()->numberBetween(1, 1000000),
                 'discount' => fake()->numberBetween(0, 100),
                 'status' => 1,
