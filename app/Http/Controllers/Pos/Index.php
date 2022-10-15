@@ -98,6 +98,7 @@ class Index extends Component
             return;
         }
         $sales->update([
+            'user_id' => auth()->user()->id,
             'status' => 1,
             'paid' => $this->debt ? 0 : 1,
         ]);

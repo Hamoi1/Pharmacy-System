@@ -62,7 +62,6 @@ class Barcode extends Component
         }
         $this->reset('barcode');
         $this->resetValidation();
-        $this->dispatchBrowserEvent('play', ['sound' => 'beep']);
         $this->emit('refresh');
     }
 }
