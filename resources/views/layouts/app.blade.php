@@ -154,6 +154,14 @@ session()->put('invoice', $invoice);
                                 </span>
                             </a>
                         </li>
+                        <li class="nav-item my-1 mx-lg-0 mx-3">
+                            <a class="nav-link  {{  app()->getLocale() == 'ckb' ? 'reverse' : '' }} active {{ Request()->is(app()->getLocale().'/create-raport') ? 'active-page' : '' }}  mx-2" href="{{ route('raport',app()->getLocale()) }}">
+                                <i class="fa-solid fa-file-circle-plus"></i>
+                                <span class="nav-link-title  mx-2">
+                                    {{ __('header.Raports') }}
+                                </span>
+                            </a>
+                        </li>
                         @endcan
                         <li class="nav-item my-1 mx-lg-0 mx-3">
                             <a class="nav-link  {{  app()->getLocale() == 'ckb' ? 'reverse' : '' }} active {{ Request()->is(app()->getLocale().'/profile') ? 'active-page' : '' }}  mx-2" href="{{ route('profile.update',app()->getLocale()) }}">
