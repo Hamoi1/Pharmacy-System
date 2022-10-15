@@ -177,7 +177,13 @@
                             </div>
                         </div>
                         @endif
+                        <div class="my-2">
+                            <label for="" class="form-label">{{ __('header.discount') }}</label>
+                            <input type="number" class="form-control price" value="0" placeholder="0" wire:model.defer="discount">
+                            @error('discount') <span class="text-danger"> {{ $message }}</span> @enderror
+                        </div>
                     </div>
+
                     <div class="col-12 mb-5 mt-3">
                         <div class="no-print">
                             <button class="btn btn-cyan px-5 " wire:click.prevent="submit">

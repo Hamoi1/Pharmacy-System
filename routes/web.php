@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 
@@ -10,7 +11,11 @@ Route::group([
 ], function () {
     Route::middleware(['auth'])->group(function () {
         Route::get('/', function () {
-            return redirect()->route('dashboard', app()->getLocale());
+            if (Auth::user()->role == 1) {
+                return redirect()->route('dashboard', app()->getLocale());
+            } else {
+                return redirect()->route('sales', app()->getLocale());
+            }
         });
         Route::get('/dashboard', App\Http\Controllers\Dashboard::class)->name('dashboard');
         Route::get('/users', App\Http\Controllers\User\Index::class)->name('users');

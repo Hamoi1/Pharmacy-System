@@ -5,7 +5,7 @@
                 <span class="fw-bolder fs-3">
                     {{ __('header.total_sales') }}
                 </span>
-                <div class=" lh-1 col-lg-3 col-6">
+                <div class="lh-1 col-lg-3 col-6">
                     <select class="form-select  rounded w-100 " wire:model="sales">
                         <option value="today" selected>
                             {{ __('header.today') }}

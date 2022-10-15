@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\User;
 use App\Models\DebtSale;
 use App\Models\sale_details;
 use Illuminate\Database\Eloquent\Model;
@@ -38,5 +39,9 @@ class Sales extends Model
         return $query->with('sale_details', function ($query) {
             return $query->with('products');
         })->with('user', 'debt_sale');
+    }
+    public function scopeUser($query)
+    {
+        return $query->addSelect(['user_name' => User::select('name')->whereColumn('id', 'sales.user_id')]);
     }
 }

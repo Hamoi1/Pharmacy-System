@@ -11,25 +11,37 @@ use Illuminate\Support\Facades\Gate;
 class Index extends Component
 {
     use WithPagination;
-    public $SaleID, $start, $end, $price, $total, $total_paid, $total_debt, $sale_debt_id, $saleView, $UserID;
+    public $SaleID, $price, $total, $total_paid, $total_debt, $sale_debt_id, $saleView, $UserID,
+        $date;
     protected $paginationTheme = 'bootstrap';
-    protected $queryString = ['start', 'end', 'UserID' => ['as' => 'user', 'except' => '']];
+    protected $queryString = ['UserID' => ['as' => 'user', 'except' => ''], 'date' => ['as' => 'date', 'except' => '']];
     public function mount()
     {
         if (!Gate::allows('admin')) {
             abort(404);
         }
     }
+    public function Sales()
+    {
+        $sale =  Sales::query();
+        if ($this->date == 'today') {
+            $sale->whereDate('created_at', today());
+        } elseif ($this->date == 'yesterday') {
+            $sale->whereDate('created_at', today()->subDays(1));
+        } elseif ($this->date == 'this_week') {
+            $sale->whereBetween('created_at', [today()->startOfWeek(), today()->endOfWeek()]);
+        } elseif ($this->date == 'this_month') {
+            $sale->whereMonth('created_at', today()->month);
+        }
+        return $sale;
+    }
     public function render()
     {
-        $sales = Sales::query();
-        if ($this->start && $this->end) {
-            $sales = $sales->whereBetween('created_at', [$this->start, $this->end]);
-        }
+        $sales = $this->Sales();
         if ($this->UserID) {
             $sales = $sales->where('user_id', $this->UserID);
         }
-        $sales =  $sales->Where('status', '=', 1)->SaleDebtName()->latest()->paginate(10);
+        $sales =  $sales->Where('status', '=', 1)->SaleDebtName()->User()->latest()->paginate(10);
         $users = User::all();
         return view('sales.index', [
             'sales' => $sales,
@@ -38,7 +50,7 @@ class Index extends Component
     }
     public function done()
     {
-        $this->resetExcept('start', 'end', 'UserID');
+        $this->resetExcept('UserID', 'date');
         $this->resetValidation();
         $this->dispatchBrowserEvent('closeModal');
     }

@@ -41,18 +41,32 @@
                 </div>
             </div>
         </div>
-        <div class="row gx-3">
-            <div class="col-lg-1  col-4 mt-2">
-                <a class="btn" data-bs-toggle="offcanvas" href="#offcanvasStart" role="button" aria-controls="offcanvasStart">
-                    {{ __('header.filter') }}
-                </a>
-            </div>
-            <div class="col-lg-3 col-8 mt-2">
+        <div class="row gx-3 gy-3 align-items-center">
+            <div class="col-lg-2 col-8">
                 <select wire:model="UserID" class="form-select">
                     <option value="">{{ __('header.Users') }}</option>
                     @foreach ($users as $user)
                     <option value="{{ $user->id }}">{{ $user->name }}</option>
                     @endforeach
+                </select>
+            </div>
+            <div class="col-lg-2 col-6">
+                <select class="form-select" wire:model="date">
+                    <option value="">
+                        {{ __('header.date') }}
+                    </option>
+                    <option value="today">
+                        {{ __('header.today') }}
+                    </option>
+                    <option value="yesterday">
+                        {{ __('header.yesterday') }}
+                    </option>
+                    <option value="this_week">
+                        {{ __('header.this_week') }}
+                    </option>
+                    <option value="this_month">
+                        {{ __('header.this_month') }}
+                    </option>
                 </select>
             </div>
         </div>
@@ -72,6 +86,9 @@
                     <tr>
                         <th class="col-1 fs-4">
                             Invoice-ID
+                        </th>
+                        <th class="col-1 fs-4">
+                            {{ __('header.User') }}
                         </th>
                         <th class="col-1 fs-4">
                             {{ __('header.price') }}
@@ -96,11 +113,14 @@
                                 {{ $sale->invoice }}
                             </a>
                         </td>
-                        <td>
-                            {{ $sale->total  }} {{ __('header.currency') }}
+                        <td class="fw-bolder">
+                            {{ $sale->user_name }}
                         </td>
                         <td>
-                            {{ $sale->discount != null ? $sale->discount . __('header.currency') : __('header.Not-discount') }}
+                            {{ number_format($sale->total,0)  }} {{ __('header.currency') }}
+                        </td>
+                        <td>
+                            {{ $sale->discount != null ?  number_format($sale->discount,0) . __('header.currency') : __('header.Not-discount') }}
                         </td>
                         <td>
                             <span class="badge bg-{{ $sale->paid ? 'success' : 'info' }}">

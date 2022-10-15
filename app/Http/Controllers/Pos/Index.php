@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Auth;
 class Index extends Component
 {
     public  $debt = false,
-        $name, $phone, $currentpaid;
+        $name, $phone, $currentpaid, $discount;
     protected $listeners = ['refresh' => 'render'],
         $queryString = ['debt' => ['except' => false]];
     public function render()
@@ -85,6 +85,7 @@ class Index extends Component
                 'name' => 'required|string',
                 'phone' => 'required|numeric|digits:11',
                 'currentpaid' => 'nullable|numeric|min:0',
+                'discount' => 'nullable|numeric|min:0',
             ], [
                 'name.required' => __('validation.required', ['attribute' => __('header.name')]),
                 'phone.required' => __('validation.required', ['attribute' => __('header.phone')]),
@@ -92,15 +93,21 @@ class Index extends Component
                 'phone.digits' => __('validation.digits', ['attribute' => __('header.phone')]),
                 'currentpaid.numeric' => __('validation.numeric', ['attribute' => __('header.currentpaid')]),
                 'currentpaid.min' => __('validation.min', ['attribute' => __('header.currentpaid')]),
+                'discount.numeric' => __('validation.numeric', ['attribute' => __('header.discount')]),
+                'discount.min' => __('validation.min', ['attribute' => __('header.discount')]),
             ]);
         }
         $sales = Sales::where('invoice',  session('invoice'))->first();
         if ($sales == null || $sales->total == 0) {
             return;
         }
+        $this->discount = $this->discount ?? 0;
+        $total = $sales->total - $this->discount;
         $sales->update([
             'user_id' => Auth::user()->id,
             'status' => 1,
+            'total' => $total,
+            'discount' => $this->discount,
             'paid' => $this->debt ? 0 : 1,
         ]);
         if ($this->debt) {

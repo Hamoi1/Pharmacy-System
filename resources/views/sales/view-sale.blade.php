@@ -99,6 +99,9 @@
                             @endif
                         </span>
                     </p>
+                    <p class="fw-bolder {{ $sale->discount ?? 'no-print' }}">
+                        {{ __('header.discount') }} : {{ $sale->discount  ? number_format($sale->discount, 0) .' '. __('header.currency') : __('header.Not-discount') }}
+                    </p>
                     <p class="fw-bolder">
                         {{ __('header.TotalPrice') }} :
                         <span class="mx-1">
