@@ -17,6 +17,10 @@ class Sales extends Model
     {
         return $this->hasMany(sale_details::class, 'sale_id');
     }
+    public function user()
+    {
+        return $this->hasOne(User::class, 'id', 'user_id');
+    }
 
     public function debt_sale()
     {
@@ -28,5 +32,11 @@ class Sales extends Model
             'name' => DebtSale::select('name')
                 ->whereColumn('sale_id', 'sales.id')
         ]);
+    }
+    public function scopeSaleData($query)
+    {
+        return $query->with('sale_details', function ($query) {
+            return $query->with('products');
+        })->with('user', 'debt_sale');
     }
 }

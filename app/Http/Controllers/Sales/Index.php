@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Sales;
+
 use App\Models\Sales;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -9,7 +10,7 @@ use Illuminate\Support\Facades\Gate;
 class Index extends Component
 {
     use WithPagination;
-    public $SaleID, $start, $end, $price, $total, $total_paid, $total_debt, $sale_debt_id;
+    public $SaleID, $start, $end, $price, $total, $total_paid, $total_debt, $sale_debt_id, $saleView;
     protected $paginationTheme = 'bootstrap';
     protected $queryString = ['start', 'end'];
     public function mount()
@@ -38,5 +39,11 @@ class Index extends Component
         $sale->delete();
         notyf()->position('y', 'top')->position('x', 'center')->duration(2000)->addSuccess(__('header.deleted'));
         $this->done();
+    }
+    public function View($id)
+    {
+        $sale = Sales::SaleData()->findOrFail($id);
+        $this->saleView = $sale;
+        // dd($this->saleView);
     }
 }

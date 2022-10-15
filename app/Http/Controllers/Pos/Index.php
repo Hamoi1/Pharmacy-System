@@ -6,6 +6,7 @@ use App\Models\Sales;
 use Livewire\Component;
 use App\Models\Products;
 use App\Models\sale_details;
+use Illuminate\Support\Facades\Auth;
 
 
 class Index extends Component
@@ -98,7 +99,7 @@ class Index extends Component
             return;
         }
         $sales->update([
-            'user_id' => auth()->user()->id,
+            'user_id' => Auth::user()->id,
             'status' => 1,
             'paid' => $this->debt ? 0 : 1,
         ]);

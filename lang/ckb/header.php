@@ -181,4 +181,7 @@ return [
     'debtNotFinish' => 'قەرز تەواونەبوە',
     'debtsNotFinish' => 'قەرزە تەواونەبووەکان',
     'Returned Money' => 'پارەی گەڕێندراو',
+    'SaleInformation' => 'زانیاریی فرۆشتن',
+    'by' => 'لەلایەن',
+    'userIsDeleted' => 'بەکارهێنەر نەزانراوە',
 ];

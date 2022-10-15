@@ -3,11 +3,12 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Sales;
 use App\Models\UserDetails;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
@@ -33,6 +34,12 @@ class User extends Authenticatable
     {
         return $this->hasOne(UserDetails::class);
     }
+
+    public function sales()
+    {
+        return $this->hasMany(Sales::class, 'user_id');
+    }
+
     public function scopeUserDetails($query)
     {
         return $query->addSelect(

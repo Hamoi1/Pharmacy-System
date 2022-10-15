@@ -181,4 +181,7 @@ return [
     'debtNotFinish' => 'Debt Not Finish',
     'debtsNotFinish' => 'Debts Not Finish',
     'Returned Money' => 'Returned Money',
+    'SaleInformation' => 'Sale Information',
+    'by' => 'By',
+    'userIsDeleted' => 'User is Unknow',
 ];

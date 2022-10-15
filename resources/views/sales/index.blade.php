@@ -46,6 +46,7 @@
             </div>
         </div>
         @include('sales.pages.delete')
+        @include('sales.pages.view')
         <div class="row mt-3" wire:loading wire:target="previousPage,nextPage,gotoPage">
             <div class="d-flex  gap-2">
                 <h3>
@@ -99,7 +100,7 @@
                             {{ $sale->created_at->format('Y-m-d') }}
                         </td>
                         <td class="text-center">
-                            <a href="{{ route('sales.view' ,['lang'=>app()->getLocale(),'id'=>$sale->id , 'invoice'=> $sale->invoice]) }}" class="btn text-info">
+                            <a href="" class="btn text-info" data-bs-toggle="modal" data-bs-target="#view" wire:click.prevent="View({{ $sale->id }})">
                                 <i class="fas fa-eye"></i>
                             </a>
                             <a href="{{ route('sales.view' ,['lang'=>app()->getLocale(),'id'=>$sale->id , 'invoice'=> $sale->invoice]) }}" class="btn text-success">
