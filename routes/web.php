@@ -28,7 +28,6 @@ Route::group([
 
         Route::get('/profile', App\Http\Controllers\Profile\Update::class)->name('profile.update');
         Route::get('/settings', App\Http\Controllers\Setting::class)->name('settings');
-        Route::get('/create-raport', App\Http\Controllers\Raports\Index::class)->name('raport');
         Route::get('/logout', function () {
             auth()->logout();
             return redirect()->route('login', app()->getLocale());
