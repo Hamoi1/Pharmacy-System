@@ -102,6 +102,9 @@
                             <a href="{{ route('sales.view' ,['lang'=>app()->getLocale(),'id'=>$sale->id , 'invoice'=> $sale->invoice]) }}" class="btn text-info">
                                 <i class="fas fa-eye"></i>
                             </a>
+                            <a href="{{ route('sales.view' ,['lang'=>app()->getLocale(),'id'=>$sale->id , 'invoice'=> $sale->invoice]) }}" class="btn text-success">
+                                <i class="fa-solid fa-file-invoice"></i>
+                            </a>
                             <a href="" class="btn text-danger " data-bs-toggle="modal" data-bs-target="#delete" wire:click.prevent="$set('SaleID',{{ $sale->id }})">
                                 <i class="fas fa-trash"></i>
                             </a>
