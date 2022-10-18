@@ -4,23 +4,19 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 
-// Route::redirect('/', function () {
-//     if (Auth::check()) {
-//         if (Auth::user()->role === 1) {
-//             return redirect()->route('dashboard', app()->getLocale());
-//         } else {
-//             return redirect()->route('sales', app()->getLocale());
-//         }
-//     } else {
-//         return redirect()->route('login', app()->getLocale());
-//     }
-// });
+Route::redirect('/', app()->getLocale() . '/login');
 Route::group([
     'prefix' => '{lang}',
     'where' => ['lang' => 'en|ckb'],
 ], function () {
     Route::middleware(['auth'])->group(function () {
-
+        Route::get('/', function () {
+            if (auth()->user()->role === 1) {
+                return redirect()->route('dashboard', app()->getLocale());
+            } else {
+                return redirect()->route('sales', app()->getLocale());
+            }
+        });
         Route::get('/dashboard', App\Http\Controllers\Dashboard::class)->name('dashboard');
         Route::get('/users', App\Http\Controllers\User\Index::class)->name('users');
         Route::get('/products', App\Http\Controllers\Products\Index::class)->name('products');

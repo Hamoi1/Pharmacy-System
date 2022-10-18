@@ -206,13 +206,6 @@ class Index extends Component
     }
     public function delete(Products $product)
     {
-        $image = $product->image;
-        if ($image != null) {
-            $image = json_decode($image);
-            foreach ($image as $img) {
-                Storage::delete('public/products/' . $img);
-            }
-        }
         $product->delete();
         notyf()->position('y', 'top')->position('x', 'center')->duration(2000)->addSuccess(__('header.delete'));
         $this->done();

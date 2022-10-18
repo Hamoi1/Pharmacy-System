@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class DeletingTrashe
 {
@@ -22,6 +23,13 @@ class DeletingTrashe
         foreach ($products as $product) {
             if ($product->deleted_at != null) {
                 if ($product->deleted_at->format('Y-m-d') <= now()->subMonth()->format('Y-m-d')) { // if deleted_at date is less than 1 month after that data will be delete forever
+                    $image = $product->image;
+                    if ($image != null) {
+                        $image = json_decode($image);
+                        foreach ($image as $img) {
+                            Storage::delete('public/products/' . $img);
+                        }
+                    }
                     $product->forceDelete();
                 }
             }
@@ -32,6 +40,10 @@ class DeletingTrashe
         foreach ($users as $user) {
             if ($user->deleted_at != null) {
                 if ($user->deleted_at->format('Y-m-d') <= now()->subMonth()->format('Y-m-d')) { // if deleted_at date is less than 1 month after that data will be delete forever
+                   $image = $user->user_details->image;
+                    if ($image != null) {
+                        Storage::delete('public/users/' . $image);
+                    }
                     $user->forceDelete();
                 }
             }
