@@ -42,7 +42,11 @@ class Login extends Component
                 $this->reset();
                 $this->resetErrorBag();
                 $this->resetValidation();
-                return redirect()->route('dashboard', app()->getLocale());
+                if (auth()->user()->role === 1) {
+                    return redirect()->route('dashboard', app()->getLocale());
+                } else {
+                    return redirect()->route('sales', app()->getLocale());
+                }
             } else {
                 auth()->logout();
                 notyf()->position('y', 'top')->position('x', 'center')->duration(2500)->addError(__('header.Account_not_active'));
