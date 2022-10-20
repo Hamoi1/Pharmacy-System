@@ -27,7 +27,6 @@ class Setting extends Component
         $this->phone = $this->setting->phone;
         $this->email = $this->setting->email;
         $this->address = $this->setting->address;
-        $this->oldLogo = $this->setting->logo;
         return view('setting');
     }
     public function GetRuls()
@@ -70,27 +69,14 @@ class Setting extends Component
 
             $logoName = time() . '-' . uniqid() . '.' . $this->logo->getClientOriginalExtension();
             Storage::disk('public')->put('logo/' . $logoName, $logo->stream());
-            if ($this->oldLogo != null) {
-                Storage::disk('public')->delete('logo/' . $this->oldLogo);
-            }
         }
-
-        if (!$this->setting) {
-            $this->setting->name = $this->name;
-            $this->setting->phone = $this->phone;
-            $this->setting->email = $this->email;
-            $this->setting->address = $this->address;
-            $this->setting->logo = $logoName ?? null;
-            $this->setting->save();
-        } else {
-            $this->setting->update([
-                'name' => $this->name,
-                'phone' => $this->phone,
-                'email' => $this->email,
-                'address' => $this->address,
-                'logo' => $logoName ?? $this->oldLogo,
-            ]);
-        }
+        $this->setting->update([
+            'name' => $this->name,
+            'phone' => $this->phone,
+            'email' => $this->email,
+            'address' => $this->address,
+            'logo' => $logoName ?? $this->oldLogo,
+        ]);
         notyf()->position('y', 'top')->position('x', 'center')->duration(2000)->addSuccess(__('header.updated'));
         $this->reset('logo');
         $this->resetValidation();
