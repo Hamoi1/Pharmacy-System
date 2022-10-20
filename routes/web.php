@@ -18,7 +18,7 @@ Route::group([
         Route::get('/stock-out-procuts', App\Http\Controllers\StockOutProducts::class)->name('StockOutProcuts');
         Route::get('/categorys', App\Http\Controllers\Categorys\Index::class)->name('categorys');
         Route::get('/suppliers', App\Http\Controllers\Supplier\Index::class)->name('suppliers');
-
+        Route::get('/raport', App\Http\Controllers\Raports\Index::class)->name('raports');
         Route::get('/pont-of-sale', App\Http\Controllers\Pos\Index::class)->name('sales');
         Route::get('/sales', App\Http\Controllers\Sales\Index::class)->name('sales.index');
         Route::get('/sale/view/{id}/{invoice}', App\Http\Controllers\Sales\ViewSale::class)->name('sales.view');

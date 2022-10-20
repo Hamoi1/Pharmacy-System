@@ -184,4 +184,6 @@ return [
     'SaleInformation' => 'Sale Information',
     'by' => 'By',
     'userIsDeleted' => 'User is Unknow',
+
+    'Raports' => 'Raports',
 ];
