@@ -34,7 +34,7 @@
                 <div class="col-12 my-2 fs-3 px-2 py-2 d-flex align-items-center gap-2">
                     <span class="fw-bold">{{ __('header.settings.logo') }} :</span>
                     <span class="">
-                        <img src="{{  $settings->logo != null ? asset('storage/logo/'.$settings->logo) : asset('assets/images/capsules.png') }}" class="rounded-circle avatar avatar-md object-cover" alt="">
+                        <img src="{{  $setting->logo != null ? asset('storage/logo/'.$setting->logo) : asset('assets/images/capsules.png') }}" class="rounded-circle avatar avatar-md object-cover" alt="">
                     </span>
                 </div>
             </div>
@@ -66,7 +66,7 @@
                             <input type="file" class="form-control" wire:model="logo" accept="image/*">
                             @error('logo') <span class="text-danger">{{ $message }}</span> @enderror
                         </div>
-                        <div class="col-lg-6 col-12">
+                        <div class="col-lg-6 col-12 mt-4">
                             @if ($logo)
                             <img src="{{ $logo->temporaryUrl() }}" class="rounded-circle avatar object-cover" alt="">
                             @endif

@@ -22,7 +22,7 @@
         </div>
         <div class="col-12" id="POS-Table">
             <span class="header-table d-none">
-                {{ $settings->name }}
+              {{ __('header.pharmacyName') }} : {{ $settings->name }}
             </span>
             <span class="header-table d-none">
                 {{ __('header.phone') }} : {{ $settings->phone }}
