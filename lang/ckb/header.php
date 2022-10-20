@@ -184,6 +184,5 @@ return [
     'SaleInformation' => 'زانیاریی فرۆشتن',
     'by' => 'لەلایەن',
     'userIsDeleted' => 'بەکارهێنەر نەزانراوە',
-
-    'Raports' => 'ڕاپۆرتەکان',
+    'pharmacyName' => 'ناوی دەرمانخانە',
 ];
