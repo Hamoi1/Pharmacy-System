@@ -379,7 +379,6 @@ body,
     .header-table {
         display: block !important;
         margin-top: 0 !important;
-        text-align: center !important;
     }
 
     .header-table:nth-child(1) {
