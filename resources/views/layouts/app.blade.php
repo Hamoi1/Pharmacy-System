@@ -49,7 +49,7 @@ session()->put('invoice', $invoice);
             </div>
         </div>
     </div>
-    <div class="lodaing-seaction">
+    <!-- <div class="lodaing-seaction">
         <div class="building-blocks">
             <div></div>
             <div></div>
@@ -59,7 +59,7 @@ session()->put('invoice', $invoice);
             <div></div>
             <div></div>
         </div>
-    </div>
+    </div> -->
     @auth
     <aside class="navbar navbar-vertical {{ app()->getLocale() == 'ckb' ? 'navbar-right' : '' }} navbar-expand-lg navbar-light no-print">
         <div class="container-fluid">

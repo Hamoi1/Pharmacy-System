@@ -430,7 +430,7 @@ body,
     margin-top: 5px !important;
     font-size: 14px;
 }
-
+/* 
 @-webkit-keyframes building-blocks {
 
     0%,
@@ -582,4 +582,4 @@ body,
 .building-blocks div:nth-child(7):after {
     -webkit-animation-delay: 1.05s;
     animation-delay: 1.05s;
-}
+} */

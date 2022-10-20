@@ -69,8 +69,8 @@ function printDiv() {
 //     console.log('your  are offline');
 // }
 
-// loading 
-$(window).on('load', function () {
-    //  fadeout by the network speed
-    $('.lodaing-seaction').fadeOut(navigator.onLine ? 2000 : 1000);
-});
+// // loading 
+// $(window).on('load', function () {
+//     //  fadeout by the network speed
+//     $('.lodaing-seaction').fadeOut(navigator.onLine ? 2000 : 1000);
+// });
