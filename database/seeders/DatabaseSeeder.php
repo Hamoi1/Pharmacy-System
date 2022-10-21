@@ -30,14 +30,14 @@ class DatabaseSeeder extends Seeder
                 'role' => 1,
                 'status' => 1,
             ],
-              [
+            [
                 'name' => 'muhammad cashier',
                 'username' => 'hama_cashier',
                 'phone' => fake()->unique()->phoneNumber(),
                 'email' => 'cashier@gmail.com',
                 'password' => Hash::make('muhammad'),
                 'role' => 2,
-                'status' =>1,
+                'status' => 1,
             ],
         ];
         foreach ($users as $user) {
@@ -129,59 +129,59 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-//         $suppliers = [
-//             [
-//                 'name' => 'gilas',
-//                 'phone' => '07501122110',
-//                 'email' => 'gilas@gmail.com',
-//                 'address' => 'iraq'
-//             ],
-//             [
-//                 'name' => 'ahmad',
-//                 'phone' => '07501122111',
-//                 'email' => 'ahmad@gmail.com',
-//                 'address' => 'iraq'
-//             ],
-//             [
-//                 'name' => 'heshu',
-//                 'phone' => '07502122110',
-//                 'email' => 'heshu@gmail.com',
-//                 'address' => 'iraq'
-//             ],
-//             [
-//                 'name' => 'razhan',
-//                 'phone' => '07502122232',
-//                 'email' => 'razhan@gmail.com',
-//                 'address' => 'iraq'
-//             ],
-//             [
-//                 'name' => 'muhammad',
-//                 'phone' => '075022232',
-//                 'email' => 'muhammad@gmail.com',
-//                 'address' => 'iraq'
-//             ],
-//             [
-//                 'name' => 'ramyar',
-//                 'phone' => '07512122232',
-//                 'email' => 'ramyar@gmail.com',
-//                 'address' => 'iraq'
-//             ],
-//             [
-//                 'name' => 'chenar',
-//                 'phone' => '07511212232',
-//                 'email' => 'chenar@gmail.com',
-//                 'address' => 'iraq'
-//             ],
-//             [
-//                 'name' => 'raid',
-//                 'phone' => '07511222232',
-//                 'email' => 'raid@gmail.com',
-//                 'address' => 'iraq'
-//             ],
-//         ];
-//         foreach ($suppliers as $supplier) {
-//             \App\Models\Suppliers::create($supplier);
-//         }
+        //         $suppliers = [
+        //             [
+        //                 'name' => 'gilas',
+        //                 'phone' => '07501122110',
+        //                 'email' => 'gilas@gmail.com',
+        //                 'address' => 'iraq'
+        //             ],
+        //             [
+        //                 'name' => 'ahmad',
+        //                 'phone' => '07501122111',
+        //                 'email' => 'ahmad@gmail.com',
+        //                 'address' => 'iraq'
+        //             ],
+        //             [
+        //                 'name' => 'heshu',
+        //                 'phone' => '07502122110',
+        //                 'email' => 'heshu@gmail.com',
+        //                 'address' => 'iraq'
+        //             ],
+        //             [
+        //                 'name' => 'razhan',
+        //                 'phone' => '07502122232',
+        //                 'email' => 'razhan@gmail.com',
+        //                 'address' => 'iraq'
+        //             ],
+        //             [
+        //                 'name' => 'muhammad',
+        //                 'phone' => '075022232',
+        //                 'email' => 'muhammad@gmail.com',
+        //                 'address' => 'iraq'
+        //             ],
+        //             [
+        //                 'name' => 'ramyar',
+        //                 'phone' => '07512122232',
+        //                 'email' => 'ramyar@gmail.com',
+        //                 'address' => 'iraq'
+        //             ],
+        //             [
+        //                 'name' => 'chenar',
+        //                 'phone' => '07511212232',
+        //                 'email' => 'chenar@gmail.com',
+        //                 'address' => 'iraq'
+        //             ],
+        //             [
+        //                 'name' => 'raid',
+        //                 'phone' => '07511222232',
+        //                 'email' => 'raid@gmail.com',
+        //                 'address' => 'iraq'
+        //             ],
+        //         ];
+        //         foreach ($suppliers as $supplier) {
+        //             \App\Models\Suppliers::create($supplier);
+        //         }
         foreach (range(1, 10) as $index) {
             $name = fake()->name;
             $name = Str::replace(' ', '', $name);
@@ -215,7 +215,7 @@ class DatabaseSeeder extends Seeder
                 'expiry_date' => fake()->dateTimeBetween('now', '+10 years')->format('Y-m-d'),
                 'purches_price' => $purches_price += 250,
                 'sale_price' => $sale_price += 500,
-                'category_id' => fake()->numberBetween(1,20),
+                'category_id' => fake()->numberBetween(1, 20),
                 'supplier_id' => fake()->numberBetween(1, 10),
             ]);
         }
