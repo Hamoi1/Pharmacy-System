@@ -5,10 +5,7 @@
                 <span class="fw-bolder fs-3">
                     {{ __('header.ExpiryProducts') }}
                 </span>
-                <span class="text-muted">
-                    {{ __('header.today') }}
-                </span>
-            </div>
+              </div>
             <div class="row align-items-center  mt-3">
                 <div class="col-auto">
                     <span class="bg-cyan avatar">
