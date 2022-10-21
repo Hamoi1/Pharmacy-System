@@ -5,9 +5,6 @@
                 <span class="fw-bolder fs-3">
                     {{ __('header.StockedOutProducts') }}
                 </span>
-                <span class="text-muted">
-                    {{ __('header.today') }}
-                </span>
             </div>
             <div class="row align-items-center  mt-3">
                 <div class="col-auto">
