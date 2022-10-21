@@ -10,10 +10,10 @@
                 <livewire:dashboard.new-users />
                 <livewire:dashboard.new-suppliers />
                 <livewire:dashboard.new-categorys />
-                <livewire:dashboard.expiry-product />
-                <livewire:dashboard.stock-out-product />
                 <livewire:dashboard.today-sale />
                 <livewire:dashboard.today-sale-product />
+                <livewire:dashboard.expiry-product />
+                <livewire:dashboard.stock-out-product />
                 <livewire:dashboard.total-sales />
                 <livewire:dashboard.total-product />
                 <livewire:dashboard.total-users />
