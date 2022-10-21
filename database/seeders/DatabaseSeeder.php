@@ -48,34 +48,31 @@ class DatabaseSeeder extends Seeder
                 'address' => fake()->randomElement(['ranya', 'Sulimany', 'Qaladzi', 'Hallshow']),
             ]);
         }
+        foreach (range(1, 100) as $index) {
+            $name = fake()->name;
+            $name = Str::replace(' ', '', $name);
+            $name = Str::replace('-', '', $name);
+            $name = Str::replace('.', '', $name);
+            $name = Str::limit($name, 7, '');
 
-
-        // // \App\Models\User::factory(20)->create();
-        // foreach (range(1, 1000) as $index) {
-        //     $name = fake()->name;
-        //     $name = Str::replace(' ', '', $name);
-        //     $name = Str::replace('-', '', $name);
-        //     $name = Str::replace('.', '', $name);
-        //     $name = Str::limit($name, 7, '');
-
-        //     $phone = fake()->phoneNumber;
-        //     $phone  = Str::remove('+', $phone);
-        //     $phone  = Str::remove(' ', $phone);
-        //     $user = \App\Models\User::create([
-        //         'name' => $name,
-        //         'username' => fake()->unique()->userName . '-' . $index . $name,
-        //         'phone' => $phone,
-        //         'email' => fake()->unique()->safeEmail,
-        //         'password' => Hash::make('muhammad'),
-        //         'role' => fake()->numberBetween(1, 2),
-        //         'status' => fake()->numberBetween(0, 1),
-        //         'status' => fake()->numberBetween(0, 1),
-        //         'created_at' => fake()->dateTimeBetween('-1 years', 'now'),
-        //     ]);
-        //     $user->user_details()->create([
-        //         'address' => fake()->randomElement(['ranya', 'sulimany', 'qaladzi', 'hawler', 'Hallshow']),
-        //     ]);
-        // }
+            $phone = fake()->phoneNumber;
+            $phone  = Str::remove('+', $phone);
+            $phone  = Str::remove(' ', $phone);
+            $user = \App\Models\User::create([
+                'name' => $name,
+                'username' => fake()->unique()->userName . '-' . $index . $name,
+                'phone' => $phone,
+                'email' => fake()->unique()->safeEmail,
+                'password' => Hash::make('muhammad'),
+                'role' => fake()->numberBetween(1, 2),
+                'status' => fake()->numberBetween(0, 1),
+                'status' => fake()->numberBetween(0, 1),
+                'created_at' => fake()->dateTimeBetween('-1 years', 'now'),
+            ]);
+            $user->user_details()->create([
+                'address' => fake()->randomElement(['ranya', 'sulimany', 'qaladzi', 'hawler', 'Hallshow']),
+            ]);
+        }
         $catagorys_data = [
             [
                 'name' => 'darzi',
@@ -90,20 +87,12 @@ class DatabaseSeeder extends Seeder
                 'slug' => Str::slug('3abi saresha'),
             ],
             [
-                'name' => 'darzi 2',
-                'slug' => Str::slug('darzi 2'),
-            ],
-            [
                 'name' => 'shrubi zghesha',
                 'slug' => Str::slug('shrubi zghesha'),
             ],
             [
                 'name' => 'mal3ami dmwchaw',
                 'slug' => Str::slug('mal3ami dmwchaw'),
-            ],
-            [
-                'name' => 'darzi ddan',
-                'slug' => Str::slug('darzi ddan'),
             ],
             [
                 'name' => 'shrub',
@@ -129,101 +118,88 @@ class DatabaseSeeder extends Seeder
         foreach ($catagorys_data as $category) {
             \App\Models\Categorys::create($category);
         }
-        // foreach (range(1, 10) as $index) {
-
-        //     $name = fake()->name . fake()->name;
-        //     $name = Str::replace(' ', '', $name);
-        //     $name = Str::replace('-', '', $name);
-        //     $name = Str::limit($name, 6, '');
-        //     \App\Models\Categorys::create([
-        //         'name' => $name,
-        //         'slug' => Str::slug($name),
-        //     ]);
-        // }
-
-        $suppliers = [
-            [
-                'name' => 'danaz',
-                'phone' => '123412341234',
-                'email' => 'danaz@gmail.com',
-                'address' => 'iraq',
-            ],
-            [
-                'name' => 'chra',
-                'phone' => '121212341234',
-                'email' => 'chra@gmail.com',
-                'address' => 'iraq'
-            ],
-            [
-                'name' => 'gilas',
-                'phone' => '07501122110',
-                'email' => 'gilas@gmail.com',
-                'address' => 'iraq'
-            ],
-            [
-                'name' => 'ahmad',
-                'phone' => '07501122111',
-                'email' => 'ahmad@gmail.com',
-                'address' => 'iraq'
-            ],
-            [
-                'name' => 'heshu',
-                'phone' => '07502122110',
-                'email' => 'heshu@gmail.com',
-                'address' => 'iraq'
-            ],
-            [
-                'name' => 'razhan',
-                'phone' => '07502122232',
-                'email' => 'razhan@gmail.com',
-                'address' => 'iraq'
-            ],
-            [
-                'name' => 'muhammad',
-                'phone' => '075022232',
-                'email' => 'muhammad@gmail.com',
-                'address' => 'iraq'
-            ],
-            [
-                'name' => 'ramyar',
-                'phone' => '07512122232',
-                'email' => 'ramyar@gmail.com',
-                'address' => 'iraq'
-            ],
-            [
-                'name' => 'chenar',
-                'phone' => '07511212232',
-                'email' => 'chenar@gmail.com',
-                'address' => 'iraq'
-            ],
-            [
-                'name' => 'raid',
-                'phone' => '07511222232',
-                'email' => 'raid@gmail.com',
-                'address' => 'iraq'
-            ],
-        ];
-        foreach ($suppliers as $supplier) {
-            \App\Models\Suppliers::create($supplier);
+        foreach (range(1, 10) as $index) {
+            $name = fake()->name . fake()->name;
+            $name = Str::replace(' ', '', $name);
+            $name = Str::replace('-', '', $name);
+            $name = Str::limit($name, 6, '');
+            \App\Models\Categorys::create([
+                'name' => $name,
+                'slug' => Str::slug($name),
+            ]);
         }
-        // foreach (range(1, 10) as $index) {
-        //     $name = fake()->name;
-        //     $name = Str::replace(' ', '', $name);
-        //     $name = Str::replace('-', '', $name);
-        //     $name = Str::lower($name);
-        //     $name = Str::replace('.', '', $name);
-        //     $name = Str::limit($name, 7, '');
 
-        //     $phone = fake()->phoneNumber;
-        //     $phone  = Str::remove('+', $phone);
-        //     $phone  = Str::remove(' ', $phone);
-        //     \App\Models\Suppliers::create([
-        //         'name' => $name,
-        //         'phone' => $phone,
-        //         'email' =>  fake()->unique()->safeEmail,
-        //         'address' => fake()->address,
-        //     ]);
-        // }
+//         $suppliers = [
+//             [
+//                 'name' => 'gilas',
+//                 'phone' => '07501122110',
+//                 'email' => 'gilas@gmail.com',
+//                 'address' => 'iraq'
+//             ],
+//             [
+//                 'name' => 'ahmad',
+//                 'phone' => '07501122111',
+//                 'email' => 'ahmad@gmail.com',
+//                 'address' => 'iraq'
+//             ],
+//             [
+//                 'name' => 'heshu',
+//                 'phone' => '07502122110',
+//                 'email' => 'heshu@gmail.com',
+//                 'address' => 'iraq'
+//             ],
+//             [
+//                 'name' => 'razhan',
+//                 'phone' => '07502122232',
+//                 'email' => 'razhan@gmail.com',
+//                 'address' => 'iraq'
+//             ],
+//             [
+//                 'name' => 'muhammad',
+//                 'phone' => '075022232',
+//                 'email' => 'muhammad@gmail.com',
+//                 'address' => 'iraq'
+//             ],
+//             [
+//                 'name' => 'ramyar',
+//                 'phone' => '07512122232',
+//                 'email' => 'ramyar@gmail.com',
+//                 'address' => 'iraq'
+//             ],
+//             [
+//                 'name' => 'chenar',
+//                 'phone' => '07511212232',
+//                 'email' => 'chenar@gmail.com',
+//                 'address' => 'iraq'
+//             ],
+//             [
+//                 'name' => 'raid',
+//                 'phone' => '07511222232',
+//                 'email' => 'raid@gmail.com',
+//                 'address' => 'iraq'
+//             ],
+//         ];
+//         foreach ($suppliers as $supplier) {
+//             \App\Models\Suppliers::create($supplier);
+//         }
+        foreach (range(1, 10) as $index) {
+            $name = fake()->name;
+            $name = Str::replace(' ', '', $name);
+            $name = Str::replace('-', '', $name);
+            $name = Str::lower($name);
+            $name = Str::replace('.', '', $name);
+            $name = Str::limit($name, 7, '');
+
+            $phone = fake()->phoneNumber;
+            $phone  = Str::remove('+', $phone);
+            $phone  = Str::remove(' ', $phone);
+            \App\Models\Suppliers::create([
+                'name' => $name,
+                'phone' => $phone,
+                'email' =>  fake()->unique()->safeEmail,
+                'address' => fake()->address,
+            ]);
+        }
 
         $purches_price = 250;
         $sale_price = 500;
@@ -239,8 +215,8 @@ class DatabaseSeeder extends Seeder
                 'expiry_date' => fake()->dateTimeBetween('now', '+10 years')->format('Y-m-d'),
                 'purches_price' => $purches_price += 250,
                 'sale_price' => $sale_price += 500,
-                'category_id' => fake()->numberBetween(1, 22),
-                'supplier_id' => fake()->numberBetween(1, 21),
+                'category_id' => fake()->numberBetween(1,20),
+                'supplier_id' => fake()->numberBetween(1, 10),
             ]);
         }
         $barcode2 = 21;
@@ -255,8 +231,8 @@ class DatabaseSeeder extends Seeder
                 'expiry_date' => fake()->dateTimeBetween('-2 years', 'now')->format('Y-m-d'),
                 'purches_price' => fake()->numberBetween(1, 1000000),
                 'sale_price' => fake()->numberBetween(1, 1000000),
-                'category_id' => fake()->numberBetween(1, 22),
-                'supplier_id' => fake()->numberBetween(1, 21),
+                'category_id' => fake()->numberBetween(1, 20),
+                'supplier_id' => fake()->numberBetween(1, 10),
             ]);
         }
 
@@ -272,8 +248,8 @@ class DatabaseSeeder extends Seeder
                 'expiry_date' => fake()->dateTimeBetween('now', '+1 years')->format('Y-m-d'),
                 'purches_price' => fake()->numberBetween(1, 1000000),
                 'sale_price' => fake()->numberBetween(1, 1000000),
-                'category_id' => fake()->numberBetween(1, 22),
-                'supplier_id' => fake()->numberBetween(1, 21),
+                'category_id' => fake()->numberBetween(1, 20),
+                'supplier_id' => fake()->numberBetween(1, 10),
             ]);
         }
 
