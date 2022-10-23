@@ -185,4 +185,25 @@ return [
     'by' => 'لەلایەن',
     'userIsDeleted' => 'بەکارهێنەر نەزانراوە',
     'pharmacyName' => 'ناوی دەرمانخانە',
+    'GeneratePDF' => 'دروستکردنی ڕاپۆرت',
+
+    'report' => [
+        'index' => 'ڕاپۆرت',
+        'Reports' => 'ڕاپۆرتەکان',
+        'type' => 'جۆری ڕاپۆرتەکان',
+        'Sales' => 'فرۆشتنەکان',
+        'Add Product' => 'زیادکردنی بەرهەم',
+        'Edit Product' => 'دەستکاری کردنی بەرهەم',
+        'Delete Product' => 'Delete Product',
+        'Add Category' => 'Add Category',
+        'Edit Category' => 'Edit Category',
+        'Delete Category' => 'Delete Category',
+        'Add Supplier' => 'Add Supplier',
+        'Edit Supplier' => 'Edit Supplier',
+        'Delete Supplier' => 'Delete Supplier',
+        'Add User' => 'Add User',
+        'Edit User' => 'Edit User',
+        'Delete User' => 'Delete User',
+
+    ],
 ];

@@ -19,6 +19,7 @@
         </div>
         @can('admin')
         @include('user.add-update')
+        @livewire('generate.user-report')
         @include('user.delete')
         @endcan
         <x-not-access name="{{ __('header.User') }}" />
@@ -174,6 +175,9 @@
                             @if(!$Trashed)
                             <a class="btn " href="" data-bs-toggle="modal" data-bs-target="#add-update" wire:click.prevent="Update({{ $user->id }})">
                                 <i class="fa-solid fa-edit text-primary"></i>
+                            </a>
+                            <a class="btn " href="" data-bs-toggle="modal" data-bs-target="#generate" wire:click.prevent="$emit('generateReport',{{ $user->id }})">
+                                <i class="fa-solid fa-file-pdf"></i>
                             </a>
                             <a class="btn" href="" data-bs-toggle="modal" data-bs-target="#delete" wire:click="$set('UserId',{{ $user->id }})">
                                 <i class="fa-solid fa-trash text-danger"></i>
