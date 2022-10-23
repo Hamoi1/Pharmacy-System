@@ -179,6 +179,7 @@ class Index extends Component
                 'expiry_date' => $this->expire_date,
                 'description' => $this->description,
                 'image' => $images ? json_encode($images) : null,
+                'user_id' => auth()->id(),
             ]);
         }
         notyf()->position('y', 'top')->position('x', 'center')->duration(2000)->addSuccess($this->UpdateProduct ? __('header.updated') : __('header.add'));
