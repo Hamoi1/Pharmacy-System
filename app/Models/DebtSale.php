@@ -21,7 +21,7 @@ class DebtSale extends Model
 
     public function sale()
     {
-        return $this->belongsTo(Sales::class);
+        return $this->belongsTo(Sales::class, 'sale_id');
     }
     public function scopesale($query)
     {
