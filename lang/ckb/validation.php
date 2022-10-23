@@ -17,7 +17,7 @@ return [
     'accepted_if' => 'The :attribute must be accepted when :other is :value.',
     'active_url' => 'The :attribute is not a valid URL.',
     'after' => ':attribute دوای :date بێت.',
-    'after_or_equal' => 'The :attribute must be a date after or equal to :date.',
+    'after_or_equal' => ':attribute پێویستە یەکسان یان دوای :date بێت.',
     'alpha' => ':attribute تەنها قبووڵی پیت دەکات.',
     'alpha_dash' => ':attribute تەنها قبووڵی پیت، ژمارە، _ ، -  دەکات.',
     'alpha_num' => 'The :attribute must only contain letters and numbers.',

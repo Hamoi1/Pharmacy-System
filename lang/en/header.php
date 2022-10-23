@@ -187,19 +187,13 @@ return [
     'pharmacyName' => 'Pharmacy Name',
     'GeneratePDF' => 'Generate Report',
     'report' => [
+        'index' => 'Report',
+        'Reports' => 'Reports',
+        'type' => 'Report Types',
         'Sales' => 'Sales',
         'Add Product' => 'Add Product',
-        'Edit Product' => 'Edit Product',
-        'Delete Product' => 'Delete Product',
-        'Add Category' => 'Add Category',
-        'Edit Category' => 'Edit Category',
-        'Delete Category' => 'Delete Category',
-        'Add Supplier' => 'Add Supplier',
-        'Edit Supplier' => 'Edit Supplier',
-        'Delete Supplier' => 'Delete Supplier',
-        'Add User' => 'Add User',
-        'Edit User' => 'Edit User',
-        'Delete User' => 'Delete User',
-        
+        'noData' => 'No Data',
+        'description' => 'Generate Report for :name',
     ],
+
 ];

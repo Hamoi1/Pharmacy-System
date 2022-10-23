@@ -1,6 +1,5 @@
 <?php
 
-use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -37,11 +36,6 @@ Route::group([
             auth()->logout();
             return redirect()->route('login', app()->getLocale());
         })->name('logout');
-
-        // Route::get('/reports', function () {
-        //     $pdf = Pdf::loadView('pdf.users', ['users' => \App\Models\User::all()]);
-        //     return $pdf->download('users.pdf');
-        // });
     });
 
     Route::middleware(['guest'])->group(function () {
