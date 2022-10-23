@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\User;
 use App\Models\Sales;
 use App\Models\Categorys;
 use App\Models\Suppliers;
 use App\Models\sale_details;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Products extends Model
 {
@@ -16,6 +17,10 @@ class Products extends Model
     protected $table = 'products';
     protected $guarded  = [];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
     public function category()
     {
         return $this->belongsTo(Categorys::class, 'category_id', 'id');
