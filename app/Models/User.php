@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Sales;
+use App\Models\Products;
 use App\Models\UserDetails;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
@@ -14,7 +15,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class User extends Authenticatable
 
 {
-    use HasApiTokens, HasFactory, Notifiable , SoftDeletes;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
     protected $table = 'users';
     protected $guarded  = [];
     protected $hidden = [
@@ -61,6 +62,10 @@ class User extends Authenticatable
     }
     public function create_at()
     {
-       return $this->created_at->format('Y-m-d') == now()->format('Y-m-d') ? true : false;
+        return $this->created_at->format('Y-m-d') == now()->format('Y-m-d') ? true : false;
+    }
+    public function products()
+    {
+        return $this->hasMany(Products::class, 'user_id');
     }
 }
