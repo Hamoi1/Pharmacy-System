@@ -36,7 +36,7 @@
                 <div class="col-lg-6 col-12">
                     <span class="fw-bold">{{ __('header.discount') }} : </span>
                     <span>
-                        {{ $saleView->discount != null ? $saleView->discount .' '. __('header.currency') : __('header.Not-discount') }}
+                        {{ $saleView->discount != null ? number_format($saleView->discount,0) .' '. __('header.currency') : __('header.Not-discount') }}
                     </span>
                 </div>
                 <div class="hr-text mb-2 mt-3"></div>

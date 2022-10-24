@@ -25,6 +25,7 @@ class Barcode extends Component
         );
         $product = Products::where('barcode', $this->barcode)->first();
         if (!$product) {
+            $this->addError('barcode', __('validation.exists', ['attribute' => __('header.barcode')]));
             return;
         }
         if ($product->quantity == 0 || $product->expiry_date <= now()) {
