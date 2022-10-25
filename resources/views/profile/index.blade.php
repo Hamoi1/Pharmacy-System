@@ -14,7 +14,7 @@
                 <a href="{{ route('logout' ,app()->getLocale()) }}" class="dropdown-item bg-danger ">{{ __('header.loguot')  }}</a>
             </div>
         </div>
-        @if (!request()->routeIs('products.image.update') && !request()->routeIs('sales.view'))
+        @if (!request()->routeIs('products.image.update') && !request()->routeIs('sales.view') && !request()->routeIs('print'))
 
         <div class="">
             <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Open user menu">

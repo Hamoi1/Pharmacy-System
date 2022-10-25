@@ -95,7 +95,7 @@
                 </h3>
                 <div class="spinner-border" role="status"></div>
             </div>
-        </div>
+        </div>  
         <div class="table-responsive mt-3" wire:loading.remove wire:target="search,Category,Supplier,previousPage,nextPage,gotoPage">
             <table class="table table-vcenter table-nowrap">
                 <thead>

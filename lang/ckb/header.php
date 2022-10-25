@@ -194,6 +194,16 @@ return [
         'Sales' => 'فرۆشتنەکان',
         'Add Product' => 'زیادکردنی بەرهەم',
         'noData' => 'هیچ زانیاریێک نییە',
-        'description'=> 'دروست کردنی ڕاپۆرت بۆ :name',
+        'description' => 'دروست کردنی ڕاپۆرت بۆ :name',
+    ],
+
+    'barcodes' => [
+        'index' => 'بارکۆد',
+        'barcodes' => 'بارکۆدەکان',
+        'generate' => 'دروستکردنی بارکۆد',
+        'quantity' => 'بڕی بارکۆد',
+        'SuccessfullyGenerated' => 'بارکۆد بە سەرکەوتوویی دروستکرا',
+        'shape of barcode' => 'شێوازی بارکۆد',
+        'no name' => 'ناوی نییە',
     ],
 ];

@@ -196,4 +196,14 @@ return [
         'description' => 'Generate Report for :name',
     ],
 
+
+    'barcodes' => [
+        'index' => 'Barcode',
+        'barcodes' => 'Barcodes',
+        'generate' => 'Generate Barcode',
+        'quantity' => 'Quantity',
+        'SuccessfullyGenerated' => 'Barcode Generated Successfully',
+        'shape of barcode' => 'Barcode Shape',
+        'no name' => 'No Name',
+    ],
 ];
