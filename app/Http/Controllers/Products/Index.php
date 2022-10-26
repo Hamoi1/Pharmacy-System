@@ -86,7 +86,7 @@ class Index extends Component
     {
         return [
             'name' => 'required|string|min:2|max:255|regex:/^[a-zA-Z0-9 \s]+$/',
-            'barcode' => 'required|min:3|max:100|unique:products,barcode,' . $this->productID ?? '',
+            'barcode' => 'required|min:3|numeric|unique:products,barcode,' . $this->productID ?? '',
             'purches_price' => 'required|numeric|min:3',
             'sale_price' => 'required|numeric|min:3',
             'category_id' => 'nullable|numeric|exists:categorys,id',
@@ -107,7 +107,7 @@ class Index extends Component
             'name.regex' => __('validation.regex', ['attribute' => __('header.product_name')]),
             'barcode.required' => __('validation.required', ['attribute' => __('header.barcode')]),
             'barcode.min' => __('validation.min', ['attribute' => __('header.barcode'), 'min' => 3]),
-            'barcode.max' => __('validation.max', ['attribute' => __('header.barcode'), 'max' => 100]),
+            'barcode.numeric' => __('validation.numeric', ['attribute' => __('header.barcode')]),
             'barcode.unique' => __('validation.unique', ['attribute' => __('header.barcode')]),
             'purches_price.required' => __('validation.required', ['attribute' => __('header.purches_price')]),
             'purches_price.min' => __('validation.min', ['attribute' => __('header.purches_price'), 'min' => 3]),
