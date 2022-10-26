@@ -208,9 +208,7 @@ class DatabaseSeeder extends Seeder
                 'created_at' => fake()->dateTimeBetween('-1 years', 'now')->format('Y-m-d H:i:s'),
             ]);
         }
-
-        $purches_price = 250;
-        $sale_price = 500;
+        // expiry product
         $barcode = 1;
         foreach (range(1, 20) as $index) {
             $name = fake()->name;
@@ -220,61 +218,6 @@ class DatabaseSeeder extends Seeder
                 'name' => $name,
                 'barcode' => ++$barcode,
                 'quantity' => fake()->numberBetween(1, 1100000),
-                'expiry_date' => fake()->dateTimeBetween('now', '+10 years')->format('Y-m-d'),
-                'purches_price' => $purches_price += 250,
-                'sale_price' => $sale_price += 500,
-                'category_id' => Categorys::inRandomOrder()->first()->id,
-                'supplier_id' => Suppliers::inRandomOrder()->first()->id,
-                'user_id' => User::inRandomOrder()->first()->id,
-                'created_at' => fake()->dateTimeBetween('-1 years', 'now')->format('Y-m-d H:i:s'),
-            ]);
-        }
-        $barcode2 = 22;
-        foreach (range(1, 20) as $index) {
-            $name = fake()->name;
-            $name = Str::lower($name);
-            $name = Str::replace('.', '', $name);
-            \App\Models\Products::create([
-                'name' => $name,
-                'barcode' => $barcode2++,
-                'quantity' => fake()->numberBetween(1, 1100000),
-                'expiry_date' => fake()->dateTimeBetween('-2 years', 'now')->format('Y-m-d'),
-                'purches_price' => fake()->numberBetween(1, 1000000),
-                'sale_price' => fake()->numberBetween(1, 1000000),
-                'category_id' => Categorys::inRandomOrder()->first()->id,
-                'supplier_id' => Suppliers::inRandomOrder()->first()->id,
-                'user_id' => User::inRandomOrder()->first()->id,
-                'created_at' => fake()->dateTimeBetween('-1 years', 'now')->format('Y-m-d H:i:s'),
-            ]);
-        }
-
-        $barcode3 = 42;
-        foreach (range(1, 20) as $index) {
-            $name = fake()->name;
-            $name = Str::lower($name);
-            $name = Str::replace('.', '', $name);
-            \App\Models\Products::create([
-                'name' => $name,
-                'barcode' => $barcode3++,
-                'quantity' => 0,
-                'expiry_date' => fake()->dateTimeBetween('now', '+1 years')->format('Y-m-d'),
-                'purches_price' => fake()->numberBetween(1, 1000000),
-                'sale_price' => fake()->numberBetween(1, 1000000),
-                'category_id' => Categorys::inRandomOrder()->first()->id,
-                'supplier_id' => Suppliers::inRandomOrder()->first()->id,
-                'user_id' => User::inRandomOrder()->first()->id,
-                'created_at' => fake()->dateTimeBetween('-1 years', 'now')->format('Y-m-d H:i:s'),
-            ]);
-        }
-        $barcode4 = 70;
-        foreach (range(1, 2000) as $index) {
-            $name = fake()->name;
-            $name = Str::lower($name);
-            $name = Str::replace('.', '', $name);
-            \App\Models\Products::create([
-                'name' => $name,
-                'barcode' => ++$barcode4,
-                'quantity' => 0,
                 'expiry_date' => fake()->dateTimeBetween('-1 years', 'now')->format('Y-m-d'),
                 'purches_price' => fake()->numberBetween(1, 1000000),
                 'sale_price' => fake()->numberBetween(1, 1000000),
@@ -284,8 +227,46 @@ class DatabaseSeeder extends Seeder
                 'created_at' => fake()->dateTimeBetween('-1 years', 'now')->format('Y-m-d H:i:s'),
             ]);
         }
+        // not expiry product
+        $barcode = 22;
+        foreach (range(1, 400) as $index) {
+            $name = fake()->name;
+            $name = Str::lower($name);
+            $name = Str::replace('.', '', $name);
+            \App\Models\Products::create([
+                'name' => $name,
+                'barcode' => $barcode++,
+                'quantity' => 0,
+                'expiry_date' => fake()->dateTimeBetween('now', '+5 years')->format('Y-m-d'),
+                'purches_price' => fake()->numberBetween(1, 1000000),
+                'sale_price' => fake()->numberBetween(1, 1000000),
+                'category_id' => Categorys::inRandomOrder()->first()->id,
+                'supplier_id' => Suppliers::inRandomOrder()->first()->id,
+                'user_id' => User::inRandomOrder()->first()->id,
+                'created_at' => fake()->dateTimeBetween('-1 years', 'now')->format('Y-m-d H:i:s'),
+            ]);
+        }
+        // Quantity Product =  0
+        $barcode = 70;
+        foreach (range(1, 20) as $index) {
+            $name = fake()->name;
+            $name = Str::lower($name);
+            $name = Str::replace('.', '', $name);
+            \App\Models\Products::create([
+                'name' => $name,
+                'barcode' => ++$barcode,
+                'quantity' => 0,
+                'expiry_date' => fake()->dateTimeBetween('now', '+2 years')->format('Y-m-d'),
+                'purches_price' => fake()->numberBetween(1, 1000000),
+                'sale_price' => fake()->numberBetween(1, 1000000),
+                'category_id' => Categorys::inRandomOrder()->first()->id,
+                'supplier_id' => Suppliers::inRandomOrder()->first()->id,
+                'user_id' => User::inRandomOrder()->first()->id,
+                'created_at' => fake()->dateTimeBetween('-1 years', 'now')->format('Y-m-d H:i:s'),
+            ]);
+        }
 
-        foreach (range(1, 10000) as $index) {
+        foreach (range(1, 200) as $index) {
             $number = fake()->unique()->numberBetween(0, 2147483647) . Str::random(1);
             $number = Str::limit($number, 9, '');
             $invoice = Str::start($number, 'inv-');
@@ -324,7 +305,7 @@ class DatabaseSeeder extends Seeder
                 'paid' => fake()->numberBetween(0, $sales->total),
                 'remain' => $sales->total - fake()->numberBetween(0, $sales->total),
             ]);
-            foreach (range(1, 100) as $index) {
+            foreach (range(1, 20) as $index) {
                 $sales->sale_details()->create([
                     'product_id' => Products::inRandomOrder()->first()->id,
                     'quantity' => fake()->numberBetween(1, 100),
