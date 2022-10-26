@@ -247,14 +247,14 @@ class DatabaseSeeder extends Seeder
             ]);
         }
         // Quantity Product =  0
-        $barcode = 70;
+        $barcode = 422;
         foreach (range(1, 20) as $index) {
             $name = fake()->name;
             $name = Str::lower($name);
             $name = Str::replace('.', '', $name);
             \App\Models\Products::create([
                 'name' => $name,
-                'barcode' => ++$barcode,
+                'barcode' => $barcode++,
                 'quantity' => 0,
                 'expiry_date' => fake()->dateTimeBetween('now', '+2 years')->format('Y-m-d'),
                 'purches_price' => fake()->numberBetween(1, 1000000),
