@@ -28,6 +28,11 @@
         @for ($i = 0; $i < $barcode->quantity; $i++)
             <div class="barcode ">
                 {!! DNS1D::getBarcodeHTML($barcode->barcode, 'I25') !!}
+                <center>
+                    <p>
+                        {{ $barcode->barcode }}
+                    </p>
+                </center>
             </div>
             @endfor
     </div>
