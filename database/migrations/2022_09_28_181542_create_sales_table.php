@@ -17,10 +17,11 @@ return new class extends Migration
             $table->id();
             $table->string('invoice')->uniqiue();
             $table->unsignedInteger('user_id')->nullable();
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->nullOnDelete();
             $table->integer('total');
             $table->integer('discount')->nullable();
             $table->boolean('status')->default('0')->comment('1 = paid or 0 = not paid');
+            $table->boolean('paid')->default(1)->comment('1:paid, 0:debt');
             $table->timestamps();
         });
     }

@@ -25,6 +25,7 @@ return new class extends Migration
             $table->integer('role')->default(2)->comment('1: Admin, 2: Cashier');
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

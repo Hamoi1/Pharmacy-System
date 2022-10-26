@@ -20,8 +20,9 @@ return new class extends Migration
             $table->string('name');
             $table->string('phone');
             $table->integer('amount');
-            $table->integer('paid');
-            $table->integer('remain');
+            $table->bigInteger('paid');
+            $table->bigInteger('remain');
+            $table->boolean('status')->default(0);
             $table->timestamps();
         });
     }

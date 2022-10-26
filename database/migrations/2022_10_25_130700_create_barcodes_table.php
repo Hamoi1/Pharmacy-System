@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('name')->nullable();
             $table->string('barcode');
-            $table->integer('quantity');
+            $table->bigInteger('quantity');
             $table->timestamps();
         });
     }
