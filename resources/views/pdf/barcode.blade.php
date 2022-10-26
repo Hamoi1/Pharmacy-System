@@ -5,11 +5,6 @@
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <style>
-        .container {
-            width: 100%;
-            height: 100%;
-        }
-
         .barcode {
             display: inline-block;
             width: 200px !important;
@@ -27,7 +22,7 @@
     <h2>
         Barcode : {{ $barcode->barcode  }}
     </h2>
-    <div class="container">
+    <div>
         @for ($i = 0; $i < $barcode->quantity; $i++)
             <div class="barcode ">
                 {!! DNS1D::getBarcodeHTML($barcode->barcode, 'I25') !!}
