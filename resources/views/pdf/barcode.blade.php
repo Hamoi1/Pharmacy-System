@@ -5,17 +5,20 @@
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <style>
-        .flex {
+        .container {
             width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: wrap;
+            height: 100%;
         }
 
         .barcode {
+            display: inline-block;
             width: 200px !important;
-            margin-top: 10px;
+            margin: 25px 10px;
+        }
+
+        span {
+            font-size: 12px;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -24,14 +27,14 @@
     <h2>
         Barcode : {{ $barcode->barcode  }}
     </h2>
-    <div class="flex">
+    <div class="container">
         @for ($i = 0; $i < $barcode->quantity; $i++)
             <div class="barcode ">
                 {!! DNS1D::getBarcodeHTML($barcode->barcode, 'I25') !!}
                 <center>
-                    <p>
+                    <span>
                         {{ $barcode->barcode }}
-                    </p>
+                    </span>
                 </center>
             </div>
             @endfor
