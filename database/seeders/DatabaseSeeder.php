@@ -282,6 +282,7 @@ class DatabaseSeeder extends Seeder
                 $sales->sale_details()->create([
                     'product_id' => Products::inRandomOrder()->first()->id,
                     'quantity' => fake()->numberBetween(1, 100),
+                    'created_at' => fake()->dateTimeBetween('-1 years', 'now')->format('Y-m-d H:i:s'),
                 ]);
             }
         }
@@ -304,11 +305,13 @@ class DatabaseSeeder extends Seeder
                 'amount' => $sales->total,
                 'paid' => fake()->numberBetween(0, $sales->total),
                 'remain' => $sales->total - fake()->numberBetween(0, $sales->total),
+                'created_at' => fake()->dateTimeBetween('-1 years', 'now')->format('Y-m-d H:i:s'),
             ]);
             foreach (range(1, 20) as $index) {
                 $sales->sale_details()->create([
                     'product_id' => Products::inRandomOrder()->first()->id,
                     'quantity' => fake()->numberBetween(1, 100),
+                    'created_at' => fake()->dateTimeBetween('-1 years', 'now')->format('Y-m-d H:i:s'),
                 ]);
             }
         }
