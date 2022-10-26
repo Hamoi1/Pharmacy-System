@@ -156,7 +156,7 @@ class Index extends Component
             }
         }
         if ($this->UpdateProduct) {
-            $product = Products::findOrFail($this->productID)->update([
+            Products::findOrFail($this->productID)->update([
                 'name' => $this->name,
                 'barcode' => $this->barcode,
                 'purches_price' => $this->purches_price,
@@ -168,7 +168,7 @@ class Index extends Component
                 'description' => $this->description,
             ]);
         } else {
-            $product =  Products::create([
+            Products::create([
                 'name' => $this->name,
                 'barcode' => $this->barcode,
                 'purches_price' => $this->purches_price,
