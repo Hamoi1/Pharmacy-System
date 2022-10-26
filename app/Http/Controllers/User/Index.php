@@ -258,6 +258,9 @@ class Index extends Component
             return;
 
         foreach ($users as $user) {
+            $user->products()->update(['user_id' => null]);
+            $user->sales()->update(['user_id' => null]);
+            
             $user->forceDelete();
         }
         notyf()->position('y', 'top')->position('x', 'center')->duration(2000)->addSuccess(__('header.deleted'));
