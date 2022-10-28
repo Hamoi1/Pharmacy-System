@@ -1,6 +1,6 @@
 @push('title') Products @endpush
 <div>
-    <div wire:loading wire:target="delete">
+    <div wire:loading wire:target="destroy">
         <div class="loading">
             <div class="loading-content">
                 <div class="loading-icon">
