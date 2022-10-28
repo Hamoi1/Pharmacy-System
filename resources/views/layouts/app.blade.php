@@ -49,7 +49,7 @@ session()->put('invoice', $invoice);
             </div>
         </div>
     </div>
-    <!-- <div class="lodaing-seaction">
+    <div class="lodaing-seaction">
         <div class="building-blocks">
             <div></div>
             <div></div>
@@ -59,7 +59,7 @@ session()->put('invoice', $invoice);
             <div></div>
             <div></div>
         </div>
-    </div> -->
+    </div>
     @auth
     <aside class="navbar navbar-vertical {{ app()->getLocale() == 'ckb' ? 'navbar-right' : '' }} navbar-expand-lg navbar-light no-print">
         <div class="container-fluid">
@@ -206,6 +206,7 @@ session()->put('invoice', $invoice);
     @stack('js')
     <script>
         $(document).ready(function() {
+            var NetworkTypeConnection = navigator.connection.effectiveType;
             window.addEventListener('closeModal', event => {
                 $('.modal').modal('hide');
                 $('.modal-backdrop ').remove();
@@ -219,6 +220,14 @@ session()->put('invoice', $invoice);
                     PlayAudio("/assets/audio/undo.mp3");
                 }
             });
+            window.addEventListener('load', () => {
+                if (NetworkTypeConnection == '4g') {
+                    $('.lodaing-seaction').fadeToggle(1000); // remove loading by network speed
+                } else {
+                    $('.lodaing-seaction').fadeToggle(navigator.connection.rtt); // remove loading by network speed
+                }
+            });
+            console.log(NetworkTypeConnection);
         });
     </script>
 

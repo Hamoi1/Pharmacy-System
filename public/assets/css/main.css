@@ -429,7 +429,7 @@ body,
     margin-top: 5px !important;
     font-size: 14px;
 }
-/* 
+
 @-webkit-keyframes building-blocks {
 
     0%,
@@ -485,7 +485,7 @@ body,
     display: flex;
     justify-content: center;
     align-items: center;
-    background: rgba(0, 0,0,.4);
+    background: rgba(0, 0,0,.2);
     width: 100vw !important;
     height: 100vh !important;
     overflow: hidden;
@@ -498,9 +498,9 @@ body,
 }
 
 .building-blocks div {
+    width: 20px !important;
     height: 20px !important;
     position: absolute;
-    width: 20px !important;
 }
 
 .building-blocks div:after {
@@ -581,4 +581,4 @@ body,
 .building-blocks div:nth-child(7):after {
     -webkit-animation-delay: 1.05s;
     animation-delay: 1.05s;
-} */
+}
