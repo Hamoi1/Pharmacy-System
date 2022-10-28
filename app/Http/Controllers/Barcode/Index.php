@@ -6,11 +6,9 @@ use App\Models\Barcode;
 use Livewire\Component;
 use App\Models\Products;
 use Barryvdh\DomPDF\Facade\Pdf;
-use Flasher\Laravel\Http\Response;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Gate;
 use Livewire\WithPagination;
-use Termwind\Components\Dd;
 
 class Index extends Component
 {
@@ -37,6 +35,7 @@ class Index extends Component
     {
         return rand(100000000, 999999999) . rand(100000000, 999999999) . rand(100000000, 999999999);
     }
+
     public function GenerateBarcode()
     {
         // generate number 
@@ -54,12 +53,17 @@ class Index extends Component
         }
         $this->barcode =  Str::substr($barcode, 0, 12);
     }
+
+    public function updatedBarcode()
+    {
+        $this->barcode = $this->barcode;
+    }
     public function submit()
     {
         $this->validate(
             [
                 'barcode_name' => 'nullable|string|regex:/^[a-zA-Z0-9\s]+$/u',
-                'barcode' => 'required|numeric|unique:barcodes,barcode|unique:products,barcode',
+                'barcode' => 'required|numeric|digits:12|unique:barcodes,barcode|unique:products,barcode',
                 'quantity' => 'required|numeric|min:1',
             ],
             [
@@ -67,6 +71,7 @@ class Index extends Component
                 'barcode_name.regex' => __('validation.regex', ['attribute' => __('header.name')]),
                 'barcode.required' => __('validation.required', ['attribute' => __('header.barcode')]),
                 'barcode.numeric' => __('validation.numeric', ['attribute' => __('header.barcode')]),
+                'barcode.digits' => __('validation.digits', ['attribute' => __('header.barcode'), 'digits' => 12]),
                 'barcode.unique' => __('validation.unique', ['attribute' => __('header.barcode')]),
                 'quantity.required' => __('validation.required', ['attribute' => __('header.quantity')]),
                 'quantity.numeric' => __('validation.numeric', ['attribute' => __('header.quantity')]),
@@ -93,7 +98,7 @@ class Index extends Component
     }
     public function download(Barcode $barcode)
     {
-        $pdf = Pdf::loadView('pdf.barcode',['barcode'=>$barcode]);
+        $pdf = Pdf::loadView('pdf.barcode', ['barcode' => $barcode]);
         return response()->streamDownload(function () use ($pdf) {
             echo $pdf->output();
         }, 'barcode.pdf');
