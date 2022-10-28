@@ -11,8 +11,7 @@ use Illuminate\Support\Facades\Gate;
 class Index extends Component
 {
     use WithPagination;
-    public $SaleID, $price, $total, $total_paid, $total_debt, $sale_debt_id, $saleView, $UserID,
-        $date;
+    public $SaleID, $saleView, $UserID, $date;
     protected $paginationTheme = 'bootstrap';
     protected $queryString = ['UserID' => ['as' => 'user', 'except' => ''], 'date' => ['as' => 'date', 'except' => '']];
     public function mount()
@@ -48,9 +47,13 @@ class Index extends Component
             'users' => $users,
         ]);
     }
+    public function updatedDate()
+    {
+        $this->resetPage();
+    }
     public function done()
     {
-        $this->resetExcept('UserID', 'date');
+        $this->reset(['SaleID', 'saleView',]);
         $this->resetValidation();
         $this->dispatchBrowserEvent('closeModal');
     }
@@ -64,6 +67,5 @@ class Index extends Component
     {
         $sale = Sales::SaleData()->findOrFail($id);
         $this->saleView = $sale;
-        // dd($this->saleView);
     }
 }
