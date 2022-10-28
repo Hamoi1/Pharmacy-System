@@ -35,7 +35,6 @@
 @push('js')
 <script>
     var Users = @js($users);
-    console.log(Users);
     var options = {
         series: [{
             name: 'Sales',
