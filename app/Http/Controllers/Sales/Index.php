@@ -5,20 +5,25 @@ namespace App\Http\Controllers\Sales;
 use App\Models\User;
 use App\Models\Sales;
 use Livewire\Component;
+use Illuminate\Support\Str;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Gate;
 
 class Index extends Component
 {
     use WithPagination;
-    public $SaleID, $saleView, $UserID, $date;
+    public $SaleID, $saleView, $UserID, $date, $invoice;
     protected $paginationTheme = 'bootstrap';
-    protected $queryString = ['UserID' => ['as' => 'user', 'except' => ''], 'date' => ['as' => 'date', 'except' => '']];
+    protected $queryString = ['UserID' => ['as' => 'user', 'except' => ''], 'date' => ['as' => 'date', 'except' => ''], 'invoice' => ['except' => '']];
     public function mount()
     {
         if (!Gate::allows('admin')) {
             abort(404);
         }
+    }
+    public function updatedInvoice()
+    {
+        $this->resetPage();
     }
     public function Sales()
     {
@@ -31,6 +36,10 @@ class Index extends Component
             $sale->whereBetween('created_at', [today()->startOfWeek(), today()->endOfWeek()]);
         } elseif ($this->date == 'this_month') {
             $sale->whereMonth('created_at', today()->month);
+        }
+        if ($this->invoice) {
+            $invoice = Str::start($this->invoice, 'inv-');
+            $sale->where('invoice', 'like', '%' . $invoice . '%');
         }
         return $sale;
     }

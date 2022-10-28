@@ -42,6 +42,14 @@
             </div>
         </div>
         <div class="row gx-3 gy-3 align-items-center">
+            <div class="col-lg-2 col-8 not-reverse">
+                <div class="input-icon ">
+                    <span class="input-icon-addon  ps-2">
+                        Inv-
+                    </span>
+                    <input type="text" wire:model="invoice" class="form-control" placeholder="">
+                </div>
+            </div>
             <div class="col-lg-2 col-8">
                 <select wire:model="UserID" class="form-select">
                     <option value="">{{ __('header.Users') }}</option>
