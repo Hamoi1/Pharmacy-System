@@ -22,6 +22,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        \App\Models\Settings::create([
+            'name' => 'Pharmacy System',
+            'phone' => '07501111111',
+            'email' => 'pharmacy@pharmacy.com',
+            'address' => 'Ranya / Sulimany',
+        ]);
         $users = [
             [
                 'name' => 'muhammad',
@@ -69,7 +75,7 @@ class DatabaseSeeder extends Seeder
                 'role' => fake()->numberBetween(1, 2),
                 'status' => fake()->numberBetween(0, 1),
                 'status' => fake()->numberBetween(0, 1),
-                'created_at' => fake()->dateTimeBetween('-1 years', 'now')->format('Y-m-d H:i:s'),
+                'created_at' => fake()->randomElement([fake()->dateTimeBetween('-1 years', 'now')->format('Y-m-d H:i:s'), 'now'])
             ]);
             $user->user_details()->create([
                 'address' => fake()->randomElement(['ranya', 'sulimany', 'qaladzi', 'hawler', 'Hallshow']),
@@ -122,11 +128,8 @@ class DatabaseSeeder extends Seeder
                 'created_at' => fake()->dateTimeBetween('-1 years', 'now'),
             ]);
         }
-        foreach (range(1, 10) as $index) {
+        foreach (range(1, 100) as $index) {
             $name = fake()->name . fake()->name;
-            $name = Str::replace(' ', '', $name);
-            $name = Str::replace('-', '', $name);
-            $name = Str::limit($name, 6, '');
             \App\Models\Categorys::create([
                 'name' => $name,
                 'slug' => Str::slug($name),
@@ -208,15 +211,16 @@ class DatabaseSeeder extends Seeder
                 'created_at' => fake()->dateTimeBetween('-1 years', 'now')->format('Y-m-d H:i:s'),
             ]);
         }
+
         // expiry product
         $barcode = 1;
-        foreach (range(1, 20) as $index) {
+        foreach (range(1, 200) as $index) {
             $name = fake()->name;
             $name = Str::lower($name);
             $name = Str::replace('.', '', $name);
             \App\Models\Products::create([
                 'name' => $name,
-                'barcode' => ++$barcode,
+                'barcode' => $barcode++,
                 'quantity' => fake()->numberBetween(1, 1100000),
                 'expiry_date' => fake()->dateTimeBetween('-1 years', 'now')->format('Y-m-d'),
                 'purches_price' => fake()->numberBetween(1, 1000000),
@@ -224,12 +228,13 @@ class DatabaseSeeder extends Seeder
                 'category_id' => Categorys::inRandomOrder()->first()->id,
                 'supplier_id' => Suppliers::inRandomOrder()->first()->id,
                 'user_id' => User::inRandomOrder()->first()->id,
-                'created_at' => fake()->dateTimeBetween('-1 years', 'now')->format('Y-m-d H:i:s'),
+                'created_at' => now(),
             ]);
         }
-        // not expiry product
-        $barcode = 22;
-        foreach (range(1, 400) as $index) {
+
+        // stock out product
+        $barcode = 202;
+        foreach (range(1, 100) as $index) {
             $name = fake()->name;
             $name = Str::lower($name);
             $name = Str::replace('.', '', $name);
@@ -237,26 +242,7 @@ class DatabaseSeeder extends Seeder
                 'name' => $name,
                 'barcode' => $barcode++,
                 'quantity' => 0,
-                'expiry_date' => fake()->dateTimeBetween('now', '+5 years')->format('Y-m-d'),
-                'purches_price' => fake()->numberBetween(1, 1000000),
-                'sale_price' => fake()->numberBetween(1, 1000000),
-                'category_id' => Categorys::inRandomOrder()->first()->id,
-                'supplier_id' => Suppliers::inRandomOrder()->first()->id,
-                'user_id' => User::inRandomOrder()->first()->id,
-                'created_at' => fake()->dateTimeBetween('-1 years', 'now')->format('Y-m-d H:i:s'),
-            ]);
-        }
-        // Quantity Product =  0
-        $barcode = 422;
-        foreach (range(1, 20) as $index) {
-            $name = fake()->name;
-            $name = Str::lower($name);
-            $name = Str::replace('.', '', $name);
-            \App\Models\Products::create([
-                'name' => $name,
-                'barcode' => $barcode++,
-                'quantity' => 0,
-                'expiry_date' => fake()->dateTimeBetween('now', '+2 years')->format('Y-m-d'),
+                'expiry_date' => fake()->dateTimeBetween('now', '+1 years')->format('Y-m-d'),
                 'purches_price' => fake()->numberBetween(1, 1000000),
                 'sale_price' => fake()->numberBetween(1, 1000000),
                 'category_id' => Categorys::inRandomOrder()->first()->id,
@@ -266,7 +252,27 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-        foreach (range(1, 200) as $index) {
+        // stock out product
+        $barcode = 302;
+        foreach (range(1, 4000) as $index) {
+            $name = fake()->name;
+            $name = Str::lower($name);
+            $name = Str::replace('.', '', $name);
+            \App\Models\Products::create([
+                'name' => $name,
+                'barcode' => $barcode++,
+                'quantity' => fake()->numberBetween(1, 1100000),
+                'expiry_date' => fake()->dateTimeBetween('now', '+3 years')->format('Y-m-d'),
+                'purches_price' => fake()->numberBetween(1, 1000000),
+                'sale_price' => fake()->numberBetween(1, 1000000),
+                'category_id' => Categorys::inRandomOrder()->first()->id,
+                'supplier_id' => Suppliers::inRandomOrder()->first()->id,
+                'user_id' => User::inRandomOrder()->first()->id,
+                'created_at' => now(),
+            ]);
+        }
+
+        foreach (range(1, 400) as $index) {
             $number = fake()->unique()->numberBetween(0, 2147483647) . Str::random(1);
             $number = Str::limit($number, 9, '');
             $invoice = Str::start($number, 'inv-');
@@ -276,17 +282,18 @@ class DatabaseSeeder extends Seeder
                 'total' => fake()->numberBetween(1, 1000000),
                 'discount' => fake()->numberBetween(0, 100),
                 'status' => 1,
-                'created_at' => fake()->dateTimeBetween('-1 years', 'now')->format('Y-m-d H:i:s'),
+                'created_at' => now(),
             ]);
-            foreach (range(1, 30) as $index) {
+            foreach (range(1, 8) as $index) {
                 $sales->sale_details()->create([
                     'product_id' => Products::inRandomOrder()->first()->id,
                     'quantity' => fake()->numberBetween(1, 100),
-                    'created_at' => fake()->dateTimeBetween('-1 years', 'now')->format('Y-m-d H:i:s'),
+                    'created_at' => now(),
                 ]);
             }
         }
-        foreach (range(1, 100) as $index) {
+
+        foreach (range(1, 40) as $index) {
             $number = fake()->unique()->numberBetween(0, 2147483647) . Str::random(1);
             $number = Str::limit($number, 9, '');
             $invoice = Str::start($number, 'inv-');
@@ -297,7 +304,7 @@ class DatabaseSeeder extends Seeder
                 'discount' => fake()->numberBetween(0, 100),
                 'status' => 1,
                 'paid' => 0,
-                'created_at' => fake()->dateTimeBetween('-1 years', 'now')->format('Y-m-d H:i:s'),
+                'created_at' => now(),
             ]);
             $sales->debt_sale()->create([
                 'name' => fake()->name,
@@ -305,23 +312,15 @@ class DatabaseSeeder extends Seeder
                 'amount' => $sales->total,
                 'paid' => fake()->numberBetween(0, $sales->total),
                 'remain' => $sales->total - fake()->numberBetween(0, $sales->total),
-                'created_at' => fake()->dateTimeBetween('-1 years', 'now')->format('Y-m-d H:i:s'),
+                'created_at' => now(),
             ]);
             foreach (range(1, 20) as $index) {
                 $sales->sale_details()->create([
                     'product_id' => Products::inRandomOrder()->first()->id,
                     'quantity' => fake()->numberBetween(1, 100),
-                    'created_at' => fake()->dateTimeBetween('-1 years', 'now')->format('Y-m-d H:i:s'),
+                    'created_at' => now(),
                 ]);
             }
         }
-
-
-        \App\Models\Settings::create([
-            'name' => 'Pharmacy System',
-            'phone' => '07501111111',
-            'email' => 'pharmacy@pharmacy.com',
-            'address' => 'Ranya / Sulimany',
-        ]);
     }
 }
