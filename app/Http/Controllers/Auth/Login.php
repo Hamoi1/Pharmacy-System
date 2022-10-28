@@ -49,7 +49,7 @@ class Login extends Component
                 }
             } else {
                 auth()->logout();
-                notyf()->position('y', 'top')->position('x', 'center')->duration(2500)->addError(__('header.Account_not_active'));
+                flash()->addError('header.Account_not_active');
             }
         } else {
             $this->addError('email', __('header.failed'));

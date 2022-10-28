@@ -182,7 +182,7 @@ class Index extends Component
                 'user_id' => auth()->id(),
             ]);
         }
-        notyf()->position('y', 'top')->position('x', 'center')->duration(2000)->addSuccess($this->UpdateProduct ? __('header.updated') : __('header.add'));
+        flash()->addSuccess($this->UpdateProduct ? 'header.updated' : 'header.add');
         $this->done();
     }
     public function updateProduct(Products $product)
@@ -208,7 +208,7 @@ class Index extends Component
     public function delete(Products $product)
     {
         $product->delete();
-        notyf()->position('y', 'top')->position('x', 'center')->duration(2000)->addSuccess(__('header.delete'));
+        flash()->addSuccess('header.delete');
         $this->done();
     }
     public function show(Products $product)
@@ -221,7 +221,7 @@ class Index extends Component
         foreach ($products as $product) {
             $product->forceDelete();
         }
-        notyf()->position('y', 'top')->position('x', 'center')->duration(2500)->addSuccess(__('header.deleted'));
+        flash()->addSuccess('header.deleted');
         $this->done();
     }
     public function RestoreAll()
@@ -230,13 +230,13 @@ class Index extends Component
         foreach ($products as $product) {
             $product->restore();
         }
-        notyf()->position('y', 'top')->position('x', 'center')->duration(2500)->addSuccess(__('header.RestoreMessage'));
+        flash()->addSuccess('header.RestoreMessage');
         $this->done();
     }
     public function restore($id)
     {
         $product = Products::onlyTrashed()->findOrFail($id)->restore();
-        notyf()->position('y', 'top')->position('x', 'center')->duration(2500)->addSuccess(__('header.RestoreMessage'));
+        flash()->addSuccess('header.RestoreMessage');
         $this->done();
     }
 }

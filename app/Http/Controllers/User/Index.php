@@ -171,7 +171,7 @@ class Index extends Component
     public function submit()
     {
         if (!Gate::allows('admin')) {
-            notyf()->position('y', 'top')->position('x', 'center')->duration(2000)->addError(__('header.not-allowed'));
+            flash()->addError('header.not-allowed');
             $this->done();
         }
         $this->validate($this->GetRulse(), $this->GetMessage());
@@ -203,13 +203,13 @@ class Index extends Component
                 'address' => $this->address,
             ]);
         }
-        notyf()->position('y', 'top')->position('x', 'center')->duration(2000)->addSuccess($this->UpdateUser ?  __('header.updated') :  __('header.add'));
+        flash()->addSuccess($this->UpdateUser ?  __('header.updated') :  __('header.add'));
         $this->done();
     }
     public function Update($id)
     {
         if (!Gate::allows('admin')) {
-            notyf()->position('y', 'top')->position('x', 'center')->duration(2000)->addSuccess(__('header.not-allowed'));
+            flash()->addSuccess('header.not-allowed');
             $this->done();
         }
         $this->UpdateUser = true;
@@ -226,11 +226,11 @@ class Index extends Component
     public function delete($id)
     {
         if (!Gate::allows('admin')) {
-            notyf()->position('y', 'top')->position('x', 'center')->duration(2000)->addSuccess(__('header.not-allowed'));
+            flash()->addSuccess('header.not-allowed');
             $this->done();
         }
         User::findOrFail($id)->delete();
-        notyf()->position('y', 'top')->position('x', 'center')->duration(2000)->addSuccess(__('header.deleted_for_30_days'));
+        flash()->addSuccess('header.deleted_for_30_days');
         $this->done();
     }
     public function show(User $user)
@@ -242,13 +242,13 @@ class Index extends Component
     public function toggleActive(User $user)
     {
         if (!Gate::allows('admin')) {
-            notyf()->position('y', 'top')->position('x', 'center')->duration(2000)->addSuccess(__('header.not-allowed'));
+            flash()->addSuccess('header.not-allowed');
             $this->done();
         }
         $user->update([
             'status' => $user->status == 1 ? 0 : 1,
         ]);
-        notyf()->position('y', 'top')->position('x', 'center')->duration(2000)->addSuccess($user->status == 1 ? __('header.actived') : __('header.deactived'));
+        flash()->addSuccess($user->status == 1 ? __('header.actived') : __('header.deactived'));
         $this->done();
     }
     public function DeleteAll()
@@ -260,10 +260,10 @@ class Index extends Component
         foreach ($users as $user) {
             $user->products()->update(['user_id' => null]);
             $user->sales()->update(['user_id' => null]);
-            
+
             $user->forceDelete();
         }
-        notyf()->position('y', 'top')->position('x', 'center')->duration(2000)->addSuccess(__('header.deleted'));
+        flash()->addSuccess('header.deleted');
         $this->done();
     }
     public function RestoreAll()
@@ -272,14 +272,14 @@ class Index extends Component
         foreach ($users as $user) {
             $user->restore();
         }
-        notyf()->position('y', 'top')->position('x', 'center')->duration(2000)->addSuccess(__('header.RestoreMessage'));
+        flash()->addSuccess('header.RestoreMessage');
         $this->done();
     }
     public function restore($id)
     {
         $user = User::onlyTrashed()->findOrFail($id);
         $user->restore();
-        notyf()->position('y', 'top')->position('x', 'center')->duration(2000)->addSuccess(__('header.RestoreMessage'));
+        flash()->addSuccess('header.RestoreMessage');
         $this->done();
     }
 }

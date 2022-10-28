@@ -101,7 +101,7 @@ class Index extends Component
                 'address' => $this->address,
             ]);
         }
-        notyf()->position('y', 'top')->position('x', 'center')->duration(2000)->addSuccess($this->updateSupplier ? __('header.updated') : __('header.add'));
+        flash()->addSuccess($this->updateSupplier ? __('header.updated') : __('header.add'));
         $this->done();
     }
     public function edit(Suppliers  $supplier)
@@ -121,7 +121,7 @@ class Index extends Component
             ]);
         }
         $supplier->delete();
-        notyf()->position('y', 'top')->position('x', 'center')->duration(2000)->addSuccess(__('header.deleted_for_30_days'));
+        flash()->addSuccess('header.deleted_for_30_days');
         $this->done();
     }
     public function DeleteAll()
@@ -133,7 +133,7 @@ class Index extends Component
         foreach ($suppliers as $supplier) {
             $supplier->forceDelete();
         }
-        notyf()->position('y', 'top')->position('x', 'center')->duration(2000)->addSuccess(__('header.deleted'));
+        flash()->addSuccess('header.deleted');
         $this->done();
     }
     public function RestoreAll()
@@ -142,14 +142,14 @@ class Index extends Component
         foreach ($suppliers as $supplier) {
             $supplier->restore();
         }
-        notyf()->position('y', 'top')->position('x', 'center')->duration(2000)->addSuccess(__('header.RestoreMessage'));
+        flash()->addSuccess('header.RestoreMessage');
         $this->done();
     }
     public function restore($id)
     {
         $user = Suppliers::onlyTrashed()->findOrFail($id);
         $user->restore();
-        notyf()->position('y', 'top')->position('x', 'center')->duration(2000)->addSuccess(__('header.RestoreMessage'));
+        flash()->addSuccess('header.RestoreMessage');
         $this->done();
     }
 }

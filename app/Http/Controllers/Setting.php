@@ -77,7 +77,7 @@ class Setting extends Component
             'address' => $this->address,
             'logo' => $logoName ?? $this->oldLogo,
         ]);
-        notyf()->position('y', 'top')->position('x', 'center')->duration(2000)->addSuccess(__('header.updated'));
+        flash()->addSuccess('header.updated');
         $this->reset('logo');
         $this->resetValidation();
         $this->mount();

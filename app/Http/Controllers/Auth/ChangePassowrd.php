@@ -37,7 +37,7 @@ class ChangePassowrd extends Component
         $user->password = Hash::make($this->password);
         $user->save();
         DB::table('password_resets')->where('email', $this->email)->delete();
-        notyf()->position('y', 'top')->position('x', 'center')->duration(2500)->addSuccess(__('header.password_changed_successfully'));
+        flash()->addSuccess('header.password_changed_successfully');
         return redirect()->route('login', app()->getLocale());
     }
 }

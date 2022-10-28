@@ -83,13 +83,13 @@ class Index extends Component
             'barcode' => $this->barcode,
             'quantity' => $this->quantity,
         ]);
-        notyf()->position('y', 'top')->position('x', 'center')->duration(2000)->addSuccess(__('header.barcodes.SuccessfullyGenerated'));
+        flash()->addSuccess('header.barcodes.SuccessfullyGenerated');
         $this->done();
     }
     public function destroy(Barcode $barcode)
     {
         $barcode->delete();
-        notyf()->position('y', 'top')->position('x', 'center')->duration(2000)->addSuccess(__('header.deleted'));
+        flash()->addSuccess('header.deleted');
         $this->done();
     }
     public function show(Barcode $barcode)

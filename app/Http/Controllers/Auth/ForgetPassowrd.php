@@ -80,7 +80,7 @@ class ForgetPassowrd extends Component
         $user = User::where('email', Cache::get('email'))->first();
         $code  = DB::table('password_resets')->select('code')->where('email', Cache::get('email'))->first();
         $user->notify(new \App\Notifications\ForgotPassword($user, $code->code));
-        notyf()->position('y', 'top')->position('x', 'center')->duration(2500)->addSuccess(__('header.resendMessage'));
+        flash()->addSuccess('header.resendMessage');
         $this->mount();
     }
 }

@@ -69,13 +69,13 @@ class DebtSale extends Component
             'paid' => $debtSale->remain == 0 ? 1 : 0,
         ]);
         $debtSale->save();
-        notyf()->position('y', 'top')->position('x', 'center')->duration(2000)->addSuccess(__('header.updated'));
+        flash()->addSuccess('header.updated');
         $this->done();
     }
     public function destroy(DebtSaleModel $debtSale)
     {
         $debtSale->delete();
-        notyf()->position('y', 'top')->position('x', 'center')->duration(2000)->addSuccess(__('header.deleted'));
+        flash()->addSuccess('header.deleted');
         $this->done();
     }
 }

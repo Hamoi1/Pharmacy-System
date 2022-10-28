@@ -19,7 +19,7 @@ class CheckStatusUser
     {
         if (Auth::check() && Auth::user()->status == 0) {
             Auth::logout();
-            notyf()->position('y', 'top')->position('x', 'center')->duration(2500)->addError(__('header.Account_not_active'));
+            flash()->addError('header.Account_not_active');
             return redirect()->route('login', app()->getLocale());
         }
         return $next($request);

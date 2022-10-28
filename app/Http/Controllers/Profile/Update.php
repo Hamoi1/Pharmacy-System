@@ -39,7 +39,7 @@ class Update extends Component
         auth()->user()->user_details->update([
             'image' => $imageName,
         ]);
-        notyf()->position('y', 'top')->position('x', 'center')->duration(2000)->addSuccess(__('header.updated'));
+        flash()->addSuccess('header.updated');
         $this->emit('UpdateProfile');
         $this->image = null;
     }
@@ -50,10 +50,10 @@ class Update extends Component
             auth()->user()->user_details->update([
                 'image' => null,
             ]);
-            notyf()->position('y', 'top')->position('x', 'center')->duration(2000)->addSuccess(__('header.deleted'));
+            flash()->addSuccess('header.deleted');
             $this->emit('UpdateProfile');
         } else {
-            notyf()->position('y', 'top')->position('x', 'center')->duration(2000)->addWarning(__('header.no_image'));
+            flash()->addWarning('header.no_image');
         }
         $this->emit('UpdateProfile');
     }
@@ -109,7 +109,7 @@ class Update extends Component
         auth()->user()->user_details->update([
             'address' => $this->address,
         ]);
-        notyf()->position('y', 'top')->position('x', 'center')->duration(2000)->addSuccess(__('header.updated'));
+        flash()->addSuccess('header.updated');
         $this->emit('UpdateProfile');
         $this->done();
     }
@@ -129,7 +129,7 @@ class Update extends Component
         auth()->user()->update([
             'password' => Hash::make($this->password),
         ]);
-        notyf()->position('y', 'top')->position('x', 'center')->duration(2000)->addSuccess(__('header.updated'));
+        flash()->addSuccess('header.updated');
         $this->reset('password', 'confirm_password');
         $this->done();
     }

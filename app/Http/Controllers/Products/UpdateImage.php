@@ -74,11 +74,11 @@ class UpdateImage extends Component
                 'image' => $images,
             ]);
 
-            notyf()->position('y', 'top')->position('x', 'center')->duration(2000)->addSuccess(__('header.add'));
+            flash()->addSuccess('header.add');
             $this->done();
             return;
         }
-        notyf()->position('y', 'top')->position('x', 'center')->duration(2000)->addWarning(__('header.NotAdd'));
+        flash()->addWarning('header.NotAdd');
         $this->done();
     }
     public function done()
@@ -101,7 +101,7 @@ class UpdateImage extends Component
         $this->product->update([
             'image' => $images,
         ]);
-        notyf()->position('y', 'top')->position('x', 'center')->duration(2000)->addSuccess(__('header.deleted'));
+        flash()->addSuccess('header.deleted');
         $this->done();
     }
     public function deleteAll()
@@ -113,7 +113,7 @@ class UpdateImage extends Component
         $this->product->update([
             'image' => null,
         ]);
-        notyf()->position('y', 'top')->position('x', 'center')->duration(2000)->addSuccess(__('header.deleted'));
+        flash()->addSuccess('header.deleted');
         $this->done();
     }
 }

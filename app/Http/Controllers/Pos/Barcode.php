@@ -30,7 +30,7 @@ class Barcode extends Component
         }
         if ($product->quantity == 0 || $product->expiry_date <= now()) {
             $this->dispatchBrowserEvent('play', ['sound' => 'fail']);
-            $product->quantity == 0 ?  notyf()->position('y', 'top')->position('x', 'center')->duration(2500)->addError(__('header.out_of_stock')) : notyf()->position('y', 'top')->position('x', 'center')->duration(2500)->addError(__('header.expired'));
+            $product->quantity == 0 ?  flash()->addError('header.out_of_stock') : flash()->addError('header.expired');
             return;
         }
         $sales = Sales::where('invoice', $invoice)->first();
