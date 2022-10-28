@@ -205,8 +205,8 @@ session()->put('invoice', $invoice);
     <script src="{{ asset('assets/js/apexcharts.min.js') }}"></script>
     @stack('js')
     <script>
+        var NetworkTypeConnection = navigator.connection.effectiveType;
         $(document).ready(function() {
-            var NetworkTypeConnection = navigator.connection.effectiveType;
             window.addEventListener('closeModal', event => {
                 $('.modal').modal('hide');
                 $('.modal-backdrop ').remove();
@@ -220,14 +220,13 @@ session()->put('invoice', $invoice);
                     PlayAudio("/assets/audio/undo.mp3");
                 }
             });
-            window.addEventListener('load', () => {
-                if (NetworkTypeConnection == '4g') {
-                    $('.lodaing-seaction').fadeToggle(1000); // remove loading by network speed
-                } else {
-                    $('.lodaing-seaction').fadeToggle(navigator.connection.rtt); // remove loading by network speed
-                }
-            });
-            console.log(NetworkTypeConnection);
+        });
+        window.addEventListener('load', () => {
+            if (NetworkTypeConnection == '4g') {
+                $('.lodaing-seaction').fadeToggle(1000); // remove loading by network speed
+            } else {
+                $('.lodaing-seaction').fadeToggle(navigator.connection.rtt); // remove loading by network speed
+            }
         });
     </script>
 
