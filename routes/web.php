@@ -33,7 +33,7 @@ Route::group([
 
         Route::get('/profile', App\Http\Controllers\Profile\Update::class)->name('profile.update');
         Route::get('/settings', App\Http\Controllers\Setting::class)->name('settings');
-        Route::get('/barcode', App\Http\controllers\Barcode\Index::class)->name('barcode');
+        Route::get('/barcode', App\Http\Controllers\Barcode\Index::class)->name('barcode');
         Route::get('/logout', function () {
             auth()->logout();
             return redirect()->route('login', app()->getLocale());
