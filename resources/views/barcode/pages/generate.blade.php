@@ -23,7 +23,7 @@
                     </label>
                     <div class="d-flex align-items-center gap-2 ">
                         <div class="col">
-                            <input type="text" class="form-control" wire:model.defer="barcode">
+                            <input type="text" class="form-control" wire:model="barcode">
                         </div>
                         <div class="col-auto">
                             <a href="" class="btn btn-icon " aria-label="Button" wire:click.prevent="GenerateBarcode">
