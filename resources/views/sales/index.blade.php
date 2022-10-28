@@ -72,7 +72,7 @@
         </div>
         @include('sales.pages.delete')
         @include('sales.pages.view')
-        <div class="row mt-3" wire:loading wire:target="previousPage,nextPage,gotoPage">
+        <div class="row mt-3" wire:loading wire:target="previousPage,nextPage,gotoPage,UserID,date">
             <div class="d-flex  gap-2">
                 <h3>
                     {{ __('header.waiting') }}
@@ -80,7 +80,7 @@
                 <div class="spinner-border" role="status"></div>
             </div>
         </div>
-        <div class="table-responsive mt-3" wire:loading.remove wire:target="previousPage,nextPage,gotoPage">
+        <div class="table-responsive mt-3" wire:loading.remove wire:target="previousPage,nextPage,gotoPage,UserID,date">
             <table class="table table-vcenter table-nowrap">
                 <thead>
                     <tr>
@@ -154,7 +154,7 @@
                 </tbody>
             </table>
 
-            <div class="mt-4" wire:loading.remove wire:target="previousPage,nextPage,gotoPage">
+            <div class="mt-4" wire:loading.remove wire:target="previousPage,nextPage,gotoPage,UserID,date">
                 {{ $sales->onEachSide(1)->links() }}
             </div>
         </div>

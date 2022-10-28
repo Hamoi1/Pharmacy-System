@@ -51,6 +51,10 @@ class Index extends Component
     {
         $this->resetPage();
     }
+    public function updatedUserID()
+    {
+        $this->resetPage();
+    }
     public function done()
     {
         $this->reset(['SaleID', 'saleView',]);
