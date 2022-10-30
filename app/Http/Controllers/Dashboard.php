@@ -13,7 +13,6 @@ class Dashboard extends Component
         if (!Gate::allows('admin')) {
             redirect()->route('sales', app()->getLocale());
         }
-        // get user data by sales count 
         $users = User::withCount('sales')->orderBy('sales_count', 'desc')->take(10)->get();
         return view('dashboard', ['users' => $users]);
     }
