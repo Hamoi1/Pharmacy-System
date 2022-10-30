@@ -12,8 +12,8 @@ class Settings extends Model
     protected $guarded = [];
     protected $attributes = [
         'name' => 'Pharmacy',
-        'phone' => '07501842910',
-        'email' => 'ihama9728@gmail.com',
-        'address' => 'Ranya - Kewarash',
+        'phone' => '07500000000',
+        'email' => 'gmail@gmail.com',
+        'address' => 'location',
     ];
 }
