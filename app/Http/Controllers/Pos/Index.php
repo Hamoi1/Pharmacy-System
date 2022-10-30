@@ -37,10 +37,10 @@ class Index extends Component
             $sales->total = $sales->total + $product->sale_price;
             $sales->save();
             $this->dispatchBrowserEvent('play', ['sound' => 'beep']);
-            notyf()->position('y', 'top')->position('x', 'center')->duration(2500)->addSuccess(__('header.add'));
+            flash()->addSuccess(__('header.add'));
         } else {
             $this->dispatchBrowserEvent('play', ['sound' => 'fail']);
-            notyf()->position('y', 'top')->position('x', 'center')->duration(2500)->addError(__('header.out_of_stock'));
+            flash()->addError(__('header.out_of_stock'));
         }
         $this->reset();
         $this->render();
@@ -56,7 +56,7 @@ class Index extends Component
         $product->save();
         if ($sale_details->quantity == 0) {
             $sale_details->delete();
-            notyf()->position('y', 'top')->position('x', 'center')->duration(2500)->addWarning(__('header.deleted'));
+            flash()->addWarning(__('header.deleted'));
         }
         $this->dispatchBrowserEvent('play', ['sound' => 'undo']);
         $this->reset();
@@ -74,7 +74,7 @@ class Index extends Component
         $product->save();
         $sale_details->delete();
         $this->dispatchBrowserEvent('play', ['sound' => 'undo']);
-        notyf()->position('y', 'top')->position('x', 'center')->duration(2500)->addWarning(__('header.deleted'));
+        flash()->addWarning(__('header.deleted'));
         $this->reset();
     }
 
@@ -119,7 +119,7 @@ class Index extends Component
                 'remain' => $sales->total - $this->currentpaid,
             ]);
         }
-        notyf()->position('y', 'top')->position('x', 'center')->duration(2500)->addSuccess(__('header.successSale'));
+        flash()->addSuccess(__('header.successSale'));
         session()->forget('invoice');
         return redirect()->route('sales', app()->getLocale());
     }

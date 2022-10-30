@@ -35,11 +35,10 @@ class Update extends Component
         $ResizeImage->stream();
         $imageName = time() . '-' . uniqid() . '-' . uniqid() . '.' . $this->image->GetClientOriginalExtension();
         Storage::put('public/users/' . $imageName, $ResizeImage);
-        // $this->image->storeAs('public/users', $imageName);
         auth()->user()->user_details->update([
             'image' => $imageName,
         ]);
-        notyf()->position('y', 'top')->position('x', 'center')->duration(2000)->addSuccess(__('header.updated'));
+       flash()->addSuccess(__('header.updated'));
         $this->emit('UpdateProfile');
         $this->image = null;
     }
@@ -50,10 +49,10 @@ class Update extends Component
             auth()->user()->user_details->update([
                 'image' => null,
             ]);
-            notyf()->position('y', 'top')->position('x', 'center')->duration(2000)->addSuccess(__('header.deleted'));
+           flash()->addSuccess(__('header.deleted'));
             $this->emit('UpdateProfile');
         } else {
-            notyf()->position('y', 'top')->position('x', 'center')->duration(2000)->addWarning(__('header.no_image'));
+           flash()->addWarning(__('header.no_image'));
         }
         $this->emit('UpdateProfile');
     }
@@ -109,7 +108,7 @@ class Update extends Component
         auth()->user()->user_details->update([
             'address' => $this->address,
         ]);
-        notyf()->position('y', 'top')->position('x', 'center')->duration(2000)->addSuccess(__('header.updated'));
+       flash()->addSuccess(__('header.updated'));
         $this->emit('UpdateProfile');
         $this->done();
     }
@@ -129,7 +128,7 @@ class Update extends Component
         auth()->user()->update([
             'password' => Hash::make($this->password),
         ]);
-        notyf()->position('y', 'top')->position('x', 'center')->duration(2000)->addSuccess(__('header.updated'));
+       flash()->addSuccess(__('header.updated'));
         $this->reset('password', 'confirm_password');
         $this->done();
     }

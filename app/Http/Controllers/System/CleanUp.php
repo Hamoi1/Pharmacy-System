@@ -21,6 +21,6 @@ class CleanUp extends Component
         foreach ($oldFiles as $file) {
             Storage::delete($file);
         }
-        notyf()->position('y', 'top')->position('x', 'center')->duration(2000)->addSuccess(__('header.cleaned'));
+        flash()->addSuccess(__('header.cleaned'));
     }
 }

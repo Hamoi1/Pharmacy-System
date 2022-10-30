@@ -90,14 +90,14 @@ class Index extends Component
                 'name' => $this->name,
                 'slug' => Str::slug($this->name),
             ]);
-        notyf()->position('y', 'top')->position('x', 'center')->duration(2500)->addSuccess($this->updateCategory ?  __('header.updated') : __('header.add'));
+       flash()->addSuccess($this->updateCategory ?  __('header.updated') : __('header.add'));
         $this->done();
     }
     public function destroy(Categorys $category)
     {
         // delete category soft delete
         $category->delete();
-        notyf()->position('y', 'top')->position('x', 'center')->duration(2500)->addSuccess(__('header.deleted_for_30_days'));
+       flash()->addSuccess(__('header.deleted_for_30_days'));
         $this->done();
     }
     public function update(Categorys $category)
@@ -112,7 +112,7 @@ class Index extends Component
             return;
         Categorys::onlyTrashed()->findorFail($id)->restore();
         if ($status) {
-            notyf()->position('y', 'top')->position('x', 'center')->duration(2500)->addSuccess(__('header.RestoreMessage'));
+           flash()->addSuccess(__('header.RestoreMessage'));
             $this->done();
         }
     }
@@ -124,7 +124,7 @@ class Index extends Component
         foreach ($categorys as $category) {
             $category->forceDelete();
         }
-        notyf()->position('y', 'top')->position('x', 'center')->duration(2500)->addSuccess(__('header.deleted'));
+       flash()->addSuccess(__('header.deleted'));
         $this->done();
     }
     public function RestoreAll()
@@ -135,7 +135,7 @@ class Index extends Component
         foreach ($categorys as $category) {
             $this->restore($category->id, false);
         }
-        notyf()->position('y', 'top')->position('x', 'center')->duration(2500)->addSuccess(__('header.RestoreMessage'));
+       flash()->addSuccess(__('header.RestoreMessage'));
         $this->done();
     }
 }

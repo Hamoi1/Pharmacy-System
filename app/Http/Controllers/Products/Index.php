@@ -182,7 +182,7 @@ class Index extends Component
                 'user_id' => auth()->id(),
             ]);
         }
-        notyf()->position('y', 'top')->position('x', 'center')->duration(2000)->addSuccess($this->UpdateProduct ? __('header.updated') : __('header.add'));
+        flash()->addSuccess($this->UpdateProduct ? __('header.updated') : __('header.add'));
         $this->done();
     }
     public function updateProduct(Products $product)
@@ -208,7 +208,7 @@ class Index extends Component
     public function delete(Products $product)
     {
         $product->delete();
-        notyf()->position('y', 'top')->position('x', 'center')->duration(2000)->addSuccess(__('header.delete'));
+        flash()->addSuccess(__('header.delete'));
         $this->done();
     }
     public function show(Products $product)

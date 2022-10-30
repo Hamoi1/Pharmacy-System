@@ -73,7 +73,7 @@ class Index extends Component
     public function destroy(Sales $sale)
     {
         $sale->delete();
-        notyf()->position('y', 'top')->position('x', 'center')->duration(2000)->addSuccess(__('header.deleted'));
+        flash()->addSuccess(__('header.deleted'));
         $this->done();
     }
     public function View($id)
