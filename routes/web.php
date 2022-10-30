@@ -4,7 +4,6 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-
 Route::redirect('/', app()->getLocale() . '/login');
 Route::group([
     'prefix' => '{lang}',

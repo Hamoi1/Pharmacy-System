@@ -11,7 +11,7 @@ class Dashboard extends Component
     public function render()
     {
         if (!Gate::allows('admin')) {
-            abort(404);
+            redirect()->route('sales', app()->getLocale());
         }
         // get user data by sales count 
         $users = User::withCount('sales')->orderBy('sales_count', 'desc')->take(10)->get();
