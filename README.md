@@ -1,5 +1,6 @@
 
-## **Install step**
+## Installation
+
 1. `git clone https://github.com/Hamoi1/Pharmacy-System.git`
 1. `cd Pharmacy-System`
 1. `copy cp .env.example .env`
