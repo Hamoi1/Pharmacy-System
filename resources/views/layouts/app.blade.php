@@ -205,7 +205,6 @@ session()->put('invoice', $invoice);
     <script src="{{ asset('assets/js/apexcharts.min.js') }}"></script>
     @stack('js')
     <script>
-        var NetworkTypeConnection = navigator.connection.effectiveType;
         $(document).ready(function() {
             window.addEventListener('closeModal', event => {
                 $('.modal').modal('hide');
@@ -222,11 +221,7 @@ session()->put('invoice', $invoice);
             });
         });
         window.addEventListener('load', () => {
-            if (NetworkTypeConnection == '4g') {
-                $('.lodaing-seaction').fadeToggle(1000); // remove loading by network speed
-            } else {
-                $('.lodaing-seaction').fadeToggle(navigator.connection.rtt); // remove loading by network speed
-            }
+            $('.lodaing-seaction').fadeToggle(1500); 
         });
     </script>
 
