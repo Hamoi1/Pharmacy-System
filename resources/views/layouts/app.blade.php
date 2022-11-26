@@ -182,6 +182,11 @@ session()->put('invoice', $invoice);
                                 </span>
                             </a>
                         </li>
+                        <div class="w-100  text-center  mt-2 mt-lg-5 py-3   ">
+                            <span class="text-dark  rounded p-2 m-auto">
+                                Developed By <a href="https://github.com/Hamoi1" class="text-primary">Muhammad</a>
+                            </span>
+                        </div>
                     </ul>
                 </div>
             </div>
@@ -221,7 +226,7 @@ session()->put('invoice', $invoice);
             });
         });
         window.addEventListener('load', () => {
-            $('.lodaing-seaction').fadeToggle(1500); 
+            $('.lodaing-seaction').fadeToggle(1500);
         });
     </script>
 
