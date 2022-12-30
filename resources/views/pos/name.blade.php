@@ -8,7 +8,7 @@
                 </label>
                 <input type="text" wire:model.defer="name" class="form-control rounded " placeholder="{{ __('header.product_name') }}">
             </div>
-            <div class="col-2" style="position: absolute;top:50%;{{ app()->getLocale() == 'ckb' ? 'left:0' : 'right:0' }}; translate:translateX(50%);">
+            <div class="col-2" style="position: absolute;top:50%;{{ app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'left:0' : 'right:0' }}; translate:translateX(50%);">
                 <button class="btn btn-primary " type="submit">
                     <i class=" fas fa-plus"></i>
                 </button>

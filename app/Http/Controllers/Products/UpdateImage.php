@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\Products;
 
-use App\Jobs\UpdateImageProducts;
 use Livewire\Component;
 use App\Models\Products;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Gate;
 use Intervention\Image\Facades\Image;
-use Illuminate\Support\Facades\Storage;
 
+use Illuminate\Support\Facades\Storage;
 use function PHPUnit\Framework\returnSelf;
 
 class UpdateImage extends Component
@@ -65,7 +64,7 @@ class UpdateImage extends Component
                     });
                     $ResizeImage->stream();
                     $imageName = time() . '-' . uniqid() . '-' . uniqid() . '.' . $image->GetClientOriginalExtension();
-                    Storage::put('public/products/' . $imageName, $ResizeImage);
+                    Storage::disk('public')->put('products/' . $imageName, $ResizeImage);
                     $images[] = $imageName;
                 }
             }
@@ -73,7 +72,6 @@ class UpdateImage extends Component
             $this->product->update([
                 'image' => $images,
             ]);
-
             flash()->addSuccess(__('header.add'));
             $this->done();
             return;

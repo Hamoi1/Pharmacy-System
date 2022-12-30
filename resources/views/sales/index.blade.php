@@ -12,7 +12,7 @@
             </div>
         </div>
     </div>
-    <div class="{{ app()->getLocale() == 'ckb' ? 'reverse' : '' }} px-lg-5 px-3">
+    <div class="{{ app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }} px-lg-5 px-3">
         <div class="d-flex align-items-center justify-content-between mt-3">
             <p class="fw-bolder fs-1">
                 {{ __('header.Sales') }}

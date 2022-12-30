@@ -1,6 +1,6 @@
 @push('title') Change Password @endpush
 <div>
-    <div class="bg-white page page-center {{ app()->getLocale() == 'ckb' ? 'reverse' : '' }}">
+    <div class="bg-white page page-center {{ app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }}">
         <div class="col-lg-3  col-md-8 col-12 m-auto shadow-sm  py-4 px-3 rounded-2 bg-white">
             <form wire:submit.prevent="ChangePassword">
                 <div class="row g-3">

@@ -27,6 +27,9 @@
                 <a href="{{ route(Route::currentRouteName(),'en') }}" class="dropdown-item">
                     English
                 </a>
+                <a href="{{ route(Route::currentRouteName(),'ar')}}" class="dropdown-item">
+                    Arabic
+                </a>
             </div>
         </div>
         @endif

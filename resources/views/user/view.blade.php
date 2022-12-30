@@ -12,7 +12,7 @@
         <div class="col-12 text-center">
             <img src="{{ $user->image($user->user_details->image) }}" width="250" height="250" class=" img-fulid rounded-circle object-cover">
         </div>
-        <div class=" col-12 {{ app()->getLocale() == 'ckb' ? 'reverse' : '' }}">
+        <div class=" col-12 {{ app()->getLocale() == 'ckb'   || app()->getLocale() == 'ar' ? 'reverse' : '' }}">
             <p>
                 {{ __('header.UserDetails') }}
             </p>

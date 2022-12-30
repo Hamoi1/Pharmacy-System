@@ -1,6 +1,6 @@
 @push('title') Setting @endpush
 <div>
-    <div class="container-lg {{ app()->getLocale() == 'ckb' ? 'reverse' : '' }} bg-white py-4 rounded mt-3 shadow-sm">
+    <div class="container-lg {{ app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }} bg-white py-4 rounded mt-3 shadow-sm">
 
         <div class="row g-4 ">
             <div class="col-12">

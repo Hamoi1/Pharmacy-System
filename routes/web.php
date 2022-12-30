@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
 Route::redirect('/', app()->getLocale() . '/login');
 Route::group([
     'prefix' => '{lang}',
-    'where' => ['lang' => 'en|ckb'],
+    'where' => ['lang' => 'en|ckb|ar'],
 ], function () {
     Route::middleware(['auth'])->group(function () {
         Route::get('/', function () {

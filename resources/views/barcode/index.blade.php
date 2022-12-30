@@ -1,6 +1,6 @@
 @push('title') Barcode @endpush
 <div>
-    <div class="container-lg {{ app()->getLocale() == 'ckb' ? 'reverse' : '' }} pt-4">
+    <div class="container-lg {{ app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }} pt-4">
         <div class="col-12 mt-2">
             <div class="d-flex justify-content-between align-items-center">
                 <h2>

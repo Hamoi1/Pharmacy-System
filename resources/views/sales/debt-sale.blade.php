@@ -12,7 +12,7 @@
             </div>
         </div>
     </div>
-    <div class="{{ app()->getLocale() == 'ckb' ? 'reverse' : '' }} px-lg-5 px-3">
+    <div class="{{ app()->getLocale() == 'ckb'   || app()->getLocale() == 'ar' ? 'reverse' : '' }} px-lg-5 px-3">
         <x-modal.add target="update" modalWidth="modal-lg">
             <div wire:loading wire:target="edit">
                 <div class="d-flex justify-content-center">

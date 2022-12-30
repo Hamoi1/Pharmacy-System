@@ -1,6 +1,6 @@
 @push('title') POS @endpush
 <div>
-    <div class="container-lg mt-4 {{  app()->getLocale() == 'ckb' ? 'reverse' : '' }}">
+    <div class="container-lg mt-4 {{  app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }}">
         <div wire:loading wire:target="debt,plus,minus,destroy,submit">
             <div class="loading">
                 <div class="loading-content">

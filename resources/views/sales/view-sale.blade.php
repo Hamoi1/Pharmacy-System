@@ -1,10 +1,10 @@
 @push('title') View Sale @endpush
 <div>
-    <div class="{{ app()->getLocale() == 'ckb' ? 'reverse' : '' }} container-lg px-2 px-lg-5 mt-3 pt-3">
+    <div class="{{ app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }} container-lg px-2 px-lg-5 mt-3 pt-3">
         <p class="fw-bolder fs-5 my-2 not-reverse d-none header-table">
             Invoice : {{ $sale->invoice }}
         </p>
-        <div class="{{ app()->getLocale() == 'ckb' ? 'text-end' : 'text-start' }} col-12" id="POS-Table">
+        <div class="{{ app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'text-end' : 'text-start' }} col-12" id="POS-Table">
             <span class="header-table d-none">
                 {{ __('header.pharmacyName') }} : {{ $settings->name }}
             </span>

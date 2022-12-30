@@ -1,6 +1,6 @@
 @push('title') Dashboard @endpush
 <div>
-    <div class="px-2 px-lg-5 py-2 {{ app()->getLocale() == 'ckb' ? 'reverse' : '' }} ">
+    <div class="px-2 px-lg-5 py-2 {{ app()->getLocale() == 'ckb' || app()->getLocale() == 'ar'   ? 'reverse' : '' }} ">
         <div class="mt-3">
             <div class="col-sm-12 my-3">
                 <livewire:system.clean-up />

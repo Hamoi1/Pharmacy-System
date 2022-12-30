@@ -12,7 +12,7 @@
             </div>
         </div>
     </div>
-    <div class="{{ app()->getLocale() == 'ckb' ? 'reverse' :'' }} container-lg mt-4">
+    <div class="{{ app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' :'' }} container-lg mt-4">
         @include('profile.update.add-update')
         @include('profile.update.ChangePassword')
         <div class="d-flex justify-content-center  flex-wrap gap-3">

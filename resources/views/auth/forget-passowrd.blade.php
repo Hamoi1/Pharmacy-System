@@ -1,6 +1,6 @@
 @push('title') Forget-Password @endpush
 <div>
-    <div class="bg-white page page-center {{ app()->getLocale() == 'ckb' ? 'reverse' : '' }}">
+    <div class="bg-white page page-center {{ app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }}">
         <div class="col-lg-3  col-md-8 col-12 m-auto shadow-sm  py-4 px-3 rounded-2 bg-white">
             <form class="" wire:submit.prevent="{{ $VerifyCode?'check':'send' }}">
                 <div class="row">

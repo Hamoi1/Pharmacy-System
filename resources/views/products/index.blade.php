@@ -12,7 +12,7 @@
             </div>
         </div>
     </div>
-    <div class="{{ app()->getLocale() == 'ckb' ? 'reverse' : '' }} px-lg-5 px-3">
+    <div class="{{ app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }} px-lg-5 px-3">
         <div class="mt-4">
             <x-page-header title="{{ __('header.Products') }}" target="#add-update" wire="wire:click=add" />
         </div>

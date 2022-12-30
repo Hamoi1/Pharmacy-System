@@ -40,7 +40,7 @@
 </head>
 
 <body>
-    <div class="{{ app()->getLocale() == 'ckb' ? 'reverse' : '' }}">
+    <div class="{{ app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }}">
 
         <h3> {{ __('header.hi') }}, {{ $user->name }}</h3>
         <br>
