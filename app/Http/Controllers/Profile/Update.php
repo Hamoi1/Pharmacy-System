@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Storage;
 class Update extends Component
 {
     use WithFileUploads;
-    public $image, $name, $username, $email, $phone, $address , $password, $confirm_password;
+    public $image, $name, $username, $email, $phone, $address, $password, $confirm_password;
     public function render()
     {
         return view('profile.update');
@@ -29,16 +29,12 @@ class Update extends Component
         if ($old_image != null) {
             Storage::delete('public/users/' . $old_image);
         }
-        $ResizeImage = Image::make($this->image)->resize(350, 300, function ($constraint) {
-            $constraint->aspectRatio();
-        });
-        $ResizeImage->stream();
         $imageName = time() . '-' . uniqid() . '-' . uniqid() . '.' . $this->image->GetClientOriginalExtension();
-        Storage::put('public/users/' . $imageName, $ResizeImage);
+        $this->image->storeAs('public/users', $imageName);
         auth()->user()->user_details->update([
             'image' => $imageName,
         ]);
-       flash()->addSuccess(__('header.updated'));
+        flash()->addSuccess(__('header.updated'));
         $this->emit('UpdateProfile');
         $this->image = null;
     }
@@ -49,10 +45,10 @@ class Update extends Component
             auth()->user()->user_details->update([
                 'image' => null,
             ]);
-           flash()->addSuccess(__('header.deleted'));
+            flash()->addSuccess(__('header.deleted'));
             $this->emit('UpdateProfile');
         } else {
-           flash()->addWarning(__('header.no_image'));
+            flash()->addWarning(__('header.no_image'));
         }
         $this->emit('UpdateProfile');
     }
@@ -108,7 +104,7 @@ class Update extends Component
         auth()->user()->user_details->update([
             'address' => $this->address,
         ]);
-       flash()->addSuccess(__('header.updated'));
+        flash()->addSuccess(__('header.updated'));
         $this->emit('UpdateProfile');
         $this->done();
     }
@@ -128,7 +124,7 @@ class Update extends Component
         auth()->user()->update([
             'password' => Hash::make($this->password),
         ]);
-       flash()->addSuccess(__('header.updated'));
+        flash()->addSuccess(__('header.updated'));
         $this->reset('password', 'confirm_password');
         $this->done();
     }

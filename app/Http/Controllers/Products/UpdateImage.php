@@ -59,12 +59,8 @@ class UpdateImage extends Component
             $images = [];
             foreach ($this->images as $image) {
                 if (in_array($image->getClientOriginalExtension(), ['jpg', 'jpeg', 'png', 'svg'])) {
-                    $ResizeImage = Image::make($image)->resize(300, 300, function ($constraint) {
-                        $constraint->aspectRatio();
-                    });
-                    $ResizeImage->stream();
                     $imageName = time() . '-' . uniqid() . '-' . uniqid() . '.' . $image->GetClientOriginalExtension();
-                    Storage::disk('public')->put('products/' . $imageName, $ResizeImage);
+                    $image->storeAs('public/products', $imageName);
                     $images[] = $imageName;
                 }
             }
