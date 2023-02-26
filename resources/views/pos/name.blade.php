@@ -2,7 +2,7 @@
     <form wire:submit.prevent="add">
         <div class="row position-relative">
             <div class="col-10">
-                <label class="form-label">
+                <label class="form-label  name-label">
                     {{ __('header.product_name') }}
                     <i class=" fas fa-box"></i>
                 </label>

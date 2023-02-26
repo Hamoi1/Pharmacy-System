@@ -30,6 +30,11 @@ class DeletingTrashe
                             Storage::delete('public/products/' . $img);
                         }
                     }
+                    foreach ($product->sale_details as $p) {
+                        $p->update([
+                            'product_id' => null,
+                        ]);
+                    }
                     $product->forceDelete();
                 }
             }
@@ -40,7 +45,7 @@ class DeletingTrashe
         foreach ($users as $user) {
             if ($user->deleted_at != null) {
                 if ($user->deleted_at->format('Y-m-d') <= now()->subMonth()->format('Y-m-d')) { // if deleted_at date is less than 1 month after that data will be delete forever
-                   $image = $user->user_details->image;
+                    $image = $user->user_details->image;
                     if ($image != null) {
                         Storage::delete('public/users/' . $image);
                     }

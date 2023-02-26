@@ -1,5 +1,5 @@
 <div class="col-lg-6 col-md-6 col-12">
-    <label class="form-label">
+    <label class="form-label barcode-label">
         {{ __('header.barcode') }}
         <i class="fas fa-barcode"></i>
     </label>

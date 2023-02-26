@@ -11,12 +11,11 @@ class ViewSale extends Component
     public $saleId, $invoice, $sale;
     public function mount($lang, $id, $invoice)
     {
-
         if (!Gate::allows('admin')) {
             abort(404);
         }
         $this->sale = Sales::findOrFail($id)->where('invoice', $invoice)->with('sale_details', function ($q) {
-            $q->product();
+            $q->whereNotNull('product_id')->product();
         })->with('debt_sale')->first();
     }
     public function render()

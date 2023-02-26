@@ -23,10 +23,10 @@
                         <i class="fa fa-warning mx-2 fs-2" aria-hidden="true"></i>
                     </div>
                     <div>
-                        <h4 class="alert-title">
+                        <h4 class="alert-title ">
                             {{ __('header.warning') }}
                         </h4>
-                        <div class="text-muted">
+                        <div class="">
                             {{ __('header.porduct_is_expire') }}
                         </div>
                     </div>

@@ -52,7 +52,7 @@
             @can('admin')
             <div class="col-lg-1 col-md-6 col-5 mx-lg-2">
                 <button class=" btn" wire:click="Trash">
-                    <i class="fa-solid fa-trash-can mx-2"></i>
+                    <i class="fa fa-trash mx-2 mb-1"></i>
                     {{ __('header.Trash') }}
                 </button>
             </div>
@@ -65,13 +65,13 @@
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                         <li class="dropdwon-item mt-2">
                             <button class=" btn shadow-none text-danger" wire:click="DeleteAll">
-                                <i class="fa-solid fa-trash-can mx-2"></i>
+                                <i class="fa-solid fa-trash-can mx-2 mb-2"></i>
                                 {{ __('header.DeletedAll') }}
                             </button>
                         </li>
                         <li class="dropdwon-item mt-2">
                             <button class=" btn shadow-none text-success " wire:click="RestoreAll">
-                                <i class="fa-solid fa-recycle mx-1"></i>
+                                <i class="fa-solid fa-recycle mx-2 mb-2"></i>
                                 {{ __('header.RestoreAll') }}
                             </button>
                         </li>

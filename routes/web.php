@@ -1,6 +1,5 @@
 <?php
 
-use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -22,7 +21,7 @@ Route::group([
         Route::get('/products', App\Http\Controllers\Products\Index::class)->name('products');
         Route::get('/products/image/update/{id}', App\Http\Controllers\Products\UpdateImage::class)->name('products.image.update');
         Route::get('/ExpiryProducts', App\Http\Controllers\ExpiryProducts::class)->name('ExpiryProducts');
-        Route::get('/stock-out-procuts', App\Http\Controllers\StockOutProducts::class)->name('StockOutProcuts');
+        Route::get('/stock-out-products', App\Http\Controllers\StockOutProducts::class)->name('StockOutProcuts');
         Route::get('/categorys', App\Http\Controllers\Categorys\Index::class)->name('categorys');
         Route::get('/suppliers', App\Http\Controllers\Supplier\Index::class)->name('suppliers');
         Route::get('/pont-of-sale', App\Http\Controllers\Pos\Index::class)->name('sales');

@@ -22,12 +22,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\Settings::create([
-            'name' => 'Pharmacy System',
-            'phone' => '07501111111',
-            'email' => 'pharmacy@pharmacy.com',
-            'address' => 'Ranya / Sulimany',
-        ]);
         $users = [
             [
                 'name' => 'muhammad',
@@ -56,7 +50,7 @@ class DatabaseSeeder extends Seeder
                 'address' => fake()->randomElement(['ranya', 'Sulimany', 'Qaladzi', 'Hallshow']),
             ]);
         }
-        foreach (range(1, 1000) as $index) {
+        foreach (range(1, 50) as $index) {
             $name = fake()->name;
             $name = Str::replace(' ', '', $name);
             $name = Str::replace('-', '', $name);
@@ -128,7 +122,7 @@ class DatabaseSeeder extends Seeder
                 'created_at' => fake()->dateTimeBetween('-1 years', 'now'),
             ]);
         }
-        foreach (range(1, 100) as $index) {
+        foreach (range(1, 10) as $index) {
             $name = fake()->name . fake()->name;
             \App\Models\Categorys::create([
                 'name' => $name,
@@ -175,15 +169,27 @@ class DatabaseSeeder extends Seeder
                 'address' => 'iraq'
             ],
             [
-                'name' => 'chenar',
+                'name' => 'mihraban',
                 'phone' => '07511212232',
-                'email' => 'chenar@gmail.com',
+                'email' => 'mihraban@gmail.com',
                 'address' => 'iraq'
             ],
             [
-                'name' => 'raid',
+                'name' => 'danaz',
                 'phone' => '07511222232',
-                'email' => 'raid@gmail.com',
+                'email' => 'danaz@gmail.com',
+                'address' => 'iraq'
+            ],
+            [
+                'name' => 'sazyar',
+                'phone' => '07511222232',
+                'email' => 'sazyar@gmail.com',
+                'address' => 'iraq'
+            ],
+            [
+                'name' => 'savyar',
+                'phone' => '07511222232',
+                'email' => 'savyar@gmail.com',
                 'address' => 'iraq'
             ],
         ];
@@ -192,7 +198,7 @@ class DatabaseSeeder extends Seeder
                 'created_at' => fake()->dateTimeBetween('-1 years', 'now')->format('Y-m-d H:i:s'),
             ]);
         }
-        foreach (range(1, 100) as $index) {
+        foreach (range(1, 10) as $index) {
             $name = fake()->name;
             $name = Str::replace(' ', '', $name);
             $name = Str::replace('-', '', $name);
@@ -214,7 +220,7 @@ class DatabaseSeeder extends Seeder
 
         // expiry product
         $barcode = 1;
-        foreach (range(1, 200) as $index) {
+        foreach (range(1, 50) as $index) {
             $name = fake()->name;
             $name = Str::lower($name);
             $name = Str::replace('.', '', $name);
@@ -233,8 +239,8 @@ class DatabaseSeeder extends Seeder
         }
 
         // stock out product
-        $barcode = 202;
-        foreach (range(1, 100) as $index) {
+        $barcode = 51;
+        foreach (range(1, 50) as $index) {
             $name = fake()->name;
             $name = Str::lower($name);
             $name = Str::replace('.', '', $name);
@@ -253,8 +259,8 @@ class DatabaseSeeder extends Seeder
         }
 
         // stock out product
-        $barcode = 302;
-        foreach (range(1, 4000) as $index) {
+        $barcode = 101;
+        foreach (range(1, 40) as $index) {
             $name = fake()->name;
             $name = Str::lower($name);
             $name = Str::replace('.', '', $name);
@@ -272,7 +278,7 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-        foreach (range(1, 400) as $index) {
+        foreach (range(1, 20) as $index) {
             $number = fake()->unique()->numberBetween(0, 2147483647) . Str::random(1);
             $number = Str::limit($number, 9, '');
             $invoice = Str::start($number, 'inv-');
@@ -284,7 +290,7 @@ class DatabaseSeeder extends Seeder
                 'status' => 1,
                 'created_at' => now(),
             ]);
-            foreach (range(1, 8) as $index) {
+            foreach (range(1, rand(1,9)) as $index) {
                 $sales->sale_details()->create([
                     'product_id' => Products::inRandomOrder()->first()->id,
                     'quantity' => fake()->numberBetween(1, 100),
@@ -293,7 +299,7 @@ class DatabaseSeeder extends Seeder
             }
         }
 
-        foreach (range(1, 40) as $index) {
+        foreach (range(1, 20) as $index) {
             $number = fake()->unique()->numberBetween(0, 2147483647) . Str::random(1);
             $number = Str::limit($number, 9, '');
             $invoice = Str::start($number, 'inv-');
@@ -314,7 +320,7 @@ class DatabaseSeeder extends Seeder
                 'remain' => $sales->total - fake()->numberBetween(0, $sales->total),
                 'created_at' => now(),
             ]);
-            foreach (range(1, 20) as $index) {
+            foreach (range(1, rand(1,9)) as $index) {
                 $sales->sale_details()->create([
                     'product_id' => Products::inRandomOrder()->first()->id,
                     'quantity' => fake()->numberBetween(1, 100),

@@ -206,4 +206,5 @@ return [
         'shape of barcode' => 'Barcode Shape',
         'no name' => 'No Name',
     ],
+    'changetheme' => 'Change Theme',
 ];

@@ -37,7 +37,7 @@ class Sales extends Model
     public function scopeSaleData($query)
     {
         return $query->with('sale_details', function ($query) {
-            return $query->with('products');
+            return $query->whereNotNull('product_id')->with('products');
         })->with('user', 'debt_sale');
     }
     public function scopeUser($query)

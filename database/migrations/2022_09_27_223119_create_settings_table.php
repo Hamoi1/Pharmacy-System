@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('email')->nullable();
             $table->string('address')->nullable();
             $table->string('logo')->nullable();
+            $table->boolean('theme')->nullable()->comment('0->light , 1->dark');
             $table->timestamps();
         });
     }

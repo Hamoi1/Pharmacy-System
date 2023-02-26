@@ -63,14 +63,3 @@ function printDiv() {
         window.location.reload();
     }
 }
-// if (navigator.onLine) {
-//     console.log('your  are online');
-// } else {
-//     console.log('your  are offline');
-// }
-
-// // loading 
-// $(window).on('load', function () {
-//     //  fadeout by the network speed
-//     $('.lodaing-seaction').fadeOut(navigator.onLine ? 2000 : 1000);
-// });

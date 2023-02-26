@@ -50,8 +50,10 @@
                 @if($barcode !=null )
                 <div class="w-auto">
                     <div class="text-center ">
+                        @if (is_numeric($barcode))
                         {!! DNS1D::getBarcodeHTML($barcode, 'I25') !!}
                         <p>{{ $barcode }}</p>
+                        @endif
                     </div>
                 </div>
                 @endif

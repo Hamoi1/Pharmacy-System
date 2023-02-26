@@ -14,6 +14,7 @@ class Setting extends Component
     use WithFileUploads;
     public $name, $phone, $email, $address, $logo, $oldLogo;
     public  $setting;
+    protected $listeners = ['ChangeTheme' => 'render'];
     public function mount()
     {
         if (!Gate::allows('admin')) {
@@ -62,13 +63,8 @@ class Setting extends Component
     {
         $this->validate($this->GetRuls(), $this->GetMessage());
         if ($this->logo) {
-            $logo = Image::make($this->logo)->resize(250, 250, function ($constraint) {
-                $constraint->aspectRatio();
-                $constraint->upsize();
-            });
-
             $logoName = time() . '-' . uniqid() . '.' . $this->logo->getClientOriginalExtension();
-            Storage::disk('public')->put('logo/' . $logoName, $logo->stream());
+            $this->logo->storeAs('public/logo', $logoName);
         }
         $this->setting->update([
             'name' => $this->name,
@@ -80,6 +76,21 @@ class Setting extends Component
         flash()->addSuccess(__('header.updated'));
         $this->reset('logo');
         $this->resetValidation();
-        $this->mount();
+    }
+
+    public function ChangeTheme($theme)
+    {
+        if ($theme == 1) {
+            $this->setting->update([
+                'theme' => 0,
+            ]);
+        } elseif ($theme == 0) {
+            $this->setting->update([
+                'theme' => 1,
+            ]);
+        }
+        $this->emitSelf('ChangeTheme');
+        $this->emit('ChangeTheme',$this->setting->theme);
+
     }
 }

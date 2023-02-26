@@ -206,4 +206,5 @@ return [
         'shape of barcode' => 'شێوازی بارکۆد',
         'no name' => 'ناوی نییە',
     ],
+    'changetheme' => 'گۆڕینی ڕووکار',
 ];

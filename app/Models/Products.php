@@ -8,8 +8,8 @@ use App\Models\Categorys;
 use App\Models\Suppliers;
 use App\Models\sale_details;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Products extends Model
 {

@@ -97,7 +97,7 @@ return [
     'Edit_Product_image' => 'تحرير صور المنتج',
     'Not_have_image' => 'برهم ليس لديه صور',
     'profile' => 'الملف الشخصي',
-    'setting' => 'يرتب',
+    'setting' => 'الضبط',
     'loguot' => 'خروج',
     "UserDetails" => "معلومات المستخدم",
     'acount_create' => 'تم إنشاء الحساب ',
@@ -134,7 +134,7 @@ return [
     'expired' => 'المنتج منتهي الصلاحية',
     'Cash' => 'نقدا',
     'debt' => 'على سبيل الإعارة',
-    'sale' => 'يبيع',
+    'sale' => 'بیع',
     'successSale' => 'كانت المبيعات ناجحة',
     'cleanSystem' => 'تنظيف النظام',
     'cleaned' => 'تم تنظيف النظام',
@@ -184,7 +184,7 @@ return [
     'userIsDeleted' => 'مستخدم غيرمعروف',
     'pharmacyName' => 'اسم الصيدلية',
     'GeneratePDF' => 'توليد التقارير',
-    
+
     'report' => [
         'index' => 'أبلغ عن',
         'Reports' => 'تقارير',
@@ -204,4 +204,5 @@ return [
         'shape of barcode' => 'طريقة الباركود',
         'no name' => 'ليس لها اسم',
     ],
+    'changetheme' => 'تغيير الوان النظام',
 ];

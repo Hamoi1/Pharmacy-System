@@ -1,10 +1,11 @@
 @push('title') Setting @endpush
 <div>
-    <div class="container-lg {{ app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }} bg-white py-4 rounded mt-3 shadow-sm">
-
+    <div class="container-lg  {{ app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }} py-4  mt-3 mt-md-5">
         <div class="row g-4 ">
             <div class="col-12">
                 <livewire:system.clean-up />
+            </div>
+            <div class="col-12">
             </div>
             <div class="col-lg-4 col-12">
                 <div class="col-12 my-2 fs-3 px-2 py-2">
@@ -80,6 +81,20 @@
                             </div>
                         </div>
                     </div>
+                </form>
+            </div>
+            <hr>
+            <div class="col-12 mt-0 mb-4">
+                <h4>
+                    {{ __('header.changetheme') }}
+                </h4>
+                <form>
+                    <button class="changeThemeBtn shadow-sm " wire:click.prevent="ChangeTheme({{ $settings->theme == 0 ? 0 : 1  }})">
+                        <span class="fs-3 mt-2 text-light"> {{ $settings->theme == 0 ? "🌙" : "☀️"  }}</span>
+                    </button>
+                    <span class=" fs-3 mx-2  {{ $settings->theme == 0 ? 'txet-dark' : 'text-light'  }}">
+                        {{ $settings->theme == 0 ? "dark" : "light"  }}
+                    </span>
                 </form>
             </div>
         </div>

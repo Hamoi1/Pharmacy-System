@@ -14,7 +14,7 @@ class Index extends Component
 {
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
-    public $barcode, $quantity, $barcode_name, $barcode_id, $Barcode;
+    public  $barcode, $quantity, $barcode_name, $barcode_id, $Barcode;
     public function mount()
     {
         if (!Gate::allows('admin')) abort(404);
@@ -38,7 +38,6 @@ class Index extends Component
 
     public function GenerateBarcode()
     {
-        // generate number 
         $barcode = $this->generate();
         $checkBarcode = Barcode::where('barcode',  $barcode)->first();
         if ($checkBarcode) {
@@ -52,44 +51,54 @@ class Index extends Component
             }
         }
         $this->barcode =  Str::substr($barcode, 0, 12);
+        $this->resetValidation();
+
+    }
+
+    public function rules()
+    {
+        return [
+            'barcode_name' => 'nullable|string|regex:/^[a-zA-Z0-9\s]+$/u',
+            'barcode' => 'required|numeric|digits:12|unique:barcodes,barcode|unique:products,barcode',
+            'quantity' => 'required|numeric|min:1',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'barcode_name.string' => __('validation.string', ['attribute' => __('header.name')]),
+            'barcode_name.regex' => __('validation.regex', ['attribute' => __('header.name')]),
+            'barcode.required' => __('validation.required', ['attribute' => __('header.barcode')]),
+            'barcode.numeric' => __('validation.numeric', ['attribute' => __('header.barcode')]),
+            'barcode.digits' => __('validation.digits', ['attribute' => __('header.barcode'), 'digits' => 12]),
+            'barcode.unique' => __('validation.unique', ['attribute' => __('header.barcode')]),
+            'quantity.required' => __('validation.required', ['attribute' => __('header.quantity')]),
+            'quantity.numeric' => __('validation.numeric', ['attribute' => __('header.quantity')]),
+            'quantity.min' => __('validation.min', ['attribute' => __('header.quantity'), 'min' => 1]),
+        ];
     }
 
     public function updatedBarcode()
     {
+        $this->validate($this->rules(), $this->messages());
         $this->barcode = $this->barcode;
     }
     public function submit()
     {
-        $this->validate(
-            [
-                'barcode_name' => 'nullable|string|regex:/^[a-zA-Z0-9\s]+$/u',
-                'barcode' => 'required|numeric|digits:12|unique:barcodes,barcode|unique:products,barcode',
-                'quantity' => 'required|numeric|min:1',
-            ],
-            [
-                'barcode_name.string' => __('validation.string', ['attribute' => __('header.name')]),
-                'barcode_name.regex' => __('validation.regex', ['attribute' => __('header.name')]),
-                'barcode.required' => __('validation.required', ['attribute' => __('header.barcode')]),
-                'barcode.numeric' => __('validation.numeric', ['attribute' => __('header.barcode')]),
-                'barcode.digits' => __('validation.digits', ['attribute' => __('header.barcode'), 'digits' => 12]),
-                'barcode.unique' => __('validation.unique', ['attribute' => __('header.barcode')]),
-                'quantity.required' => __('validation.required', ['attribute' => __('header.quantity')]),
-                'quantity.numeric' => __('validation.numeric', ['attribute' => __('header.quantity')]),
-                'quantity.min' => __('validation.min', ['attribute' => __('header.quantity'), 'min' => 1]),
-            ]
-        );
+        $this->validate($this->rules(), $this->messages());
         Barcode::create([
             'name' => $this->barcode_name,
             'barcode' => $this->barcode,
             'quantity' => $this->quantity,
         ]);
-       flash()->addSuccess(__('header.barcodes.SuccessfullyGenerated'));
+        flash()->addSuccess(__('header.barcodes.SuccessfullyGenerated'));
         $this->done();
     }
     public function destroy(Barcode $barcode)
     {
         $barcode->delete();
-       flash()->addSuccess(__('header.deleted'));
+        flash()->addSuccess(__('header.deleted'));
         $this->done();
     }
     public function show(Barcode $barcode)

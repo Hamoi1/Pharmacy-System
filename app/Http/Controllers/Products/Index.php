@@ -208,7 +208,7 @@ class Index extends Component
     public function delete(Products $product)
     {
         $product->delete();
-        flash()->addSuccess(__('header.delete'));
+        flash()->addSuccess(__('header.deleted_for_30_days'));
         $this->done();
     }
     public function show(Products $product)
@@ -217,11 +217,17 @@ class Index extends Component
     }
     public function DeleteAll()
     {
-        $products = $this->CheckTrashParameter()->get();
+        $products = $this->CheckTrashParameter()->with('sale_details')->get();
+
         foreach ($products as $product) {
+            foreach ($product->sale_details as $p) {
+                $p->update([
+                    'product_id' => null,
+                ]);
+            }
             $product->forceDelete();
         }
-        notyf()->position('y', 'top')->position('x', 'center')->duration(2500)->addSuccess(__('header.deleted'));
+        flash()->addSuccess(__('header.deleted'));
         $this->done();
     }
     public function RestoreAll()
@@ -230,13 +236,13 @@ class Index extends Component
         foreach ($products as $product) {
             $product->restore();
         }
-        notyf()->position('y', 'top')->position('x', 'center')->duration(2500)->addSuccess(__('header.RestoreMessage'));
+        flash()->addSuccess(__('header.RestoreMessage'));
         $this->done();
     }
     public function restore($id)
     {
         $product = Products::onlyTrashed()->findOrFail($id)->restore();
-        notyf()->position('y', 'top')->position('x', 'center')->duration(2500)->addSuccess(__('header.RestoreMessage'));
+        flash()->addSuccess(__('header.RestoreMessage'));
         $this->done();
     }
 }

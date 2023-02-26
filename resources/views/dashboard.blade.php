@@ -1,5 +1,5 @@
 @push('title') Dashboard @endpush
-<div>
+<div class="dashboard">
     <div class="px-2 px-lg-5 py-2 {{ app()->getLocale() == 'ckb' || app()->getLocale() == 'ar'   ? 'reverse' : '' }} ">
         <div class="mt-3">
             <div class="col-sm-12 my-3">
@@ -94,7 +94,8 @@
                     return val
                 }
             }
-        }
+        },
+
     };
     var chart = new ApexCharts(document.querySelector("#chart"), options);
     chart.render();

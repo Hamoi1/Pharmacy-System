@@ -1,5 +1,5 @@
 @push('title') Products @endpush
-<div>
+<div class="saless">
     <div wire:loading wire:target="destroy">
         <div class="loading">
             <div class="loading-content">
@@ -117,7 +117,7 @@
                     @forelse ($sales as $sale )
                     <tr>
                         <td>
-                            <a href="{{ $sale->paid ?'' : route('sales.debt' ,['lang'=>app()->getLocale(),'s'=>$sale->name]) }}" class="{{ $sale->paid ? 'text-dark' : 'text-blue' }}">
+                            <a href="{{ $sale->paid ?'' : route('sales.debt' ,['lang'=>app()->getLocale(),'s'=>$sale->name]) }}" class="{{ $sale->paid ? '' : 'text-blue' }}">
                                 {{ $sale->invoice }}
                             </a>
                         </td>

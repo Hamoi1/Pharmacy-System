@@ -45,7 +45,7 @@
                             {{ number_format($barcode->quantity,0) }}
                         </td>
                         <td class="col-3">
-                            <div class="">
+                            <div class="barcode-list">
                                 {!! DNS1D::getBarcodeHTML($barcode->barcode, 'I25') !!}
                             </div>
                         </td>
@@ -74,59 +74,4 @@
             {{ $barcodes->onEachSide(1)->links() }}
         </div>
     </div>
-</div>
-<!-- 
-@push('js')
-
-<script>
-    var Barcode_section = '';
-    const printBarcode = (BarcodeQuantity, BarcodeNumber) => {
-        console.log(BarcodeQuantity);
-        // foreach barcodeQuantity create barcode  
-        if (BarcodeNumber != null) {
-
-            for ($i = 0; $i < BarcodeQuantity; $i++) {
-                Barcode_section += `<div class="col-3">
-                <div class="d-flex justify-content-center">
-                <div class="barcode">
-                <div class="barcode__text">
-                </div>
-                <div class="barcode__code">
-                        <span>${BarcodeNumber}</span>
-                    </div>
-                    </div>
-                    </div>`;
-            }
-        }
-    }
-</script>
-
-@endpush -->
-<!-- 
-    <div class="container-lg">
-        <div class="row border p-3 mt-5">
-            @php
-            $number = rand(1000000000, 9999999999);
-            @endphp
-            <div class="w-auto border ">
-                {!! DNS1D::getBarcodeHTML($number, 'I25') !!}
-                <p class="text-center">{{ $number }}</p>
-            </div>
-        </div>
-
-    </div> -->
-
-
-<!-- <div class="p-4 mt-5 row gy-5">
-        <div class="mb-3">{!! DNS2D::getBarcodeSVG('4445645656', 'QRCODE') !!}</div>
-    <div class=" mt-5">{!! DNS1D::getBarcodeHTML('4445645656', 'PHARMA2T') !!}</div>
-
-    <div class="mb-3">{!! DNS1D::getBarcodeSVG('4445645656', 'PHARMA2T') !!}</div>
-    <div class="mb-3">{!! DNS1D::getBarcodeSVG(rand(1,10000), 'CODABAR') !!}</div>
-        <div class="mb-3">{!! DNS1D::getBarcodeHTML(rand(1,10000), 'CODABAR') !!}</div>
-        <div class="mb-3">{!! DNS1D::getBarcodeSVG('4445645656', 'KIX') !!}</div> -->
-
-<!-- <div class="mb-3">{!! DNS1D::getBarcodeSVG('4445645656', 'RMS4CC') !!}</div> -->
-<!-- <div class="mb-3">{!! DNS1D::getBarcodeSVG('4445645656', 'UPCA') !!}</div> -->
-</div>
 </div>

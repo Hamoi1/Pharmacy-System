@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Illuminate\Routing\Route;
 use Livewire\Component;
-use Illuminate\Support\Facades\Route;
 
 class Login extends Component
 {

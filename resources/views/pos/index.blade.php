@@ -1,6 +1,6 @@
 @push('title') POS @endpush
-<div>
-    <div class="container-lg mt-4 {{  app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }}">
+<div class="point-of-sales">
+    <div class="container-lg mt-4 user-select-none {{  app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }}">
         <div wire:loading wire:target="debt,plus,minus,destroy,submit">
             <div class="loading">
                 <div class="loading-content">
@@ -20,14 +20,14 @@
             <livewire:pos.barcode />
             <livewire:pos.name />
         </div>
-        <div class="col-12" id="POS-Table">
-            <span class="header-table d-none">
-              {{ __('header.pharmacyName') }} : {{ $settings->name }}
+        <div class="col-12 table-pos " id="POS-Table">
+            <span class="header-table d-none text-dark">
+                {{ __('header.pharmacyName') }} : {{ $settings->name }}
             </span>
-            <span class="header-table d-none">
+            <span class="header-table d-none text-dark">
                 {{ __('header.phone') }} : {{ $settings->phone }}
             </span>
-            <span class="header-table d-none">
+            <span class="header-table d-none text-dark">
                 {{ __('header.address') }} : {{ $settings->address }}
             </span>
             <div class="table-responsive mt-3 overflow-y-hidden pos-table">
@@ -99,7 +99,8 @@
                     </tbody>
                 </table>
             </div>
-            <div class="mt-4">
+            
+            <div class="mt-4 bottom-pos">
                 <div class="col-md-6 col-12 mt-4 ">
                     <button class="btn btn-success no-print" onclick="printDiv()">
                         <i class="fas fa-print"></i>
@@ -183,7 +184,7 @@
                             @error('discount') <span class="text-danger"> {{ $message }}</span> @enderror
                         </div>
                     </div>
-
+    
                     <div class="col-12 mb-5 mt-3">
                         <div class="no-print">
                             <button class="btn btn-cyan px-5 " wire:click.prevent="submit">
@@ -193,7 +194,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 </div>

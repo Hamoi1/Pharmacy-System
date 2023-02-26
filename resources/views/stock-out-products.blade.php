@@ -1,9 +1,9 @@
-@push('title') Expiry Products @endpush
+@push('title') Stock Out Products @endpush
 <div>
-    <div class="{{ app()->getLocale() =='ckb' ? 'reverse' : '' }} px-lg-5 px-3">
+    <div class="{{ app()->getLocale() =='ckb' || app()->getLocale() =='ar' ? 'reverse' : '' }} px-lg-5 px-3">
         <div class="my-4">
             <h1>
-                {!! __('header.ExpiryProducts') !!}
+                {!! __('header.StockedOutProducts') !!}
             </h1>
         </div>
         <div class="row mt-3" wire:loading wire:target="previousPage,nextPage,gotoPage">

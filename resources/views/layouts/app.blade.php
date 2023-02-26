@@ -19,9 +19,6 @@ session()->put('invoice', $invoice);
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset('assets/css/tabler-vendors.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/tabler.min.css') }}">
-    <!-- <link rel="stylesheet" href="{{ asset('assets/css/tabler-vendors.rtl.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/tabler.rtl.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/demo.rtl.min.css') }}"> -->
     <link rel="stylesheet" href="{{ asset('assets/css/demo.min.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://printjs-4de6.kxcdn.com/print.min.css" />
@@ -38,7 +35,7 @@ session()->put('invoice', $invoice);
 
 </head>
 
-<body>
+<body class="{{ $settings->theme == 0 ? 'theme-light' : 'theme-dark'  }}">
     <div wire:offline>
         <div class="offline">
             <div class="offline-content">
@@ -49,6 +46,7 @@ session()->put('invoice', $invoice);
             </div>
         </div>
     </div>
+    @auth
     <div class="lodaing-seaction">
         <div class="building-blocks">
             <div></div>
@@ -60,21 +58,21 @@ session()->put('invoice', $invoice);
             <div></div>
         </div>
     </div>
-    @auth
-    <aside class="navbar navbar-vertical {{ app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'navbar-right' : '' }} navbar-expand-lg navbar-light no-print">
+    <aside class="navbar navbar-vertical  {{ app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'navbar-right' : '' }} navbar-expand-lg navbar-light no-print">
         <div class="container-fluid">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="mt-lg-4 {{  app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }}">
                 <livewire:profile.index />
+                <hr class="m-0 mt-1 d-none d-lg-block w-100 ">
                 <div class="collapse navbar-collapse" id="navbar-menu">
                     <ul class="navbar-nav pt-lg-3 py-4">
                         @can('admin')
 
                         <li class="nav-item my-1 mx-lg-0 mx-3">
                             <a class="nav-link  {{  app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }} active {{ Request()->is(app()->getLocale().'/dashboard') ? 'active-page' : '' }}  mx-2  " href="{{ route('dashboard',app()->getLocale()) }}">
-                                <i class="fa fa-home"></i>
+                                <i class="fa fa-home mb-2"></i>
                                 <span class="nav-link-title  mx-2">
                                     {{ __('header.Dashboard') }}
                                 </span>
@@ -83,25 +81,25 @@ session()->put('invoice', $invoice);
                         @endcan
                         <li class="nav-item my-1 mx-lg-0 mx-3 ">
                             <a class="nav-link  {{  app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }}  active {{ Route::currentRouteName() == 'sales'  ? 'active-page' : '' }}  mx-2  " href="{{ route('sales',app()->getLocale()) }}">
-                                <i class="fa fa-shopping-cart"></i>
+                                <i class="fa fa-shopping-cart mb-2"></i>
                                 <span class="nav-link-title  mx-2">
                                     {{ __('header.PointOfSale') }}
                                 </span>
                             </a>
                         </li>
                         @can('admin')
-                        <li class="nav-item my-1 mx-lg-0 mx-2 ">
-                            <a class="nav-link  {{  app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }}  active {{ Request()->is(app()->getLocale().'/sales') ? 'active-page mx-lg-2' : '' }}  mx-2 mx-lg-0  " href="{{ route('sales.index',app()->getLocale()) }}">
-                                <span class="nav-link-title  mx-2 d-flex align-items-center  gap-2 ">
-                                    <i class="fa fa-shopping-cart"></i>
+                        <li class="nav-item my-1 mx-lg-0 mx-3 ">
+                            <a class="nav-link  {{  app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }}  active {{ Request()->is(app()->getLocale().'/sales') ? 'active-page ' : '' }}  mx-2   " href="{{ route('sales.index',app()->getLocale()) }}">
+                                <i class="fa fa-shopping-cart mb-2"></i>
+                                <span class="nav-link-title  mx-2 ">
                                     {{ __('header.Sales') }}
                                 </span>
                             </a>
                         </li>
-                        <li class="nav-item my-1 mx-lg-0 mx-2 ">
-                            <a class="nav-link  {{  app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }}  active {{ Request()->is(app()->getLocale().'/sales/debt') ? 'active-page mx-lg-2' : '' }}  mx-2 mx-lg-0  " href="{{ route('sales.debt',app()->getLocale()) }}">
-                                <span class="nav-link-title  mx-2 d-flex align-items-center  gap-2 ">
-                                    <i class="fa-solid fa-money-bill-wave"></i>
+                        <li class="nav-item my-1 mx-lg-0 mx-3 ">
+                            <a class="nav-link  {{  app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }}  active {{ Request()->is(app()->getLocale().'/sales/debt') ? 'active-page ' : '' }}  mx-2   " href="{{ route('sales.debt',app()->getLocale()) }}">
+                                <i class="fa-solid fa-money-bill-wave mb-2"></i>
+                                <span class="nav-link-title  mx-2 ">
                                     {{ __('header.Debts') }}
                                 </span>
                             </a>
@@ -109,7 +107,7 @@ session()->put('invoice', $invoice);
                         @endcan
                         <li class="nav-item my-1 mx-lg-0 mx-3 ">
                             <a class="nav-link  {{  app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }}  active {{ Request()->is(app()->getLocale().'/products') ? 'active-page' : '' }}  mx-2  " href="{{ route('products',app()->getLocale()) }}">
-                                <i class="fa fa-box"></i>
+                                <i class="fa fa-box mb-2"></i>
                                 <span class="nav-link-title  mx-2">
                                     {{ __('header.Products') }}
                                 </span>
@@ -117,33 +115,32 @@ session()->put('invoice', $invoice);
                         </li>
                         <li class="nav-item my-1 mx-lg-0 mx-3">
                             <a class="nav-link  {{  app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }} active {{ Request()->is(app()->getLocale().'/users') ? 'active-page' : '' }}  mx-2  " href="{{ route('users',app()->getLocale()) }}">
-                                <i class="fa fa-user"></i>
+                                <i class="fa fa-user mb-2"></i>
                                 <span class="nav-link-title  mx-2">
                                     {{ __('header.Users') }}
                                 </span>
                             </a>
                         </li>
                         @can('admin')
-                        <li class="nav-item my-1 mx-lg-0 mx-2 ">
-                            <a class="nav-link  {{  app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }}  active {{ Request()->is(app()->getLocale().'/ExpiryProducts') ? 'active-page mx-lg-2' : '' }}  mx-2 mx-lg-0" href="{{ route('ExpiryProducts',app()->getLocale()) }}">
-                                <span class="nav-link-title  mx-2 d-flex align-items-center  gap-2 ">
-                                    <i class="fa-solid fa-triangle-exclamation"></i>
+                        <li class="nav-item my-1 mx-lg-0 mx-3">
+                            <a class="nav-link  {{  app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }}  active {{ Request()->is(app()->getLocale().'/ExpiryProducts') ? 'active-page' : '' }}  mx-2" href="{{ route('ExpiryProducts',app()->getLocale()) }}">
+                                <i class="fa-solid fa-triangle-exclamation mb-2"></i>
+                                <span class="nav-link-title  mx-2">
                                     {{ __('header.ExpiryProducts') }}
                                 </span>
                             </a>
                         </li>
-                        <li class="nav-item my-1 mx-lg-0 mx-2 ">
-                            <a class="nav-link  {{  app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }}  active {{ Request()->is(app()->getLocale().'/stock-out-procuts') ? 'active-page mx-lg-2' : '' }}  mx-2 mx-lg-0" href="{{ route('StockOutProcuts',app()->getLocale()) }}">
-                                <span class="nav-link-title  mx-2 d-flex align-items-center  gap-2 ">
-                                    <i class="fa-solid fa-exclamation"></i>
+                        <li class="nav-item my-1 mx-lg-0 mx-3">
+                            <a class="nav-link  {{  app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }}  active {{ Request()->is(app()->getLocale().'/stock-out-products') ? 'active-page' : '' }}  mx-2 " href="{{ route('StockOutProcuts',app()->getLocale()) }}">
+                                <i class="fa-solid fa-exclamation mb-2"></i>
+                                <span class="nav-link-title  mx-2">
                                     {{ __('header.StockedOutProducts') }}
                                 </span>
                             </a>
                         </li>
-
                         <li class="nav-item my-1 mx-lg-0 mx-3">
                             <a class="nav-link  {{  app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }} active {{ Request()->is(app()->getLocale().'/categorys') ? 'active-page' : '' }}  mx-2" href="{{ route('categorys',app()->getLocale()) }}">
-                                <i class="fa fa-list"></i>
+                                <i class="fa fa-list mb-2"></i>
                                 <span class="nav-link-title  mx-2">
                                     {{ __('header.Categorys') }}
                                 </span>
@@ -151,7 +148,7 @@ session()->put('invoice', $invoice);
                         </li>
                         <li class="nav-item my-1 mx-lg-0 mx-3">
                             <a class="nav-link  {{  app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }} active {{ Request()->is(app()->getLocale().'/suppliers') ? 'active-page' : '' }}  mx-2" href="{{ route('suppliers',app()->getLocale()) }}">
-                                <i class="fa fa-truck"></i>
+                                <i class="fa fa-truck mb-2"></i>
                                 <span class="nav-link-title  mx-2">
                                     {{ __('header.Suppliers') }}
                                 </span>
@@ -159,7 +156,7 @@ session()->put('invoice', $invoice);
                         </li>
                         <li class="nav-item my-1 mx-lg-0 mx-3">
                             <a class="nav-link  {{  app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }} active {{ Request()->is(app()->getLocale().'/barcode') ? 'active-page' : '' }}  mx-2" href="{{ route('barcode',app()->getLocale()) }}">
-                                <i class="fa fa-barcode"></i>
+                                <i class="fa fa-barcode mb-2"></i>
                                 <span class="nav-link-title  mx-2">
                                     {{ __('header.barcode') }}
                                 </span>
@@ -167,7 +164,7 @@ session()->put('invoice', $invoice);
                         </li>
                         <li class="nav-item my-1 mx-lg-0 mx-3">
                             <a class="nav-link  {{  app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }} active {{ Request()->is(app()->getLocale().'/settings') ? 'active-page' : '' }}  mx-2" href="{{ route('settings',app()->getLocale()) }}">
-                                <i class="fa fa-cog"></i>
+                                <i class="fa fa-cog mb-2"></i>
                                 <span class="nav-link-title  mx-2">
                                     {{ __('header.setting') }}
                                 </span>
@@ -176,15 +173,17 @@ session()->put('invoice', $invoice);
                         @endcan
                         <li class="nav-item my-1 mx-lg-0 mx-3">
                             <a class="nav-link  {{  app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }} active {{ Request()->is(app()->getLocale().'/profile') ? 'active-page' : '' }}  mx-2" href="{{ route('profile.update',app()->getLocale()) }}">
-                                <i class="fa fa-user-edit"></i>
+                                <i class="fa fa-user-edit mb-2"></i>
                                 <span class="nav-link-title  mx-2">
                                     {{ __('header.profile') }}
                                 </span>
                             </a>
                         </li>
-                        <div class="w-100  text-center  mt-2 mt-lg-5 py-3   ">
-                            <span class="text-dark  rounded p-2 m-auto">
-                                Developed By <a href="https://github.com/Hamoi1" class="text-primary">Muhammad</a>
+                        <div class="w-100  text-center   mt-lg-5  mt-3  ">
+                            <span class="  rounded p-2 m-auto">
+                                Developed By <a href="https://github.com/Hamoi1" class="text-primary ">
+                                    Muhammad
+                                </a>
                             </span>
                         </div>
                     </ul>
@@ -193,7 +192,7 @@ session()->put('invoice', $invoice);
 
         </div>
     </aside>
-    <div class="page-wrapper">
+    <div class="page-wrapper ">
         {{ $slot }}
     </div>
     </div>
@@ -226,7 +225,11 @@ session()->put('invoice', $invoice);
             });
         });
         window.addEventListener('load', () => {
-            $('.lodaing-seaction').fadeToggle(1500);
+            // if user offiline 
+            $('.lodaing-seaction').fadeToggle(1000);
+        });
+        Livewire.on('ChangeTheme', theme => {
+            window.location.reload();
         });
     </script>
 
