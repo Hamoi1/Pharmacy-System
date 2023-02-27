@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Products;
 
-use App\Jobs\AddProdut;
 use Livewire\Component;
 use App\Models\Products;
 use App\Models\Categorys;
@@ -26,7 +25,10 @@ class Index extends Component
     ];
     public function mount()
     {
-        Gate::allows('admin') ? $this->Trashed  : $this->Trashed = false;
+        if (!Gate::allows('View Product')) {
+            abort(404);
+        }
+        Gate::allows('Product Trash') ? $this->Trashed  : $this->Trashed = false;
     }
     private function CheckTrashParameter()
     {
@@ -155,7 +157,7 @@ class Index extends Component
                 $images[] = $imageName;
             }
         }
-        if ($this->UpdateProduct) {
+        if ($this->UpdateProduct && Gate::allows('Update Product')) {
             Products::findOrFail($this->productID)->update([
                 'name' => $this->name,
                 'barcode' => $this->barcode,
@@ -167,7 +169,7 @@ class Index extends Component
                 'expiry_date' => $this->expire_date,
                 'description' => $this->description,
             ]);
-        } else {
+        } else if (!$this->UpdateProduct  && Gate::allows('Insert Product')) {
             Products::create([
                 'name' => $this->name,
                 'barcode' => $this->barcode,
@@ -183,22 +185,27 @@ class Index extends Component
             ]);
         }
         flash()->addSuccess($this->UpdateProduct ? __('header.updated') : __('header.add'));
+
         $this->done();
     }
     public function updateProduct(Products $product)
     {
-        $this->UpdateProduct = true;
-        $this->productID = $product->id;
-        $this->name = $product->name;
-        $this->barcode = $product->barcode;
-        $this->purches_price = $product->purches_price;
-        $this->sale_price = $product->sale_price;
-        $this->category_id = $product->category_id;
-        $this->supplier_id = $product->supplier_id;
-        $this->quantity = $product->quantity;
-        $this->expire_date = $product->expiry_date;
-        $this->description = $product->description;
-        $product->expiry_date <= now() ? $this->expire = true : $this->expire = false;
+        if (!Gate::allows('Update Product')) {
+            flash()->adderror(__('header.NotAllowToDo'));
+        } else {
+            $this->UpdateProduct = true;
+            $this->productID = $product->id;
+            $this->name = $product->name;
+            $this->barcode = $product->barcode;
+            $this->purches_price = $product->purches_price;
+            $this->sale_price = $product->sale_price;
+            $this->category_id = $product->category_id;
+            $this->supplier_id = $product->supplier_id;
+            $this->quantity = $product->quantity;
+            $this->expire_date = $product->expiry_date;
+            $this->description = $product->description;
+            $product->expiry_date <= now() ? $this->expire = true : $this->expire = false;
+        }
     }
     public function removeImage($index)
     {
@@ -207,8 +214,12 @@ class Index extends Component
     }
     public function delete(Products $product)
     {
-        $product->delete();
-        flash()->addSuccess(__('header.deleted_for_30_days'));
+        if (!Gate::allows('Delete Product')) {
+            flash()->adderror(__('header.NotAllowToDo'));
+        } else {
+            $product->delete();
+            flash()->addSuccess(__('header.deleted_for_30_days'));
+        }
         $this->done();
     }
     public function show(Products $product)
@@ -218,7 +229,6 @@ class Index extends Component
     public function DeleteAll()
     {
         $products = $this->CheckTrashParameter()->with('sale_details')->get();
-
         foreach ($products as $product) {
             foreach ($product->sale_details as $p) {
                 $p->update([
@@ -241,7 +251,7 @@ class Index extends Component
     }
     public function restore($id)
     {
-        $product = Products::onlyTrashed()->findOrFail($id)->restore();
+        Products::onlyTrashed()->findOrFail($id)->restore();
         flash()->addSuccess(__('header.RestoreMessage'));
         $this->done();
     }

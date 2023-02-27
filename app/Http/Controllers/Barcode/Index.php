@@ -17,7 +17,7 @@ class Index extends Component
     public  $barcode, $quantity, $barcode_name, $barcode_id, $Barcode;
     public function mount()
     {
-        if (!Gate::allows('admin')) abort(404);
+        if (!Gate::allows('View Barcode')) abort(404);
     }
     public function render()
     {
@@ -52,7 +52,6 @@ class Index extends Component
         }
         $this->barcode =  Str::substr($barcode, 0, 12);
         $this->resetValidation();
-
     }
 
     public function rules()
@@ -86,19 +85,27 @@ class Index extends Component
     }
     public function submit()
     {
-        $this->validate($this->rules(), $this->messages());
-        Barcode::create([
-            'name' => $this->barcode_name,
-            'barcode' => $this->barcode,
-            'quantity' => $this->quantity,
-        ]);
-        flash()->addSuccess(__('header.barcodes.SuccessfullyGenerated'));
+        if (!Gate::allows('Insert Barcode')) {
+            flash()->addError(__('header.NotAllowToDo'));
+        } else {
+            $this->validate($this->rules(), $this->messages());
+            Barcode::create([
+                'name' => $this->barcode_name,
+                'barcode' => $this->barcode,
+                'quantity' => $this->quantity,
+            ]);
+            flash()->addSuccess(__('header.barcodes.SuccessfullyGenerated'));
+        }
         $this->done();
     }
     public function destroy(Barcode $barcode)
     {
-        $barcode->delete();
-        flash()->addSuccess(__('header.deleted'));
+        if (!Gate::allows('Delete Barcode')) {
+            flash()->addError(__('header.NotAllowToDo'));
+        } else {
+            $barcode->delete();
+            flash()->addSuccess(__('header.deleted'));
+        }
         $this->done();
     }
     public function show(Barcode $barcode)

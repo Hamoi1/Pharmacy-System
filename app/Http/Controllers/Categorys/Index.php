@@ -14,6 +14,13 @@ class Index extends Component
     public $name, $search, $category_id, $Trashed = false;
     public $updateCategory = false;
     protected  $paginationTheme = 'bootstrap', $queryString = ['search' => ['as' => 's', 'except' => ''], 'Trashed' => ['except' => false]];
+    public function mount()
+    {
+        if (!Gate::allows('View Category')) {
+            abort(404);
+        }
+        Gate::allows('Category Trash') ? $this->Trashed  : $this->Trashed = false;
+    }
     private function CheckTrashParameter()
     {
         if ($this->Trashed) {
@@ -31,13 +38,9 @@ class Index extends Component
     {
         $categorys = $this->CheckTrashParameter();
         $this->search != null || $this->search != '' ? $categorys->where('name', 'like', '%' . $this->search . '%') : '';
-        if (!Gate::allows('admin')) {
-            abort(404);
-        }
         $GetTrashDate = function ($date) {
             return $date->addMonth()->format('Y-m-d');
         };
-        // dd($categorys->withTrashed()->get());
         return view('categorys.index', [
             'categorys' => $categorys->latest()->products_count()->paginate(10),
             'GetTrashDate' => $GetTrashDate,
@@ -49,7 +52,7 @@ class Index extends Component
         $this->resetValidation();
         $this->dispatchBrowserEvent('closeModal');
     }
-    public function ResetData()
+    private function ResetData()
     {
         return [
             'name',
@@ -81,30 +84,40 @@ class Index extends Component
     public function submit()
     {
         $this->validate($this->GetRuls(), $this->GetMessages());
-        $this->updateCategory ?
+        if ($this->updateCategory && Gate::allows('Update Category')) {
+
             Categorys::findorFail($this->category_id)->update([
                 'name' => $this->name,
                 'slug' => Str::slug($this->name),
-            ]) :
+            ]);
+        } elseif ($this->updateCategory == false && Gate::allows('Insert Category')) {
             Categorys::create([
                 'name' => $this->name,
                 'slug' => Str::slug($this->name),
             ]);
-       flash()->addSuccess($this->updateCategory ?  __('header.updated') : __('header.add'));
+        }
+        flash()->addSuccess($this->updateCategory ?  __('header.updated') : __('header.add'));
         $this->done();
     }
     public function destroy(Categorys $category)
     {
-        // delete category soft delete
-        $category->delete();
-       flash()->addSuccess(__('header.deleted_for_30_days'));
+        if (!Gate::allows('Delete Category')) {
+            flash()->addError(__('header.NotAllowToDo'));
+        } else {
+            $category->delete();
+            flash()->addSuccess(__('header.deleted_for_30_days'));
+        }
         $this->done();
     }
     public function update(Categorys $category)
     {
-        $this->updateCategory = true;
-        $this->name = $category->name;
-        $this->category_id = $category->id;
+        if (!Gate::allows('Update Category')) {
+            flash()->addError(__('header.NotAllowToDo'));
+        } else {
+            $this->updateCategory = true;
+            $this->name = $category->name;
+            $this->category_id = $category->id;
+        }
     }
     public function restore($id, $status = true)
     {
@@ -112,7 +125,7 @@ class Index extends Component
             return;
         Categorys::onlyTrashed()->findorFail($id)->restore();
         if ($status) {
-           flash()->addSuccess(__('header.RestoreMessage'));
+            flash()->addSuccess(__('header.RestoreMessage'));
             $this->done();
         }
     }
@@ -124,7 +137,7 @@ class Index extends Component
         foreach ($categorys as $category) {
             $category->forceDelete();
         }
-       flash()->addSuccess(__('header.deleted'));
+        flash()->addSuccess(__('header.deleted'));
         $this->done();
     }
     public function RestoreAll()
@@ -135,7 +148,7 @@ class Index extends Component
         foreach ($categorys as $category) {
             $this->restore($category->id, false);
         }
-       flash()->addSuccess(__('header.RestoreMessage'));
+        flash()->addSuccess(__('header.RestoreMessage'));
         $this->done();
     }
 }

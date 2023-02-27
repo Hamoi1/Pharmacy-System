@@ -6,13 +6,17 @@
                 <h2>
                     {{ __('header.barcodes.barcodes') }}
                 </h2>
+                @can('Insert Barcode')
                 @include('barcode.pages.generate')
                 <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#generate">
                     <i class="fas fa-plus"></i>
                 </button>
+                @endcan
             </div>
         </div>
+        @can('Delete Barcode')
         @include('barcode.pages.delete')
+        @endcan
         <div class="row mt-3" wire:loading wire:target="previousPage,nextPage,gotoPage,download">
             <div class="d-flex  gap-2">
                 <h3>
@@ -53,9 +57,11 @@
                             <button class="btn" wire:click="download({{ $barcode->id }})">
                                 <i class="fa-solid fa-print"></i>
                             </button>
+                            @can('Delete Barcode')
                             <a class="btn" href="" data-bs-toggle="modal" data-bs-target="#delete" wire:click.prevent="$set('barcode_id',{{$barcode->id}})">
                                 <i class="fa-solid fa-trash text-danger"></i>
                             </a>
+                            @endcan
                         </td>
                     </tr>
                     @empty

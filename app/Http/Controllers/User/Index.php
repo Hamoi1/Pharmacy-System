@@ -2,62 +2,35 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Models\Role;
 use App\Models\User;
 use Livewire\Component;
 use App\Models\UserDetails;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
+use App\Models\UserPermissions;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 
 class Index extends Component
 {
     use WithPagination, WithFileUploads;
-    public $name, $username, $phone, $email, $role, $address, $password, $confirm_password,
-        $UpdateUser, $UserId, $search, $roles, $status, $user, $statu, $Trashed = false;
+    public $name, $username, $phone, $email, $address, $password, $confirm_password,
+        $UpdateUser, $UserId, $search, $status, $user, $statu, $Trashed = false,
+        $permission = [];
     protected $paginationTheme = 'bootstrap',
         $queryString = [
             'search' => ['except' => ['id'], 'as' => 's'],
-            'roles' => ['as' => 'r'],
             'status' => ['as' => 'st'],
             'Trashed' => ['except' => false],
             'page'
         ];
-    private static function Resets()
+    public function mount()
     {
-        return [
-            'name',
-            'username',
-            'phone',
-            'email',
-            'role',
-            'address',
-            'password',
-            'confirm_password',
-            'UpdateUser',
-            'UserId',
-            'user',
-            'statu',
-        ];
-    }
-    public function done()
-    {
-        $this->add();
-        $this->reset(self::Resets());
-        $this->dispatchBrowserEvent('closeModal');
-        $this->resetValidation();
-    }
-    public function add()
-    {
-        $this->UpdateUser == false;
-    }
-    public function updateroles()
-    {
-        $this->roles = in_array($this->roles, [1, 2]) ? $this->roles : '';
-    }
-    public function updatstatus()
-    {
-        $this->status = in_array($this->status, [1, 0]) ? $this->status : '';
+        if (!Gate::allows('View User')) {
+            abort(404);
+        }
+        Gate::allows('User Trash') ? $this->Trashed  : $this->Trashed = false;
     }
 
     private function CheckTrashParameter()
@@ -83,20 +56,53 @@ class Index extends Component
                     });
                 });
         }) : '';
-        // if not admin roles and status not working
-        if (Gate::allows('admin')) {
-            $this->status != null ? $users->Where('status', $this->status) : null;
-            $this->roles  != null ? $users->Where('role', $this->roles) : null;
-        }
+        $this->status != null ? $users->Where('status', $this->status) : null;
         $users = $users->where('id', '!=', auth()->user()->id);
         $GetTrashDate = function ($date) {
-            return $date->addMonth()->format('Y-m-d');
+            return $date;
         };
+        $roless = Role::get();
         return view('user.index', [
             'users' => $users->latest()->UserDetails()->paginate(10),
-            'GetTrashDate' => $GetTrashDate
+            'GetTrashDate' => $GetTrashDate,
+            'roless' => $roless
         ]);
     }
+
+    private static function Resets()
+    {
+        return [
+            'name',
+            'username',
+            'phone',
+            'email',
+            'address',
+            'password',
+            'confirm_password',
+            'UpdateUser',
+            'UserId',
+            'user',
+            'statu',
+            'permission',
+        ];
+    }
+    public function done()
+    {
+        $this->add();
+        $this->reset(self::Resets());
+        $this->dispatchBrowserEvent('closeModal');
+        $this->resetValidation();
+    }
+    public function add()
+    {
+        $this->UpdateUser == false;
+    }
+
+    public function updatstatus()
+    {
+        $this->status = in_array($this->status, [1, 0]) ? $this->status : '';
+    }
+
     public function Trash()
     {
         $this->Trashed = !$this->Trashed;
@@ -116,9 +122,9 @@ class Index extends Component
                 'username' => 'required|string|alpha_dash|min:3|max:20|unique:users,username,' . $this->UserId,
                 'phone' => 'required|numeric|digits:11|unique:users,phone,' . $this->UserId,
                 'email' => 'required|email|regex:/^[a-zA-Z0-9_.+-]+@[a-zA-Z]+\.[a-zA-Z]+$/u|unique:users,email,' . $this->UserId,
-                'role' => 'required|in:1,2',
                 'address' => 'required|alpha_dash|min:3|max:40',
                 'statu' => 'in:1,0|nullable',
+                'permission' => 'required|array|min:1|exists:role,id',
             ];
         } else {
             return [
@@ -127,8 +133,8 @@ class Index extends Component
                 'phone' => 'required|numeric|digits:11|unique:users,phone',
                 'email' => 'required|email|unique:users,email|regex:/^[a-zA-Z0-9_.+-]+@[a-zA-Z]+\.[a-zA-Z]+$/u',
                 'password' => 'required|min:8|max:40|same:confirm_password',
-                'role' => 'required|in:1,2',
                 'address' => 'required|alpha_dash|min:3|max:40',
+                'permission' => 'required|array|min:1|exists:role,id',
             ];
         }
     }
@@ -158,79 +164,104 @@ class Index extends Component
             'password.min' => __('validation.min.string', ['attribute' => __('header.password'), 'min' => 8]),
             'password.max' => __('validation.max.string', ['attribute' => __('header.password'), 'max' => 40]),
             'password.same' => __('validation.same', ['attribute' => __('header.password'), 'other' => __('header.confirm_password')]),
-            'role.required' => __('validation.required', ['attribute' => __('header.role')]),
-            'role.in' => __('validation.in', ['attribute' => __('header.role')]),
             'address.required' => __('validation.required', ['attribute' => __('header.address')]),
             'address.min' => __('validation.min.string', ['attribute' => __('header.address'), 'min' => 3]),
             'address.max' => __('validation.max.string', ['attribute' => __('header.address'), 'max' => 40]),
             'address.alpha_dash' => __('validation.alpha_dash', ['attribute' => __('header.address')]),
             'statu.required' => __('validation.required', ['attribute' => __('header.status')]),
             'statu.in' => __('validation.in', ['attribute' => __('header.status')]),
+            'permission.required' => __('validation.required', ['attribute' => __('header.permission')]),
+            'permission.array' => __('validation.array', ['attribute' => __('header.permission')]),
+            'permission.min' => __('validation.min.array', ['attribute' => __('header.permission'), 'min' => 1]),
+            'permission.exists' => __('validation.exists', ['attribute' => __('header.permission')]),
         ];
     }
+    public function role_permission($role_id)
+    {
+        //    before add data to role_permission array check 
+        //    if this role_id is exist in role_permission array or not
+        if (!in_array($role_id, $this->permission)) {
+            array_push($this->permission, $role_id);
+        } else {
+            //    if this role_id is exist in role_permission array
+            //    remove it from role_permission array
+            $this->permission = array_diff($this->permission, [$role_id]);
+        }
+    }
+
     public function submit()
     {
-        if (!Gate::allows('admin')) {
-            flash()->addError(__('header.not-allowed'));
-            $this->done();
-        }
         $this->validate($this->GetRulse(), $this->GetMessage());
-        sleep(1);
-        if ($this->UpdateUser) {
+        if ($this->UpdateUser && Gate::allows('Update User')) {
             $user = User::find($this->UserId);
             $user->update([
                 'name' => $this->name,
                 'username' => $this->username,
                 'phone' => $this->phone,
                 'email' => $this->email,
-                'role' => $this->role,
                 'status' => $this->statu,
             ]);
             UserDetails::where('user_id', $this->UserId)->update([
                 'address' => $this->address,
             ]);
-        } else {
+            // update permission
+            UserPermissions::where('user_id', $this->UserId)->delete();
+            foreach ($this->permission as $permission) {
+                // get role id add to UserPermission table
+                $id = Role::find($permission)->id;
+                UserPermissions::create([
+                    'role_id' => $id,
+                    'user_id' => $this->UserId,
+                ]);
+            }
+        } elseif (!$this->UpdateUser && Gate::allows('Insert User')) {
             $users = User::create([
                 'name' => $this->name,
                 'username' => $this->username,
                 'phone' => $this->phone,
                 'email' => $this->email,
                 'password' => Hash::make($this->password),
-                'role' => $this->role,
             ]);
             UserDetails::create([
                 'user_id' => $users->id,
                 'address' => $this->address,
             ]);
+            foreach ($this->permission as $permission) {
+                $permission_name = Role::find($permission)->name;
+                UserPermissions::create([
+                    'user_permissions' => $permission_name,
+                    'user_id' => $users->id,
+                ]);
+            }
         }
         flash()->addSuccess($this->UpdateUser ?  __('header.updated') :  __('header.add'));
         $this->done();
     }
     public function Update($id)
     {
-        if (!Gate::allows('admin')) {
-            flash()->addSuccess(__('header.not-allowed'));
-            $this->done();
+        if (!Gate::allows('Update User')) {
+            flash()->addError(__('header.NotAllowToDo'));
+        } else {
+            $this->UpdateUser = true;
+            $users = User::UserDetails()->with('Permissions')->findOrFail($id);
+            $this->UserId = $users->id;
+            $this->name = $users->name;
+            $this->username = $users->username;
+            $this->phone = $users->phone;
+            $this->email = $users->email;
+            $this->address = $users->address;
+            $this->statu = $users->status;
+            $this->permission = $users->Permissions->pluck('role_id')->toArray();
         }
-        $this->UpdateUser = true;
-        $users = User::UserDetails()->findOrFail($id);
-        $this->UserId = $users->id;
-        $this->name = $users->name;
-        $this->username = $users->username;
-        $this->phone = $users->phone;
-        $this->email = $users->email;
-        $this->role = $users->role;
-        $this->address = $users->address;
-        $this->statu = $users->status;
     }
     public function delete($id)
     {
-        if (!Gate::allows('admin')) {
-            flash()->addSuccess(__('header.not-allowed'));
-            $this->done();
+        if (!Gate::allows('Delete User')) {
+            flash()->addError(__('header.NotAllowToDo'));
+        } else {
+            User::findOrFail($id)->delete();
+            flash()->addSuccess(__('header.deleted_for_30_days'));
         }
-        User::findOrFail($id)->delete();
-        flash()->addSuccess(__('header.deleted_for_30_days'));
         $this->done();
     }
     public function show(User $user)
@@ -241,14 +272,14 @@ class Index extends Component
 
     public function toggleActive(User $user)
     {
-        if (!Gate::allows('admin')) {
-            flash()->addSuccess(__('header.not-allowed'));
-            $this->done();
+        if (!Gate::allows('Update User')) {
+            flash()->addError(__('header.NotAllowToDo'));
+        } else {
+            $user->update([
+                'status' => $user->status == 1 ? 0 : 1,
+            ]);
+            flash()->addSuccess($user->status == 1 ? __('header.actived') : __('header.deactived'));
         }
-        $user->update([
-            'status' => $user->status == 1 ? 0 : 1,
-        ]);
-        flash()->addSuccess($user->status == 1 ? __('header.actived') : __('header.deactived'));
         $this->done();
     }
     public function DeleteAll()

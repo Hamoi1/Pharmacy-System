@@ -12,14 +12,30 @@
             </div>
         </div>
     </div>
-
     <div class="{{ app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }} container-xl">
         <div class="mt-4">
-            <x-page-header title="{{ __('header.Users') }}" target="#add-update" wire="wire:click=add" />
+            <div class="page-header">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h2 class="page-title">
+                            {{ __('header.Users') }}
+                        </h2>
+                    </div>
+                    @can('InsertUser')
+                    <div class="col-auto ms-auto">
+                        <a href="" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add-update" wire="wire:click=add">
+                            <i class="fa fa-plus"></i>
+                        </a>
+                    </div>
+                    @endcan
+                </div>
+            </div>
         </div>
-        @can('admin')
+        @canany(['Update User','Insert User'])
         @include('user.add-update')
+        @endcanany
         @livewire('generate.user-report')
+        @can('Delete User')
         @include('user.delete')
         @endcan
         <x-not-access name="{{ __('header.User') }}" />
@@ -41,15 +57,8 @@
                     <option value="0">Not Active</option>
                 </select>
             </div>
-            <div class="col-lg-2 col-md-6 col-6">
-                <select class="form-select" wire:model="roles">
-                    <option value="">{{ __('header.role') }}</option>
-                    <option value="1">Admin</option>
-                    <option value="2">Cashier</option>
-                </select>
-            </div>
             @endcan
-            @can('admin')
+            @can('User Trash')
             <div class="col-lg-1 col-md-6 col-5 mx-lg-2">
                 <button class=" btn" wire:click="Trash">
                     <i class="fa fa-trash mx-2 mb-1"></i>
@@ -81,7 +90,7 @@
             @endif
             @endcan
         </div>
-        <div class="row mt-3" wire:loading wire:target="search,roles,status,previousPage,nextPage,gotoPage">
+        <div class="row mt-3" wire:loading wire:target="search,status,previousPage,nextPage,gotoPage">
             <div class="d-flex  gap-2">
                 <h3>
                     {{ __('header.waiting') }}
@@ -89,7 +98,7 @@
                 <div class="spinner-border" role="status"></div>
             </div>
         </div>
-        <div class="table-responsive mt-3" wire:loading.remove wire:target="search,roles,status,previousPage,nextPage,gotoPage">
+        <div class="table-responsive mt-3" wire:loading.remove wire:target="search,status,previousPage,nextPage,gotoPage">
             <table class="table table-vcenter table-nowrap">
                 <thead>
                     <tr class="">
@@ -102,16 +111,13 @@
                         <th class="fs-4">
                             {{ __('header.email') }}
                         </th>
-                        <th class="fs-4 col-1">
-                            {{ __('header.role') }}
-                        </th>
-                        @if(!$Trashed)
+                        @if($Trashed)
                         <th class="fs-4 text-center">
-                            {{ __('header.status') }}
+                            {{ __('header.warning') }}
                         </th>
                         @else
                         <th class="fs-4 text-center">
-                            {{ __('header.warning') }}
+                            {{ __('header.status') }}
                         </th>
                         @endif
                         @can('admin')
@@ -145,44 +151,44 @@
                         <td>
                             {{ $user->email }}
                         </td>
-                        <td>
-                            {{ $user->role() }}
-                        </td>
-                        @if(!$Trashed)
-                        <td class="col-1 text-center">
-                            <div class="d-flex align-items-center justify-content-center">
-                                <span class="badge bg-{{ $user->status == 1 ? 'success' : 'danger' }}">{{ $user->status == 1 ? __('header.active') : __('header.deactive') }}
-                                </span>
-                                @can('admin')
-                                <span>
-                                    <label class="form-check form-switch mt-1 mx-2">
-                                        <input class="form-check-input" type="checkbox" {{ $user->status == 1 ? 'checked' : '' }} wire:click="toggleActive({{ $user->id }})">
-                                    </label>
-                                </span>
-                                @endcan
-                            </div>
-                        </td>
-                        @else
+                        @can('User Trash')
+                        @if($Trashed)
                         <td>
                             <span class="badge bg-info px-2 py-2">
                                 {{ __('header.DeletedAfter30Dayes' ,['date'=>  $GetTrashDate($user->deleted_at) ]) }}
                             </span>
                         </td>
+                        @else
+                        <td class="col-1 text-center">
+                            <div class="d-flex align-items-center justify-content-center">
+                                <span class="badge bg-{{ $user->status == 1 ? 'success' : 'danger' }}">{{ $user->status == 1 ? __('header.active') : __('header.deactive') }}
+                                </span>
+                                <span>
+                                    <label class="form-check form-switch mt-1 mx-2">
+                                        <input class="form-check-input" type="checkbox" {{ $user->status == 1 ? 'checked' : '' }} wire:click="toggleActive({{ $user->id }})">
+                                    </label>
+                                </span>
+                            </div>
+                        </td>
                         @endif
-
-                        @can('admin')
+                        @endcan
                         <td class=" col-1 text-center">
                             @if(!$Trashed)
+                            @can('Update User')
                             <a class="btn " href="" data-bs-toggle="modal" data-bs-target="#add-update" wire:click.prevent="Update({{ $user->id }})">
                                 <i class="fa-solid fa-edit text-primary"></i>
                             </a>
+                            @endcan
                             <a class="btn " href="" data-bs-toggle="modal" data-bs-target="#generate" wire:click.prevent="$emit('generateReport',{{ $user->id }})">
                                 <i class="fa-solid fa-file-pdf"></i>
                             </a>
+                            @can('Delete User')
                             <a class="btn" href="" data-bs-toggle="modal" data-bs-target="#delete" wire:click="$set('UserId',{{ $user->id }})">
                                 <i class="fa-solid fa-trash text-danger"></i>
                             </a>
+                            @endcan
                             @else
+                            @can('User Trash')
                             <button class="btn" wire:click="restore({{ $user->id }})">
                                 <i class="fa-solid fa-recycle text-success"></i>
                             </button>
@@ -203,7 +209,7 @@
             </table>
         </div>
 
-        <div class="my-5" wire:loading.remove wire:target="search,roles,status,previousPage,nextPage,gotoPage">
+        <div class="my-5" wire:loading.remove wire:target="search,status,previousPage,nextPage,gotoPage">
             {!! $users->onEachSide(1)->links() !!}
         </div>
     </div>

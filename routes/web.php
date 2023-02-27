@@ -1,5 +1,8 @@
 <?php
 
+use App\Models\Role;
+use App\Models\User;
+use App\Models\UserPermissions;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -26,7 +29,7 @@ Route::group([
         Route::get('/suppliers', App\Http\Controllers\Supplier\Index::class)->name('suppliers');
         Route::get('/pont-of-sale', App\Http\Controllers\Pos\Index::class)->name('sales');
         Route::get('/sales', App\Http\Controllers\Sales\Index::class)->name('sales.index');
-        Route::get('/sale/view/{id}/{invoice}', App\Http\Controllers\Sales\ViewSale::class)->name('sales.view');
+        Route::get('/sale/view/{id}/{invoice}', App\Http\Controllers\Sales\PrintSales::class)->name('sales.PrintSales');
         Route::get('/sales/debt', App\Http\Controllers\Sales\DebtSale::class)->name('sales.debt');
 
         Route::get('/profile', App\Http\Controllers\Profile\Update::class)->name('profile.update');

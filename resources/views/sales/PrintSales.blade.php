@@ -1,4 +1,4 @@
-@push('title') View Sale @endpush
+@push('title') Print Sale @endpush
 <div>
     <div class="{{ app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }} container-lg px-2 px-lg-5 mt-3 pt-3">
         <p class="fw-bolder fs-5 my-2 not-reverse d-none header-table">

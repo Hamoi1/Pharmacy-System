@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Role;
+use App\Models\UserPermissions;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider

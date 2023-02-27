@@ -5,12 +5,12 @@
                 {{ $title }}
             </h2>
         </div>
-        @can('admin')
+        @canany(['InsertProduct','InsertBarcode','InsertCategory','Insert Sales','InsertSupplier','InsertUser'])
         <div class="col-auto ms-auto">
             <a href="" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="{{ $target }}" {{ $wire }}>
                 <i class="fa fa-plus"></i>
             </a>
         </div>
-        @endcan
+        @endcanany
     </div>
 </div>

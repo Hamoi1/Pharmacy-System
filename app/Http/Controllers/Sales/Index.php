@@ -17,7 +17,7 @@ class Index extends Component
     protected $queryString = ['UserID' => ['as' => 'user', 'except' => ''], 'date' => ['as' => 'date', 'except' => ''], 'invoice' => ['except' => '']];
     public function mount()
     {
-        if (!Gate::allows('admin')) {
+        if (!Gate::allows('View Sales')) {
             abort(404);
         }
     }
@@ -72,8 +72,12 @@ class Index extends Component
     }
     public function destroy(Sales $sale)
     {
-        $sale->delete();
-        flash()->addSuccess(__('header.deleted'));
+        if (!Gate::allows('Delete Sales')) {
+            flash()->addError(__('header.NotAllowToDo'));
+        } else {
+            $sale->delete();
+            flash()->addSuccess(__('header.deleted'));
+        }
         $this->done();
     }
     public function View($id)

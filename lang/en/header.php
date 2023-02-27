@@ -207,4 +207,6 @@ return [
         'no name' => 'No Name',
     ],
     'changetheme' => 'Change Theme',
+    'NotAllowToDo' => 'You Don\'t Have Permission For This Task !',
+    'permission' => 'Permission', 
 ];

@@ -104,8 +104,11 @@ return [
             'png', 'gif', 'bmp', 'svg', 'wav', 'mp4',
             'mov', 'avi', 'wmv', 'mp3', 'm4a',
             'jpg', 'jpeg', 'mpga', 'webp', 'wma',
+            'aac', 'ogg', 'flac', 'm4v', '3gp',
+            '3g2', 'mxf', 'roq', 'nsv', 'f4v',
+            'f4p', 'f4a', 'f4b', 'mng', 'asf',
         ],
-        'max_upload_time' => 5, // Max duration (in minutes) before an upload gets invalidated.
+        'max_upload_time' => 100, // Max duration (in minutes) before an upload gets invalidated.
     ],
 
     /*

@@ -16,8 +16,10 @@
         <div class="mt-4">
             <x-page-header title="{{ __('header.Suppliers') }}" target="#add-update" wire="wire:click=add" />
         </div>
-        @can('admin')
+        @canany(['Update Supplier','Insert Supplier'])
         @include('supplier.add-update')
+        @endcanany
+        @can('Delete Supplier')
         @include('supplier.delete')
         @endcan
         <x-not-access name="{{ __('header.Supplier') }}" />
@@ -30,6 +32,7 @@
                     </span>
                 </div>
             </div>
+            @can('Supplier Trash')
             <div class="col-lg-1 col-md-6 col-5 mx-lg-2">
                 <button class=" btn " wire:click="Trash">
                     <i class="fa fa-trash mx-2 mb-2"></i>
@@ -59,6 +62,7 @@
                 </div>
             </div>
             @endif
+            @endcan
         </div>
         <div class="row mt-3" wire:loading wire:target="search,previousPage,nextPage,gotoPage">
             <div class="d-flex  gap-2">
@@ -79,9 +83,9 @@
                         @if ($Trashed)
                         <th class="fs-4">{{ __('header.warning') }}</th>
                         @endif
-                        @can('admin')
+                        @canany(['Update Supplier','Insert Supplier'])
                         <th class="col-1 fs-4 text-center">{{ __('header.actions') }}</th>
-                        @endcan
+                        @endcanany
                     </tr>
                 </thead>
                 <tbody>
@@ -113,22 +117,26 @@
                             </span>
                         </td>
                         @endif
-                        @can('admin')
+                        @canany(['Update Supplier','Insert Supplier'])
                         <td class=" col-1 text-center">
                             @if (!$Trashed)
+                            @can('Update Supplier')
                             <a class="btn" href="" data-bs-toggle="modal" data-bs-target="#add-update" wire:click.prevent="edit({{ $supplier->id }})">
                                 <i class="fa-solid fa-edit text-primary"></i>
                             </a>
+                            @endcan
+                            @can('Delete Supplier')
                             <a class="btn" href="" data-bs-toggle="modal" data-bs-target="#delete" wire:click.prevent="$set('supplier_id', {{ $supplier->id }})">
                                 <i class="fa-solid fa-trash text-danger"></i>
                             </a>
+                            @endcan
                             @else
                             <button class="btn text-success" wire:click="restore({{ $supplier->id }})">
                                 <i class="fa-solid fa-recycle"></i>
                             </button>
                             @endif
                         </td>
-                        @endcan
+                        @endcanany
                     </tr>
                     @empty
                     <tr>

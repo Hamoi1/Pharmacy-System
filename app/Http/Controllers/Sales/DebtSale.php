@@ -23,7 +23,7 @@ class DebtSale extends Component
     }
     public function render()
     {
-        if (!Gate::allows('admin')) {
+        if (!Gate::allows('ViewDebtSale')) {
             abort(404);
         }
         $debtSales = DebtSaleModel::query();
@@ -42,40 +42,52 @@ class DebtSale extends Component
     }
     public function edit(DebtSaleModel $debtSale)
     {
-        $this->Edit = true;
-        $this->__id = $debtSale->id;
-        $this->name = $debtSale->name;
-        $this->phone = $debtSale->phone;
-        $this->amount = $debtSale->amount;
-        $this->currentPaid = $debtSale->paid;
-        $this->remain = $debtSale->remain;
+        if (!Gate::allows('UpdateDebtSale')) {
+            flash()->addError(__('header.NotAllowToDo'));
+        } else {
+            $this->Edit = true;
+            $this->__id = $debtSale->id;
+            $this->name = $debtSale->name;
+            $this->phone = $debtSale->phone;
+            $this->amount = $debtSale->amount;
+            $this->currentPaid = $debtSale->paid;
+            $this->remain = $debtSale->remain;
+        }
     }
     public function submit()
     {
-        $this->validate([
-            'price' => 'required|numeric|min:1|max:' . $this->remain,
-        ], [
-            'price.required' => __('validation.required', ['attribute' => __('header.Returned Money')]),
-            'price.numeric' => __('validation.numeric', ['attribute' => __('header.Returned Money')]),
-            'price.min' => __('validation.min.numeric', ['attribute' => __('header.Returned Money'), 'min' => 1]),
-            'price.max' => __('validation.max.numeric', ['attribute' => __('header.Returned Money'), 'max' => $this->remain . ' ' . __('header.currency')]),
-        ]);
-        $debtSale = DebtSaleModel::find($this->__id);
-        $debtSale->paid = $this->currentPaid + $this->price;
-        $debtSale->remain = $this->remain - $this->price;
-        $debtSale->status = $debtSale->remain == 0 ? 1 : 0;
-        $debtSale->updated_at = $debtSale->remain == 0 ? now()->addMonth() : now();
-        $debtSale->sale()->update([
-            'paid' => $debtSale->remain == 0 ? 1 : 0,
-        ]);
-        $debtSale->save();
-        flash()->addSuccess(__('header.updated'));
+        if (!Gate::allows('UpdateDebtSale')) {
+            flash()->addError(__('header.NotAllowToDo'));
+        } else {
+            $this->validate([
+                'price' => 'required|numeric|min:1|max:' . $this->remain,
+            ], [
+                'price.required' => __('validation.required', ['attribute' => __('header.Returned Money')]),
+                'price.numeric' => __('validation.numeric', ['attribute' => __('header.Returned Money')]),
+                'price.min' => __('validation.min.numeric', ['attribute' => __('header.Returned Money'), 'min' => 1]),
+                'price.max' => __('validation.max.numeric', ['attribute' => __('header.Returned Money'), 'max' => $this->remain . ' ' . __('header.currency')]),
+            ]);
+            $debtSale = DebtSaleModel::find($this->__id);
+            $debtSale->paid = $this->currentPaid + $this->price;
+            $debtSale->remain = $this->remain - $this->price;
+            $debtSale->status = $debtSale->remain == 0 ? 1 : 0;
+            $debtSale->updated_at = $debtSale->remain == 0 ? now()->addMonth() : now();
+            $debtSale->sale()->update([
+                'paid' => $debtSale->remain == 0 ? 1 : 0,
+            ]);
+            $debtSale->save();
+            flash()->addSuccess(__('header.updated'));
+        }
         $this->done();
     }
     public function destroy(DebtSaleModel $debtSale)
     {
-        $debtSale->delete();
-        flash()->addSuccess(__('header.deleted'));
+        if (!Gate::allows('DeleteDebtSale')) {
+            flash()->addError(__('header.NotAllowToDo'));
+        } else {
+            $debtSale->delete();
+            flash()->addSuccess(__('header.deleted'));
+        }
         $this->done();
     }
 }

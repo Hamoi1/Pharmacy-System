@@ -14,10 +14,27 @@
     </div>
     <div class="{{ app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }} px-lg-5 px-3">
         <div class="mt-4">
-            <x-page-header title="{{ __('header.Products') }}" target="#add-update" wire="wire:click=add" />
+            <div class="page-header">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h2 class="page-title">
+                            {{ __('header.Products') }}
+                        </h2>
+                    </div>
+                    @can('InsertProduct')
+                    <div class="col-auto ms-auto">
+                        <a href="" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add-update" wire:click=add>
+                            <i class="fa fa-plus"></i>
+                        </a>
+                    </div>
+                    @endcan
+                </div>
+            </div>
         </div>
-        @can('admin')
+        @canany(['Update Category','Insert Category'])
         @include('products.add-update')
+        @endcanany
+        @can('Delete Product')
         @include('products.delete')
         @endcan
         <x-not-access name="{{ __('header.Product') }}" />
@@ -56,7 +73,7 @@
                     <option value="s">{{ __('header.StockedOut') }}</option>
                 </select>
             </div>
-            @can('admin')
+            @can('Product Trash')
             <div class="col-lg-4 col-12">
                 <div class="d-flex align-items-center ">
                     <button class="btn" wire:click="Trash">
@@ -95,7 +112,7 @@
                 </h3>
                 <div class="spinner-border" role="status"></div>
             </div>
-        </div>  
+        </div>
         <div class="table-responsive mt-3" wire:loading.remove wire:target="search,Category,Supplier,previousPage,nextPage,gotoPage">
             <table class="table table-vcenter table-nowrap">
                 <thead>
@@ -111,9 +128,9 @@
                         @if($Trashed)
                         <th class="fs-4 text-center">{{ __('header.warning') }}</th>
                         @endif
-                        @can('admin')
+                        @canany(['Update Product','Delete Product'])
                         <th class="col-1 fs-4 text-center">{{ __('header.actions') }}</th>
-                        @endcan
+                        @endcanany
                     </tr>
                 </thead>
                 <tbody>
@@ -161,25 +178,27 @@
                             </span>
                         </td>
                         @endif
-                        @can('admin')
                         <td class=" col-1 text-center">
                             @if(!$Trashed)
+                            @can('Update Product')
                             <a class="btn" href="" data-bs-toggle="modal" data-bs-target="#add-update" wire:click="updateProduct({{ $product->id }})">
                                 <i class="fa-solid fa-edit text-primary"></i>
                             </a>
+                            @endcan
+                            @can('Delete Product')
                             <a class="btn" href="" data-bs-toggle="modal" data-bs-target="#delete" wire:click="$set('productID' , {{ $product->id }})">
                                 <i class="fa-solid fa-trash text-danger"></i>
                             </a>
-                            <a class="btn" href="{{ route('products.image.update',['lang'=>app()->getLocale() ,'id'=>$product->id]) }}">
+                            @endcan
+                            <!-- <a class="btn" href="{{ route('products.image.update',['lang'=>app()->getLocale() ,'id'=>$product->id]) }}">
                                 <i class="fa-solid fa-image text-info"></i>
-                            </a>
+                            </a> -->
                             @else
                             <button class="btn" wire:click="restore({{ $product->id }})">
                                 <i class="fa-solid fa-recycle text-success"></i>
                             </button>
                             @endif
                         </td>
-                        @endcan
                     </tr>
                     @empty
                     <tr>

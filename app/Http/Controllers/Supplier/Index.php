@@ -3,14 +3,22 @@
 namespace App\Http\Controllers\Supplier;
 
 use Livewire\Component;
-use Livewire\WithPagination;
 use App\Models\Suppliers;
+use Livewire\WithPagination;
+use Illuminate\Support\Facades\Gate;
 
 class Index extends Component
 {
     use WithPagination;
     public $name, $email, $phone, $address, $search, $updateSupplier, $supplier_id, $Trashed = false;
     protected $paginationTheme = 'bootstrap', $queryString = ['search', 'Trashed' => ['except' => false]];
+    public function mount()
+    {
+        if (!Gate::allows('View Supplier')) {
+            abort(404);
+        }
+        Gate::allows('Supplier Trash') ? $this->Trashed  : $this->Trashed = false;
+    }
     private function CheckTrashParameter()
     {
         if ($this->Trashed) {
@@ -85,7 +93,7 @@ class Index extends Component
     public function submit()
     {
         $this->validate($this->GetRuls(), $this->GetMessage());
-        if ($this->updateSupplier) {
+        if ($this->updateSupplier &&  Gate::allows('Update Supplier')) {
             $supplier = Suppliers::find($this->supplier_id);
             $supplier->update([
                 'name' => $this->name,
@@ -93,7 +101,7 @@ class Index extends Component
                 'phone' => $this->phone,
                 'address' => $this->address,
             ]);
-        } else {
+        } elseif ($this->updateSupplier == false && Gate::allows('Insert Supplier')) {
             Suppliers::create([
                 'name' => $this->name,
                 'email' => $this->email,
@@ -101,27 +109,35 @@ class Index extends Component
                 'address' => $this->address,
             ]);
         }
-       flash()->addSuccess($this->updateSupplier ? __('header.updated') : __('header.add'));
+        flash()->addSuccess($this->updateSupplier ? __('header.updated') : __('header.add'));
         $this->done();
     }
     public function edit(Suppliers  $supplier)
     {
-        $this->updateSupplier = true;
-        $this->supplier_id = $supplier->id;
-        $this->name = $supplier->name;
-        $this->email = $supplier->email;
-        $this->phone = $supplier->phone;
-        $this->address = $supplier->address;
+        if (!Gate::allows('Update Supplier')) {
+            flash()->addError(__('header.NotAllowToDo'));
+        } else {
+            $this->updateSupplier = true;
+            $this->supplier_id = $supplier->id;
+            $this->name = $supplier->name;
+            $this->email = $supplier->email;
+            $this->phone = $supplier->phone;
+            $this->address = $supplier->address;
+        }
     }
     public function delete(Suppliers $supplier)
     {
-        foreach ($supplier->products as $product) {
-            $product->update([
-                'supplier_id' => null,
-            ]);
+        if (!Gate::allows('Delete Supplier')) {
+            flash()->addError(__('header.NotAllowToDo'));
+        } else {
+            foreach ($supplier->products as $product) {
+                $product->update([
+                    'supplier_id' => null,
+                ]);
+            }
+            $supplier->delete();
+            flash()->addSuccess(__('header.deleted_for_30_days'));
         }
-        $supplier->delete();
-       flash()->addSuccess(__('header.deleted_for_30_days'));
         $this->done();
     }
     public function DeleteAll()
@@ -133,7 +149,7 @@ class Index extends Component
         foreach ($suppliers as $supplier) {
             $supplier->forceDelete();
         }
-       flash()->addSuccess(__('header.deleted'));
+        flash()->addSuccess(__('header.deleted'));
         $this->done();
     }
     public function RestoreAll()
@@ -142,14 +158,14 @@ class Index extends Component
         foreach ($suppliers as $supplier) {
             $supplier->restore();
         }
-       flash()->addSuccess(__('header.RestoreMessage'));
+        flash()->addSuccess(__('header.RestoreMessage'));
         $this->done();
     }
     public function restore($id)
     {
         $user = Suppliers::onlyTrashed()->findOrFail($id);
         $user->restore();
-       flash()->addSuccess(__('header.RestoreMessage'));
+        flash()->addSuccess(__('header.RestoreMessage'));
         $this->done();
     }
 }

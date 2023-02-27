@@ -3,10 +3,13 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Role;
 use App\Models\Sales;
 use App\Models\Products;
 use App\Models\UserDetails;
+use App\Models\UserPermissions;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -30,17 +33,22 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
     public function user_details()
     {
         return $this->hasOne(UserDetails::class);
     }
-
     public function sales()
     {
         return $this->hasMany(Sales::class, 'user_id');
     }
-
+    public function Permissions()
+    {
+        return  $this->hasMany(UserPermissions::class);
+    }
+    public static function  GetUserData()
+    {
+        return Auth::user();
+    }
     public function scopeUserDetails($query)
     {
         return $query->addSelect(
@@ -51,14 +59,9 @@ class User extends Authenticatable
             UserDetails::select('address')->whereColumn('user_id', 'users.id')]
         );
     }
-
     public function image($image)
     {
         return $image == null || $image == '' ? asset('assets/images/image_not_available.png') : asset('storage/users/' . $image);
-    }
-    public function role()
-    {
-        return $this->role == 1 ? 'Admin' : 'Cashier';
     }
     public function create_at()
     {
@@ -68,4 +71,5 @@ class User extends Authenticatable
     {
         return $this->hasMany(Products::class, 'user_id');
     }
+   
 }

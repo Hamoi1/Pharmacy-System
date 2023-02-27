@@ -73,10 +73,6 @@
                         {{ auth()->user()->user_details->address }}
                     </li>
                     <li class="list-group-item">
-                        <span class="fw-bold">{{ __('header.role') }} :</span>
-                        {{ auth()->user()->role() }}
-                    </li>
-                    <li class="list-group-item">
                         <span class="fw-bold">{{ __('header.status') }} :</span>
                         <span class="badge bg-{{ auth()->user()->status == 1 ? 'success' : 'danger' }}">{{ auth()->user()->status == 1 ? 'Active' : 'Not Active' }}</span>
                     </li>

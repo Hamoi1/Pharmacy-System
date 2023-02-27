@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\sale_details;
 use App\Models\User;
 use Livewire\Component;
+use App\Models\sale_details;
 use Illuminate\Support\Facades\Gate;
 
 class Dashboard extends Component

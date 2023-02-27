@@ -13,6 +13,7 @@
         </div>
     </div>
     <div class="{{ app()->getLocale() == 'ckb'   || app()->getLocale() == 'ar' ? 'reverse' : '' }} px-lg-5 px-3">
+        @can('UpdateDebtSale')
         <x-modal.add target="update" modalWidth="modal-lg">
             <div wire:loading wire:target="edit">
                 <div class="d-flex justify-content-center">
@@ -81,6 +82,8 @@
                 </form>
             </div>
         </x-modal.add>
+        @endcan
+        @can('DeleteDebtSale')
         <x-modal.delete target="delete" title="{{ __('header.delete') }}" modalWidth="modal" wire="wire:click=done">
             <div wire:loading>
                 <div class="d-flex justify-content-center">
@@ -108,6 +111,8 @@
                 </form>
             </div>
         </x-modal.delete>
+        @endcan
+
         <div class="d-flex align-items-center justify-content-between mt-3">
             <p class="fw-bolder fs-1">
                 {{ __('header.Debts') }}
@@ -209,13 +214,17 @@
                         </td>
                         <td class="text-center">
                             @if ($debt->status == 0)
+                            @can('UpdateDebtSale')
                             <a href="" class="btn text-blue" data-bs-toggle="modal" data-bs-target="#update" wire:click="edit({{$debt->id }})">
                                 <i class="fas fa-edit"></i>
                             </a>
+                            @endcan
                             @else
+                            @can('DeleteDebtSale')
                             <a href="" class="btn text-danger" data-bs-toggle="modal" data-bs-target="#delete" wire:click="$set('__id',{{ $debt->id }})">
                                 <i class="fas fa-trash"></i>
                             </a>
+                            @endcan
                             @endif
                         </td>
                     </tr>

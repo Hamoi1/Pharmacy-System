@@ -17,7 +17,7 @@ class Setting extends Component
     protected $listeners = ['ChangeTheme' => 'render'];
     public function mount()
     {
-        if (!Gate::allows('admin')) {
+        if (!Gate::allows('View Setting')) {
             abort(404);
         }
     }

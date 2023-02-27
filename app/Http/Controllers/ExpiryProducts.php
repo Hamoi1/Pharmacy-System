@@ -13,7 +13,7 @@ class ExpiryProducts extends Component
     protected $paginationTheme = 'bootstrap';
     public function mount()
     {
-        if (!Gate::allows('admin')) {
+        if (!Gate::allows('View ExpiryProduct')) {
             abort(404);
         }
     }
