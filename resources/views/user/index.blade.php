@@ -34,7 +34,9 @@
         @canany(['Update User','Insert User'])
         @include('user.add-update')
         @endcanany
+        @can('User GenerateReport')
         @livewire('generate.user-report')
+        @endcan
         @can('Delete User')
         @include('user.delete')
         @endcan
@@ -125,7 +127,7 @@
                             {{ __('header.status') }}
                         </th>
                         @endif
-                        @canany(['Update User','Delete User'])
+                        @canany(['Update User','Delete User','User GenerateReport'])
                         <th class="fs-4 text-center">
                             {{ __('header.actions') }}
                         </th>
@@ -185,9 +187,11 @@
                                 <i class="fa-solid fa-edit text-primary"></i>
                             </a>
                             @endcan
+                            @can('User GenerateReport')
                             <a class="btn " href="" data-bs-toggle="modal" data-bs-target="#generate" wire:click.prevent="$emit('generateReport',{{ $user->id }})">
                                 <i class="fa-solid fa-file-pdf"></i>
                             </a>
+                            @endcan
                             @can('Delete User')
                             <a class="btn" href="" data-bs-toggle="modal" data-bs-target="#delete" wire:click="$set('UserId',{{ $user->id }})">
                                 <i class="fa-solid fa-trash text-danger"></i>

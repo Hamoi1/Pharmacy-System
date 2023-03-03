@@ -66,8 +66,8 @@
                         @if ($file!= [] && $file!= '')
                         @foreach ($file as $key => $item)
                         @php
-                        $oldData = $item[3] ? explode(',', $item[3]) : []; // change to array by a explode function
-                        $newData = $item[4] ? explode(',', $item[4]) : [];
+                        $oldData = $item[3] !=null || $item[3] !="" ? explode(',', $item[3]) : []; // change to array by a explode function
+                        $newData = $item[4] !=null || $item[4] !="" ? explode(',', $item[4]) : [];
                         @endphp
                         <tr>
                             <td>
@@ -84,7 +84,7 @@
                             </td>
                             <td>
                                 @forelse ($oldData as $index => $data)
-                                <div class=" {{ count($oldData) !=0 && $loop->index == 0 ? '' : 'mt-1' }}  {{ count($oldData) !=0 && $newData[$index] !== $data ? 'text-white bg-yellow py-1 rounded px-1' : '' }}">
+                                <div class=" {{ count($oldData) !=0 && $loop->index == 0 ? '' : 'mt-1' }}  {{ count($oldData) !=0 && $newData !=[] && $newData[$index] !== $data ? 'text-white bg-yellow py-1 rounded px-1' : '' }}">
                                     {{ $data }}
                                 </div>
                                 @empty
@@ -93,7 +93,7 @@
                             </td>
                             <td>
                                 @forelse ($newData as $index => $data)
-                                <div class="  {{ count($oldData) !=0 && $loop->index == 0 ? '' : 'mt-1' }}   {{  count($oldData) !=0 && $oldData[$index] !== $data ? 'bg-yellow py-1 rounded px-1' : '' }}">
+                                <div class="{{ count($oldData) !=0 && $loop->index == 0 ? '' : 'mt-1' }}   {{  count($oldData) !=0 && $oldData !=[] && $oldData[$index] !== $data ? 'bg-yellow py-1 rounded px-1' : '' }}">
                                     {{ $data }}
                                 </div>
                                 @empty

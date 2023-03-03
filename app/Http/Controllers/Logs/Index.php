@@ -26,19 +26,15 @@ class Index extends Component
     ];
     public function render()
     {
-        $this->getData();
         $users = User::whereNot('id', auth()->user()->id)->get();
         $user_select = $this->user;
-        return view('logs.index', ['users' => $users, 'user_select' => $user_select]);
-    }
-    public function getData()
-    {
         $this->user == auth()->user()->id ? $this->user = '' : $this->user;
         $this->date = $this->page = $this->action = $this->old = $this->new = [];
         if ($this->user  && ($this->user != auth()->user()->id)) {
             $this->file = User::find($this->user)->GetFile($this->user);
+        } else {
+            $this->file = [];
         }
-        
         if ($this->file == []) {
             $this->file = [];
         } else {
@@ -68,7 +64,6 @@ class Index extends Component
                 $new = $new[4];
                 $this->new[] = $new;
             }
-
             // all date merge 
             $this->file = array_merge(
                 array_map(null, $this->date, $this->page, $this->action, $this->old, $this->new)
@@ -82,7 +77,7 @@ class Index extends Component
             $this->file = $this->searchByDate($this->file) :
             $this->file = $this->file;
 
-        return;
+        return view('logs.index', ['users' => $users, 'user_select' => $user_select]);
     }
     public function GetDataByMethod($file)
     {

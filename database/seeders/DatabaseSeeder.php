@@ -36,7 +36,6 @@ class DatabaseSeeder extends Seeder
             'View Barcode',
             'View Setting',
             'View Log',
-
             'Delete Sales',
             'Delete DebtSale',
             'Delete Product',
@@ -45,28 +44,24 @@ class DatabaseSeeder extends Seeder
             'Delete Supplier',
             'Delete Barcode',
             'Delete Logs',
-
             'Insert Sales',
             'Insert Product',
             'Insert User',
             'Insert Category',
             'Insert Supplier',
             'Insert Barcode',
-
-            'Update Sales',
             'Update DebtSale',
             'Update Product',
             'Update User',
             'Update Category',
             'Update Supplier',
             'Update Barcode',
-
             'Product Trash',
             'User Trash',
             'Category Trash',
             'Supplier Trash',
             'Clear Log',
-
+            'User GenerateReport',
         ];
 
         foreach ($roles as $role) {
@@ -79,7 +74,7 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => 'muhammad',
                 'username' => 'hama',
-                'phone' => fake()->unique()->phoneNumber(),
+                'phone' => Str::limit(rand(1, 99999999999), 11, ''),
                 'email' => 'ihama9728@gmail.com',
                 'password' => Hash::make('muhammad'),
                 'status' => 1,
@@ -87,12 +82,86 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => 'hogr',
                 'username' => 'hogr',
-                'phone' => fake()->unique()->phoneNumber(),
+                'phone' => Str::limit(rand(1, 99999999999), 11, ''),
                 'email' => 'hogr@gmail.com',
                 'password' => Hash::make('muhammad'),
                 'status' => 1,
             ],
+            [
+                'name' => 'aven',
+                'username' => 'aven',
+                'phone' => Str::limit(rand(1, 9999999999), 11, ''),
+                'email' => 'aven@gmail.com',
+                'password' => Hash::make('muhammad'),
+                'status' => 1,
+            ],
+            [
+                'name' => 'evan',
+                'username' => 'evan',
+                'phone' => Str::limit(rand(1, 9999999999), 11, ''),
+                'email' => 'evan@gmail.com',
+                'password' => Hash::make('muhammad'),
+                'status' => 1,
+            ],
+            [
+                'name' => 'chra',
+                'username' => 'chra',
+                'phone' => Str::limit(rand(1, 9999999999), 11, ''),
+                'email' => 'chra@gmail.com',
+                'password' => Hash::make('muhammad'),
+                'status' => 1,
+            ],
+            [
+                'name' => 'redin',
+                'username' => 'redin',
+                'phone' => Str::limit(rand(1, 9999999999), 11, ''),
+                'email' => 'redin@gmail.com',
+                'password' => Hash::make('muhammad'),
+                'status' => 1,
+            ],
+            [
+                'name' => 'gashtyar',
+                'username' => 'gashtyar',
+                'phone' => Str::limit(rand(1, 9999999999), 11, ''),
+                'email' => 'gashtyar@gmail.com',
+                'password' => Hash::make('muhammad'),
+                'status' => 1,
+            ],
+            [
+                'name' => 'danaz',
+                'username' => 'danaz',
+                'phone' => Str::limit(rand(1, 9999999999), 11, ''),
+                'email' => 'danaz@gmail.com',
+                'password' => Hash::make('muhammad'),
+                'status' => 1,
+            ],
+            [
+                'name' => 'rekar',
+                'username' => 'rekar',
+                'phone' => Str::limit(rand(1, 99999999999), 11, ''),
+                'email' => 'rekar@gmail.com',
+                'password' => Hash::make('muhammad'),
+                'status' => 1,
+            ],
+            [
+                'name' => 'akar',
+                'username' => 'akar',
+                'phone' => Str::limit(rand(1, 99999999999), 11, ''),
+                'email' => 'akar@gmail.com',
+                'password' => Hash::make('muhammad'),
+                'status' => 1,
+            ],
+            [
+                'name' => 'syamand',
+                'username' => 'syamand',
+                'phone' => Str::limit(rand(1, 99999999999), 11, ''),
+                'email' => 'syamand@gmail.com',
+                'password' => Hash::make('muhammad'),
+                'status' => 1,
+            ],
+
         ];
+
         foreach ($users as $user) {
             $users = \App\Models\User::create($user + [
                 'created_at' => fake()->dateTimeBetween('-1 years', 'now')->format('Y-m-d H:i:s'),
@@ -101,7 +170,7 @@ class DatabaseSeeder extends Seeder
                 'address' => fake()->randomElement(['ranya', 'Sulimany', 'Qaladzi', 'Hallshow']),
             ]);
         }
-        foreach (range(1, 10) as $index) {
+        foreach (range(1, 110) as $index) {
             $name = fake()->name;
             $name = Str::replace(' ', '', $name);
             $name = Str::replace('-', '', $name);
@@ -111,6 +180,8 @@ class DatabaseSeeder extends Seeder
             $phone = fake()->phoneNumber;
             $phone  = Str::remove('+', $phone);
             $phone  = Str::remove(' ', $phone);
+            $phone  = Str::remove('-', $phone);
+            $phone = Str::limit($phone, 11, '');
             $user = \App\Models\User::create([
                 'name' => $name,
                 'username' => fake()->unique()->userName . '-' . $index . $name,
@@ -118,15 +189,15 @@ class DatabaseSeeder extends Seeder
                 'email' => fake()->unique()->safeEmail,
                 'password' => Hash::make('muhammad'),
                 'status' => fake()->numberBetween(0, 1),
-                'status' => fake()->numberBetween(0, 1),
                 'created_at' => fake()->randomElement([fake()->dateTimeBetween('-1 years', 'now')->format('Y-m-d H:i:s'), 'now'])
             ]);
             $user->user_details()->create([
                 'address' => fake()->randomElement(['ranya', 'sulimany', 'qaladzi', 'hawler', 'Hallshow']),
             ]);
         }
+
         // give permission for all user
-        $users = User::take(4)->get();
+        $users = User::take(11)->get();
         $roles = Role::all();
         foreach ($users as $user) {
             foreach ($roles as $role) {
@@ -185,15 +256,6 @@ class DatabaseSeeder extends Seeder
                 'created_at' => fake()->dateTimeBetween('-1 years', 'now'),
             ]);
         }
-        foreach (range(1, 10) as $index) {
-            $name = fake()->name . fake()->name;
-            \App\Models\Categorys::create([
-                'name' => $name,
-                'slug' => Str::slug($name),
-                'created_at' => fake()->dateTimeBetween('-1 years', 'now')->format('Y-m-d H:i:s'),
-            ]);
-        }
-
         $suppliers = [
             [
                 'name' => 'gilas',
@@ -261,25 +323,28 @@ class DatabaseSeeder extends Seeder
                 'created_at' => fake()->dateTimeBetween('-1 years', 'now')->format('Y-m-d H:i:s'),
             ]);
         }
-        foreach (range(1, 10) as $index) {
-            $name = fake()->name;
-            $name = Str::replace(' ', '', $name);
-            $name = Str::replace('-', '', $name);
-            $name = Str::lower($name);
-            $name = Str::replace('.', '', $name);
-            $name = Str::limit($name, 7, '');
+        // foreach (range(1, 10) as $index) {
+        //     $name = fake()->name;
+        //     $name = Str::replace(' ', '', $name);
+        //     $name = Str::replace('-', '', $name);
+        //     $name = Str::lower($name);
+        //     $name = Str::replace('.', '', $name);
+        //     $name = Str::limit($name, 7, '');
 
-            $phone = fake()->phoneNumber;
-            $phone  = Str::remove('+', $phone);
-            $phone  = Str::remove(' ', $phone);
-            \App\Models\Suppliers::create([
-                'name' => $name,
-                'phone' => $phone,
-                'email' =>  fake()->unique()->safeEmail,
-                'address' => fake()->address,
-                'created_at' => fake()->dateTimeBetween('-1 years', 'now')->format('Y-m-d H:i:s'),
-            ]);
-        }
+        //     $phone = fake()->phoneNumber;
+        //     $phone  = Str::remove('+', $phone);
+        //     $phone  = Str::remove(' ', $phone);
+        //     $phone  = Str::remove('-', $phone);
+        //     $phone = Str::limit($phone, 11, '');
+
+        //     \App\Models\Suppliers::create([
+        //         'name' => $name,
+        //         'phone' => $phone,
+        //         'email' =>  fake()->unique()->safeEmail,
+        //         'address' => fake()->address,
+        //         'created_at' => fake()->dateTimeBetween('-1 years', 'now')->format('Y-m-d H:i:s'),
+        //     ]);
+        // }
 
         // expiry product
         $barcode = 1;

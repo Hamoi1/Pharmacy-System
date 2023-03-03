@@ -122,13 +122,8 @@ class User extends Authenticatable
                 fclose($file);
                 break;
             }
-            // if not have file
-            else {
-                $this->CreateFile($UserID);
-                $this->InsertDataToFile($UserID, $where,  $action, $old, $new);
-                break;
-            }
         }
+        return true;
     }
 
     public function GetFile($UserID)
@@ -149,10 +144,10 @@ class User extends Authenticatable
                 // remove last element
                 array_pop($data);
                 return $data;
-            } else {
-                return [];
             }
         }
+
+        return [];
     }
 
     public function DeleteFile($UserID)
