@@ -70,11 +70,29 @@ class Index extends Component
         $this->resetValidation();
         $this->dispatchBrowserEvent('closeModal');
     }
-    public function destroy(Sales $sale)
+    public function destroy($id)
     {
+        $sale = Sales::with('debt_sale')->findOrFail($id);
         if (!Gate::allows('Delete Sales')) {
             flash()->addError(__('header.NotAllowToDo'));
         } else {
+            $data = [
+                'invoice : ' . $sale->invoice,
+                'total Price : ' . (number_format($sale->total, 0, null, '.')),
+                'discount : '  . (number_format($sale->discount, 0, null, '.')),
+                'Paid : ' . ($sale->paid ? 'yes' : 'no'),
+            ];
+            if ($sale->debt_sale) {
+                $AddData = [
+                    'name : ' . ($sale->debt_sale->name ?? 'no name'),
+                    'phone : ' . ($sale->debt_sale->phone ?? 'no number'),
+                    'amount : ' . (number_format($sale->debt_sale->amount, 0, null, '.')),
+                    'paid : ' . (number_format($sale->debt_sale->paid, 0, null, '.')),
+                    'remain : ' . (number_format($sale->debt_sale->remain, 0, null, '.')),
+                ];
+            }
+            $data = array_merge($data, $AddData ?? []);
+            auth()->user()->InsertDataToFile(auth()->user()->id, "Sale", 'Delete', $data, '');
             $sale->delete();
             flash()->addSuccess(__('header.deleted'));
         }

@@ -3,7 +3,6 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use App\Models\Role;
 use App\Models\Sales;
 use App\Models\Products;
 use App\Models\UserDetails;
@@ -27,7 +26,6 @@ class User extends Authenticatable
         'created_at',
         'updated_at',
         'email_verified_at',
-        'role',
         'status',
     ];
     protected $casts = [
@@ -71,5 +69,94 @@ class User extends Authenticatable
     {
         return $this->hasMany(Products::class, 'user_id');
     }
-   
+
+    public function GetPermissionName($User_id)
+    {
+        $permissions = $this->Permissions()->where('user_id', $User_id)->with('role')->get();
+        $permission_name = [];
+        if ($permissions) {
+
+            foreach ($permissions as $permission) {
+                $permission_name[] = $permission->role->name;
+            }
+        } else {
+            $permission_name = [];
+        }
+        return $permission_name;
+    }
+
+    public function CreateFile($UserID)
+    {
+        $file = fopen('logs/user-' . $UserID . '.log', 'w'); // use w to create a file if a file doesn't exist
+        fclose($file);
+    }
+
+    // insert data to file but dont delete privewe
+    public function InsertDataToFile($UserID, $where,  $action, $old, $new)
+    {
+        $file = fopen('logs/user-' . $UserID . '.log', 'a'); // use a  to eneter data in the end of file
+        // old data can be array 
+        if (is_array($old)) {
+            $old = implode(',', $old);
+        }
+        // new data can be array
+        if (is_array($new)) {
+            $new = implode(',', $new);
+        }
+        $data = date('Y-m-d h:i:s') . ' / ' . $where . ' / ' . $action . ' / ' . $old . ' / ' . $new . PHP_EOL;
+        fwrite($file, $data);
+        fclose($file);
+    }
+
+    public function GetFile($UserID)
+    {
+        // search fo file 
+        if (!file_exists('logs/user-' . $UserID . '.log')) {
+            //    create a file
+            $this->CreateFile($UserID);
+        }
+        $file = fopen('logs/user-' . $UserID . '.log', 'r'); // use r to get data in the satrt of file
+        // check file size
+        if (filesize('logs/user-' . $UserID . '.log') == 0) {
+            return [];
+        }
+        $data = fread($file, filesize('logs/user-' . $UserID . '.log'));
+        // change data to array
+        $data = explode(PHP_EOL, $data);
+        // remove last element
+        array_pop($data);
+        return $data;
+    }
+
+    public function DeleteFile($UserID)
+    {
+        return unlink('logs/user-' . $UserID . '.log');
+    }
+
+    public function DeleteDataInFile($UserID, $index, $action)
+    {
+        // delete a record by index an action 
+        $data = file_get_contents('logs/user-' . $UserID . '.log');
+        $data = explode(PHP_EOL, $data);
+        array_pop($data);
+        $data = array_reverse($data);
+        $new_data = [];
+        foreach ($data as $key => $value) {
+            $value = explode(' / ', $value);
+            if ($key == $index && $value[2] == $action) {
+                continue;
+            }
+            $new_data[] = implode(' / ', $value); // convert array to string            
+        }
+        $new_data = array_reverse($new_data);
+        $new_data = implode(PHP_EOL, $new_data);
+        $file = fopen('logs/user-' . $UserID . '.log', 'w');
+        fwrite($file, $new_data . PHP_EOL);
+        fclose($file);
+    }
+
+    public function ClearFile($id)
+    {
+        $this->CreateFile($id);
+    }
 }

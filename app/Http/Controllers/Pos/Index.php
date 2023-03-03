@@ -119,6 +119,18 @@ class Index extends Component
                 'remain' => $sales->total - $this->currentpaid,
             ]);
         }
+
+        $data = [
+            'invoice : ' . $sales->invoice,
+            'total Price : ' . (number_format($sales->total, 0, null, '.')),
+            'discount : '  . (number_format($sales->discount, 0, null, '.')),
+            'debt : ' . ($this->debt ? 'yes' : 'no'),
+            'name : ' . ($this->name ?? 'no name'),
+            'phone : ' . ($this->phone ?? 'no number'),
+            'currentpaid : ' . ($this->currentpaid ? number_format($this->currentpaid, 0, null, '.') : 'no paid'),
+        ];
+        auth()->user()->InsertDataToFile(auth()->user()->id, "Sale", 'Sale', '', $data);
+
         flash()->addSuccess(__('header.successSale'));
         session()->forget('invoice');
         return redirect()->route('sales', app()->getLocale());

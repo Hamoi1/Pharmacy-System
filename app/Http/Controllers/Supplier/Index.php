@@ -95,19 +95,39 @@ class Index extends Component
         $this->validate($this->GetRuls(), $this->GetMessage());
         if ($this->updateSupplier &&  Gate::allows('Update Supplier')) {
             $supplier = Suppliers::find($this->supplier_id);
+            $oldData = [
+                'name : ' . $supplier->name,
+                'email : ' . $supplier->email,
+                'phone : ' . $supplier->phone,
+                'address : ' . $supplier->address,
+            ];
             $supplier->update([
                 'name' => $this->name,
                 'email' => $this->email,
                 'phone' => $this->phone,
                 'address' => $this->address,
             ]);
+            $newData = [
+                'name : ' . $this->name,
+                'email : ' . $this->email,
+                'phone : ' . $this->phone,
+                'address : ' . $this->address,
+            ];
+            auth()->user()->InsertDataToFile(auth()->user()->id, "Supplier", 'Update', $oldData, $newData);
         } elseif ($this->updateSupplier == false && Gate::allows('Insert Supplier')) {
-            Suppliers::create([
+            $supplier = Suppliers::create([
                 'name' => $this->name,
                 'email' => $this->email,
                 'phone' => $this->phone,
                 'address' => $this->address,
             ]);
+            $newData = [
+                'name : ' . $this->name,
+                'email : ' . $this->email,
+                'phone : ' . $this->phone,
+                'address : ' . $this->address,
+            ];
+            auth()->user()->InsertDataToFile(auth()->user()->id, "Supplier", 'Create', '', $newData);
         }
         flash()->addSuccess($this->updateSupplier ? __('header.updated') : __('header.add'));
         $this->done();
@@ -130,12 +150,17 @@ class Index extends Component
         if (!Gate::allows('Delete Supplier')) {
             flash()->addError(__('header.NotAllowToDo'));
         } else {
+            $supplierName = [];
             foreach ($supplier->products as $product) {
                 $product->update([
                     'supplier_id' => null,
                 ]);
+                $supplierName[] = '( ' . $product->name . ' )';
             }
             $supplier->delete();
+
+            $data =  "Delete ( " . (implode(',', $supplierName)) . " )  from :" . now();
+            auth()->user()->InsertDataToFile(auth()->user()->id, "Supplier", 'Delete', $data, '');
             flash()->addSuccess(__('header.deleted_for_30_days'));
         }
         $this->done();
@@ -145,26 +170,39 @@ class Index extends Component
         $suppliers = $this->CheckTrashParameter()->get();
         if ($suppliers->count() == 0)
             return;
-
+        $supplierName = [];
         foreach ($suppliers as $supplier) {
+            $supplierName[] = '( ' . $product->name . ' )';
             $supplier->forceDelete();
         }
+        $data =  "Delete ( " . (implode(',', $supplierName)) . " )  from :" . now();
+        auth()->user()->InsertDataToFile(auth()->user()->id, "Supplier", 'Delete', $data, '');
         flash()->addSuccess(__('header.deleted'));
         $this->done();
     }
     public function RestoreAll()
     {
         $suppliers = $this->CheckTrashParameter()->get();
+        if ($suppliers->count() == 0)
+            return;
+
+        $supplierName = [];
         foreach ($suppliers as $supplier) {
+            $supplierName[] = '( ' . $product->name . ' )';
             $supplier->restore();
         }
+        $data =  "Restore ( " . (implode(',', $supplierName)) . " )  from :" . now();
+        auth()->user()->InsertDataToFile(auth()->user()->id, "Supplier", 'Restore', $data, '');
         flash()->addSuccess(__('header.RestoreMessage'));
         $this->done();
     }
     public function restore($id)
     {
-        $user = Suppliers::onlyTrashed()->findOrFail($id);
-        $user->restore();
+        $supplier = Suppliers::onlyTrashed()->findOrFail($id);
+
+        $data =  "Restore ( " . $supplier->name . " )  from :" . now();
+        $supplier->restore();
+        auth()->user()->InsertDataToFile(auth()->user()->id, "Supplier", 'Restore', $data, '');
         flash()->addSuccess(__('header.RestoreMessage'));
         $this->done();
     }

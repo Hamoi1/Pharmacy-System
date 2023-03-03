@@ -23,7 +23,7 @@
                         @error($VerifyCode ? 'code' : 'email') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
                     <div class="row mt-3">
-                        <button type="submit" class="btn btn-primary w-100">
+                        <button type="submit" class="btn btn-primary   btn-primary   w-100">
                             @if ($VerifyCode)
                             {{ __('header.check') }}
                             @else

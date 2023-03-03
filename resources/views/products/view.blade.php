@@ -48,7 +48,7 @@
             </span>
             @foreach (json_decode($product->image) as $image )
             <div class="col-12 col-md-6 col-lg-4 col-xl-3">
-                <img src="{{ asset('storage/products/'.$image) }}" class="img-fluid rounded" alt="">
+                <img src="{{ asset('storage/products/'.$image) }}" class="img-fluid rounded-3" alt="">
             </div>
             @endforeach
         </div>

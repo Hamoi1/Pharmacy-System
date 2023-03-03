@@ -86,27 +86,29 @@ class Index extends Component
         $this->validate($this->GetRuls(), $this->GetMessages());
         if ($this->updateCategory && Gate::allows('Update Category')) {
 
-            Categorys::findorFail($this->category_id)->update([
+            $category =  Categorys::findorFail($this->category_id);
+            $oldData = [
+                'name : ' . $category->name,
+            ];
+            $category->update([
                 'name' => $this->name,
                 'slug' => Str::slug($this->name),
             ]);
+            $newData = [
+                'name : ' . $category->name,
+            ];
+            auth()->user()->InsertDataToFile(auth()->user()->id, "Category", 'Update', $oldData, $newData);
         } elseif ($this->updateCategory == false && Gate::allows('Insert Category')) {
-            Categorys::create([
+            $category =  Categorys::create([
                 'name' => $this->name,
                 'slug' => Str::slug($this->name),
             ]);
+            $newData = [
+                'name : ' . $category->name,
+            ];
+            auth()->user()->InsertDataToFile(auth()->user()->id, "Category", 'Create', '', $newData);
         }
         flash()->addSuccess($this->updateCategory ?  __('header.updated') : __('header.add'));
-        $this->done();
-    }
-    public function destroy(Categorys $category)
-    {
-        if (!Gate::allows('Delete Category')) {
-            flash()->addError(__('header.NotAllowToDo'));
-        } else {
-            $category->delete();
-            flash()->addSuccess(__('header.deleted_for_30_days'));
-        }
         $this->done();
     }
     public function update(Categorys $category)
@@ -119,11 +121,27 @@ class Index extends Component
             $this->category_id = $category->id;
         }
     }
+    public function destroy(Categorys $category)
+    {
+        if (!Gate::allows('Delete Category')) {
+            flash()->addError(__('header.NotAllowToDo'));
+        } else {
+            $data = 'Delete ( ' . $category->name . ' ) form :' . now();
+            auth()->user()->InsertDataToFile(auth()->user()->id, "Category", 'Delete', $data, '');
+            $category->delete();
+            flash()->addSuccess(__('header.deleted_for_30_days'));
+        }
+        $this->done();
+    }
     public function restore($id, $status = true)
     {
         if ($id == null)
             return;
-        Categorys::onlyTrashed()->findorFail($id)->restore();
+
+        $category = Categorys::onlyTrashed()->findorFail($id)->restore();
+        $categoryName  = '( ' . $category->name . ' )';
+        $data = 'Restore ' . $categoryName . ' form :' . now();
+        auth()->user()->InsertDataToFile(auth()->user()->id, "Category", 'Restore', $data, '');
         if ($status) {
             flash()->addSuccess(__('header.RestoreMessage'));
             $this->done();
@@ -134,15 +152,20 @@ class Index extends Component
         $categorys = $this->CheckTrashParameter()->get();
         if ($categorys->count() == 0)
             return;
+        $categoryName = [];
         foreach ($categorys as $category) {
+            $categoryName[] = '( ' . $category->name . ' )';
             $category->forceDelete();
         }
+        $data = 'Delete ' . implode(',', $categoryName) . ' form :' . now();
+        auth()->user()->InsertDataToFile(auth()->user()->id, "Category", 'Delete', $data, '');
         flash()->addSuccess(__('header.deleted'));
         $this->done();
     }
     public function RestoreAll()
     {
         $categorys = $this->CheckTrashParameter()->get();
+
         if ($categorys->count() == 0)
             return;
         foreach ($categorys as $category) {

@@ -17,7 +17,7 @@
                     <button type="submit" class="btn btn-danger px-3 py-1 mx-2" wire:click.prevent="delete({{ $UserId }})">
                         {{ __('header.delete') }}
                     </button>
-                    <button class="btn btn-primary px-3 py-1 mx-2" wire:click.prevent="done">
+                    <button class="btn btn-primary  px-3 py-1 mx-2" wire:click.prevent="done">
                         {{ __('header.cancel') }}
                     </button>
                 </div>

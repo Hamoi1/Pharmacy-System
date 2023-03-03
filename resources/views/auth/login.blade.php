@@ -37,7 +37,7 @@
                                         @error('password') <span class="text-danger">{{ $message }}</span> @enderror
                                     </div>
                                     <div class="row mt-3">
-                                        <button type="submit" class="btn btn-primary w-100">
+                                        <button type="submit" class="btn btn-primary  btn-primary   w-100">
                                             {{ __('header.login') }}
                                         </button>
                                         <div wire:loading wire:target="login" class="mt-2">

@@ -1,14 +1,14 @@
 @push('title') Barcode @endpush
 <div>
-    <div class="container-lg {{ app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }} pt-4">
+    <div class="px-lg-5 px-3 {{ app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }} pt-4">
         <div class="col-12 mt-2">
             <div class="d-flex justify-content-between align-items-center">
-                <h2>
+                <p class="fw-bolder fs-1">
                     {{ __('header.barcodes.barcodes') }}
-                </h2>
+                </p>
                 @can('Insert Barcode')
                 @include('barcode.pages.generate')
-                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#generate">
+                <button class="btn btn-primary  btn-primary  " data-bs-toggle="modal" data-bs-target="#generate">
                     <i class="fas fa-plus"></i>
                 </button>
                 @endcan
@@ -18,7 +18,7 @@
         @include('barcode.pages.delete')
         @endcan
         <div class="row mt-3" wire:loading wire:target="previousPage,nextPage,gotoPage,download">
-            <div class="d-flex  gap-2">
+            <div class="d-flex gap-2">
                 <h3>
                     {{ __('header.waiting') }}
                 </h3>

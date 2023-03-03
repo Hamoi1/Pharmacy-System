@@ -59,7 +59,7 @@
                 @endif
             </div>
             <div class="col-12 mt-2">
-                <button type="submit" class="btn btn-primary px-3">
+                <button type="submit" class="btn btn-primary pt-2 px-3">
                     {{ __('header.add+') }}
                 </button>
                 <div wire:loading wire:target="submit">

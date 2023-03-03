@@ -1,5 +1,5 @@
 @push('title') Profile @endpush
-<div>
+<div class="mt-md-4 mt-2">
     <div wire:loading wire:target="image">
         <div class="loading profile">
             <div class="loading-content">
@@ -47,36 +47,36 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6 col-md-6 col-12 mt-2">
-                <p>
+            <div class="col-lg-6 col-md-6 col-12 mt-md-0 mt-5 ">
+                <p class="fs-3 fw-bold">
                     {{ __('header.UserDetails') }}
                 </p>
-                <ul class="list-group">
-                    <li class="list-group-item">
+                <ul class="list-group-custom">
+                    <li class="list-group-custom-item">
                         <span class="fw-bold">{{ __('header.name') }} :</span>
                         {{ auth()->user()->name }}
                     </li>
-                    <li class="list-group-item">
+                    <li class="list-group-custom-item">
                         <span class="fw-bold">{{ __('header.username') }} :</span>
                         {{ auth()->user()->username }}
                     </li>
-                    <li class="list-group-item">
+                    <li class="list-group-custom-item">
                         <span class="fw-bold">{{ __('header.email') }} :</span>
                         {{ auth()->user()->email }}
                     </li>
-                    <li class="list-group-item">
+                    <li class="list-group-custom-item">
                         <span class="fw-bold">{{ __('header.phone') }} :</span>
                         {{ auth()->user()->phone }}
                     </li>
-                    <li class="list-group-item">
+                    <li class="list-group-custom-item">
                         <span class="fw-bold">{{ __('header.address') }} :</span>
                         {{ auth()->user()->user_details->address }}
                     </li>
-                    <li class="list-group-item">
+                    <li class="list-group-custom-item">
                         <span class="fw-bold">{{ __('header.status') }} :</span>
                         <span class="badge bg-{{ auth()->user()->status == 1 ? 'success' : 'danger' }}">{{ auth()->user()->status == 1 ? 'Active' : 'Not Active' }}</span>
                     </li>
-                    <li class="list-group-item text-center text-break">
+                    <li class="list-group-custom-item text-center text-break">
                         <span class="fw-bold">{{ __('header.acount_create') }} :</span>
                         {{ auth()->user()->created_at->diffForHumans() }}
                         /

@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'search' => 'Search...',
+    'search' => 'Search ...',
     'name' => 'Name',
     'username' => 'Username',
     'phone' => 'Phone Number',
@@ -35,9 +35,7 @@ return [
     'barwar' => 'Date ',
     'failed'    => 'Email or Password is incorrect',
     'image' => 'Image',
-    'not-allowed' => 'Not Allowed To Access This Action !',
     'warning' => 'Warning',
-    'NotAccess' => 'You can not :name is added or updated or deleted !',
     'actived' => 'Actived',
     'deactived' => 'Not Actived',
     'active' => 'Active',
@@ -208,5 +206,7 @@ return [
     ],
     'changetheme' => 'Change Theme',
     'NotAllowToDo' => 'You Don\'t Have Permission For This Task !',
-    'permission' => 'Permission', 
+    'permission' => 'Permission',
+    'no_permission' => 'There is no Permissions !',
+    'back' => 'Back',
 ];

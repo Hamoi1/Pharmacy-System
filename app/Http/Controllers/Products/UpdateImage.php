@@ -14,22 +14,17 @@ use function PHPUnit\Framework\returnSelf;
 class UpdateImage extends Component
 {
     use WithFileUploads;
-    public $product, $images = [], $ProductID;
+    public $product, $images = [];
     public function mount($id)
     {
-        if (!Gate::allows('admin')) {
+        if (!Gate::allows('Update Product')) {
             abort(404);
         }
         $this->product =  Products::suppliers()->categorys()->findorFail($id);
     }
     public function render()
     {
-        $Products = Products::all();
-        return view('products.Update-image.update-image', ['product' => $this->product, 'Products' => $Products]);
-    }
-    public function updatingProductID($id)
-    {
-        return redirect()->route('products.image.update', ['lang' => app()->getLocale(), 'id' => $id]);
+        return view('products.Update-image.update-image', ['product' => $this->product]);
     }
     public function updatingImages()
     {

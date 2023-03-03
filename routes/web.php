@@ -1,9 +1,5 @@
 <?php
 
-use App\Models\Role;
-use App\Models\User;
-use App\Models\UserPermissions;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', app()->getLocale() . '/login');
@@ -13,11 +9,7 @@ Route::group([
 ], function () {
     Route::middleware(['auth'])->group(function () {
         Route::get('/', function () {
-            if (Auth::user()->role === 1) {
-                return redirect()->route('dashboard', app()->getLocale());
-            } else {
-                return redirect()->route('sales', app()->getLocale());
-            }
+            return redirect()->route('dashboard', app()->getLocale());
         });
         Route::get('/dashboard', App\Http\Controllers\Dashboard::class)->name('dashboard');
         Route::get('/users', App\Http\Controllers\User\Index::class)->name('users');
@@ -35,7 +27,11 @@ Route::group([
         Route::get('/profile', App\Http\Controllers\Profile\Update::class)->name('profile.update');
         Route::get('/settings', App\Http\Controllers\Setting::class)->name('settings');
         Route::get('/barcode', App\Http\Controllers\Barcode\Index::class)->name('barcode');
+        Route::get('/logs', App\Http\Controllers\Logs\Index::class)->name('logs');
+
         Route::get('/logout', function () {
+            $data = auth()->user()->name . ' logogut form : ' . now();
+            auth()->user()->InsertDataToFile(auth()->user()->id, "Logout", 'Logout', $data, $data);
             auth()->logout();
             return redirect()->route('login', app()->getLocale());
         })->name('logout');

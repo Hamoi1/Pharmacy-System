@@ -13,36 +13,24 @@
         </div>
     </div>
     <div class="{{ app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }} px-lg-5 px-3">
-        <div class="d-flex align-items-center justify-content-between mt-3">
-            <p class="fw-bolder fs-1">
-                {{ __('header.Sales') }}
-            </p>
-            <div class="">
-                <a href="{{ route('sales' , app()->getLocale()) }}" class="btn text-success">
-                    <i class="fas fa-plus"></i>
-                </a>
-            </div>
-        </div>
-
-        <div wire:ignore.self class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasStart" aria-labelledby="offcanvasStartLabel" style="visibility: visible;" aria-modal="true" role="dialog">
-            <div class="offcanvas-header p-1">
-                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-            </div>
-            <div class="offcanvas-body">
-                <div class="row gy-3">
-                    <div class="col-12">
-                        <label class="form-label">{{ __('header.StartDaye') }}</label>
-                        <input type="date" wire:model="start" class="form-control not-reverse">
+        <div class="mt-4">
+            <div class="page-header">
+                <div class="row align">
+                    <div class="col">
+                        <p class="fw-bolder fs-1">
+                            {{ __('header.Sales') }}
+                        </p>
                     </div>
-                    <div class="col-12">
-                        <label class="form-label">{{ __('header.EndDaye') }}</label>
-                        <input type="date" wire:model="end" class="form-control  not-reverse">
+                    <div class="col-auto ms-auto">
+                        <a href="{{ route('sales' , app()->getLocale()) }}" class="btn bg-primary">
+                            <i class="fas fa-plus"></i>
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
         <div class="row gx-3 gy-3 align-items-center">
-            <div class="col-lg-2 col-8 not-reverse">
+            <div class="col-lg-2 col-md-4 col-12 not-reverse">
                 <div class="input-icon ">
                     <span class="input-icon-addon  ps-2">
                         Inv-
@@ -50,7 +38,7 @@
                     <input type="text" wire:model="invoice" class="form-control" placeholder="">
                 </div>
             </div>
-            <div class="col-lg-2 col-8">
+            <div class="col-lg-2 col-md-4 col-6">
                 <select wire:model="UserID" class="form-select">
                     <option value="">{{ __('header.Users') }}</option>
                     @foreach ($users as $user)
@@ -58,7 +46,7 @@
                     @endforeach
                 </select>
             </div>
-            <div class="col-lg-2 col-6">
+            <div class="col-lg-2 col-md-4 col-6">
                 <select class="form-select" wire:model="date">
                     <option value="">
                         {{ __('header.date') }}
@@ -119,7 +107,7 @@
                     @forelse ($sales as $sale )
                     <tr>
                         <td>
-                            <a href="{{ $sale->paid ?'' : route('sales.debt' ,['lang'=>app()->getLocale(),'s'=>$sale->name]) }}" class="{{ $sale->paid ? '' : 'text-blue' }}">
+                            <a href="{{ $sale->paid ?'#' : route('sales.debt' ,['lang'=>app()->getLocale(),'s'=>$sale->name]) }}" class="{{ $sale->paid ? '' : 'text-blue' }}">
                                 {{ $sale->invoice }}
                             </a>
                         </td>
@@ -141,7 +129,7 @@
                             {{ $sale->created_at->format('Y-m-d') }}
                         </td>
                         <td class="text-center">
-                            
+
                             <a href="" class="btn text-info" data-bs-toggle="modal" data-bs-target="#view" wire:click.prevent="View({{ $sale->id }})">
                                 <i class="fas fa-eye"></i>
                             </a>

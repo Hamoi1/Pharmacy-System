@@ -16,7 +16,7 @@ class UserReport extends Component
     public function reports()
     {
         return [
-            __('header.report.Sales'),
+            __('header. .Sales'),
             __('header.report.Add Product'),
         ];
     }

@@ -1,4 +1,4 @@
-<div class="nav-item dropdown py-1 " id="profile-section">
+<div class="nav-item dropdown py-2 " id="profile-section">
     <div class="d-flex align-items-center justify-content-between {{ app()->getLocale() =='ckb' ? 'flex-reverse ' : '' }}">
         <div class="col-9">
             <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Open user menu">
@@ -14,9 +14,9 @@
             </div>
         </div>
         @if (!request()->routeIs('products.image.update') && !request()->routeIs('sales.PrintSales') && !request()->routeIs('print'))
-        <div class="col-3 ">
+        <div class="col-3 mb-1 ">
             <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Open user menu">
-                <i class="fa fa-language fs-2" aria-hidden="true"></i>
+                <i class="fa-solid fa-globe mx-1 fs-2 mt-md-1 mt-2"></i>
             </a>
             <div class="dropdown-menu dropdown-menu-end ">
                 <a href="{{ route(Route::currentRouteName(),'ckb')}}" class="dropdown-item">

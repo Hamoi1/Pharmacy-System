@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use finfo;
 use App\Models\User;
 use Livewire\Component;
 use App\Models\sale_details;
@@ -11,7 +12,7 @@ class Dashboard extends Component
 {
     public function render()
     {
-        if (!Gate::allows('admin')) {
+        if (!Gate::allows('View Dashboard')) {
             redirect()->route('sales', app()->getLocale());
         }
         $users = User::withCount('sales')->orderBy('sales_count', 'desc')->take(10)->get();

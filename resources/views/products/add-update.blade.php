@@ -109,12 +109,14 @@
                 <div class="col-12">
                     <div class="row text-center g-lg-2 gy-3">
                         @foreach ($images as $image)
+                        @if (in_array($image->getClientOriginalExtension(), ['jpg', 'jpeg', 'png', 'svg']))
                         <div class="col-lg-3 col-md-6 col-12 position-relative">
                             <img src="{{ $image->temporaryUrl() }}" width="300px" height="300px" class="img-fluid rounded object-cover">
                             <span class="position-absolute top-0 left-0 delete-img" wire:click.prevent="removeImage({{ $loop->index }})">
                                 <i class="fa fa-times"></i>
                             </span>
                         </div>
+                        @endif
                         @endforeach
                     </div>
                 </div>
@@ -127,7 +129,7 @@
                 </div>
             </div>
             <div class="col-12 mt-4">
-                <button type="submit" class="btn btn-primary px-3">
+                <button type="submit" class="btn btn-primary  pt-2 px-3">
                     {{ $UpdateProduct ? __('header.update') : __('header.add+') }}
                 </button>
                 <div wire:loading wire:target="submit">

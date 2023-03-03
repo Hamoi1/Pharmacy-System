@@ -42,7 +42,7 @@
                     @error('address')<span class="text-danger">{{ $message }}</span>@enderror
                 </div>
                 <div class="col-12 mt-4">
-                    <button type="submit" class="btn btn-primary px-3">
+                    <button type="submit" class="btn btn-primary  px-3">
                         {{ __('header.update')}}
                     </button>
                     <span class="animated-dots mx-3 fs-3" wire:loading wire:target="submit">

@@ -37,7 +37,7 @@
                         @error('GlobalError') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
                     <div class="col-12 mt-2">
-                        <button type="submit" class="btn btn-primary px-3">
+                        <button type="submit" class="btn btn-primary  btn-primary   px-3">
                             {{__('header.GeneratePDF')}}
                         </button>
                         <div wire:loading wire:target="generate,type">

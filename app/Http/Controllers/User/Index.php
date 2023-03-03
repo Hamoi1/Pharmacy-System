@@ -17,13 +17,14 @@ class Index extends Component
     use WithPagination, WithFileUploads;
     public $name, $username, $phone, $email, $address, $password, $confirm_password,
         $UpdateUser, $UserId, $search, $status, $user, $statu, $Trashed = false,
-        $permission = [];
+        $permission = [], $ShowPermission = false, $permission_id;
     protected $paginationTheme = 'bootstrap',
         $queryString = [
             'search' => ['except' => ['id'], 'as' => 's'],
             'status' => ['as' => 'st'],
             'Trashed' => ['except' => false],
-            'page'
+            'page',
+            'permission_id' => ['as' => 'permission']
         ];
     public function mount()
     {
@@ -57,6 +58,10 @@ class Index extends Component
                 });
         }) : '';
         $this->status != null ? $users->Where('status', $this->status) : null;
+        // serach by permission_id
+        $this->permission_id != null ? $users->WhereHas('permissions', function ($query) {
+            $query->where('role_id', $this->permission_id);
+        }) : null;
         $users = $users->where('id', '!=', auth()->user()->id);
         $GetTrashDate = function ($date) {
             return $date;
@@ -84,6 +89,7 @@ class Index extends Component
             'user',
             'statu',
             'permission',
+            'ShowPermission'
         ];
     }
     public function done()
@@ -124,7 +130,7 @@ class Index extends Component
                 'email' => 'required|email|regex:/^[a-zA-Z0-9_.+-]+@[a-zA-Z]+\.[a-zA-Z]+$/u|unique:users,email,' . $this->UserId,
                 'address' => 'required|alpha_dash|min:3|max:40',
                 'statu' => 'in:1,0|nullable',
-                'permission' => 'required|array|min:1|exists:role,id',
+                'permission' => 'array|exists:role,id',
             ];
         } else {
             return [
@@ -134,7 +140,7 @@ class Index extends Component
                 'email' => 'required|email|unique:users,email|regex:/^[a-zA-Z0-9_.+-]+@[a-zA-Z]+\.[a-zA-Z]+$/u',
                 'password' => 'required|min:8|max:40|same:confirm_password',
                 'address' => 'required|alpha_dash|min:3|max:40',
-                'permission' => 'required|array|min:1|exists:role,id',
+                'permission' => 'array|exists:role,id',
             ];
         }
     }
@@ -194,6 +200,15 @@ class Index extends Component
         $this->validate($this->GetRulse(), $this->GetMessage());
         if ($this->UpdateUser && Gate::allows('Update User')) {
             $user = User::find($this->UserId);
+            #old data
+            $old_data = [
+                'name : ' . $user->name,
+                'username : ' .  $user->username,
+                'phone : ' .  $user->phone,
+                'email : ' .  $user->email,
+                $user->status ? 'status : Active' : 'status : Not Active',
+                'address : ' .  $user->user_details->address,
+            ];
             $user->update([
                 'name' => $this->name,
                 'username' => $this->username,
@@ -214,8 +229,18 @@ class Index extends Component
                     'user_id' => $this->UserId,
                 ]);
             }
+            #new data
+            $new_data = [
+                'name : ' . $this->name,
+                'username : ' .  $this->username,
+                'phone number : ' .  $this->phone,
+                'email : ' .  $this->email,
+                $this->statu ? 'status : Active' : 'status : Not Active',
+                'address : ' .  $this->address,
+            ];
+            $user->InsertDataToFile(auth()->user()->id, "User", 'Update', $old_data, $new_data);
         } elseif (!$this->UpdateUser && Gate::allows('Insert User')) {
-            $users = User::create([
+            $user = User::create([
                 'name' => $this->name,
                 'username' => $this->username,
                 'phone' => $this->phone,
@@ -223,16 +248,26 @@ class Index extends Component
                 'password' => Hash::make($this->password),
             ]);
             UserDetails::create([
-                'user_id' => $users->id,
+                'user_id' => $user->id,
                 'address' => $this->address,
             ]);
             foreach ($this->permission as $permission) {
                 $permission_name = Role::find($permission)->name;
                 UserPermissions::create([
                     'user_permissions' => $permission_name,
-                    'user_id' => $users->id,
+                    'user_id' => $user->id,
                 ]);
             }
+            $new_data = [
+                'name : ' . $this->name,
+                'username : ' .  $this->username,
+                'phone number : ' .  $this->phone,
+                'email : ' .  $this->email,
+                'status : ' .  $this->statu ? 'Active' : 'Inactive',
+                'address : ' .  $this->address,
+            ];
+            $user->InsertDataToFile(auth()->user()->id, "User", 'Update', '', $new_data);
+            $user->CreateFile($user->id);
         }
         flash()->addSuccess($this->UpdateUser ?  __('header.updated') :  __('header.add'));
         $this->done();
@@ -259,8 +294,15 @@ class Index extends Component
         if (!Gate::allows('Delete User')) {
             flash()->addError(__('header.NotAllowToDo'));
         } else {
-            User::findOrFail($id)->delete();
-            flash()->addSuccess(__('header.deleted_for_30_days'));
+            $user = User::findOrFail($id);
+            if ($user->id == auth()->user()->id) {
+                flash()->addError(__('header.CanNotDeleteUser'));
+            } else {
+                $data = 'Delete ( ' . $user->name . ' ) form : ' . now();
+                $user->delete();
+                flash()->addSuccess(__('header.deleted_for_30_days'));
+                auth()->user()->InsertDataToFile(auth()->user()->id, "User", 'Delete',  $data,  $data);
+            }
         }
         $this->done();
     }
@@ -275,9 +317,18 @@ class Index extends Component
         if (!Gate::allows('Update User')) {
             flash()->addError(__('header.NotAllowToDo'));
         } else {
+            $old_data = [
+                'Name : ' . $user->name,
+                $user->status ? 'status : Active' : 'status : Not Active'
+            ];
             $user->update([
                 'status' => $user->status == 1 ? 0 : 1,
             ]);
+            $new_data = [
+                'Name : ' . $user->name,
+                $user->status ? 'status : Active' : 'status : Not Active'
+            ];
+            $user->InsertDataToFile(auth()->user()->id, "User", 'Update', $old_data, $new_data);
             flash()->addSuccess($user->status == 1 ? __('header.actived') : __('header.deactived'));
         }
         $this->done();
@@ -288,29 +339,46 @@ class Index extends Component
         if ($users->count() == 0)
             return;
 
+        $userName = [];
         foreach ($users as $user) {
             $user->products()->update(['user_id' => null]);
             $user->sales()->update(['user_id' => null]);
-
+            $userName[] = '( ' . $user->name . ' )';
             $user->forceDelete();
         }
+        $data = 'Delete  ' . implode(' , ', $userName) . '  form : ' . now();
+        auth()->user()->InsertDataToFile(auth()->user()->id, "User", 'Delete',  $data,  '');
         flash()->addSuccess(__('header.deleted'));
         $this->done();
     }
     public function RestoreAll()
     {
         $users = $this->CheckTrashParameter()->get();
+        if ($users->count() == 0)
+            return;
+
+        $userName = [];
         foreach ($users as $user) {
+            $userName[] = '( ' . $user->name . ' )';
             $user->restore();
         }
+        $data = 'Restore   ' . implode(' , ', $userName) . '  form : ' . now();
+        auth()->user()->InsertDataToFile(auth()->user()->id, "User", 'Restore',  $data, '');
         flash()->addSuccess(__('header.RestoreMessage'));
         $this->done();
     }
     public function restore($id)
     {
         $user = User::onlyTrashed()->findOrFail($id);
+        $data = 'Restore ( ' . $user->name . ' ) form : ' . now();
         $user->restore();
+        auth()->user()->InsertDataToFile(auth()->user()->id, "User", 'Restore',  $data, '');
         flash()->addSuccess(__('header.RestoreMessage'));
         $this->done();
+    }
+
+    public function ShowPermission()
+    {
+        $this->ShowPermission = !$this->ShowPermission;
     }
 }

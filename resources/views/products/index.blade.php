@@ -17,13 +17,13 @@
             <div class="page-header">
                 <div class="row align-items-center">
                     <div class="col">
-                        <h2 class="page-title">
+                        <p class="fw-bolder fs-1">
                             {{ __('header.Products') }}
-                        </h2>
+                        </p>
                     </div>
-                    @can('InsertProduct')
+                    @can('Insert Product')
                     <div class="col-auto ms-auto">
-                        <a href="" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add-update" wire:click=add>
+                        <a href="" class="btn btn-primary  btn-primary  " data-bs-toggle="modal" data-bs-target="#add-update" wire:click=add>
                             <i class="fa fa-plus"></i>
                         </a>
                     </div>
@@ -31,13 +31,12 @@
                 </div>
             </div>
         </div>
-        @canany(['Update Category','Insert Category'])
+        @canany(['Update Product','Insert Product'])
         @include('products.add-update')
         @endcanany
         @can('Delete Product')
         @include('products.delete')
         @endcan
-        <x-not-access name="{{ __('header.Product') }}" />
         @include('products.view')
         <div class="row g-2 my-3">
             <div class="col-lg-3 col-md-6 col-12">
@@ -76,7 +75,7 @@
             @can('Product Trash')
             <div class="col-lg-4 col-12">
                 <div class="d-flex align-items-center ">
-                    <button class="btn" wire:click="Trash">
+                    <button class="btn pt-2" wire:click="Trash">
                         <i class="fa fa-trash mx-2 mb-1"></i>
                         {{ __('header.Trash') }}
                     </button>
@@ -181,6 +180,9 @@
                         <td class=" col-1 text-center">
                             @if(!$Trashed)
                             @can('Update Product')
+                            <a class="btn" href="{{ route('products.image.update',['lang'=>app()->getLocale() ,'id'=>$product->id]) }}">
+                                <i class="fa-solid fa-image text-info"></i>
+                            </a>
                             <a class="btn" href="" data-bs-toggle="modal" data-bs-target="#add-update" wire:click="updateProduct({{ $product->id }})">
                                 <i class="fa-solid fa-edit text-primary"></i>
                             </a>
@@ -190,9 +192,6 @@
                                 <i class="fa-solid fa-trash text-danger"></i>
                             </a>
                             @endcan
-                            <!-- <a class="btn" href="{{ route('products.image.update',['lang'=>app()->getLocale() ,'id'=>$product->id]) }}">
-                                <i class="fa-solid fa-image text-info"></i>
-                            </a> -->
                             @else
                             <button class="btn" wire:click="restore({{ $product->id }})">
                                 <i class="fa-solid fa-recycle text-success"></i>

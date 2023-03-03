@@ -16,18 +16,6 @@
                 </div>
             </div>
         </div>
-        <div class="row">
-            <form>
-                <div class="col-lg-4 col-12">
-                    <select class="form-select" wire:model="ProductID">
-                        <option value="">{{ __('header.Products') }}</option>
-                        @foreach ($Products as $row)
-                        <option value="{{ $row->id }}">{{ $row->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-            </form>
-        </div>
         @include('products.Update-image.update')
         <div class="row mt-3 g-3 ">
             <div class="col-lg-2 col-md-4 col-12  py-2 text-break">

@@ -21,6 +21,8 @@ class CleanUp extends Component
         foreach ($oldFiles as $file) {
             Storage::delete($file);
         }
+        $file = fopen(storage_path('logs/laravel.log'), 'w');
+        fclose($file);
         flash()->addSuccess(__('header.cleaned'));
     }
 }

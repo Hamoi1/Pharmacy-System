@@ -13,7 +13,7 @@
         </div>
     </div>
     <div class="{{ app()->getLocale() == 'ckb'   || app()->getLocale() == 'ar' ? 'reverse' : '' }} px-lg-5 px-3">
-        @can('UpdateDebtSale')
+        @can('Update DebtSale')
         <x-modal.add target="update" modalWidth="modal-lg">
             <div wire:loading wire:target="edit">
                 <div class="d-flex justify-content-center">
@@ -69,7 +69,7 @@
                             @error('price')<span class="text-danger">{{ $message }}</span>@enderror
                         </div>
                         <div class="col-12 mt-4">
-                            <button type="submit" class="btn btn-primary px-3">
+                            <button type="submit" class="btn btn-primary pt-2 px-3">
                                 {{ __('header.update') }}
                             </button>
                             <div wire:loading wire:target="submit">
@@ -83,7 +83,7 @@
             </div>
         </x-modal.add>
         @endcan
-        @can('DeleteDebtSale')
+        @can('Delete DebtSale')
         <x-modal.delete target="delete" title="{{ __('header.delete') }}" modalWidth="modal" wire="wire:click=done">
             <div wire:loading>
                 <div class="d-flex justify-content-center">
@@ -95,15 +95,15 @@
             </div>
             <div wire:loading.remove>
                 <span>
-                    {{__('header.AreYouSure' , ['name'=>__('header.sale')]) }}
+                    {{__('header.AreYouSure' , ['name'=>__('header.debt')]) }}
                 </span>
                 <form>
                     <div class="row g-3">
                         <div class="col-12 mt-4">
-                            <button type="submit" class="btn btn-danger px-3 py-1 mx-2" wire:click.prevent="destroy({{ $__id }})">
+                            <button type="submit" class="btn btn-danger pt-2 px-3 py-1 mx-2" wire:click.prevent="destroy({{ $__id }})">
                                 {{ __('header.delete') }}
                             </button>
-                            <button class="btn btn-primary px-3 py-1 mx-2" wire:click.prevent="done">
+                            <button class="btn btn-primary pt-2 px-3 py-1  mx-2" wire:click.prevent="done">
                                 {{ __('header.cancel') }}
                             </button>
                         </div>
@@ -112,14 +112,14 @@
             </div>
         </x-modal.delete>
         @endcan
-
-        <div class="d-flex align-items-center justify-content-between mt-3">
+        <div class="mt-4">
             <p class="fw-bolder fs-1">
                 {{ __('header.Debts') }}
             </p>
         </div>
-        <div class="row align-items-center">
-            <div class="col-lg-4 col-12">
+
+        <div class="row align-items-center g-2">
+            <div class="col-lg-4 col-12 ">
                 <div class="input-icon">
                     <input type="text" class="form-control" placeholder="{{ __('header.search') }}" wire:model="search">
                     <span class="input-icon-addon">
@@ -214,13 +214,13 @@
                         </td>
                         <td class="text-center">
                             @if ($debt->status == 0)
-                            @can('UpdateDebtSale')
+                            @can('Update DebtSale')
                             <a href="" class="btn text-blue" data-bs-toggle="modal" data-bs-target="#update" wire:click="edit({{$debt->id }})">
                                 <i class="fas fa-edit"></i>
                             </a>
                             @endcan
                             @else
-                            @can('DeleteDebtSale')
+                            @can('Delete DebtSale')
                             <a href="" class="btn text-danger" data-bs-toggle="modal" data-bs-target="#delete" wire:click="$set('__id',{{ $debt->id }})">
                                 <i class="fas fa-trash"></i>
                             </a>

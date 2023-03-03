@@ -12,18 +12,18 @@
             </div>
         </div>
     </div>
-    <div class="{{ app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }} container-xl">
-        <div class="mt-4">
+    <div class="{{ app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }} px-lg-5 px-3">
+        <div class=" mt-4">
             <div class="page-header">
                 <div class="row align-items-center">
                     <div class="col">
-                        <h2 class="page-title">
+                        <p class="fw-bolder fs-1">
                             {{ __('header.Users') }}
-                        </h2>
+                        </p>
                     </div>
-                    @can('InsertUser')
+                    @can('Insert User')
                     <div class="col-auto ms-auto">
-                        <a href="" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add-update" wire="wire:click=add">
+                        <a href="" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#add-update" wire="wire:click=add">
                             <i class="fa fa-plus"></i>
                         </a>
                     </div>
@@ -38,9 +38,8 @@
         @can('Delete User')
         @include('user.delete')
         @endcan
-        <x-not-access name="{{ __('header.User') }}" />
         @include('user.view')
-        <div class="row g-2 mt-3">
+        <div class="row g-2 my-3">
             <div class="col-lg-3 col-md-6 col-12">
                 <div class="input-icon">
                     <input type="text" class="form-control" placeholder="{{ __('header.search') }}" wire:model="search">
@@ -49,7 +48,6 @@
                     </span>
                 </div>
             </div>
-            @can('admin')
             <div class="col-lg-2 col-md-6 col-6">
                 <select class="form-select" wire:model="status">
                     <option value="">{{ __('header.status') }}</option>
@@ -57,10 +55,17 @@
                     <option value="0">Not Active</option>
                 </select>
             </div>
-            @endcan
+            <div class="col-lg-2 col-md-6 col-6">
+                <select class="form-select" wire:model="permission_id">
+                    <option value="">{{ __('header.permission') }}</option>
+                    @foreach ($roless as $p)
+                    <option value="{{ $p->id }}">{{ $p->name }}</option>
+                    @endforeach
+                </select>
+            </div>
             @can('User Trash')
             <div class="col-lg-1 col-md-6 col-5 mx-lg-2">
-                <button class=" btn" wire:click="Trash">
+                <button class="btn pt-2" wire:click="Trash">
                     <i class="fa fa-trash mx-2 mb-1"></i>
                     {{ __('header.Trash') }}
                 </button>
@@ -120,11 +125,11 @@
                             {{ __('header.status') }}
                         </th>
                         @endif
-                        @can('admin')
+                        @canany(['Update User','Delete User'])
                         <th class="fs-4 text-center">
                             {{ __('header.actions') }}
                         </th>
-                        @endcan
+                        @endcanany
                     </tr>
                 </thead>
                 <tbody>
@@ -134,8 +139,9 @@
                             <div class="d-flex py-1 align-items-center">
                                 <img src="{{ $user->image($user->image) }}" class=" avatar  rounded-circle mx-2 object-cover d-none d-md-block">
                                 <div class="flex-fill">
-                                    <a class="text-dark cursor-pointer" @if(!$Trashed) href="" wire:click.prevent="show({{ $user->id }})" data-bs-toggle="modal" data-bs-target="#view" @endif>
-                                        <span class="font-weight-medium">{{ $user->name }}</span>
+                                    <a class="mx-2 cursor-pointer" @if(!$Trashed) href="" wire:click.prevent="show({{ $user->id }})" data-bs-toggle="modal" data-bs-target="#view" @endif>
+                                        <!-- just show 10 letter of name -->
+                                        <span class="font-weight-medium">{{ Str::limit($user->name,15) }}</span>
                                     </a>
                                     @if ($user->create_at())
                                     <span class="badge bg-warning">

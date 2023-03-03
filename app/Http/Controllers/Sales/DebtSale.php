@@ -23,7 +23,7 @@ class DebtSale extends Component
     }
     public function render()
     {
-        if (!Gate::allows('ViewDebtSale')) {
+        if (!Gate::allows('View DebtSale')) {
             abort(404);
         }
         $debtSales = DebtSaleModel::query();
@@ -42,7 +42,7 @@ class DebtSale extends Component
     }
     public function edit(DebtSaleModel $debtSale)
     {
-        if (!Gate::allows('UpdateDebtSale')) {
+        if (!Gate::allows('Update DebtSale')) {
             flash()->addError(__('header.NotAllowToDo'));
         } else {
             $this->Edit = true;
@@ -56,7 +56,7 @@ class DebtSale extends Component
     }
     public function submit()
     {
-        if (!Gate::allows('UpdateDebtSale')) {
+        if (!Gate::allows('Update DebtSale')) {
             flash()->addError(__('header.NotAllowToDo'));
         } else {
             $this->validate([
@@ -68,6 +68,14 @@ class DebtSale extends Component
                 'price.max' => __('validation.max.numeric', ['attribute' => __('header.Returned Money'), 'max' => $this->remain . ' ' . __('header.currency')]),
             ]);
             $debtSale = DebtSaleModel::find($this->__id);
+            $oldData = [
+                'name : ' . $debtSale->name,
+                'phone : ' . $debtSale->phone,
+                'amount : ' . (number_format($debtSale->amount, 0, null, '.')),
+                'paid : ' . (number_format($debtSale->paid, 0, null, '.')),
+                'remain : ' . (number_format($debtSale->remain, 0, null, '.')),
+            ];
+
             $debtSale->paid = $this->currentPaid + $this->price;
             $debtSale->remain = $this->remain - $this->price;
             $debtSale->status = $debtSale->remain == 0 ? 1 : 0;
@@ -76,15 +84,32 @@ class DebtSale extends Component
                 'paid' => $debtSale->remain == 0 ? 1 : 0,
             ]);
             $debtSale->save();
+
+            $newData = [
+                'name : ' . $debtSale->name,
+                'phone : ' . $debtSale->phone,
+                'amount : ' . (number_format($debtSale->amount, 0, null, '.')),
+                'paid : ' . (number_format($debtSale->paid, 0, null, '.')),
+                'remain : ' . (number_format($debtSale->remain, 0, null, '.')),
+            ];
+            auth()->user()->InsertDataToFile(auth()->user()->id, "Debt sale", 'Update', $oldData, $newData);
             flash()->addSuccess(__('header.updated'));
         }
         $this->done();
     }
     public function destroy(DebtSaleModel $debtSale)
     {
-        if (!Gate::allows('DeleteDebtSale')) {
+        if (!Gate::allows('Delete DebtSale')) {
             flash()->addError(__('header.NotAllowToDo'));
         } else {
+            $oldData = [
+                'name : ' . $debtSale->name,
+                'phone : ' . $debtSale->phone,
+                'amount : ' . (number_format($debtSale->amount, 0, null, '.')),
+                'paid : ' . (number_format($debtSale->paid, 0, null, '.')),
+                'remain : ' . (number_format($debtSale->remain, 0, null, '.')),
+            ];
+            auth()->user()->InsertDataToFile(auth()->user()->id, "Debt sale", 'Delete', $oldData, '');
             $debtSale->delete();
             flash()->addSuccess(__('header.deleted'));
         }

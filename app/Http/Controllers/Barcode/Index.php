@@ -89,11 +89,17 @@ class Index extends Component
             flash()->addError(__('header.NotAllowToDo'));
         } else {
             $this->validate($this->rules(), $this->messages());
-            Barcode::create([
+            $barcode = Barcode::create([
                 'name' => $this->barcode_name,
                 'barcode' => $this->barcode,
                 'quantity' => $this->quantity,
             ]);
+            $data = [
+                'Name : ' . ($this->barcode_name ?? 'No name'),
+                'Barcode : ' . $this->barcode,
+                'Quantity : ' . $this->quantity,
+            ];
+            auth()->user()->InsertDataToFile(auth()->user()->id, "Barcode", 'Create', '', $data);
             flash()->addSuccess(__('header.barcodes.SuccessfullyGenerated'));
         }
         $this->done();
@@ -103,6 +109,12 @@ class Index extends Component
         if (!Gate::allows('Delete Barcode')) {
             flash()->addError(__('header.NotAllowToDo'));
         } else {
+            $data = [
+                'Name : ' . ($barcode->name ?? 'No name'),
+                'Barcode : ' . $barcode->barcode,
+                'Quantity : ' . $barcode->quantity,
+            ];
+            auth()->user()->InsertDataToFile(auth()->user()->id, "Barcode", 'Delete', $data, '');
             $barcode->delete();
             flash()->addSuccess(__('header.deleted'));
         }

@@ -12,9 +12,24 @@
             </div>
         </div>
     </div>
-    <div class="{{ app()->getLocale() =='ckb' ? 'reverse' : '' }} px-lg-5 px-3">
+    <div class="{{ app()->getLocale() =='ckb' || app()->getLocale() =='ar' ? 'reverse' : '' }} px-lg-5 px-3">
         <div class="mt-4">
-            <x-page-header title="{{ __('header.Suppliers') }}" target="#add-update" wire="wire:click=add" />
+            <div class="page-header">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <p class="fw-bolder fs-1">
+                            {{ __('header.Suppliers') }}
+                        </p>
+                    </div>
+                    @can('Insert Supplier')
+                    <div class="col-auto ms-auto">
+                        <a href="" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#add-update" wire:click=add>
+                            <i class="fa fa-plus"></i>
+                        </a>
+                    </div>
+                    @endcan
+                </div>
+            </div>
         </div>
         @canany(['Update Supplier','Insert Supplier'])
         @include('supplier.add-update')
@@ -22,8 +37,7 @@
         @can('Delete Supplier')
         @include('supplier.delete')
         @endcan
-        <x-not-access name="{{ __('header.Supplier') }}" />
-        <div class="row g-3 align-items-center">
+        <div class="row g-3 mt-2 align-items-center">
             <div class="col-lg-3 col-md-6 col-12">
                 <div class="input-icon">
                     <input type="text" class="form-control" placeholder="{{ __('header.search') }}" wire:model="search">
@@ -34,8 +48,8 @@
             </div>
             @can('Supplier Trash')
             <div class="col-lg-1 col-md-6 col-5 mx-lg-2">
-                <button class=" btn " wire:click="Trash">
-                    <i class="fa fa-trash mx-2 mb-2"></i>
+                <button class="btn pt-2" wire:click="Trash">
+                    <i class="fa fa-trash mx-2 mb-1"></i>
                     {{ __('header.Trash') }}
                 </button>
             </div>

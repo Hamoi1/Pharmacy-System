@@ -148,17 +148,24 @@ class Index extends Component
         $images = [];
         if ($this->images) {
             foreach ($this->images as $image) {
-                $ResizeImage = Image::make($image)->resize(300, 300, function ($constraint) {
-                    $constraint->aspectRatio();
-                })->encode('jpg', 75);
-                $ResizeImage->stream();
                 $imageName = time() . '-' . uniqid() . '-' . uniqid() . '.' . $image->GetClientOriginalExtension();
-                Storage::put('public/products/' . $imageName, $ResizeImage);
+                Storage::put('public/products/' . $imageName);
                 $images[] = $imageName;
             }
         }
         if ($this->UpdateProduct && Gate::allows('Update Product')) {
-            Products::findOrFail($this->productID)->update([
+            $product =  Products::findOrFail($this->productID);
+            $oldData = [
+                'Name : ' . $product->name,
+                'barcode : ' . $product->barcode,
+                'Quantity : ' . $product->quantity,
+                'expiry Date : ' . $product->expiry_date,
+                'Purches Price : ' . $product->purches_price,
+                'Sales Price : ' . $product->sale_price,
+                'Catrgory : ' . $product->category->name,
+                'Supplier : ' . $product->supplier->name,
+            ];
+            $product->update([
                 'name' => $this->name,
                 'barcode' => $this->barcode,
                 'purches_price' => $this->purches_price,
@@ -169,8 +176,20 @@ class Index extends Component
                 'expiry_date' => $this->expire_date,
                 'description' => $this->description,
             ]);
+
+            $newData = [
+                'Name : ' . $product->name,
+                'barcode : ' . $product->barcode,
+                'Quantity : ' . $product->quantity,
+                'expiry Date : ' . $product->expiry_date,
+                'Purches Price : ' . $product->purches_price,
+                'Sales Price : ' . $product->sale_price,
+                'Catrgory : ' . $product->category->name,
+                'Supplier : ' . $product->supplier->name,
+            ];
+            auth()->user()->InsertDataToFile(auth()->user()->id, "Product", 'Update',  $oldData,  $newData);
         } else if (!$this->UpdateProduct  && Gate::allows('Insert Product')) {
-            Products::create([
+            $product = Products::create([
                 'name' => $this->name,
                 'barcode' => $this->barcode,
                 'purches_price' => $this->purches_price,
@@ -183,6 +202,17 @@ class Index extends Component
                 'image' => $images ? json_encode($images) : null,
                 'user_id' => auth()->id(),
             ]);
+            $newData = [
+                'Name : ' . $product->name,
+                'barcode : ' . $product->barcode,
+                'Quantity : ' . $product->quantity,
+                'expiry Date : ' . $product->expiry_date,
+                'Purches Price : ' . $product->purches_price,
+                'Sales Price : ' . $product->sale_price,
+                'Catrgory : ' . $product->category->name,
+                'Supplier : ' . $product->supplier->name,
+            ];
+            auth()->user()->InsertDataToFile(auth()->user()->id, "Product", 'Create',  '',  $newData);
         }
         flash()->addSuccess($this->UpdateProduct ? __('header.updated') : __('header.add'));
 
@@ -217,6 +247,8 @@ class Index extends Component
         if (!Gate::allows('Delete Product')) {
             flash()->adderror(__('header.NotAllowToDo'));
         } else {
+            $data = 'Delete ( ' . $product->name . ' ) form : ' . now();
+            auth()->user()->InsertDataToFile(auth()->user()->id, "Product", 'Delete',  $data,  $data);
             $product->delete();
             flash()->addSuccess(__('header.deleted_for_30_days'));
         }
@@ -229,29 +261,41 @@ class Index extends Component
     public function DeleteAll()
     {
         $products = $this->CheckTrashParameter()->with('sale_details')->get();
+        $ProductName = [];
         foreach ($products as $product) {
             foreach ($product->sale_details as $p) {
                 $p->update([
                     'product_id' => null,
                 ]);
             }
+            $ProductName[] = '( ' . $product->name . ' )';
             $product->forceDelete();
         }
+        $data = 'Delete  ' . implode(' , ', $ProductName) . '  form : ' . now();
+        auth()->user()->InsertDataToFile(auth()->user()->id, "Product", 'Delete',  $data,  $data);
         flash()->addSuccess(__('header.deleted'));
         $this->done();
     }
     public function RestoreAll()
     {
         $products = $this->CheckTrashParameter()->get();
+        $ProductName = [];
         foreach ($products as $product) {
+            $ProductName[] = '( ' . $product->name . ' )';
             $product->restore();
         }
+        $data = 'Restore  ' . implode(' , ', $ProductName) . '  form : ' . now();
+        auth()->user()->InsertDataToFile(auth()->user()->id, "Product", 'Restore',  $data,  $data);
         flash()->addSuccess(__('header.RestoreMessage'));
         $this->done();
     }
     public function restore($id)
     {
-        Products::onlyTrashed()->findOrFail($id)->restore();
+        $product = Products::onlyTrashed()->findOrFail($id);
+        $ProductName = $product->name;
+        $product->restore();
+        $data = 'Restore ( ' . $ProductName . ' ) form : ' . now();
+        auth()->user()->InsertDataToFile(auth()->user()->id, "Product", 'Restore',  $data,  $data);
         flash()->addSuccess(__('header.RestoreMessage'));
         $this->done();
     }

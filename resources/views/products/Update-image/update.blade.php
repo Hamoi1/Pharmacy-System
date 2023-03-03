@@ -25,7 +25,6 @@
                     </div>
                     @error('images.*')<span class="text-danger">{{ $message }}</span>@enderror
                 </div>
-
                 @if($images)
                 <div class="col-12">
                     <div class="row text-center g-lg-2 gy-3">
@@ -43,7 +42,7 @@
                 </div>
                 @endif
                 <div class="col-12 mt-4">
-                    <button type="submit" class="btn btn-primary px-3">
+                    <button type="submit" class="btn btn-primary  px-3">
                         {{ __('header.add+')  }}
                     </button>
                     <div wire:loading wire:target="submit">

@@ -30,7 +30,7 @@
                     </div>
 
                     <div class="col-12 mt-4">
-                        <button type="submit" class="btn btn-primary px-3">
+                        <button type="submit" class="btn btn-primary  btn-primary   px-3">
                             {{ __('header.Change Password')}}
                         </button>
                         <div wire:loading wire:target="ChangePassword">

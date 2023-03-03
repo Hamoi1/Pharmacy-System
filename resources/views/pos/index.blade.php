@@ -1,6 +1,6 @@
 @push('title') POS @endpush
 <div class="point-of-sales">
-    <div class="container-lg mt-4 user-select-none {{  app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }}">
+    <div class="px-lg-5 px-3 mt-4 user-select-none {{  app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }}">
         <div wire:loading wire:target="debt,plus,minus,destroy,submit">
             <div class="loading">
                 <div class="loading-content">

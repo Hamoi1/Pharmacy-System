@@ -14,10 +14,10 @@
         <form wire:submit.prevent="destroy({{$barcode_id}})">
             <div class="row g-3">
                 <div class="col-12 mt-4">
-                    <button type="submit" class="btn btn-danger px-3 py-1 mx-2">
+                    <button type="submit" class="btn btn-danger pt-2 px-3 py-1 mx-2">
                         {{ __('header.delete') }}
                     </button>
-                    <button class="btn btn-primary px-3 py-1 mx-2" wire:click.prevent="done">
+                    <button class="btn btn-primary pt-2 px-3 py-1 mx-2" wire:click.prevent="done">
                         {{ __('header.cancel') }}
                     </button>
                 </div>

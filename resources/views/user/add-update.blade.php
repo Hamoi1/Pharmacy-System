@@ -16,6 +16,7 @@
         </div>
         <form wire:submit.prevent="submit">
             <div class="row g-3">
+                @if (!$ShowPermission)
                 <div class="col-lg-6 col-12">
                     <label for="">{{ __('header.name') }}</label>
                     <input type="text" class="form-control" wire:model.defer="name" placeholder="{{ __('header.name') }}">
@@ -36,37 +37,26 @@
                     <input type="email" class="form-control" wire:model.defer="email" placeholder="{{ __('header.email') }}">
                     @error('email')<span class="text-danger">{{ $message }}</span>@enderror
                 </div>
-                <div class="{{ $UpdateUser ? 'col-12' : 'col-lg-7' }} col-12 d-flex gap-2">
+                <div class="{{ $UpdateUser ? 'col-lg-6 col-12' : 'col-lg-6' }}">
                     @if($UpdateUser)
-                    <div class="col-6">
-                        <label for="">{{ __('header.status') }}</label>
-                        <select class="form-select" wire:model="statu">
-                            <option value="1">Active</option>
-                            <option value="0">Not Active</option>
-                        </select>
-                        @error('statu')<span class="text-danger">{{ $message }}</span>@enderror
-                    </div>
+                    <label for="">{{ __('header.status') }}</label>
+                    <select class="form-select" wire:model="statu">
+                        <option value="1">Active</option>
+                        <option value="0">Not Active</option>
+                    </select>
+                    @error('statu')<span class="text-danger">{{ $message }}</span>@enderror
                     @endif
                 </div>
-                <div class="{{ $UpdateUser ? 'col-12' : 'col-lg-5 col-12' }}">
+                <div class="{{ $UpdateUser ? 'col-lg-6 col-12' : 'col-12' }}">
                     <label for="">{{ __('header.address') }}</label>
                     <input type="text" class="form-control" wire:model.defer="address" placeholder="{{ __('header.address') }}">
                     @error('address')<span class="text-danger">{{ $message }}</span>@enderror
                 </div>
                 <div class="col-12">
-                    <!-- print each role -->
-                    <div class="d-flex align-items-center flex-wrap gap-3 p-2">
-                        @foreach($roless as $role)
-                        <div class="mx-1">
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" wire:click="role_permission({{ $role->id }})" value="{{ $role->id }}" @if ($UpdateUser) {{  in_array($role->id,$permission) ? 'checked' : '' }} @endif>
-                                <label class="form-check-label">{{ $role->name }}</label>
-                            </div>
-                        </div>
-                        @endforeach
-                    </div>
+                    <button type="button" class="btn btn-sm btn-dark rounded-2 pt-2 p-1 px-4 fs-4 text-center" wire:click="ShowPermission">
+                        {{ __('header.permission') }}
+                    </button>
                     @error('permission')<span class="text-danger">{{ $message }}</span>@enderror
-
                 </div>
                 @if(!$UpdateUser)
                 <div class="col-lg-6 col-12">
@@ -80,9 +70,25 @@
                     @error('confirm_password')<span class="text-danger">{{ $message }}</span>@enderror
                 </div>
                 @endif
-
+                @else
+                <div class="col-12 my-3">
+                    <button type="button" class="btn btn-sm btn-dark rounded-2 p-1 pt-2 px-4 fs-4 text-center" wire:click="ShowPermission">
+                        {{ __('header.back') }}
+                    </button>
+                    <div class="d-flex align-items-center flex-wrap gap-3 p-2 mt-3">
+                        @foreach($roless as $role)
+                        <div class="mt-2 mx-1">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input permission" type="checkbox" wire:click="role_permission({{ $role->id }})" value="{{ $role->id }}" @if ($UpdateUser) {{  in_array($role->id,$permission) ? 'checked' : '' }} @else {{  in_array($role->id,$permission) ? 'checked' : '' }} @endif>
+                                <label class="form-check-label">{{ $role->name }}</label>
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+                @endif
                 <div class="col-12 mt-4">
-                    <button type="submit" class="btn btn-primary px-3">
+                    <button type="submit" class="btn btn-primary  px-3 pt-2">
                         {{ $UpdateUser ? __('header.update') : __('header.add+') }}
                     </button>
                     <div wire:loading wire:target="submit">

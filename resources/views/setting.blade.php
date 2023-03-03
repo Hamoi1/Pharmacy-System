@@ -1,6 +1,6 @@
 @push('title') Setting @endpush
 <div>
-    <div class="container-lg  {{ app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }} py-4  mt-3 mt-md-5">
+    <div class="{{ app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }} px-lg-5 px-3 pt-4">
         <div class="row g-4 ">
             <div class="col-12">
                 <livewire:system.clean-up />

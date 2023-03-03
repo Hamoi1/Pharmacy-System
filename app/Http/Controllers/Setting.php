@@ -28,6 +28,7 @@ class Setting extends Component
         $this->phone = $this->setting->phone;
         $this->email = $this->setting->email;
         $this->address = $this->setting->address;
+        $this->oldLogo = $this->setting->logo;
         return view('setting');
     }
     public function GetRuls()
@@ -65,6 +66,9 @@ class Setting extends Component
         if ($this->logo) {
             $logoName = time() . '-' . uniqid() . '.' . $this->logo->getClientOriginalExtension();
             $this->logo->storeAs('public/logo', $logoName);
+            if ($this->oldLogo) {
+                Storage::delete('public/logo/' . $this->oldLogo);
+            }
         }
         $this->setting->update([
             'name' => $this->name,
@@ -90,7 +94,6 @@ class Setting extends Component
             ]);
         }
         $this->emitSelf('ChangeTheme');
-        $this->emit('ChangeTheme',$this->setting->theme);
-
+        $this->emit('ChangeTheme', $this->setting->theme);
     }
 }
