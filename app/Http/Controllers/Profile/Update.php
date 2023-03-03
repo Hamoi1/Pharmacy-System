@@ -34,6 +34,7 @@ class Update extends Component
         auth()->user()->user_details->update([
             'image' => $imageName,
         ]);
+
         flash()->addSuccess(__('header.updated'));
         $this->emit('UpdateProfile');
         $this->image = null;
@@ -94,7 +95,13 @@ class Update extends Component
             'address.string' => __('validation.string', ['attribute' => __('header.address')]),
             'address.max' => __('validation.max.string', ['attribute' => __('header.address'), 'max' => 255]),
         ]);
-
+        $oldData = [
+            'name : ' .  auth()->user()->name,
+            'username : ' .  auth()->user()->username,
+            'email : ' .  auth()->user()->email,
+            'phone : ' .  auth()->user()->phone,
+            'address : ' .  auth()->user()->user_details->address,
+        ];
         auth()->user()->update([
             'name' => $this->name,
             'username' => $this->username,
@@ -104,6 +111,14 @@ class Update extends Component
         auth()->user()->user_details->update([
             'address' => $this->address,
         ]);
+        $newData = [
+            'name : ' .  auth()->user()->name,
+            'username : ' .  auth()->user()->username,
+            'email : ' .  auth()->user()->email,
+            'phone : ' .  auth()->user()->phone,
+            'address : ' .  auth()->user()->user_details->address,
+        ];
+        auth()->user()->InsertDataToFile(auth()->user()->id, 'Update', 'Profile', $oldData, $newData);
         flash()->addSuccess(__('header.updated'));
         $this->emit('UpdateProfile');
         $this->done();

@@ -79,7 +79,7 @@
                         @foreach($roless as $role)
                         <div class="mt-2 mx-1">
                             <div class="form-check form-switch">
-                                <input class="form-check-input permission" type="checkbox" wire:click="role_permission({{ $role->id }})" value="{{ $role->id }}" @if ($UpdateUser) {{  in_array($role->id,$permission) ? 'checked' : '' }} @else {{  in_array($role->id,$permission) ? 'checked' : '' }} @endif>
+                                <input class="form-check-input permission" wire:loading.attr="disabled" wire:target="permission" type="checkbox" wire:click="role_permission({{ $role->id }})" value="{{ $role->id }}" @if ($UpdateUser) {{  in_array($role->id,$permission) ? 'checked' : '' }} @else {{  in_array($role->id,$permission) ? 'checked' : '' }} @endif>
                                 <label class="form-check-label">{{ $role->name }}</label>
                             </div>
                         </div>

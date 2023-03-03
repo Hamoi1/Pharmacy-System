@@ -204,7 +204,7 @@ class Index extends Component
             $old_data = [
                 'name : ' . $user->name,
                 'username : ' .  $user->username,
-                'phone : ' .  $user->phone,
+                'phone number : ' .  $user->phone,
                 'email : ' .  $user->email,
                 $user->status ? 'status : Active' : 'status : Not Active',
                 'address : ' .  $user->user_details->address,
@@ -254,7 +254,7 @@ class Index extends Component
             foreach ($this->permission as $permission) {
                 $permission_name = Role::find($permission)->name;
                 UserPermissions::create([
-                    'user_permissions' => $permission_name,
+                    'role_id' => $permission_name,
                     'user_id' => $user->id,
                 ]);
             }
@@ -266,8 +266,8 @@ class Index extends Component
                 'status : ' .  $this->statu ? 'Active' : 'Inactive',
                 'address : ' .  $this->address,
             ];
-            $user->InsertDataToFile(auth()->user()->id, "User", 'Update', '', $new_data);
             $user->CreateFile($user->id);
+            $user->InsertDataToFile(auth()->user()->id, "User", 'Update', '', $new_data);
         }
         flash()->addSuccess($this->UpdateUser ?  __('header.updated') :  __('header.add'));
         $this->done();
@@ -298,6 +298,7 @@ class Index extends Component
             if ($user->id == auth()->user()->id) {
                 flash()->addError(__('header.CanNotDeleteUser'));
             } else {
+                $user->DeleteFile($user->id);
                 $data = 'Delete ( ' . $user->name . ' ) form : ' . now();
                 $user->delete();
                 flash()->addSuccess(__('header.deleted_for_30_days'));
@@ -360,6 +361,7 @@ class Index extends Component
         $userName = [];
         foreach ($users as $user) {
             $userName[] = '( ' . $user->name . ' )';
+            $user->CreateFile($user->id);
             $user->restore();
         }
         $data = 'Restore   ' . implode(' , ', $userName) . '  form : ' . now();
@@ -370,6 +372,7 @@ class Index extends Component
     public function restore($id)
     {
         $user = User::onlyTrashed()->findOrFail($id);
+        $user->CreateFile($user->id);
         $data = 'Restore ( ' . $user->name . ' ) form : ' . now();
         $user->restore();
         auth()->user()->InsertDataToFile(auth()->user()->id, "User", 'Restore',  $data, '');

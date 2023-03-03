@@ -8,15 +8,17 @@ use Illuminate\Support\Facades\Gate;
 
 class Index extends Component
 {
-    public $user, $Page, $date, $file, $action, $old, $new, $oldData, $newData, $searchByDate, $action_method_select, $action_method = [
-        'Sale',
-        'Create',
-        'Update',
-        'Delete',
-        'Restore',
-        'Login',
-        'Logout'
-    ];
+    public $user, $page, $date, $file, $action, $old, $new, $oldData, $newData, $searchByDate, $action_method_select,
+        $action_method = [
+            'Sale',
+            'Create',
+            'Update',
+            'Delete',
+            'Restore',
+            'Login',
+            'Logout',
+            'Profile'
+        ];
     protected $queryString = [
         'user' => ['except' => ''],
         'action_method_select' => ['except' => '', 'as' => 'action'],
@@ -24,50 +26,52 @@ class Index extends Component
     ];
     public function render()
     {
+        $this->getData();
         $users = User::whereNot('id', auth()->user()->id)->get();
-        $this->date = [];
-        $this->Page = [];
-        $this->action = [];
-        $this->old = [];
-        $this->new = [];
-
-        if ($this->user && ($this->user != auth()->user()->id)) {
+        $user_select = $this->user;
+        return view('logs.index', ['users' => $users, 'user_select' => $user_select]);
+    }
+    public function getData()
+    {
+        $this->user == auth()->user()->id ? $this->user = '' : $this->user;
+        $this->date = $this->page = $this->action = $this->old = $this->new = [];
+        if ($this->user  && ($this->user != auth()->user()->id)) {
             $this->file = User::find($this->user)->GetFile($this->user);
-        } else {
-            $this->file = [];
         }
-        foreach ($this->file as $item) {
-            // get date time inside file
-            $date = explode(' / ', $item);
-            $date = $date[0];
-            $this->date[] = $date;
-
-            // get Page inside file
-            $Page = explode(' / ', $item);
-            $Page = $Page[1];
-            $this->Page[] = $Page;
-
-            // get action inside file
-            $action = explode(' / ', $item);
-            $action = $action[2];
-            $this->action[] = $action;
-
-            // get old data
-            $old = explode(' / ', $item);
-            $old = $old[3];
-            $this->old[] = $old;
-
-            // get new data
-            $new = explode(' / ', $item);
-            $new = $new[4];
-            $this->new[] = $new;
-        }
+        
         if ($this->file == []) {
             $this->file = [];
         } else {
+            foreach ($this->file as $item) {
+                // get date time inside file
+                $date = explode(' / ', $item);
+                $date = $date[0];
+                $this->date[] = $date;
+
+                // get Page inside file
+                $Page = explode(' / ', $item);
+                $Page = $Page[1];
+                $this->page[] = $Page;
+
+                // get action inside file
+                $action = explode(' / ', $item);
+                $action = $action[2];
+                $this->action[] = $action;
+
+                // get old data
+                $old = explode(' / ', $item);
+                $old = $old[3];
+                $this->old[] = $old;
+
+                // get new data
+                $new = explode(' / ', $item);
+                $new = $new[4];
+                $this->new[] = $new;
+            }
+
             // all date merge 
             $this->file = array_merge(
-                array_map(null, $this->date, $this->Page, $this->action, $this->old, $this->new)
+                array_map(null, $this->date, $this->page, $this->action, $this->old, $this->new)
             );
         }
         $this->file = array_reverse($this->file);
@@ -78,9 +82,8 @@ class Index extends Component
             $this->file = $this->searchByDate($this->file) :
             $this->file = $this->file;
 
-        return view('logs.index', ['users' => $users]);
+        return;
     }
-
     public function GetDataByMethod($file)
     {
         $data = [];

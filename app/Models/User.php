@@ -84,75 +84,117 @@ class User extends Authenticatable
         }
         return $permission_name;
     }
-
+    public function files()
+    {
+        $files = scandir('logs');
+        // remove . and .. from array
+        array_shift($files);
+        array_shift($files);
+        return $files;
+    }
     public function CreateFile($UserID)
     {
-        $file = fopen('logs/user-' . $UserID . '.log', 'w'); // use w to create a file if a file doesn't exist
+        $file = fopen('logs/user-' . $UserID . '-' . now()->format('Y.m.d') . '.log', 'w'); // use w to create a file if a file doesn't exist
         fclose($file);
+        return true;
     }
 
     // insert data to file but dont delete privewe
     public function InsertDataToFile($UserID, $where,  $action, $old, $new)
     {
-        $file = fopen('logs/user-' . $UserID . '.log', 'a'); // use a  to eneter data in the end of file
-        // old data can be array 
-        if (is_array($old)) {
-            $old = implode(',', $old);
+        // get all file inside folder logs
+        $files = $this->files();
+        foreach ($files as $file) {
+            $file_name = explode('-', $file);
+            // check if file name is equal to user id
+            if ($file_name[1] == $UserID) {
+                $file = fopen('logs/user-' . $UserID . '-' . $file_name[2], 'a'); // use a  to eneter data in the end of file
+                // old data can be array 
+                if (is_array($old)) {
+                    $old = implode(',', $old);
+                }
+                // new data can be array
+                if (is_array($new)) {
+                    $new = implode(',', $new);
+                }
+                $data = date('Y-m-d h:i:s') . ' / ' . $where . ' / ' . $action . ' / ' . $old . ' / ' . $new . PHP_EOL;
+                fwrite($file, $data);
+                fclose($file);
+                break;
+            }
+            // if not have file
+            else {
+                $this->CreateFile($UserID);
+                $this->InsertDataToFile($UserID, $where,  $action, $old, $new);
+                break;
+            }
         }
-        // new data can be array
-        if (is_array($new)) {
-            $new = implode(',', $new);
-        }
-        $data = date('Y-m-d h:i:s') . ' / ' . $where . ' / ' . $action . ' / ' . $old . ' / ' . $new . PHP_EOL;
-        fwrite($file, $data);
-        fclose($file);
     }
 
     public function GetFile($UserID)
     {
-        // search fo file 
-        if (!file_exists('logs/user-' . $UserID . '.log')) {
-            //    create a file
-            $this->CreateFile($UserID);
+        $files = $this->files();
+        foreach ($files as $file) {
+            $file_name = explode('-', $file);
+            // check if file name is equal to user id
+            if ($file_name[1] == $UserID) {
+                $file = fopen('logs/user-' . $UserID . '-' . $file_name[2], 'r'); // use r to get data in the satrt of file
+                // check file size
+                if (filesize('logs/user-' . $UserID  . '-' . $file_name[2]) == 0) {
+                    return [];
+                }
+                $data = fread($file, filesize('logs/user-' . $UserID  . '-' . $file_name[2]));
+                // change data to array
+                $data = explode(PHP_EOL, $data);
+                // remove last element
+                array_pop($data);
+                return $data;
+            } else {
+                return [];
+            }
         }
-        $file = fopen('logs/user-' . $UserID . '.log', 'r'); // use r to get data in the satrt of file
-        // check file size
-        if (filesize('logs/user-' . $UserID . '.log') == 0) {
-            return [];
-        }
-        $data = fread($file, filesize('logs/user-' . $UserID . '.log'));
-        // change data to array
-        $data = explode(PHP_EOL, $data);
-        // remove last element
-        array_pop($data);
-        return $data;
     }
 
     public function DeleteFile($UserID)
     {
-        return unlink('logs/user-' . $UserID . '.log');
+        $files = $this->files();
+        foreach ($files as $file) {
+            $file_name = explode('-', $file);
+            // check if file name is equal to user id
+            if ($file_name[1] == $UserID) {
+                unlink('logs/user-' . $UserID . '-' . $file_name[2]);
+                break;
+            }
+        }
     }
 
     public function DeleteDataInFile($UserID, $index, $action)
     {
-        // delete a record by index an action 
-        $data = file_get_contents('logs/user-' . $UserID . '.log');
-        $data = explode(PHP_EOL, $data);
-        array_pop($data);
-        $data = array_reverse($data);
-        $new_data = [];
-        foreach ($data as $key => $value) {
-            $value = explode(' / ', $value);
-            if ($key == $index && $value[2] == $action) {
-                continue;
+        $files = $this->files();
+        foreach ($files as $file) {
+            $file_name = explode('-', $file);
+            // check if file name is equal to user id
+            if ($file_name[1] == $UserID) {
+                // delete a record by index an action 
+                $data = file_get_contents('logs/user-' . $UserID . '-' . $file_name[2]);
+                $data = explode(PHP_EOL, $data);
+                array_pop($data);
+                $data = array_reverse($data);
+                $new_data = [];
+                foreach ($data as $key => $value) {
+                    $value = explode(' / ', $value);
+                    if ($key == $index && $value[2] == $action) {
+                        continue;
+                    }
+                    $new_data[] = implode(' / ', $value); // convert array to string            
+                }
+                $new_data = array_reverse($new_data);
+                $new_data = implode(PHP_EOL, $new_data);
+                $file = fopen('logs/user-' . $UserID . '-' . $file_name[2], 'w');
+                fwrite($file, $new_data . PHP_EOL);
+                fclose($file);
             }
-            $new_data[] = implode(' / ', $value); // convert array to string            
         }
-        $new_data = array_reverse($new_data);
-        $new_data = implode(PHP_EOL, $new_data);
-        $file = fopen('logs/user-' . $UserID . '.log', 'w');
-        fwrite($file, $new_data . PHP_EOL);
-        fclose($file);
     }
 
     public function ClearFile($id)

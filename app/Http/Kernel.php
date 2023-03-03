@@ -23,6 +23,7 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         \App\Http\Middleware\Checking_Debt_sale::class,
         \App\Http\Middleware\DeletingTrashe::class,
+        \App\Http\Middleware\DeleteFile::class,
     ];
 
     /**

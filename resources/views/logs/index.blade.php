@@ -1,6 +1,6 @@
 @push('title') Logs @endpush
-<div wire:poll.10000ms>
-    <div wire:loading wire:target="user">
+<div @if ($file!=[] && $file!='' ) wire:poll.10000ms @endif> <!-- every 10s page will be refresh -->
+    <div wire:loading wire:target="user,action_method_select,searchByDate">
         <div class="loading">
             <div class="loading-content">
                 <div class="loading-icon">
@@ -27,6 +27,7 @@
                             @endforeach
                         </select>
                     </div>
+                    @if ($user_select != '' || $user_select != null)
                     <div class="col-md-2 col-6">
                         <select name="" id="" class="form-select" wire:model="action_method_select">
                             <option value="">Select Action</option>
@@ -46,9 +47,11 @@
                         </button>
                     </div>
                     @endcan
+                    @endif
                 </div>
             </form>
-            <div class="table-responsive mt-3" wire:loading.remove wire:target="user">
+            @if ($user_select != '' || $user_select != null)
+            <div class="table-responsive mt-3" wire:loading.remove wire:target="user,searchByDate,action_method_select">
                 <table class="table  table-nowrap ">
                     <thead>
                         <tr class="">
@@ -114,6 +117,7 @@
                     </tbody>
                 </table>
             </div>
+            @endif
         </div>
     </div>
 </div>
