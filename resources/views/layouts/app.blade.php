@@ -32,7 +32,7 @@
         <div class="offline">
             <div class="offline-content">
                 <div class="offline-icon">
-                    <img src="{{ asset('assets/images/offline.gif') }}" width="250px" alt="">
+                    <img src="{{ asset('assets/images/offline.gif') }}" width="100px" alt="">
                 </div>
                 <h1 class="offline-title ">{{ __('header.offline') }}</h1>
             </div>
@@ -224,7 +224,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/autosize.js/3.0.20/autosize.min.js" integrity="sha512-EAEoidLzhKrfVg7qX8xZFEAebhmBMsXrIcI0h7VPx2CyAyFHuDvOAUs9CEATB2Ou2/kuWEDtluEVrQcjXBy9yw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="{{ asset('assets/js/main.js') }}"></script>
     <script src="{{ asset('assets/js/apexcharts.min.js') }}"></script>
-    @stack('js')
     <script>
         $(document).ready(function() {
             window.addEventListener('closeModal', event => {
@@ -249,7 +248,7 @@
             window.location.reload();
         });
     </script>
-
+    @stack('js')
 </body>
 
 </html>

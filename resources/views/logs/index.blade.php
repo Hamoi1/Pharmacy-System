@@ -4,7 +4,7 @@
         <div class="loading">
             <div class="loading-content">
                 <div class="loading-icon">
-                    <img src="{{ asset('assets/images/Spinner.gif') }}" width="250px" alt="">
+                    <img src="{{ asset('assets/images/Spinner.gif') }}" width="150px" alt="">
                 </div>
                 <h1 class="loading-title ">
                     {!! __('header.waiting') !!}
@@ -14,36 +14,38 @@
     </div>
     <div class=" px-lg-5 px-3">
         <div class="mt-4">
-            <h1>Logs</h1>
+            <h1>
+                {{ __('header.Logs') }}
+            </h1>
         </div>
         <div class="col-12">
             <form>
                 <div class="row g-2">
-                    <div class="col-md-2 col-12">
+                    <div class="col-md-3 col-12">
                         <select name="" id="" class="form-select" wire:model="user">
-                            <option value="">Select User</option>
+                            <option value="">{{ __('header.select_user') }}</option>
                             @foreach ($users as $user)
                             <option value="{{ $user->id }}">{{ $user->name }}</option>
                             @endforeach
                         </select>
                     </div>
                     @if ($user_select != '' || $user_select != null)
-                    <div class="col-md-2 col-6">
+                    <div class="col-md-3 col-6">
                         <select name="" id="" class="form-select" wire:model="action_method_select">
-                            <option value="">Select Action</option>
+                            <option value="">{{ __('header.select_action') }}</option>
                             @foreach ($action_method as $action)
                             <option value="{{ $action }}">{{ $action }}</option>
                             @endforeach
                         </select>
                     </div>
-                    <div class="col-md-2 col-6">
+                    <div class="col-md-3 col-6">
                         <input type="date" class="form-control" wire:model="searchByDate">
                     </div>
                     @can('Clear Log')
-                    <div class="col-md-2 col-6">
+                    <div class="col-md-3 col-6">
                         <button type="button" class="btn btn-danger pt-2" wire:click="clear">
                             <i class="fas fa-trash-alt mx-2 mb-1"></i>
-                            Clear
+                            {{ __('header.Clear') }}
                         </button>
                     </div>
                     @endcan
@@ -55,11 +57,24 @@
                 <table class="table  table-nowrap ">
                     <thead>
                         <tr class="">
-                            <th class="col-1 fs-4">Date</th>
-                            <th class="col-1 fs-4">Page</th>
-                            <th class="col-2 fs-4 text-center">Action</th>
-                            <th class="col-4 fs-4">Old Data</th>
-                            <th class="col-4 fs-4">New Data</th>
+                            <th class="col-1 fs-4">
+                                {{ __('header.date') }}
+                            </th>
+                            <th class="col-1 fs-4">
+                                {{ __('header.Page') }}
+                            </th>
+                            <th class="col-2 fs-4 text-center">
+                                {{ __('header.Action') }}
+                            </th>
+                            <th class="col-4 fs-4">
+                                {{ __('header.Old Data') }}
+                            </th>
+                            <th class="col-4 fs-4">
+                                {{ __('header.New Data') }}
+                            </th>
+                            <th class="col-1 fs-4 text-center">
+                                {{ __('header.delete') }}
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -84,11 +99,13 @@
                             </td>
                             <td>
                                 @forelse ($oldData as $index => $data)
-                                <div class=" {{ count($oldData) !=0 && $loop->index == 0 ? '' : 'mt-1' }}  {{ count($oldData) !=0 && $newData !=[] && $newData[$index] !== $data ? 'text-white bg-yellow py-1 rounded px-1' : '' }}">
+                                <div class=" {{ count($oldData) !=0 && $loop->index == 0 ? '' : 'mt-1' }}  {{ count($oldData) !=0 && $newData !=[] && $newData[$index] !== $data ? 'text-white bg-info py-1 rounded px-1' : '' }}">
                                     {{ $data }}
                                 </div>
                                 @empty
-                                <p>No Data</p>
+                                <p>
+                                    {{ __('header.No Data') }}
+                                </p>
                                 @endforelse
                             </td>
                             <td>
@@ -97,12 +114,17 @@
                                     {{ $data }}
                                 </div>
                                 @empty
-                                <p>No Data</p>
+                                <p>
+                                    {{ __('header.No Data') }}
+                                </p>
                                 @endforelse
                             </td>
                             @can('Delete Logs')
                             <td>
-                                <a href="" class="btn btn-danger btn-sm px-2 pt-1 mt-2  rounded-2" wire:click.prevent="delete('{{ $action }}',{{ $key }})">delete</a>
+                                <a href="" class="btn btn-danger btn-sm px-2 pt-1 mt-2  rounded-2" wire:click.prevent="delete('{{ $action }}',{{ $key }})">
+                                    <i class="fas fa-trash-alt mx-2"></i>
+                                    {{ __('header.delete') }}
+                                </a>
                             </td>
                             @endcan
                         </tr>
@@ -110,7 +132,9 @@
                         @else
                         <tr>
                             <td colspan="6" class="text-center">
-                                <p>No Data</p>
+                                <p>
+                                    {{ __('header.No Logs') }}
+                                </p>
                             </td>
                         </tr>
                         @endif

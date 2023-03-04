@@ -4,3 +4,9 @@
 2023-03-04 01:01:14 / User / Update / name : test,username : test,phone number : 12312312311,email : test@gmail.com,status : Active,address : ranya / name : test,username : test,phone number : 12312312311,email : test@gmail.com,status : Active,address : ranya
 2023-03-04 01:38:35 / User / Update / name : hogr,username : hogr,phone number : 5598042469,email : hogr@gmail.com,status : Active,address : Sulimany / name : hogr,username : hogr,phone number : 55980424691,email : hogr@gmail.com,status : Active,address : Sulimany
 2023-03-04 01:39:05 / User / Update / name : hogr,username : hogr,phone number : 87683993488,email : hogr@gmail.com,status : Active,address : Qaladzi / name : hogr,username : hogr,phone number : 87683993488,email : hogr@gmail.com,status : Active,address : Qaladzi
+2023-03-04 01:16:50 / Debt sale / Update / name : Miss Bernadette Breitenberg,phone : +1-667-416-2782,amount : 738.795,paid : 685.264,remain : 332.579 / name : Miss Bernadette Breitenberg,phone : +1-667-416-2782,amount : 738.795,paid : 1.017.843,remain : 0
+2023-03-04 01:23:33 / User / Update / Name : hogr,status : Active / Name : hogr,status : Not Active
+2023-03-04 01:23:59 / User / Update / Name : hogr,status : Not Active / Name : hogr,status : Active
+2023-03-04 01:24:37 / Sale / Sale /  / invoice : inv-157338672,total Price : 57.226,discount : 0,debt : no,name : no name,phone : no number,currentpaid : no paid
+2023-03-04 01:29:08 / Logout / Logout / muhammad logogut form : 2023-03-04 13:29:08 / muhammad logogut form : 2023-03-04 13:29:08
+2023-03-04 01:32:04 / User / Update / name : akar,username : akar,phone number : 62132418119,email : akar@gmail.com,status : Active,address : ranya / name : akar,username : akar,phone number : 62132418119,email : akar@gmail.com,status : Active,address : ranya

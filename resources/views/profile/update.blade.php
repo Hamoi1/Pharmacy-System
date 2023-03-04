@@ -4,7 +4,7 @@
         <div class="loading profile">
             <div class="loading-content">
                 <div class="loading-icon">
-                    <img src="{{ asset('assets/images/Spinner.gif') }}" width="250px" alt="">
+                    <img src="{{ asset('assets/images/Spinner.gif') }}" width="150px" alt="">
                 </div>
                 <h1 class="loading-title fw-bolder">
                     {!! __('header.waiting') !!}
