@@ -241,7 +241,7 @@ class Index extends Component
                 $id = Role::find($permission)->id;
                 UserPermissions::create([
                     'role_id' => $id,
-                    'user_id' => $this->UserId,
+                    'user_id' => $user->id,
                 ]);
             }
             #new data
