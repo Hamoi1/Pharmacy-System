@@ -1,6 +1,6 @@
 @push('title') Logs @endpush
-<div @if ($file!=[] && $file!='' ) wire:poll.10000ms @endif> <!-- every 10s page will be refresh -->
-    <div wire:loading wire:target="user,action_method_select,searchByDate">
+<div @if ($file!=[] && $file!='' ) wire:poll.10000ms @endif class="{{  app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }}"> <!-- every 10s page will be refresh -->
+    <div wire:loading wire:target="user,action_method_select,searchByDate,pdf">
         <div class="loading">
             <div class="loading-content">
                 <div class="loading-icon">
@@ -38,17 +38,22 @@
                             @endforeach
                         </select>
                     </div>
-                    <div class="col-md-3 col-6">
+                    <div class="col-md-2 col-6">
                         <input type="date" class="form-control" wire:model="searchByDate">
                     </div>
                     @can('Clear Log')
-                    <div class="col-md-3 col-6">
+                    <div class="col-md-2 col-6">
                         <button type="button" class="btn btn-danger pt-2" wire:click="clear">
                             <i class="fas fa-trash-alt mx-2 mb-1"></i>
                             {{ __('header.Clear') }}
                         </button>
                     </div>
                     @endcan
+                    <div class="col-md-2 col-6">
+                        <button type="button" class="btn btn-dark" wire:click="pdf">
+                            {{ __('header.PdfConvert') }}
+                        </button>
+                    </div>
                     @endif
                 </div>
             </form>

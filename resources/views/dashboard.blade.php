@@ -58,7 +58,7 @@
         plotOptions: {
             bar: {
                 horizontal: false,
-                columnWidth: '50%',
+                columnWidth: '40%',
                 endingShape: 'rounded'
             },
         },
@@ -95,12 +95,30 @@
                 }
             }
         },
-
+        // resopsive
+        responsive: [{
+            breakpoint: 550,
+            options: {
+                legend: {
+                    position: 'bottom',
+                    offsetX: -10,
+                    offsetY: 0
+                },
+                chart: {
+                    height: 250,
+                },
+                plotOptions: {
+                    bar: {
+                        horizontal: false,
+                        columnWidth: '40%',
+                        endingShape: 'rounded'
+                    },
+                },
+            }
+        }],
     };
     var chart = new ApexCharts(document.querySelector("#chart"), options);
     chart.render();
-
-
     var Products = @js($products);
     var options = {
         series: [{

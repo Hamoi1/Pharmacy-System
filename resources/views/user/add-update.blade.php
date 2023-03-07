@@ -78,8 +78,8 @@
                     <div class="d-flex align-items-center flex-wrap gap-3 p-2 mt-3">
                         @foreach($roless as $role)
                         <div class="mt-2 mx-1">
-                            <div class="form-check form-switch d-flex align-items-center justify-content-center gap-1">
-                                <input class="form-check-input permission" wire:loading.attr="disabled" wire:target="permission" type="checkbox" wire:click="role_permission({{ $role->id }})" value="{{ $role->id }}" @if ($UpdateUser) {{  in_array($role->id,$permission) ? 'checked' : '' }} @else {{  in_array($role->id,$permission) ? 'checked' : '' }} @endif>
+                            <div class="form-check form-switch d-flex align-items-center justify-content-center gap-1 not-reverse">
+                                <input class="form-check-input permission" wire:loading.attr="disabled"  type="checkbox" wire:click="role_permission({{ $role->id }})" value="{{ $role->id }}" @if ($UpdateUser) {{  in_array($role->id,$permission) ? 'checked' : '' }} @else {{  in_array($role->id,$permission) ? 'checked' : '' }} @endif>
                                 <label class="form-check-label mt-2">{{ $role->name }}</label>
                             </div>
                         </div>

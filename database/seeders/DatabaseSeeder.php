@@ -62,6 +62,8 @@ class DatabaseSeeder extends Seeder
             'Supplier Trash',
             'Clear Log',
             'User GenerateReport',
+            'User Export',
+            'Product Export'
         ];
 
         foreach ($roles as $role) {
@@ -151,15 +153,6 @@ class DatabaseSeeder extends Seeder
                 'password' => Hash::make('muhammad'),
                 'status' => 1,
             ],
-            [
-                'name' => 'syamand',
-                'username' => 'syamand',
-                'phone' => Str::limit(rand(1, 99999999999), 11, ''),
-                'email' => 'syamand@gmail.com',
-                'password' => Hash::make('muhammad'),
-                'status' => 1,
-            ],
-
         ];
 
         foreach ($users as $user) {
@@ -170,45 +163,42 @@ class DatabaseSeeder extends Seeder
                 'address' => fake()->randomElement(['ranya', 'Sulimany', 'Qaladzi', 'Hallshow']),
             ]);
         }
-        foreach (range(1, 110) as $index) {
-            $name = fake()->name;
-            $name = Str::replace(' ', '', $name);
-            $name = Str::replace('-', '', $name);
-            $name = Str::replace('.', '', $name);
-            $name = Str::limit($name, 7, '');
+        // foreach (range(1, 110) as $index) {
+        //     $name = fake()->name;
+        //     $name = Str::replace(' ', '', $name);
+        //     $name = Str::replace('-', '', $name);
+        //     $name = Str::replace('.', '', $name);
+        //     $name = Str::limit($name, 7, '');
 
-            $phone = fake()->phoneNumber;
-            $phone  = Str::remove('+', $phone);
-            $phone  = Str::remove(' ', $phone);
-            $phone  = Str::remove('-', $phone);
-            $phone = Str::limit($phone, 11, '');
-            $user = \App\Models\User::create([
-                'name' => $name,
-                'username' => fake()->unique()->userName . '-' . $index . $name,
-                'phone' => $phone,
-                'email' => fake()->unique()->safeEmail,
-                'password' => Hash::make('muhammad'),
-                'status' => fake()->numberBetween(0, 1),
-                'created_at' => fake()->randomElement([fake()->dateTimeBetween('-1 years', 'now')->format('Y-m-d H:i:s'), 'now'])
-            ]);
-            $user->user_details()->create([
-                'address' => fake()->randomElement(['ranya', 'sulimany', 'qaladzi', 'hawler', 'Hallshow']),
-            ]);
-        }
+        //     $phone = fake()->phoneNumber;
+        //     $phone  = Str::remove('+', $phone);
+        //     $phone  = Str::remove(' ', $phone);
+        //     $phone  = Str::remove('-', $phone);
+        //     $phone = Str::limit($phone, 11, '');
+        //     $user = \App\Models\User::create([
+        //         'name' => $name,
+        //         'username' => fake()->unique()->userName . '-' . $index . $name,
+        //         'phone' => $phone,
+        //         'email' => fake()->unique()->safeEmail,
+        //         'password' => Hash::make('muhammad'),
+        //         'status' => fake()->numberBetween(0, 1),
+        //         'created_at' => fake()->randomElement([fake()->dateTimeBetween('-1 years', 'now')->format('Y-m-d H:i:s'), 'now'])
+        //     ]);
+        //     $user->user_details()->create([
+        //         'address' => fake()->randomElement(['ranya', 'sulimany', 'qaladzi', 'hawler', 'Hallshow']),
+        //     ]);
+        // }
 
         // give permission for all user
         $users = User::take(11)->get();
         $roles = Role::all();
-        foreach ($users as $user) {
-            foreach ($roles as $role) {
+        foreach ($roles as $role) {
+            foreach ($users as $user) {
                 $user->Permissions()->create([
-                    // give role_id and user_id
                     'role_id' => $role->id,
-                    'user_id' => $user->id,
                 ]);
             }
         }
-
         $catagorys_data = [
             [
                 'name' => 'darzi',

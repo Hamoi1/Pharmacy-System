@@ -168,22 +168,22 @@
                             </a>
                         </li>
                         @endcan
+                        @can('View Log')
+                        <li class="nav-item my-1 mx-lg-1 mx-md-4 mx-3">
+                            <a class="nav-link  active {{ Request()->is(app()->getLocale().'/logs') ? 'active-page' : '' }}  mx-2" href="{{ route('logs',app()->getLocale()) }}">
+                                <i class="fa-solid fa-file mb-2"></i>
+                                <span class="nav-link-title  mx-2">
+                                    {{ __('header.Logs') }}
+                                </span>
+                            </a>
+                        </li>
+                        @endcan
                         @can('View Setting')
                         <li class="nav-item my-1 mx-lg-1 mx-md-4 mx-3">
                             <a class="nav-link  {{  app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }} active {{ Request()->is(app()->getLocale().'/settings') ? 'active-page' : '' }}  mx-2" href="{{ route('settings',app()->getLocale()) }}">
                                 <i class="fa fa-cog mb-2"></i>
                                 <span class="nav-link-title  mx-2">
                                     {{ __('header.setting') }}
-                                </span>
-                            </a>
-                        </li>
-                        @endcan
-                        @can('View Log')
-                        <li class="nav-item my-1 mx-lg-1 mx-md-4 mx-3">
-                            <a class="nav-link  active {{ Request()->is(app()->getLocale().'/logs') ? 'active-page' : '' }}  mx-2" href="{{ route('logs',app()->getLocale()) }}">
-                                <i class="fa-solid fa-file mb-2"></i>
-                                <span class="nav-link-title  mx-2">
-                                    Log
                                 </span>
                             </a>
                         </li>

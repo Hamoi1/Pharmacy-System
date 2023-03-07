@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Logs;
 
 use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Livewire\Component;
 use Illuminate\Support\Facades\Gate;
 
@@ -26,6 +27,11 @@ class Index extends Component
     ];
     public function render()
     {
+        if (!Gate::allows('View Log')) {
+            $this->resetExcept();
+            abort(404);
+
+        }
         $users = User::whereNot('id', auth()->user()->id)->get();
         $user_select = $this->user;
         $this->user == auth()->user()->id ? $this->user = '' : $this->user;
@@ -76,7 +82,6 @@ class Index extends Component
         $this->searchByDate ?
             $this->file = $this->searchByDate($this->file) :
             $this->file = $this->file;
-
         return view('logs.index', ['users' => $users, 'user_select' => $user_select]);
     }
     public function GetDataByMethod($file)
@@ -113,7 +118,7 @@ class Index extends Component
                 $this->file = User::find($userID)->GetFile($userID);
                 flash()->addSuccess('Data has been deleted successfully !');
             } else {
-                flash()->addWarning('Can\'t delete a data because you don\'t select a user !');
+                flash()->addWarning(__('header.logs_user'));
             }
         }
     }
@@ -126,10 +131,26 @@ class Index extends Component
             if ($userID) {
                 auth()->user()->ClearFile($userID);
                 $this->file = User::find($userID)->GetFile($userID);
-                flash()->addSuccess('File has been cleared successfully !');
+                flash()->addSuccess(__('header.logs_clear'));
             } else {
-                flash()->addWarning('Can\'t clear a file because you don\'t select a user !');
+                flash()->addWarning(__('header.logs_user'));
             }
+        }
+    }
+    public function pdf()
+    {
+        $user = User::find($this->user);
+        $this->file = array_reverse($this->file);
+        if ($this->file == []) {
+            flash()->addWarning(__('header.logs_user'));
+            return;
+        } else {
+            $pdf = Pdf::loadView('pdf.logs', ['file' => $this->file, 'user' => $user]);
+            return response()->streamDownload(function () use ($pdf) {
+                echo $pdf->output();
+            }, 'logs.pdf', [
+                'Content-Type' => 'application/pdf',
+            ]);
         }
     }
 }

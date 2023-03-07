@@ -11,6 +11,7 @@ use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Gate;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\ExportController;
 
 class Index extends Component
 {
@@ -23,6 +24,20 @@ class Index extends Component
         'ExpiryOrStockedOut' => ['as' => 'status'],
         'Trashed' => ['except' => false],
     ];
+    public $ExportData = [
+        'name' => "Name",
+        'barcode' => 'Barcode',
+        'purches_price' => 'Purches Price',
+        'sale_price' => 'Slae Price',
+        'category' => 'Category',
+        'supplier' => "Supplier",
+        'quantity' => 'Quantity',
+        'expiry_date' => 'Expiry Date',
+        'description' => 'Description',
+        'created_at' => 'Created At',
+        'updated_at' => 'Updated At',
+
+    ], $ExportDataSelected = [], $Productquantity;
     public function mount()
     {
         if (!Gate::allows('View Product')) {
@@ -71,7 +86,9 @@ class Index extends Component
     }
     public function ResetData()
     {
-        return ['name', 'barcode', 'purches_price', 'sale_price', 'category_id', 'supplier_id', 'quantity', 'expire_date', 'images', 'UpdateProduct', 'productID', 'description', 'expire'];
+        return [
+            'name', 'barcode', 'purches_price', 'sale_price', 'category_id', 'supplier_id', 'quantity', 'expire_date', 'images', 'UpdateProduct', 'productID', 'description', 'expire', 'ExportDataSelected', 'Productquantity'
+        ];
     }
     public function add()
     {
@@ -298,5 +315,35 @@ class Index extends Component
         auth()->user()->InsertDataToFile(auth()->user()->id, "Product", 'Restore',  $data,  $data);
         flash()->addSuccess(__('header.RestoreMessage'));
         $this->done();
+    }
+    public function Upload($data)
+    {
+        if (!in_array($data, $this->ExportDataSelected)) {
+            $this->ExportDataSelected[] = $data;
+        } else {
+            $this->ExportDataSelected = array_diff($this->ExportDataSelected, [$data]);
+        }
+    }
+
+    public function ExportData()
+    {
+        $this->validate(
+            [
+                'Productquantity' => 'nullable|numeric',
+            ]
+        );
+
+        if (count($this->ExportDataSelected) == 0) {
+            flash()->addError(__('header.SelectData'));
+            return;
+        }
+        $data = '';
+        foreach ($this->ExportDataSelected as $key => $value) {
+            $data .= $value . ' , ';
+        }
+        $data = 'Export  ' . $data . '  form : ' . now();
+        auth()->user()->InsertDataToFile(auth()->user()->id, "User", 'Export',  $data,  $data);
+        $this->ExportDataSelected = array_unique($this->ExportDataSelected);
+        return  ExportController::export($this->ExportDataSelected, 'products', $this->Productquantity);
     }
 }

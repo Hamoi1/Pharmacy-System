@@ -28,6 +28,7 @@ Route::group([
         Route::get('/settings', App\Http\Controllers\Setting::class)->name('settings');
         Route::get('/barcode', App\Http\Controllers\Barcode\Index::class)->name('barcode');
         Route::get('/logs', App\Http\Controllers\Logs\Index::class)->name('logs');
+        // Route::get('/export/user', [App\Http\Controllers\ExportController::class, 'export'])->name('export');
 
         Route::get('/logout', function () {
             $data = auth()->user()->name . ' logogut form : ' . now();

@@ -41,6 +41,9 @@
         @include('user.delete')
         @endcan
         @include('user.view')
+        @can('User Export')
+        @include('user.export')
+        @endcan
         <div class="row g-2 my-3">
             <div class="col-lg-3 col-md-6 col-12">
                 <div class="input-icon">
@@ -65,8 +68,16 @@
                     @endforeach
                 </select>
             </div>
+            @can('User Export')
+            <div class="col-lg-1 col-sm-3 col-6 mx-lg-3">
+                <button class="btn pt-2" data-bs-toggle="modal" data-bs-target="#export">
+                    <i class="fa-solid fa-file-export mx-2 mb-1"></i>
+                    {{ __('header.Export') }}
+                </button>
+            </div>
+            @endcan
             @can('User Trash')
-            <div class="col-lg-1 col-md-6 col-5 mx-lg-2">
+            <div class="col-lg-1 col-sm-3 col-6 mx-lg-2">
                 <button class="btn pt-2" wire:click="Trash">
                     <i class="fa fa-trash mx-2 mb-1"></i>
                     {{ __('header.Trash') }}
@@ -224,5 +235,3 @@
         </div>
     </div>
 </div>
-
-

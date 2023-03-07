@@ -184,6 +184,7 @@ return [
     'userIsDeleted' => 'User is Unknow',
     'pharmacyName' => 'Pharmacy Name',
     'GeneratePDF' => 'Generate Report',
+    'PdfConvert' => 'Convert Pdf',
     'report' => [
         'index' => 'Report',
         'Reports' => 'Reports',
@@ -193,8 +194,6 @@ return [
         'noData' => 'No Data',
         'description' => 'Generate Report for :name',
     ],
-
-
     'barcodes' => [
         'index' => 'Barcode',
         'barcodes' => 'Barcodes',
@@ -212,11 +211,16 @@ return [
     'select_user' => 'Select User',
     'select_action' => 'Select Action',
     'Clear' => 'Clear',
-    'Logs'=>'Logs',
-    'Page'=>'Page',
-    'Action'=>'Action',
-    'Old Data'=>'Old data',
-    'New Data'=>'New data',
-    'No Data'=>'No Data',
-    'No Logs'=>'No Logs',
+    'Logs' => 'Logs',
+    'Page' => 'Page',
+    'Action' => 'Action',
+    'Old Data' => 'Old data',
+    'New Data' => 'New data',
+    'No Data' => 'No Data',
+    'No Logs' => 'No Logs',
+    'Export' => 'Export',
+    'exportquantity' => 'Quantity',
+    'SelectData' => 'Select Data',
+    'logs_user' => 'Can\'t do this task because you don\'t select a user !',
+    'logs_clear' => 'File has been cleared successfully !',
 ];

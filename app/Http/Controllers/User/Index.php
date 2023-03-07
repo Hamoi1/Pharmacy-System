@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Http\Controllers\ExportController;
 use App\Models\Role;
 use App\Models\User;
 use Livewire\Component;
@@ -26,6 +27,17 @@ class Index extends Component
             'page',
             'permission_id' => ['as' => 'permission']
         ];
+    public $ExportData = [
+            'name' => 'Name',
+            'username' => 'Username',
+            'phone' => 'Phone',
+            'email' => 'Email',
+            'address' => 'Address',
+            'created_at' => 'Created At',
+            'updated_at' => 'Updated At',
+            'deleted_at' => 'Deleted At',
+        ],
+        $ExportDataSelected = [], $quantity;
     public function mount()
     {
         if (!Gate::allows('View User')) {
@@ -45,6 +57,7 @@ class Index extends Component
 
     public function render()
     {
+
         $users = $this->CheckTrashParameter();
         $this->search != '' ? $users->where(function ($query) {
             $query->where('name', 'like', '%' . $this->search . '%')
@@ -89,7 +102,9 @@ class Index extends Component
             'user',
             'statu',
             'permission',
-            'ShowPermission'
+            'ShowPermission',
+            'ExportDataSelected',
+            'quantity'
         ];
     }
     public function done()
@@ -383,5 +398,35 @@ class Index extends Component
     public function ShowPermission()
     {
         $this->ShowPermission = !$this->ShowPermission;
+    }
+    public function Upload($data)
+    {
+        if (!in_array($data, $this->ExportDataSelected)) {
+            $this->ExportDataSelected[] = $data;
+        } else {
+            $this->ExportDataSelected = array_diff($this->ExportDataSelected, [$data]);
+        }
+    }
+
+    public function ExportData()
+    {
+        $this->validate(
+            [
+                'quantity' => 'nullable|numeric',
+            ]
+        );
+
+        if (count($this->ExportDataSelected) == 0) {
+            flash()->addError(__('header.SelectData'));
+            return;
+        }
+        $data = '';
+        foreach ($this->ExportDataSelected as $key => $value) {
+            $data .= $value . ' , ';
+        }
+        $data = 'Export  ' . $data . '  form : ' . now();
+        auth()->user()->InsertDataToFile(auth()->user()->id, "User", 'Export',  $data,  $data);
+        $this->ExportDataSelected = array_unique($this->ExportDataSelected);
+        return   ExportController::export($this->ExportDataSelected, 'users', $this->quantity);
     }
 }

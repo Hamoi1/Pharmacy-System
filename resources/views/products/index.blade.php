@@ -38,6 +38,9 @@
         @include('products.delete')
         @endcan
         @include('products.view')
+        @can('Product Export')
+        @include('products.export')
+        @endcan
         <div class="row g-2 my-3">
             <div class="col-lg-3 col-md-6 col-12">
                 <div class="input-icon">
@@ -65,15 +68,23 @@
                     @endforelse
                 </select>
             </div>
-            <div class="col-lg-2 col-md-12">
+            <div class="col-lg-2 col-md-6 col-6">
                 <select class="form-select" wire:model="ExpiryOrStockedOut">
                     <option value="">{{ __('header.ExpiryOrStockedOut') }}</option>
                     <option value="e">{{ __('header.Expiry') }}</option>
                     <option value="s">{{ __('header.StockedOut') }}</option>
                 </select>
             </div>
+            @can('Product Export')
+            <div class="col-lg-1 col-sm-3 col-6 mx-lg-3">
+                <button class="btn pt-2" data-bs-toggle="modal" data-bs-target="#export">
+                    <i class="fa-solid fa-file-export mx-2 mb-1"></i>
+                    {{ __('header.Export') }}
+                </button>
+            </div>
+            @endcan
             @can('Product Trash')
-            <div class="col-lg-4 col-12">
+            <div class="col-lg-1 col-sm-3 col-6 mx-lg-3">
                 <div class="d-flex align-items-center ">
                     <button class="btn pt-2" wire:click="Trash">
                         <i class="fa fa-trash mx-2 mb-1"></i>
@@ -216,3 +227,14 @@
         </div>
     </div>
 </div>
+@push('js')
+
+<script>
+    $(document).ready(function() {
+        // if model hide every type checkbox remove checked
+        $('#export').on('hidden.bs.modal', function() {
+            $('#export input[type=checkbox]').prop('checked', false);
+        });
+    });
+</script>
+@endpush
