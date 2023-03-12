@@ -221,6 +221,11 @@ return [
     'Export' => 'Export',
     'exportquantity' => 'Quantity',
     'SelectData' => 'Select Data',
-    'logs_user' => 'Can\'t do this task because you don\'t select a user !',
-    'logs_clear' => 'File has been cleared successfully !',
+    'user_data' => 'Can\'t do this task because you don\'t select a user !',
+    'data_clear' => 'Data has been cleared successfully !',
+    'New Product Prices' => 'New Product Prices',
+    'New Product Quantity' => 'New Product Quantity',
+    'StockOut' => 'Stock Out',
+    'barcodeOrname' => 'Barcode Or Name',
+    'data'=>'Data',
 ];

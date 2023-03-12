@@ -6,10 +6,7 @@ use Livewire\Component;
 use App\Models\Products;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Gate;
-use Intervention\Image\Facades\Image;
-
 use Illuminate\Support\Facades\Storage;
-use function PHPUnit\Framework\returnSelf;
 
 class UpdateImage extends Component
 {

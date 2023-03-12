@@ -47,23 +47,7 @@
                 </select>
             </div>
             <div class="col-lg-2 col-md-4 col-6">
-                <select class="form-select" wire:model="date">
-                    <option value="">
-                        {{ __('header.date') }}
-                    </option>
-                    <option value="today">
-                        {{ __('header.today') }}
-                    </option>
-                    <option value="yesterday">
-                        {{ __('header.yesterday') }}
-                    </option>
-                    <option value="this_week">
-                        {{ __('header.this_week') }}
-                    </option>
-                    <option value="this_month">
-                        {{ __('header.this_month') }}
-                    </option>
-                </select>
+                <input type="date" class="form-control" wire:model="date">
             </div>
         </div>
         @can('Delete Sales')

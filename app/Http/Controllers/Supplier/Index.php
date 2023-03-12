@@ -113,7 +113,7 @@ class Index extends Component
                 'phone : ' . $this->phone,
                 'address : ' . $this->address,
             ];
-            auth()->user()->InsertDataToFile(auth()->user()->id, "Supplier", 'Update', $oldData, $newData);
+            auth()->user()->InsertToLogsTable(auth()->user()->id, "Supplier", 'Update', $oldData, $newData);
         } elseif ($this->updateSupplier == false && Gate::allows('Insert Supplier')) {
             $supplier = Suppliers::create([
                 'name' => $this->name,
@@ -127,7 +127,7 @@ class Index extends Component
                 'phone : ' . $this->phone,
                 'address : ' . $this->address,
             ];
-            auth()->user()->InsertDataToFile(auth()->user()->id, "Supplier", 'Create', '', $newData);
+            auth()->user()->InsertToLogsTable(auth()->user()->id, "Supplier", 'Create',  'nothing to show', $newData);
         }
         flash()->addSuccess($this->updateSupplier ? __('header.updated') : __('header.add'));
         $this->done();
@@ -160,7 +160,7 @@ class Index extends Component
             $supplier->delete();
 
             $data =  "Delete ( " . (implode(',', $supplierName)) . " )  from :" . now();
-            auth()->user()->InsertDataToFile(auth()->user()->id, "Supplier", 'Delete', $data, '');
+            auth()->user()->InsertToLogsTable(auth()->user()->id, "Supplier", 'Delete', $data, $data);
             flash()->addSuccess(__('header.deleted_for_30_days'));
         }
         $this->done();
@@ -176,7 +176,7 @@ class Index extends Component
             $supplier->forceDelete();
         }
         $data =  "Delete ( " . (implode(',', $supplierName)) . " )  from :" . now();
-        auth()->user()->InsertDataToFile(auth()->user()->id, "Supplier", 'Delete', $data, '');
+        auth()->user()->InsertToLogsTable(auth()->user()->id, "Supplier", 'Delete', $data, $data);
         flash()->addSuccess(__('header.deleted'));
         $this->done();
     }
@@ -192,7 +192,7 @@ class Index extends Component
             $supplier->restore();
         }
         $data =  "Restore ( " . (implode(',', $supplierName)) . " )  from :" . now();
-        auth()->user()->InsertDataToFile(auth()->user()->id, "Supplier", 'Restore', $data, '');
+        auth()->user()->InsertToLogsTable(auth()->user()->id, "Supplier", 'Restore', $data,  'nothing to show');
         flash()->addSuccess(__('header.RestoreMessage'));
         $this->done();
     }
@@ -202,7 +202,7 @@ class Index extends Component
 
         $data =  "Restore ( " . $supplier->name . " )  from :" . now();
         $supplier->restore();
-        auth()->user()->InsertDataToFile(auth()->user()->id, "Supplier", 'Restore', $data, '');
+        auth()->user()->InsertToLogsTable(auth()->user()->id, "Supplier", 'Restore', $data,  'nothing to show');
         flash()->addSuccess(__('header.RestoreMessage'));
         $this->done();
     }

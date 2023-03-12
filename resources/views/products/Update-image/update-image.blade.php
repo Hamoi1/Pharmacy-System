@@ -2,7 +2,18 @@
 <div>
     <div class="{{ app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }} px-lg-5 px-3">
         <div class="mt-4">
-            <x-page-header title="{{ __('header.Edit_Product_image') }}" target="#add-update" wire="" />
+            <div class="row align-items-center">
+                <div class="col">
+                    <h2 class="page-title">
+                        {{ __('header.Edit_Product_image') }}
+                    </h2>
+                </div>
+                <div class="col-auto ms-auto">
+                    <a href="" class="btn btn-primary  " data-bs-toggle="modal" data-bs-target="#add-update">
+                        <i class="fa fa-plus"></i>
+                    </a>
+                </div>
+            </div>
         </div>
         <div wire:loading wire:target="deleteAll">
             <div class="loading">
@@ -39,13 +50,13 @@
             <div class="col-lg-2 col-md-4 col-12  py-2 text-break">
                 {{ __('header.purches_price') }} :
                 <span class="mx-1">
-                    $ {{ $product->purches_price }}
+                     {{ $product->purches_price }} {{ __('header.currency') }}
                 </span>
             </div>
             <div class="col-lg-2 col-md-4 col-12  py-2 text-break">
                 {{ __('header.sale_price') }} :
                 <span class="mx-1">
-                    $ {{ $product->sale_price }}
+                     {{ $product->sale_price }} {{ __('header.currency') }}
                 </span>
             </div>
             <div class="col-lg-2 col-md-4 col-12  py-2 text-break">

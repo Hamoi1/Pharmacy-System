@@ -89,11 +89,11 @@
                     {{ __('header.changetheme') }}
                 </h4>
                 <form>
-                    <button class="changeThemeBtn shadow-sm " wire:click.prevent="ChangeTheme({{ $settings->theme == 0 ? 0 : 1  }})">
-                        <span class="fs-3 {{ $settings->theme == 0 ? 'mb-2' : 'mt-2'  }} text-light"> {{ $settings->theme == 0 ? "🌙" : "☀️"  }}</span>
+                    <button class="changeThemeBtn shadow-sm " wire:click.prevent="ChangeTheme({{ auth()->user()->theme == 0 ? 0 : 1  }})">
+                        <span class="fs-3 {{ auth()->user()->theme == 0 ? 'mb-2' : 'mt-2'  }} text-light"> {{ auth()->user()->theme == 0 ? "🌙" : "☀️"  }}</span>
                     </button>
-                    <span class=" fs-3 mx-2  {{ $settings->theme == 0 ? 'txet-dark' : 'text-light'  }}">
-                        {{ $settings->theme == 0 ? "dark" : "light"  }}
+                    <span class=" fs-3 mx-2  {{ auth()->user()->theme == 0 ? 'txet-dark' : 'text-light'  }}">
+                        {{ auth()->user()->theme == 0 ? "dark" : "light"  }}
                     </span>
                 </form>
             </div>

@@ -2,10 +2,12 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Logs;
+use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
 
-class SetLanguage
+class DeleteUserLog
 {
     /**
      * Handle an incoming request.
@@ -16,7 +18,12 @@ class SetLanguage
      */
     public function handle(Request $request, Closure $next)
     {
-        app()->setLocale($request->lang);
+        $logs  = Logs::select('id', 'created_at')->get();
+        $logs->each(function ($log) {
+            if ($log->created_at <= now()->subMonth()) {
+                $log->delete();
+            }
+        });
         return $next($request);
     }
 }

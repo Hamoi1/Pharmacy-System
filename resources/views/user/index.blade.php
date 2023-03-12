@@ -61,7 +61,7 @@
                 </select>
             </div>
             <div class="col-xl-2 col-lg-4 col-md-6 col-6">
-                <select class="form-select" wire:model="permission_id">
+                <select class="form-select" wire:model="role_id">
                     <option value="">{{ __('header.permission') }}</option>
                     @foreach ($roless as $p)
                     <option value="{{ $p->id }}">{{ $p->name }}</option>
@@ -170,27 +170,30 @@
                         <td>
                             {{ $user->email }}
                         </td>
-                        @can('User Trash')
                         @if($Trashed)
+                        @can('User Trash')
                         <td>
                             <span class="badge bg-info px-2 py-2">
                                 {{ __('header.DeletedAfter30Dayes' ,['date'=>  $GetTrashDate($user->deleted_at) ]) }}
                             </span>
                         </td>
+                        @endcan
                         @else
                         <td class="col-1 text-center">
                             <div class="d-flex align-items-center justify-content-center">
                                 <span class="badge bg-{{ $user->status == 1 ? 'success' : 'danger' }}">{{ $user->status == 1 ? __('header.active') : __('header.deactive') }}
                                 </span>
+                                @can('Update User')
                                 <span>
                                     <label class="form-check form-switch mt-1 mx-2">
                                         <input class="form-check-input" type="checkbox" {{ $user->status == 1 ? 'checked' : '' }} wire:click="toggleActive({{ $user->id }})">
                                     </label>
                                 </span>
+                                @endcan
                             </div>
                         </td>
                         @endif
-                        @endcan
+                        @canany(['Update User','User GenerateReport','Delete User'])
                         <td class=" col-1 text-center">
                             @if(!$Trashed)
                             @can('Update User')
@@ -213,9 +216,10 @@
                             <button class="btn" wire:click="restore({{ $user->id }})">
                                 <i class="fa-solid fa-recycle text-success"></i>
                             </button>
+                            @endcan
                             @endif
                         </td>
-                        @endcan
+                        @endcanany
                     </tr>
                     @empty
                     <tr>

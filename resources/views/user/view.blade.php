@@ -50,7 +50,6 @@
                                     @forelse ($user->GetPermissionName($user->id) as $permission)
                                     <span class="bg-blue rounded-2 p-2">{{ $permission }}</span>
                                     @empty
-
                                     <p class="fs-3 fw-bold">{{ __('header.no_permission') }}</p>
                                     @endforelse
                                 </div>

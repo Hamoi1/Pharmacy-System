@@ -3,12 +3,11 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Logs;
 use App\Models\Sales;
 use App\Models\Products;
 use App\Models\UserDetails;
-use App\Models\UserPermissions;
 use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -25,25 +24,18 @@ class User extends Authenticatable
         'remember_token',
         'email_verified_at',
         'status',
+        'role_id'
     ];
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
     public function user_details()
     {
-        return $this->hasOne(UserDetails::class);
+        return $this->hasOne(UserDetails::class, 'user_id');
     }
     public function sales()
     {
         return $this->hasMany(Sales::class, 'user_id');
-    }
-    public function Permissions()
-    {
-        return  $this->hasMany(UserPermissions::class);
-    }
-    public static function  GetUserData()
-    {
-        return Auth::user();
     }
     public function scopeUserDetails($query)
     {
@@ -68,19 +60,25 @@ class User extends Authenticatable
         return $this->hasMany(Products::class, 'user_id');
     }
 
+    public function logs()
+    {
+        return $this->hasMany(Logs::class, 'user_id');
+    }
+
     public function GetPermissionName($User_id)
     {
-        $permissions = $this->Permissions()->where('user_id', $User_id)->with('role')->get();
-        $permission_name = [];
-        if ($permissions) {
-
-            foreach ($permissions as $permission) {
-                $permission_name[] = $permission->role->name;
+        $roles = Role::get();
+        $user  = User::find($User_id);
+        $user_role = json_decode($user->role_id);
+        $user_role = array_values($user_role);
+        $role_name = [];
+        // if user_role has role->id  get the role->name
+        foreach ($roles as $role) {
+            if (in_array($role->id, $user_role)) {
+                $role_name[] = $role->name;
             }
-        } else {
-            $permission_name = [];
         }
-        return $permission_name;
+        return $role_name;
     }
     public function files()
     {
@@ -90,123 +88,35 @@ class User extends Authenticatable
         array_shift($files);
         return $files;
     }
-    public function CreateFile($UserID)
-    {
-        $files = $this->files();
-        foreach ($files as $file) {
-            $file_name = explode('-', $file);
-            if ($file_name[1] == $UserID) {
-                $file = fopen('logs/user-' . $UserID . '-' . $file_name[2], 'w'); // use w to create a file if a file doesn't exist
-                fclose($file);
-                return true;
-            } else {
-                $file = fopen('logs/user-' . $UserID . '-' . now()->format('Y.m.d') . '.log', 'w'); // use w to create a file if a file doesn't exist
-                fclose($file);
-                return true;
-            }
-        }
-    }
-
     // insert data to file but dont delete privewe
-    public function InsertDataToFile($UserID, $where,  $action, $old, $new)
+    public function InsertToLogsTable($UserID, $where,  $action, $old, $new)
     {
-        // get all file inside folder logs
-        $files = $this->files();
-        foreach ($files as $file) {
-            $file_name = explode('-', $file);
-            // check if file name is equal to user id
-            if ($file_name[1] == $UserID) {
-                $file = fopen('logs/user-' . $UserID . '-' . $file_name[2], 'a'); // use a  to eneter data in the end of file
-                // old data can be array 
-                if (is_array($old)) {
-                    $old = implode(',', $old);
-                }
-                // new data can be array
-                if (is_array($new)) {
-                    $new = implode(',', $new);
-                }
-                $data = date('Y-m-d h:i:s') . ' / ' . $where . ' / ' . $action . ' / ' . $old . ' / ' . $new . PHP_EOL;
-                fwrite($file, $data);
-                fclose($file);
-                break;
-            }
-        }
+        // dd($UserID, $where, $action, $old, $new);
+        Logs::create([
+            'user_id' => $UserID,
+            'page' => $where,
+            'action' => $action,
+            'old_data' => json_encode($old),
+            'new_data' => json_encode($new),
+        ]);
         return true;
     }
 
-    public function GetFile($UserID)
+    public function GetDataLogs($UserID)
     {
-        $files = $this->files();
-        foreach ($files as $file) {
-            $file_name = explode('-', $file);
-            // check if file name is equal to user id
-            if ($file_name[1] == $UserID) {
-                $file = fopen('logs/user-' . $UserID . '-' . $file_name[2], 'r'); // use r to get data in the satrt of file
-                // check file size
-                if (filesize('logs/user-' . $UserID  . '-' . $file_name[2]) == 0) {
-                    return [];
-                }
-                $data = fread($file, filesize('logs/user-' . $UserID  . '-' . $file_name[2]));
-                // change data to array
-                $data = explode(PHP_EOL, $data);
-                // remove last element
-                array_pop($data);
-                return $data;
-            }
-        }
-
-        return [];
+        $logs = Logs::where('user_id', $UserID)->get();
+        return $logs;
     }
 
-    public function DeleteFile($UserID)
+    public function DeleteLogs($UserID)
     {
-        $files = $this->files();
-        foreach ($files as $file) {
-            $file_name = explode('-', $file);
-            // check if file name is equal to user id
-            if ($file_name[1] == $UserID) {
-                unlink('logs/user-' . $UserID . '-' . $file_name[2]);
-                break;
-            }
-        }
+        // delete data in logs table by id
+        return Logs::where('user_id', $UserID)->delete();
     }
 
-    public function DeleteDataInFile($UserID, $index, $action)
+    public function DeleteDataInLogs($UserID, $index)
     {
-        $files = $this->files();
-        foreach ($files as $file) {
-            $file_name = explode('-', $file);
-            // check if file name is equal to user id
-            if ($file_name[1] == $UserID) {
-                // delete a record by index an action 
-                $data = file_get_contents('logs/user-' . $UserID . '-' . $file_name[2]);
-                $data = explode(PHP_EOL, $data);
-                array_pop($data);
-                $data = array_reverse($data);
-                $new_data = [];
-                foreach ($data as $key => $value) {
-                    $value = explode(' / ', $value);
-                    if ($key == $index && $value[2] == $action) {
-                        continue;
-                    }
-                    $new_data[] = implode(' / ', $value); // convert array to string            
-                }
-                $new_data = array_reverse($new_data);
-                $new_data = implode(PHP_EOL, $new_data);
-                $file = fopen('logs/user-' . $UserID . '-' . $file_name[2], 'w');
-                if (count($data) == 1) {
-                    $new_data = '';
-                } else {
-                    $new_data = $new_data . PHP_EOL;
-                }
-                fwrite($file, $new_data);
-                fclose($file);
-            }
-        }
-    }
-
-    public function ClearFile($id)
-    {
-        $this->CreateFile($id);
+        // delete data in logs table by id
+        return Logs::where('user_id', $UserID)->where('id', $index)->delete();
     }
 }

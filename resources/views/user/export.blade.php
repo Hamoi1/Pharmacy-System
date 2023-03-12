@@ -20,7 +20,7 @@
                     @foreach($ExportData as $key => $value)
                     <div class="mt-1">
                         <div class="form-check form-switch d-flex align-items-center justify-content-center gap-1">
-                            <input class="form-check-input" wire:loading.attr="disabled" type="checkbox" wire:click="Upload('{{ $key }}')" value="{{ $key }}">
+                            <input class="form-check-input input-export" wire:loading.attr="disabled" aria-checked="false" type="checkbox" wire:click="Upload('{{ $key }}')" value="{{ $key }}">
                             <label class="form-check-label mt-2">{{ $value }}</label>
                         </div>
                     </div>

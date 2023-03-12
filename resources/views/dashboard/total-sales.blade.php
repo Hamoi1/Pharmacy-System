@@ -6,7 +6,8 @@
                     {{ __('header.total_sales') }}
                 </span>
                 <div class="lh-1 col-lg-3 col-6">
-                    <select class="form-select  rounded w-100 " wire:model="sales">
+                    <input type="date" class="form-control" wire:model="date">
+                    <!-- <select class="form-select  rounded w-100 " wire:model="sales">
                         <option value="today" selected>
                             {{ __('header.today') }}
                         </option>
@@ -35,7 +36,7 @@
                         <option value="3-year-ago">
                             {{ __('header.3 year ago') }}
                         </option>
-                    </select>
+                    </select> -->
                 </div>
             </div>
             <div class="row">

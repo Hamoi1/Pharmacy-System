@@ -13,11 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('user_permissions', function (Blueprint $table) {
+        Schema::create('product_quantity', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('role_id')->references('id')->on('role');
-            $table->unsignedInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
+            $table->foreignId('product_id')->constrained('products')->cascadeOnDelete();
+            $table->integer('purches_price');
+            $table->integer('sale_price');
+            $table->integer('quantity');
+            $table->date('expiry_date');
             $table->timestamps();
         });
     }
@@ -29,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_permissions');
+        Schema::dropIfExists('_product__quantity');
     }
 };

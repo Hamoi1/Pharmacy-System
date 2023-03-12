@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id();
             $table->string('name');
             $table->string('username')->unique();
             $table->string('phone')->unique();
@@ -22,6 +22,8 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->boolean('status')->default(1);
+            $table->json('role_id')->nullable();
+            $table->boolean('theme')->nullable()->comment('0->light theme , 1->dark theme');
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();

@@ -18,29 +18,25 @@
             <span class="fw-normal">{{ $product->barcode }}</span>
         </p>
         <p>
-            <span class="fw-bold mx-1">{{ __('header.purches_price') }} : </span>
-            <span class="fw-normal">{{ $product->purches_price }} {{ __('header.currency') }}</span>
+            <span class="fw-bold mx-1">{{ __('header.Category') }} : </span>
+            {{ $product->category ? $product->category_name  : __('header.not have',['name'=>__('header.Category')]) }}
+        </p>
+        <p>
+            <span class="fw-bold mx-1">{{ __('header.supplier') }} : </span>
+            {{ $product->supplier ? $product->supplier_name : __('header.not have',['name'=>__('header.supplier')]) }}
         </p>
         <p>
             <span class="fw-bold mx-1">{{ __('header.sale_price') }} : </span>
             <span class="fw-normal">{{ $product->sale_price }} {{ __('header.currency') }}</span>
         </p>
         <p>
-            <span class="fw-bold mx-1">{{ __('header.Category') }} : </span>
-            {{ $product->category ? $product->category->name  : __('header.not have',['name'=>__('header.Category')]) }}
-        </p>
-        <p>
-            <span class="fw-bold mx-1">{{ __('header.supplier') }} : </span>
-            {{ $product->supplier ? $product->supplier->name : __('header.not have',['name'=>__('header.supplier')]) }}
-        </p>
-        <p>
             <span class="fw-bold mx-1">{{ __('header.quantity') }} : </span>
             <span class="fw-normal">{{ $product->quantity }}</span>
         </p>
-        <p>
+        <!-- <p>
             <span class="fw-bold mx-1">{{ __('header.expire_date') }} : </span>
             <span class="fw-normal">{{ $product->expiry_date }}</span>
-        </p>
+        </p> -->
         @if($product->image != null && $product->image != '[]' )
         <div class="row g-3">
             <span>

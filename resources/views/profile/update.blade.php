@@ -20,11 +20,11 @@
                 @if (auth()->user()->user_details->image)
                 <img src="{{ auth()->user()->image(auth()->user()->user_details->image) }}" class="image-profile  rounded " alt="">
                 @else
-                <img src="{{ asset('assets/images/image_not_available.png') }}"  width="300" alt="">
+                <img src="{{ asset('assets/images/image_not_available.png') }}" width="300" alt="">
                 @endif
                 <div>
                     <div class="d-flex align-items-center  justify-content-center m-3 flex-wrap">
-                        <input type="file" hidden class="image-change" wire:model="image">
+                        <input type="file" hidden class="image-change" wire:model="image" accept="image/*">
                         <button class="btn" id="imageBtn">
                             <i class=" fas fa-camera"></i>
                         </button>

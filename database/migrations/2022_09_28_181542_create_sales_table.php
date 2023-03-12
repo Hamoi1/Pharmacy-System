@@ -16,8 +16,7 @@ return new class extends Migration
         Schema::create('sales', function (Blueprint $table) {
             $table->id();
             $table->string('invoice')->uniqiue();
-            $table->unsignedInteger('user_id')->nullable();
-            $table->foreign('user_id')->references('id')->on('users')->nullOnDelete();
+            $table->foreignId('user_id')->nullable()->constrained('users')->nullOnDelete();
             $table->integer('total');
             $table->integer('discount')->nullable();
             $table->boolean('status')->default('0')->comment('1 = paid or 0 = not paid');

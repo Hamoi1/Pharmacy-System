@@ -47,9 +47,8 @@
 
 <body>
     <h3 class="user">
-        Logs for {{ $user->name }}
+        # Logs for {{ $user->name }}
     </h3>
-    @if ($file)
     <table id="logs">
         <thead>
             <tr>
@@ -71,24 +70,25 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($file as $key => $item)
+            @forelse ($logs as $log)
             @php
-            $oldData = $item[3] !=null || $item[3] !="" ? explode(',', $item[3]) : []; // change to array by a explode function
-            $newData = $item[4] !=null || $item[4] !="" ? explode(',', $item[4]) : [];
+            $log->old_data = json_decode($log->old_data);
+            $log->new_data = json_decode($log->new_data);
             @endphp
             <tr>
-                <td>
-                    {{ $item[0] }}
+                <td class="col-1">
+                    {{ $log->created_at  }}
+                </td>
+                <td class="col-1">
+                    {{ $log->page }}
+                </td>
+                <td class="col-2 text-center">
+                    {{ $log->action }}
                 </td>
                 <td>
-                    {{ $item[1] }}
-                </td>
-                <td class="">
-                    {{ $item[2] }}
-                </td>
-                <td>
-                    @forelse ($oldData as $index => $data)
-                    <div class=" {{ count($oldData) !=0 && $loop->index == 0 ? '' : 'mt-1' }}  {{ count($oldData) !=0 && $newData !=[] && $newData[$index] !== $data ? 'different' : '' }}">
+                    @if (is_array($log->old_data))
+                    @forelse ($log->old_data as $index => $data)
+                    <div class=" {{ $log->old_data != '' && count($log->old_data) !=0 && $loop->index == 0 ? '' : 'mt-1' }}  {{ $log->old_data != '' && count($log->old_data) !=0 && $log->new_data !=[] && $log->new_data[$index] !== $data ? 'different' : '' }}">
                         {{ $data }}
                     </div>
                     @empty
@@ -96,27 +96,35 @@
                         {{ __('header.No Data') }}
                     </p>
                     @endforelse
+                    @else
+                    {{ $log->old_data }}
+                    @endif
                 </td>
                 <td>
-                    @forelse ($newData as $index => $data)
-                    <div class="{{ count($oldData) !=0 && $loop->index == 0 ? '' : 'mt-1' }}   {{  count($oldData) !=0 && $oldData !=[] && $oldData[$index] !== $data ? 'different' : '' }}">
+                    @if (is_array($log->new_data))
+                    @forelse ($log->new_data as $index => $data)
+                    <div class="{{ $log->old_data != '' && count($log->old_data) !=0 && $loop->index == 0 ? '' : 'mt-1' }}   {{ $log->old_data != '' &&  count($log->old_data) !=0 && $log->old_data !=[] && $log->old_data[$index] !== $data ? 'different' : '' }}">
                         {{ $data }}
                     </div>
                     @empty
                     <p>
-                        No Data
+                        {{ __('header.No Data') }}
                     </p>
                     @endforelse
+                    @else
+                    {{ $log->new_data }}
+                    @endif
                 </td>
             </tr>
-            @endforeach
+            @empty
+            <tr>
+                <td colspan="6" class="text-center">
+                    {{ __('header.No Data') }}
+                </td>
+            </tr>
+            @endforelse
         </tbody>
     </table>
-    @else
-    <p>
-        No Data
-    </p>
-    @endif
 </body>
 
 </html>

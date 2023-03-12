@@ -15,14 +15,14 @@ return new class extends Migration
     {
         Schema::create('debt_sales', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedBigInteger('sale_id');
-            $table->foreign('sale_id')->references('id')->on('sales')->cascadeOnDelete();
+            $table->foreignId('sale_id')->constrained('sales')->cascadeOnDelete();
             $table->string('name');
             $table->string('phone');
             $table->integer('amount');
             $table->bigInteger('paid');
             $table->bigInteger('remain');
             $table->boolean('status')->default(0);
+            $table->dateTime('delete_in')->nullable();
             $table->timestamps();
         });
     }

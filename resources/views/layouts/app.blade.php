@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="turbolinks-cache-control" content="no-cache">
     <title>@stack('title')</title>
     <link rel="shortcut icon" href="{{  $settings->logo != null ? asset('storage/logo/'.$settings->logo) : asset('assets/images/capsules.png') }}" type="image/x-icon">
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
@@ -27,7 +26,7 @@
 
 </head>
 
-<body class="{{ $settings->theme == 0 ? 'theme-light' : 'theme-dark'  }}">
+<body class=" @if (auth()->check()) {{ auth()->user()->theme == 0 ? 'theme-light' : 'theme-dark'  }} @endif ">
     <div wire:offline>
         <div class="offline">
             <div class="offline-content">
@@ -220,9 +219,8 @@
 
     @livewireScripts
     <script src="{{ asset('assets/js/jquery-3.6.1.min.js') }}"></script>
-    <!-- <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/autosize.js/3.0.20/autosize.min.js" integrity="sha512-EAEoidLzhKrfVg7qX8xZFEAebhmBMsXrIcI0h7VPx2CyAyFHuDvOAUs9CEATB2Ou2/kuWEDtluEVrQcjXBy9yw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="{{ asset('assets/js/autosize.min.js') }}"></script>
     <script src="{{ asset('assets/js/main.js') }}"></script>
     <script src="{{ asset('assets/js/apexcharts.min.js') }}"></script>
     <script>
@@ -230,6 +228,7 @@
             window.addEventListener('closeModal', event => {
                 $('.modal').modal('hide');
                 $('.modal-backdrop ').remove();
+                $('.input-export').prop('checked', false);
             });
             window.addEventListener('play', event => {
                 if (event.detail.sound == 'beep') {
@@ -246,6 +245,9 @@
             $('.lodaing-seaction').fadeToggle(1000);
         });
         Livewire.on('ChangeTheme', theme => {
+            window.location.reload();
+        });
+        Livewire.on('UpdateProfile', data => {
             window.location.reload();
         });
     </script>

@@ -85,11 +85,11 @@ class Setting extends Component
     public function ChangeTheme($theme)
     {
         if ($theme == 1) {
-            $this->setting->update([
+            auth()->user()->update([
                 'theme' => 0,
             ]);
         } elseif ($theme == 0) {
-            $this->setting->update([
+            auth()->user()->update([
                 'theme' => 1,
             ]);
         }

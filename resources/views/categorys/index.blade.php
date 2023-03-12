@@ -47,14 +47,14 @@
                 </div>
             </form>
             @can('Category Trash')
-            <div class="col-lg-1 col-md-6 col-6 mx-lg-1">
+            <div class="col-xl-1 col-lg-2 col-md-2 col-sm-3 col-6 mx-lg-1">
                 <button class=" btn pt-2" wire:click="Trash">
                     <i class="fa fa-trash mx-2 mb-1"></i>
                     {{ __('header.Trash') }}
                 </button>
             </div>
             @if($Trashed)
-            <div class="col-lg-1 col-md-6 col-5 mx-lg-2">
+            <div class="col-xl-1 col-lg-2 col-md-2 col-sm-3 col-6 mx-lg-2">
                 <div class="dropdown">
                     <button class="btn btn-info " type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                         {{ __('header.actions') }}

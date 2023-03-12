@@ -153,7 +153,7 @@
         },
         xaxis: {
             categories: Products.map(function(product) {
-                return product.products.name
+                return product.products.name;
             }),
         },
         yaxis: {},

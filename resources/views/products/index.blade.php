@@ -129,10 +129,10 @@
                     <tr>
                         <th class="col-1 fs-4">{{ __('header.name') }}</th>
                         <th class="col-1 fs-4">{{ __('header.barcode') }}</th>
-                        <th class="fs-4">{{ __('header.purches_price') }}</th>
-                        <th class="fs-4">{{ __('header.sale_price') }}</th>
                         <th class="fs-4">{{ __('header.Category') }}</th>
                         <th class="fs-4">{{ __('header.supplier') }}</th>
+                        <th class="fs-4">{{ __('header.purches_price') }}</th>
+                        <th class="fs-4">{{ __('header.sale_price') }}</th>
                         <th class="fs-4">{{ __('header.quantity') }}</th>
                         <th class="fs-4 text-center">{{ __('header.expire_date') }}</th>
                         @if($Trashed)
@@ -160,24 +160,28 @@
                             {{ $product->barcode }}
                         </td>
                         <td>
-                            {{ $product->purches_price }} {{ __('header.currency') }}
-                        </td>
-                        <td>
-                            {{ $product->sale_price }} {{ __('header.currency') }}
-                        </td>
-                        <td>
                             {{ $product->category_name ?? __('header.not have',['name'=>__('header.Category')]) }}
                         </td>
                         <td>
                             {{ $product->supplier_name ?? __('header.not have',['name'=>__('header.supplier')]) }}
                         </td>
                         <td>
-                            {{ $product->quantity }}
+                            {{ number_format($product->purches_price,0,',',',') }} {{ __('header.currency') }}
                         </td>
-                        <td class="text-center">
+                        <td>
+                            {{ number_format($product->sale_price,0,',',',') }} {{ __('header.currency') }}
+                        </td>
+                        <td>
+                            {{ number_format($product->quantity,0,',',',')  }}
+                            @if ($product->quantity == 0) <span class="badge bg-danger mx-2">
+                                {{ __('header.StockOut') }}
+                            </span>
+                            @endif
+                        </td>
+                        <td class="text-center p-0 m-0">
                             {{ $product->expiry_date }}
                             @if ($product->expiry_date <= now()) <span class="badge bg-danger mx-2">
-                                Expired
+                                {{ __('header.expired') }}
                                 </span>
                                 @endif
                         </td>
@@ -191,11 +195,11 @@
                         <td class=" col-1 text-center">
                             @if(!$Trashed)
                             @can('Update Product')
-                            <a class="btn" href="{{ route('products.image.update',['lang'=>app()->getLocale() ,'id'=>$product->id]) }}">
-                                <i class="fa-solid fa-image text-info"></i>
-                            </a>
                             <a class="btn" href="" data-bs-toggle="modal" data-bs-target="#add-update" wire:click="updateProduct({{ $product->id }})">
                                 <i class="fa-solid fa-edit text-primary"></i>
+                            </a>
+                            <a class="btn" href="{{ route('products.image.update',['lang'=>app()->getLocale() ,'id'=>$product->id]) }}">
+                                <i class="fa-solid fa-image text-info"></i>
                             </a>
                             @endcan
                             @can('Delete Product')

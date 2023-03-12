@@ -49,7 +49,7 @@
                 </div>
                 @if($barcode !=null )
                 <div class="w-auto">
-                    <div class="text-center ">
+                    <div class="text-center  barcode ">
                         @if (is_numeric($barcode))
                         {!! DNS1D::getBarcodeHTML($barcode, 'I25') !!}
                         <p>{{ $barcode }}</p>

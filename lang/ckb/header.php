@@ -14,6 +14,7 @@ return [
     'user' => [
         'index' => 'بەکارهێنەر',
     ],
+    'barcodeOrname'=>'بارکۆد یان ناو',
     'select' => ':name ی بەکارهێنەر',
     'update_' => 'دەستکاریکردنی :name',
     'add_' => 'زیادکردنی :name',
@@ -225,7 +226,11 @@ return [
     'exportquantity' => 'بڕ',
     'SelectData'=>'داتایەک دیاریبکە',
     'PdfConvert'=>' گۆرینی بۆ PDF',
-    // 'logs_user' => 'Can\'t do this task because you don\'t select a user !',
-    'logs_user'=>'تۆ ناتوانیت هیچ کردارێک بکەیت لەبەر ئەوەی هیچ بەکارهێنەرێکت دیاری نەکردوە',
-    'logs_clear'=>'فایل بە سەرکەوتوویی سڕایەوە',
+    'user_data'=>'تۆ ناتوانیت هیچ کردارێک بکەیت لەبەر ئەوەی هیچ بەکارهێنەرێکت دیاری نەکردوە',
+    'data_clear'=>'داتاکان بە سەرکەوتوویی سڕایەوە',
+    'New Product Prices' => 'نرخی بەرهەمی نوێ',
+    'New Product Quantity' => 'بڕی بەرهەمی نوێ', 
+    'StockOut'=>'بەرهەم تەواوبووە',
+    'data'=>'داتا',
+    
 ];

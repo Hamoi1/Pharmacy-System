@@ -12,7 +12,9 @@
                 </div>
                 <div class="col">
                     <span class="fs-1 fw-bolder">
+                    <a href="{{ route('StockOutProcuts',['lang'=>app()->getLocale()]) }}">
                         {{ number_format($StockedOutProduct , 0) }}
+                    </a>
                     </span>
                 </div>
             </div>

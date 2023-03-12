@@ -45,16 +45,6 @@
                     @error('barcode')<span class="text-danger">{{ $message }}</span>@enderror
                 </div>
                 <div class="col-lg-6 col-12">
-                    <label>{{ __('header.purches_price') }}</label>
-                    <input type="text" class="form-control" wire:model.defer="purches_price" placeholder="{{ __('header.enter_',['name'=> __('header.purches_price')]) }}" />
-                    @error('purches_price')<span class="text-danger">{{ $message }}</span>@enderror
-                </div>
-                <div class="col-lg-6 col-12">
-                    <label>{{ __('header.sale_price') }}</label>
-                    <input type="text" class="form-control" wire:model.defer="sale_price" placeholder="{{ __('header.enter_',['name'=> __('header.sale_price') ]) }}" />
-                    @error('sale_price')<span class="text-danger">{{ $message }}</span>@enderror
-                </div>
-                <div class="col-lg-6 col-12">
                     <label>{{ __('header.category_product') }}</label>
                     <select class="form-select" wire:model="category_id">
                         <option value="">{{ __('header.category_product') }}</option>
@@ -63,7 +53,6 @@
                         @empty
                         <option value="">{{ __('header.NoData') }}</option>
                         @endforelse
-
                     </select>
                     @error('category_id')<span class="text-danger">{{ $message }}</span>@enderror
                 </div>
@@ -80,6 +69,16 @@
                     @error('supplier_id')<span class="text-danger">{{ $message }}</span>@enderror
                 </div>
                 <div class="col-lg-6 col-12">
+                    <label>{{ __('header.purches_price') }}</label>
+                    <input type="text" class="form-control" wire:model.defer="purches_price" placeholder="{{ __('header.enter_',['name'=> __('header.purches_price')]) }}" />
+                    @error('purches_price')<span class="text-danger">{{ $message }}</span>@enderror
+                </div>
+                <div class="col-lg-6 col-12">
+                    <label>{{ __('header.sale_price') }}</label>
+                    <input type="text" class="form-control" wire:model.defer="sale_price" placeholder="{{ __('header.enter_',['name'=> __('header.sale_price') ]) }}" />
+                    @error('sale_price')<span class="text-danger">{{ $message }}</span>@enderror
+                </div>
+                <div class="col-lg-6 col-12">
                     <label>{{ __('header.quantity') }}</label>
                     <input type="text" class="form-control" wire:model.defer="quantity" placeholder="{{ __('header.enter_',['name'=> __('header.quantity')]) }}" />
                     @error('quantity')<span class="text-danger">{{ $message }}</span>@enderror
@@ -90,7 +89,6 @@
                     @error('expire_date')<span class="text-danger">{{ $message }}</span>@enderror
                 </div>
                 @if (!$UpdateProduct)
-
                 <div class="col-12">
                     <p>
                         <i class="fa-solid fa-circle-exclamation"></i>
@@ -104,7 +102,6 @@
                     </div>
                     @error('images.*')<span class="text-danger">{{ $message }}</span>@enderror
                 </div>
-
                 @if($images)
                 <div class="col-12">
                     <div class="row text-center g-lg-2 gy-3">

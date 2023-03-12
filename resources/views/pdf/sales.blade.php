@@ -1,4 +1,10 @@
 <x-pdf-layout :user="$user">
+    @if ($sales)
+    <p>
+        Total slae price is :
+        {{ number_format($sales->sum('total'),0) }} IQD
+    </p>
+    @endif
     <table id="sales">
         <tr>
             <th>
@@ -39,4 +45,5 @@
         </tr>
         @endforeach
     </table>
+
 </x-pdf-layout>

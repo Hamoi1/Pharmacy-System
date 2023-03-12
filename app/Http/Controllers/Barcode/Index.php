@@ -99,7 +99,7 @@ class Index extends Component
                 'Barcode : ' . $this->barcode,
                 'Quantity : ' . $this->quantity,
             ];
-            auth()->user()->InsertDataToFile(auth()->user()->id, "Barcode", 'Create', '', $data);
+            auth()->user()->InsertToLogsTable(auth()->user()->id, "Barcode", 'Create', 'nothing to show', $data);
             flash()->addSuccess(__('header.barcodes.SuccessfullyGenerated'));
         }
         $this->done();
@@ -114,7 +114,7 @@ class Index extends Component
                 'Barcode : ' . $barcode->barcode,
                 'Quantity : ' . $barcode->quantity,
             ];
-            auth()->user()->InsertDataToFile(auth()->user()->id, "Barcode", 'Delete', $data, '');
+            auth()->user()->InsertToLogsTable(auth()->user()->id, "Barcode", 'Delete', $data, $data);
             $barcode->delete();
             flash()->addSuccess(__('header.deleted'));
         }

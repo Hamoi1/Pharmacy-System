@@ -9,15 +9,15 @@ use App\Models\Suppliers;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Gate;
-use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\ExportController;
+use App\Models\ProductQuantity;
 
 class Index extends Component
 {
     use WithPagination, WithFileUploads;
     public $name, $barcode, $purches_price, $sale_price, $category_id, $supplier_id, $description, $quantity, $expire_date, $images = [], $search, $productID, $ExpiryOrStockedOut,
-        $UpdateProduct = false, $product, $Category, $Supplier, $expire = false, $Trashed = false;
+        $UpdateProduct = false, $product, $product_quantity = [], $Category, $Supplier, $expire = false, $Trashed = false;
     protected $paginationTheme = 'bootstrap';
     protected $queryString = [
         'search' => ['as' => 's', 'except' => ''], 'Category' => ['as' => 'category', 'except' => ''], 'Supplier' => ['as' => 'supplier', 'except' => ''],
@@ -29,8 +29,8 @@ class Index extends Component
         'barcode' => 'Barcode',
         'purches_price' => 'Purches Price',
         'sale_price' => 'Slae Price',
-        'category' => 'Category',
-        'supplier' => "Supplier",
+        'category_id' => 'Category',
+        'supplier_id' => "Supplier",
         'quantity' => 'Quantity',
         'expiry_date' => 'Expiry Date',
         'description' => 'Description',
@@ -77,8 +77,9 @@ class Index extends Component
         $GetTrashDate = function ($date) {
             return $date->addMonth()->format('Y-m-d');
         };
+        // dd($products->orderByDesc('id')->suppliers()->categorys()->ProductQuantity()->with('ProductsQuantity')->paginate(10));
         return view('products.index', [
-            'products' => $products->latest()->suppliers()->categorys()->paginate(10),
+            'products' => $products->orderByDesc('id')->suppliers()->categorys()->paginate(10), //ProductQuantity()->with('ProductsQuantity')->
             'categorys' => Categorys::all(),
             'suppliers' => Suppliers::all(),
             'GetTrashDate' => $GetTrashDate,
@@ -104,7 +105,7 @@ class Index extends Component
     public function GetRuls()
     {
         return [
-            'name' => 'required|string|min:2|max:255|regex:/^[a-zA-Z0-9 \s]+$/',
+            'name' => 'required|string|min:2|max:255|regex:/^[a-zA-Z0-9 \s]+$/|unique:products,name,' . $this->productID ?? '',
             'barcode' => 'required|min:3|numeric|unique:products,barcode,' . $this->productID ?? '',
             'purches_price' => 'required|numeric|min:3',
             'sale_price' => 'required|numeric|min:3',
@@ -123,6 +124,7 @@ class Index extends Component
             'name.string' => __('validation.string', ['attribute' => __('header.product_name')]),
             'name.min' => __('validation.min', ['attribute' => __('header.product_name'), 'min' => 2]),
             'name.max' => __('validation.max', ['attribute' => __('header.product_name'), 'max' => 255]),
+            'name.unique' => __('validation.unique', ['attribute' => __('header.product_name')]),
             'name.regex' => __('validation.regex', ['attribute' => __('header.product_name')]),
             'barcode.required' => __('validation.required', ['attribute' => __('header.barcode')]),
             'barcode.min' => __('validation.min', ['attribute' => __('header.barcode'), 'min' => 3]),
@@ -158,7 +160,10 @@ class Index extends Component
             'images.*' => 'image|max:20000|mimes:jpg,jpeg,png,svg|nullable',
         ], $this->GetMessage());
     }
-
+    public function updated($propertyName)
+    {
+        $this->resetPage();
+    }
     public function submit()
     {
         $this->validate($this->GetRuls(), $this->GetMessage());
@@ -187,13 +192,12 @@ class Index extends Component
                 'barcode' => $this->barcode,
                 'purches_price' => $this->purches_price,
                 'sale_price' => $this->sale_price,
+                'quantity' => $this->quantity,
                 'category_id' => $this->category_id,
                 'supplier_id' => $this->supplier_id,
-                'quantity' => $this->quantity,
                 'expiry_date' => $this->expire_date,
                 'description' => $this->description,
             ]);
-
             $newData = [
                 'Name : ' . $product->name,
                 'barcode : ' . $product->barcode,
@@ -204,53 +208,59 @@ class Index extends Component
                 'Catrgory : ' . $product->category->name,
                 'Supplier : ' . $product->supplier->name,
             ];
-            auth()->user()->InsertDataToFile(auth()->user()->id, "Product", 'Update',  $oldData,  $newData);
+            auth()->user()->InsertToLogsTable(auth()->user()->id, "Product", 'Update',  $oldData,  $newData);
         } else if (!$this->UpdateProduct  && Gate::allows('Insert Product')) {
             $product = Products::create([
                 'name' => $this->name,
                 'barcode' => $this->barcode,
                 'purches_price' => $this->purches_price,
                 'sale_price' => $this->sale_price,
+                'quantity' => $this->quantity,
                 'category_id' => $this->category_id,
                 'supplier_id' => $this->supplier_id,
-                'quantity' => $this->quantity,
                 'expiry_date' => $this->expire_date,
                 'description' => $this->description,
                 'image' => $images ? json_encode($images) : null,
                 'user_id' => auth()->id(),
             ]);
             $newData = [
-                'Name : ' . $product->name,
-                'barcode : ' . $product->barcode,
-                'Quantity : ' . $product->quantity,
-                'expiry Date : ' . $product->expiry_date,
-                'Purches Price : ' . $product->purches_price,
-                'Sales Price : ' . $product->sale_price,
-                'Catrgory : ' . $product->category->name,
-                'Supplier : ' . $product->supplier->name,
+                'Name : ' . $this->name,
+                'barcode : ' . $this->barcode,
+                'Quantity : ' . $this->quantity,
+                'expiry Date : ' . $this->expire_date,
+                'Purches Price : ' . $this->purches_price,
+                'Sales Price : ' . $this->sale_price,
+                'Catrgory : ' . $this->category->name,
+                'Supplier : ' . $this->supplier->name,
             ];
-            auth()->user()->InsertDataToFile(auth()->user()->id, "Product", 'Create',  '',  $newData);
+            auth()->user()->InsertToLogsTable(auth()->user()->id, "Product", 'Create',  'nothing to show',  $newData);
         }
         flash()->addSuccess($this->UpdateProduct ? __('header.updated') : __('header.add'));
 
         $this->done();
     }
-    public function updateProduct(Products $product)
+    public function AddNewQuantity()
+    {
+        !$this->NewQuantity;
+    }
+    public function updateProduct($id)
     {
         if (!Gate::allows('Update Product')) {
             flash()->adderror(__('header.NotAllowToDo'));
         } else {
+            $product = Products::findOrFail($id);
+            $this->product = $product;
             $this->UpdateProduct = true;
             $this->productID = $product->id;
             $this->name = $product->name;
             $this->barcode = $product->barcode;
-            $this->purches_price = $product->purches_price;
-            $this->sale_price = $product->sale_price;
             $this->category_id = $product->category_id;
             $this->supplier_id = $product->supplier_id;
+            $this->description = $product->description;
+            $this->purches_price = $product->purches_price;
+            $this->sale_price = $product->sale_price;
             $this->quantity = $product->quantity;
             $this->expire_date = $product->expiry_date;
-            $this->description = $product->description;
             $product->expiry_date <= now() ? $this->expire = true : $this->expire = false;
         }
     }
@@ -265,7 +275,7 @@ class Index extends Component
             flash()->adderror(__('header.NotAllowToDo'));
         } else {
             $data = 'Delete ( ' . $product->name . ' ) form : ' . now();
-            auth()->user()->InsertDataToFile(auth()->user()->id, "Product", 'Delete',  $data,  $data);
+            auth()->user()->InsertToLogsTable(auth()->user()->id, "Product", 'Delete',  $data,  $data);
             $product->delete();
             flash()->addSuccess(__('header.deleted_for_30_days'));
         }
@@ -273,7 +283,7 @@ class Index extends Component
     }
     public function show($id)
     {
-        $this->product  = Products::with('category', 'supplier')->findOrFail($id);
+        $this->product  = Products::suppliers()->categorys()->findOrFail($id);
     }
     public function DeleteAll()
     {
@@ -289,7 +299,7 @@ class Index extends Component
             $product->forceDelete();
         }
         $data = 'Delete  ' . implode(' , ', $ProductName) . '  form : ' . now();
-        auth()->user()->InsertDataToFile(auth()->user()->id, "Product", 'Delete',  $data,  $data);
+        auth()->user()->InsertToLogsTable(auth()->user()->id, "Product", 'Delete',  $data,  $data);
         flash()->addSuccess(__('header.deleted'));
         $this->done();
     }
@@ -302,7 +312,7 @@ class Index extends Component
             $product->restore();
         }
         $data = 'Restore  ' . implode(' , ', $ProductName) . '  form : ' . now();
-        auth()->user()->InsertDataToFile(auth()->user()->id, "Product", 'Restore',  $data,  $data);
+        auth()->user()->InsertToLogsTable(auth()->user()->id, "Product", 'Restore',  $data, 'nothing to show');
         flash()->addSuccess(__('header.RestoreMessage'));
         $this->done();
     }
@@ -312,7 +322,7 @@ class Index extends Component
         $ProductName = $product->name;
         $product->restore();
         $data = 'Restore ( ' . $ProductName . ' ) form : ' . now();
-        auth()->user()->InsertDataToFile(auth()->user()->id, "Product", 'Restore',  $data,  $data);
+        auth()->user()->InsertToLogsTable(auth()->user()->id, "Product", 'Restore',  $data,  'nothing to show');
         flash()->addSuccess(__('header.RestoreMessage'));
         $this->done();
     }
@@ -342,7 +352,7 @@ class Index extends Component
             $data .= $value . ' , ';
         }
         $data = 'Export  ' . $data . '  form : ' . now();
-        auth()->user()->InsertDataToFile(auth()->user()->id, "User", 'Export',  $data,  $data);
+        auth()->user()->InsertToLogsTable(auth()->user()->id, "User", 'Export',  $data,  $data);
         $this->ExportDataSelected = array_unique($this->ExportDataSelected);
         return  ExportController::export($this->ExportDataSelected, 'products', $this->Productquantity);
     }

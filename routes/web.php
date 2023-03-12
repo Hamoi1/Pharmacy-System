@@ -14,6 +14,7 @@ Route::group([
         Route::get('/dashboard', App\Http\Controllers\Dashboard::class)->name('dashboard');
         Route::get('/users', App\Http\Controllers\User\Index::class)->name('users');
         Route::get('/products', App\Http\Controllers\Products\Index::class)->name('products');
+        // Route::get('/product/{id}/updateQuantity', App\Http\Controllers\ProductQuantity\Index::class)->name('updateQuantity.product');
         Route::get('/products/image/update/{id}', App\Http\Controllers\Products\UpdateImage::class)->name('products.image.update');
         Route::get('/ExpiryProducts', App\Http\Controllers\ExpiryProducts::class)->name('ExpiryProducts');
         Route::get('/stock-out-products', App\Http\Controllers\StockOutProducts::class)->name('StockOutProcuts');
@@ -30,7 +31,7 @@ Route::group([
         Route::get('/logs', App\Http\Controllers\Logs\Index::class)->name('logs');
         Route::get('/logout', function () {
             $data = auth()->user()->name . ' logogut form : ' . now();
-            auth()->user()->InsertDataToFile(auth()->user()->id, "Logout", 'Logout', $data, $data);
+            auth()->user()->InsertToLogsTable(auth()->user()->id, "Logout", 'Logout', $data, $data);
             auth()->logout();
             return redirect()->route('login', app()->getLocale());
         })->name('logout');

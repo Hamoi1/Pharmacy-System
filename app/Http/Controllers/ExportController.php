@@ -35,7 +35,6 @@ class ExportController extends Controller
             'updated_at',
         ];
         $datas = [];
-        $Columns = implode(' , ', $Columns);
         if ($Table == 'users') {
             // get function ExportUser
             $datas = self::ExportUser($Columns, $quantity);
@@ -45,7 +44,6 @@ class ExportController extends Controller
             $datas = self::ExportProduct($Columns, $quantity);
             $Columns = $productData;
         }
-        // dd($datas);
 
         // get file name
         $file_name = $Table . '.csv';
@@ -65,19 +63,22 @@ class ExportController extends Controller
     private static function ExportUser($Columns, $quantity)
     {
         $users = [];
-        // if column have address data remove address and , befor and after address
-        if (strpos($Columns, 'address') !== false) {
-            $Columns = str_replace(' , address', '', $Columns);
-            $Columns = str_replace('address , ', '', $Columns);
+        $haveAddress = false;
+        if (in_array('address', $Columns)) {
+            $Columns = array_diff($Columns, array('address'));
+            $haveAddress = true;
         }
+        $Columns = implode(',', $Columns);
         if ($quantity != null) {
             $users = User::select('id', DB::raw($Columns))->with('user_details')->limit($quantity)->get();
         } else {
             $users = User::select('id', DB::raw($Columns))->with('user_details')->get();
         }
         // get address and give a users
-        foreach ($users as $user) {
-            $user->address = $user->user_details->address ?? '';
+        if ($haveAddress) {
+            foreach ($users as $user) {
+                $user->address = $user->user_details->address ?? '';
+            }
         }
         // remove id
         $users = $users->map(function ($user) {
@@ -85,8 +86,8 @@ class ExportController extends Controller
             unset($user->user_details);
             $name = $user->name;
             $username = $user->username;
-            $email = $user->email;
             $phone = $user->phone;
+            $email = $user->email;
             $address = $user->address;
             $created_at = $user->created_at ? $user->created_at->format('Y-m-d') : '';
             $updated_at = $user->updated_at ? $user->updated_at->format('Y-m-d') : '';
@@ -99,14 +100,33 @@ class ExportController extends Controller
     private static function ExportProduct($Columns, $quantity)
     {
         $products = [];
+        $haveCategory = false;
+        if (in_array('category_id', $Columns)) {
+            $Columns = array_diff($Columns, array('category'));
+            $haveCategory = true;
+        }
+        $havesupplier = false;
+        if (in_array('supplier_id', $Columns)) {
+            $Columns = array_diff($Columns, array('supplier'));
+            $havesupplier = true;
+        }
+        $Columns = implode(',', $Columns);
         if ($quantity != null) {
-            $products = Products::select('id', DB::raw($Columns))->with('category')->limit($quantity)->get();
+            $products = Products::select('id', DB::raw($Columns))->with('category', 'supplier')->limit($quantity)->get();
         } else {
-            $products = Products::select('id', DB::raw($Columns))->with('supplier')->get();
+            $products = Products::select('id', DB::raw($Columns))->with('category', 'supplier')->get();
         }
         foreach ($products as $product) {
-            $product->category = $product->category ? $product->category->category : '';
-            $product->supplier = $product->supplier ? $product->supplier->name : '';
+            if ($haveCategory) {
+                $product->category = $product->category->name;
+            } else {
+                $product->category = '';
+            }
+            if ($havesupplier) {
+                $product->supplier = $product->supplier->name;
+            }else{
+                $product->supplier = '';
+            }
         }
         $products = $products->map(function ($product) {
             unset($product->id);

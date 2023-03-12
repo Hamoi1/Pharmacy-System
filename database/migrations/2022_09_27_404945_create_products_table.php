@@ -17,21 +17,17 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->bigInteger('barcode')->unique();
-            $table->bigInteger('quantity');
+            $table->bigInteger('quantity')->nullable();
             $table->date('expiry_date');
-            $table->bigInteger('purches_price');
-            $table->bigInteger('sale_price');
+            $table->bigInteger('purches_price')->nullable();
+            $table->bigInteger('sale_price')->nullable();
             $table->longText('description')->nullable();
             $table->longText('image')->nullable();
-
+            $table->foreignId('category_id')->nullable()->constrained('categorys')->onDelete('set null');
+            $table->foreignId('supplier_id')->nullable()->constrained('suppliers')->onDelete('set null');
+            $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('set null');
             $table->timestamps();
             $table->softDeletes();
-            $table->unsignedInteger('category_id')->nullable();
-            $table->foreign('category_id')->references('id')->on('categorys')->nullOnDelete();
-            $table->unsignedInteger('supplier_id')->nullable();
-            $table->foreign('supplier_id')->references('id')->on('suppliers')->nullOnDelete();
-            $table->unsignedInteger('user_id')->nullable();
-            $table->foreign('user_id')->references('id')->on('users')->nullOnDelete();
         });
     }
 

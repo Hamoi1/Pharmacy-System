@@ -15,6 +15,5 @@ class Settings extends Model
         'phone' => '07500000000',
         'email' => 'gmail@gmail.com',
         'address' => 'location',
-        'theme' => 0,
     ];
 }

@@ -19,7 +19,7 @@ class Checking_Debt_sale
     {
         $debtSale = DebtSaleModel::all();
         foreach ($debtSale as $debt) {
-            if ($debt->updated_at == now() && $debt->remain != 0) {
+            if ($debt->delete_in <= now()  && $debt->remain == 0 && $debt->status == 1) {
                 $debt->delete();
             }
         }

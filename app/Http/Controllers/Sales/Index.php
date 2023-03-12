@@ -28,14 +28,8 @@ class Index extends Component
     public function Sales()
     {
         $sale =  Sales::query();
-        if ($this->date == 'today') {
-            $sale->whereDate('created_at', today());
-        } elseif ($this->date == 'yesterday') {
-            $sale->whereDate('created_at', today()->subDays(1));
-        } elseif ($this->date == 'this_week') {
-            $sale->whereBetween('created_at', [today()->startOfWeek(), today()->endOfWeek()]);
-        } elseif ($this->date == 'this_month') {
-            $sale->whereMonth('created_at', today()->month);
+        if($this->date){
+            $sale->whereDate('created_at', $this->date);
         }
         if ($this->invoice) {
             $invoice = Str::start($this->invoice, 'inv-');
@@ -92,7 +86,7 @@ class Index extends Component
                 ];
             }
             $data = array_merge($data, $AddData ?? []);
-            auth()->user()->InsertDataToFile(auth()->user()->id, "Sale", 'Delete', $data, '');
+            auth()->user()->InsertToLogsTable(auth()->user()->id, "Sale", 'Delete', $data,$data);
             $sale->delete();
             flash()->addSuccess(__('header.deleted'));
         }

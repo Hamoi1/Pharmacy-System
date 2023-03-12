@@ -12,7 +12,9 @@
                 </div>
                 <div class="col">
                     <span class="fs-1 fw-bolder">
-                        {{ number_format($ExpiryCount , 0) }}
+                        <a href="{{ route('ExpiryProducts',['lang'=>app()->getLocale()]) }}">
+                            {{ number_format($ExpiryCount , 0) }}
+                        </a>
                     </span>
                 </div>
             </div>

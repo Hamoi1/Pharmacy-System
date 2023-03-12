@@ -79,15 +79,22 @@
                         @foreach($roless as $role)
                         <div class="mt-2 mx-1">
                             <div class="form-check form-switch d-flex align-items-center justify-content-center gap-1 not-reverse">
-                                <input class="form-check-input permission" wire:loading.attr="disabled"  type="checkbox" wire:click="role_permission({{ $role->id }})" value="{{ $role->id }}" @if ($UpdateUser) {{  in_array($role->id,$permission) ? 'checked' : '' }} @else {{  in_array($role->id,$permission) ? 'checked' : '' }} @endif>
+                                <input class="form-check-input permission" wire:loading.attr="disabled" type="checkbox" wire:click="role_permission({{ $role->id }})" value="{{ $role->id }}" @if ($UpdateUser) {{  in_array($role->id,$permission) ? 'checked' : '' }} @else {{  in_array($role->id,$permission) ? 'checked' : '' }} @endif>
                                 <label class="form-check-label mt-2">{{ $role->name }}</label>
                             </div>
                         </div>
                         @endforeach
+                        <div class="col-12">
+                            <div wire:loading wire:target="role_permission">
+                                {{ __('header.waiting') }}
+                                <span class="animated-dots fs-3">
+                                </span>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 @endif
-                <div class="col-12 mt-4">
+                <div class="col-12 mt-3">
                     <button type="submit" class="btn btn-primary  px-3 pt-2">
                         {{ $UpdateUser ? __('header.update') : __('header.add+') }}
                     </button>

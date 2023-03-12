@@ -79,7 +79,7 @@ class DebtSale extends Component
             $debtSale->paid = $this->currentPaid + $this->price;
             $debtSale->remain = $this->remain - $this->price;
             $debtSale->status = $debtSale->remain == 0 ? 1 : 0;
-            $debtSale->updated_at = $debtSale->remain == 0 ? now()->addMonth() : now();
+            $debtSale->delete_in = $debtSale->remain == 0 ? now()->addMonth() : now();
             $debtSale->sale()->update([
                 'paid' => $debtSale->remain == 0 ? 1 : 0,
             ]);
@@ -92,7 +92,7 @@ class DebtSale extends Component
                 'paid : ' . (number_format($debtSale->paid, 0, null, '.')),
                 'remain : ' . (number_format($debtSale->remain, 0, null, '.')),
             ];
-            auth()->user()->InsertDataToFile(auth()->user()->id, "Debt sale", 'Update', $oldData, $newData);
+            auth()->user()->InsertToLogsTable(auth()->user()->id, "Debt sale", 'Update', $oldData, $newData);
             flash()->addSuccess(__('header.updated'));
         }
         $this->done();
@@ -102,14 +102,14 @@ class DebtSale extends Component
         if (!Gate::allows('Delete DebtSale')) {
             flash()->addError(__('header.NotAllowToDo'));
         } else {
-            $oldData = [
+            $data = [
                 'name : ' . $debtSale->name,
                 'phone : ' . $debtSale->phone,
                 'amount : ' . (number_format($debtSale->amount, 0, null, '.')),
                 'paid : ' . (number_format($debtSale->paid, 0, null, '.')),
                 'remain : ' . (number_format($debtSale->remain, 0, null, '.')),
             ];
-            auth()->user()->InsertDataToFile(auth()->user()->id, "Debt sale", 'Delete', $oldData, '');
+            auth()->user()->InsertToLogsTable(auth()->user()->id, "Debt sale", 'Delete', $data,  'nothing to show');
             $debtSale->delete();
             flash()->addSuccess(__('header.deleted'));
         }

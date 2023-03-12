@@ -97,7 +97,7 @@ class Index extends Component
             $newData = [
                 'name : ' . $category->name,
             ];
-            auth()->user()->InsertDataToFile(auth()->user()->id, "Category", 'Update', $oldData, $newData);
+            auth()->user()->InsertToLogsTable(auth()->user()->id, "Category", 'Update', $oldData, $newData);
         } elseif ($this->updateCategory == false && Gate::allows('Insert Category')) {
             $category =  Categorys::create([
                 'name' => $this->name,
@@ -106,7 +106,7 @@ class Index extends Component
             $newData = [
                 'name : ' . $category->name,
             ];
-            auth()->user()->InsertDataToFile(auth()->user()->id, "Category", 'Create', '', $newData);
+            auth()->user()->InsertToLogsTable(auth()->user()->id, "Category", 'Create', 'nothing to show', $newData);
         }
         flash()->addSuccess($this->updateCategory ?  __('header.updated') : __('header.add'));
         $this->done();
@@ -127,7 +127,7 @@ class Index extends Component
             flash()->addError(__('header.NotAllowToDo'));
         } else {
             $data = 'Delete ( ' . $category->name . ' ) form :' . now();
-            auth()->user()->InsertDataToFile(auth()->user()->id, "Category", 'Delete', $data, '');
+            auth()->user()->InsertToLogsTable(auth()->user()->id, "Category", 'Delete', $data, $data);
             $category->delete();
             flash()->addSuccess(__('header.deleted_for_30_days'));
         }
@@ -141,7 +141,7 @@ class Index extends Component
         $category = Categorys::onlyTrashed()->findorFail($id)->restore();
         $categoryName  = '( ' . $category->name . ' )';
         $data = 'Restore ' . $categoryName . ' form :' . now();
-        auth()->user()->InsertDataToFile(auth()->user()->id, "Category", 'Restore', $data, '');
+        auth()->user()->InsertToLogsTable(auth()->user()->id, "Category", 'Restore', $data, 'nothing to show');
         if ($status) {
             flash()->addSuccess(__('header.RestoreMessage'));
             $this->done();
@@ -158,7 +158,7 @@ class Index extends Component
             $category->forceDelete();
         }
         $data = 'Delete ' . implode(',', $categoryName) . ' form :' . now();
-        auth()->user()->InsertDataToFile(auth()->user()->id, "Category", 'Delete', $data, '');
+        auth()->user()->InsertToLogsTable(auth()->user()->id, "Category", 'Delete', $data, $data);
         flash()->addSuccess(__('header.deleted'));
         $this->done();
     }

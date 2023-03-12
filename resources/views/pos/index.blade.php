@@ -16,9 +16,13 @@
         <div class="text-center d-none invoice-seaction">
             invoice : {{ session('invoice') }}
         </div>
-        <div class="row gy-3 no-print">
-            <livewire:pos.barcode />
-            <livewire:pos.name />
+        <div class="row  no-print">
+            <label class="form-label barcode-label">
+                {{ __('header.barcodeOrname') }}
+                <!-- <i class="fas fa-barcode"></i> -->
+            </label>
+            <input type="text" id="barcode" wire:model.debounce.10ms="data" class="form-control" placeholder="{{ __('header.barcodeOrname') }}" autocomplete="off">
+            @error('data') <span class="text-danger"> {{ $message }}</span> @enderror
         </div>
         <div class="col-12 table-pos " id="POS-Table">
             <span class="header-table d-none text-dark">
@@ -99,7 +103,7 @@
                     </tbody>
                 </table>
             </div>
-            
+
             <div class="mt-4 bottom-pos">
                 <div class="col-md-6 col-12 mt-4 ">
                     <button class="btn btn-success no-print" onclick="printDiv()">
@@ -184,7 +188,7 @@
                             @error('discount') <span class="text-danger"> {{ $message }}</span> @enderror
                         </div>
                     </div>
-    
+
                     <div class="col-12 mb-5 mt-3">
                         <div class="no-print">
                             <button class="btn btn-cyan px-5 " wire:click.prevent="submit">

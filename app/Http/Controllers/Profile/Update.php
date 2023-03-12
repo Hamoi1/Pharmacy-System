@@ -33,8 +33,6 @@ class Update extends Component
         auth()->user()->user_details->update([
             'image' => $imageName,
         ]);
-
-        flash()->addSuccess(__('header.updated'));
         $this->emit('UpdateProfile', ['name' => 'profile.index']);
         $this->image = null;
     }
@@ -116,7 +114,7 @@ class Update extends Component
             'phone : ' .  auth()->user()->phone,
             'address : ' .  auth()->user()->user_details->address,
         ];
-        auth()->user()->InsertDataToFile(auth()->user()->id, 'Update', 'Profile', $oldData, $newData);
+        auth()->user()->InsertToLogsTable(auth()->user()->id, 'Update', 'Profile', $oldData, $newData);
         flash()->addSuccess(__('header.updated'));
         $this->emit('UpdateProfile', ['name' => 'profile.index']);
 

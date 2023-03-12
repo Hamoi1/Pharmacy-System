@@ -6,10 +6,8 @@ use App\Http\Controllers\ExportController;
 use App\Models\Role;
 use App\Models\User;
 use Livewire\Component;
-use App\Models\UserDetails;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
-use App\Models\UserPermissions;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 
@@ -18,14 +16,14 @@ class Index extends Component
     use WithPagination, WithFileUploads;
     public $name, $username, $phone, $email, $address, $password, $confirm_password,
         $UpdateUser, $UserId, $search, $status, $user, $statu, $Trashed = false,
-        $permission = [], $ShowPermission = false, $permission_id;
+        $permission = [], $ShowPermission = false, $role_id;
     protected $paginationTheme = 'bootstrap',
         $queryString = [
             'search' => ['except' => ['id'], 'as' => 's'],
             'status' => ['as' => 'st'],
             'Trashed' => ['except' => false],
             'page',
-            'permission_id' => ['as' => 'permission']
+            'role_id' => ['as' => 'permission']
         ];
     public $ExportData = [
             'name' => 'Name',
@@ -37,7 +35,7 @@ class Index extends Component
             'updated_at' => 'Updated At',
             'deleted_at' => 'Deleted At',
         ],
-        $ExportDataSelected = [], $quantity;
+        $ExportDataSelected = [], $quantity, $export = false;
     public function mount()
     {
         if (!Gate::allows('View User')) {
@@ -54,11 +52,10 @@ class Index extends Component
             return User::query();
         }
     }
-
     public function render()
     {
-
         $users = $this->CheckTrashParameter();
+        $users = $users->whereNot('id', auth()->user()->id);
         $this->search != '' ? $users->where(function ($query) {
             $query->where('name', 'like', '%' . $this->search . '%')
                 ->orWhere('username', 'like', '%' . $this->search . '%')
@@ -71,11 +68,10 @@ class Index extends Component
                 });
         }) : '';
         $this->status != null ? $users->Where('status', $this->status) : null;
-        // serach by permission_id
-        $this->permission_id != null ? $users->WhereHas('permissions', function ($query) {
-            $query->where('role_id', $this->permission_id);
-        }) : null;
-        $users = $users->where('id', '!=', auth()->user()->id);
+        // search by role_id in table users and role_id column data is array is like [1,2,3,4,5,6,7,8,9]
+        $this->role_id != null ? $users->whereRaw(
+            'JSON_CONTAINS(role_id, ' . $this->role_id . ')'
+        ) : null;
         $GetTrashDate = function ($date) {
             return $date;
         };
@@ -85,6 +81,10 @@ class Index extends Component
             'GetTrashDate' => $GetTrashDate,
             'roless' => $roless
         ]);
+    }
+    public function updateRole_id()
+    {
+        $this->role_id = $this->role_id;
     }
 
     private static function Resets()
@@ -230,20 +230,12 @@ class Index extends Component
                 'phone' => $this->phone,
                 'email' => $this->email,
                 'status' => $this->statu,
+                'role_id' => json_encode(array_values($this->permission))
             ]);
-            UserDetails::where('user_id', $this->UserId)->update([
+            $user->save();
+            $user->user_details->update([
                 'address' => $this->address,
             ]);
-            // update permission
-            UserPermissions::where('user_id', $this->UserId)->delete();
-            foreach ($this->permission as $permission) {
-                // get role id add to UserPermission table
-                $id = Role::find($permission)->id;
-                UserPermissions::create([
-                    'role_id' => $id,
-                    'user_id' => $user->id,
-                ]);
-            }
             #new data
             $new_data = [
                 'name : ' . $this->name,
@@ -253,7 +245,7 @@ class Index extends Component
                 $this->statu ? 'status : Active' : 'status : Not Active',
                 'address : ' .  $this->address,
             ];
-            $user->InsertDataToFile(auth()->user()->id, "User", 'Update', $old_data, $new_data);
+            $user->InsertToLogsTable(auth()->user()->id, "User", 'Update', $old_data, $new_data);
         } elseif (!$this->UpdateUser && Gate::allows('Insert User')) {
             $user = User::create([
                 'name' => $this->name,
@@ -261,18 +253,12 @@ class Index extends Component
                 'phone' => $this->phone,
                 'email' => $this->email,
                 'password' => Hash::make($this->password),
+                'role_id' => json_encode(array_values($this->permission))
             ]);
-            UserDetails::create([
-                'user_id' => $user->id,
+            $user->save();
+            $user->user_details()->create([
                 'address' => $this->address,
             ]);
-            foreach ($this->permission as $permission) {
-                $permission_name = Role::find($permission)->name;
-                UserPermissions::create([
-                    'role_id' => $permission_name,
-                    'user_id' => $user->id,
-                ]);
-            }
             $new_data = [
                 'name : ' . $this->name,
                 'username : ' .  $this->username,
@@ -281,8 +267,7 @@ class Index extends Component
                 'status : ' .  $this->statu ? 'Active' : 'Inactive',
                 'address : ' .  $this->address,
             ];
-            $user->CreateFile($user->id);
-            $user->InsertDataToFile(auth()->user()->id, "User", 'Update', '', $new_data);
+            $user->InsertToLogsTable(auth()->user()->id, "User", 'Update', '', $new_data);
         }
         flash()->addSuccess($this->UpdateUser ?  __('header.updated') :  __('header.add'));
         $this->done();
@@ -293,15 +278,15 @@ class Index extends Component
             flash()->addError(__('header.NotAllowToDo'));
         } else {
             $this->UpdateUser = true;
-            $users = User::UserDetails()->with('Permissions')->findOrFail($id);
-            $this->UserId = $users->id;
-            $this->name = $users->name;
-            $this->username = $users->username;
-            $this->phone = $users->phone;
-            $this->email = $users->email;
-            $this->address = $users->address;
-            $this->statu = $users->status;
-            $this->permission = $users->Permissions->pluck('role_id')->toArray();
+            $user = User::UserDetails()->findOrFail($id);
+            $this->UserId = $user->id;
+            $this->name = $user->name;
+            $this->username = $user->username;
+            $this->phone = $user->phone;
+            $this->email = $user->email;
+            $this->address = $user->address;
+            $this->statu = $user->status;
+            $this->permission = json_decode($user->role_id, true);
         }
     }
     public function delete($id)
@@ -313,19 +298,17 @@ class Index extends Component
             if ($user->id == auth()->user()->id) {
                 flash()->addError(__('header.CanNotDeleteUser'));
             } else {
-                $user->DeleteFile($user->id);
                 $data = 'Delete ( ' . $user->name . ' ) form : ' . now();
                 $user->delete();
                 flash()->addSuccess(__('header.deleted_for_30_days'));
-                auth()->user()->InsertDataToFile(auth()->user()->id, "User", 'Delete',  $data,  $data);
+                auth()->user()->InsertToLogsTable(auth()->user()->id, "User", 'Delete',  $data,  $data);
             }
         }
         $this->done();
     }
-    public function show(User $user)
+    public function show($id)
     {
-        $user = User::UserDetails()->findOrFail($user->id);
-        $this->user = $user;
+        $this->user = User::UserDetails()->findOrFail($id);
     }
 
     public function toggleActive(User $user)
@@ -344,7 +327,7 @@ class Index extends Component
                 'Name : ' . $user->name,
                 $user->status ? 'status : Active' : 'status : Not Active'
             ];
-            $user->InsertDataToFile(auth()->user()->id, "User", 'Update', $old_data, $new_data);
+            $user->InsertToLogsTable(auth()->user()->id, "User", 'Update', $old_data, $new_data);
             flash()->addSuccess($user->status == 1 ? __('header.actived') : __('header.deactived'));
         }
         $this->done();
@@ -357,13 +340,14 @@ class Index extends Component
 
         $userName = [];
         foreach ($users as $user) {
+            $user->DeleteLogs($user->id);
             $user->products()->update(['user_id' => null]);
             $user->sales()->update(['user_id' => null]);
             $userName[] = '( ' . $user->name . ' )';
             $user->forceDelete();
         }
         $data = 'Delete  ' . implode(' , ', $userName) . '  form : ' . now();
-        auth()->user()->InsertDataToFile(auth()->user()->id, "User", 'Delete',  $data,  '');
+        auth()->user()->InsertToLogsTable(auth()->user()->id, "User", 'Delete',  $data,  $data);
         flash()->addSuccess(__('header.deleted'));
         $this->done();
     }
@@ -376,21 +360,19 @@ class Index extends Component
         $userName = [];
         foreach ($users as $user) {
             $userName[] = '( ' . $user->name . ' )';
-            $user->CreateFile($user->id);
             $user->restore();
         }
         $data = 'Restore   ' . implode(' , ', $userName) . '  form : ' . now();
-        auth()->user()->InsertDataToFile(auth()->user()->id, "User", 'Restore',  $data, '');
+        auth()->user()->InsertToLogsTable(auth()->user()->id, "User", 'Restore',  $data,  'nothing to show');
         flash()->addSuccess(__('header.RestoreMessage'));
         $this->done();
     }
     public function restore($id)
     {
         $user = User::onlyTrashed()->findOrFail($id);
-        $user->CreateFile($user->id);
         $data = 'Restore ( ' . $user->name . ' ) form : ' . now();
         $user->restore();
-        auth()->user()->InsertDataToFile(auth()->user()->id, "User", 'Restore',  $data, '');
+        auth()->user()->InsertToLogsTable(auth()->user()->id, "User", 'Restore',  $data,  'nothing to show');
         flash()->addSuccess(__('header.RestoreMessage'));
         $this->done();
     }
@@ -425,8 +407,8 @@ class Index extends Component
             $data .= $value . ' , ';
         }
         $data = 'Export  ' . $data . '  form : ' . now();
-        auth()->user()->InsertDataToFile(auth()->user()->id, "User", 'Export',  $data,  $data);
+        auth()->user()->InsertToLogsTable(auth()->user()->id, "User", 'Export',  $data,  $data);
         $this->ExportDataSelected = array_unique($this->ExportDataSelected);
-        return   ExportController::export($this->ExportDataSelected, 'users', $this->quantity);
+        return ExportController::export($this->ExportDataSelected, 'users', $this->quantity);
     }
 }

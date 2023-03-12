@@ -43,7 +43,7 @@ class Login extends Component
                 $this->resetErrorBag();
                 $this->resetValidation();
                 $data = auth()->user()->name . ' Login to System ';
-                auth()->user()->InsertDataToFile(auth()->user()->id, 'Login', 'Login', $data, $data);
+                auth()->user()->InsertToLogsTable(auth()->user()->id, 'Login', 'Login', $data, $data);
                 return redirect()->route('dashboard', app()->getLocale());
             } else {
                 auth()->logout();
