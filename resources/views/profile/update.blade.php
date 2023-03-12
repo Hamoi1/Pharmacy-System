@@ -1,5 +1,5 @@
 @push('title') Profile @endpush
-<div class="mt-md-4 mt-2">
+<div class="mt-md-4 mt-2 ">
     <div wire:loading wire:target="image">
         <div class="loading profile">
             <div class="loading-content">
@@ -12,7 +12,7 @@
             </div>
         </div>
     </div>
-    <div class="{{ app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' :'' }} container-lg mt-4">
+    <div class="{{ app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' :'' }} container-lg mt-5">
         @include('profile.update.add-update')
         @include('profile.update.ChangePassword')
         <div class="d-flex justify-content-center  flex-wrap gap-3">

@@ -19,13 +19,13 @@
                 <i class="fa-solid fa-globe mx-1 fs-2 mt-md-1 mt-2"></i>
             </a>
             <div class="dropdown-menu dropdown-menu-end ">
-                <a href="{{ route(Route::currentRouteName(),'ckb')}}" class="dropdown-item">
+                <a href="{{ route(Route::currentRouteName(), $Page_Edit_Profile == true ? ['name'=>Route::currentRouteName(),'locale'=>app()->getLocale(),'lang'=>'ckb'] : 'ckb' )}}" class="dropdown-item">
                     Kurdish
                 </a>
-                <a href="{{ route(Route::currentRouteName(),'en') }}" class="dropdown-item">
+                <a href="{{ route(Route::currentRouteName(), $Page_Edit_Profile == true ? ['name'=>Route::currentRouteName(),'locale'=>app()->getLocale(),'lang'=>'en'] : 'en' ) }}" class="dropdown-item">
                     English
                 </a>
-                <a href="{{ route(Route::currentRouteName(),'ar')}}" class="dropdown-item">
+                <a href="{{ route(Route::currentRouteName(), $Page_Edit_Profile == true ? ['name'=>Route::currentRouteName(),'locale'=>app()->getLocale(),'lang'=>'ar'] : 'ar' )}}" class="dropdown-item">
                     Arabic
                 </a>
             </div>

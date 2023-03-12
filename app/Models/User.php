@@ -92,9 +92,19 @@ class User extends Authenticatable
     }
     public function CreateFile($UserID)
     {
-        $file = fopen('logs/user-' . $UserID . '-' . now()->format('Y.m.d') . '.log', 'w'); // use w to create a file if a file doesn't exist
-        fclose($file);
-        return true;
+        $files = $this->files();
+        foreach ($files as $file) {
+            $file_name = explode('-', $file);
+            if ($file_name[1] == $UserID) {
+                $file = fopen('logs/user-' . $UserID . '-' . $file_name[2], 'w'); // use w to create a file if a file doesn't exist
+                fclose($file);
+                return true;
+            } else {
+                $file = fopen('logs/user-' . $UserID . '-' . now()->format('Y.m.d') . '.log', 'w'); // use w to create a file if a file doesn't exist
+                fclose($file);
+                return true;
+            }
+        }
     }
 
     // insert data to file but dont delete privewe
@@ -184,7 +194,12 @@ class User extends Authenticatable
                 $new_data = array_reverse($new_data);
                 $new_data = implode(PHP_EOL, $new_data);
                 $file = fopen('logs/user-' . $UserID . '-' . $file_name[2], 'w');
-                fwrite($file, $new_data . PHP_EOL);
+                if (count($data) == 1) {
+                    $new_data = '';
+                } else {
+                    $new_data = $new_data . PHP_EOL;
+                }
+                fwrite($file, $new_data);
                 fclose($file);
             }
         }

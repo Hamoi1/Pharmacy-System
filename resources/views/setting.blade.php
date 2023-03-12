@@ -90,7 +90,7 @@
                 </h4>
                 <form>
                     <button class="changeThemeBtn shadow-sm " wire:click.prevent="ChangeTheme({{ $settings->theme == 0 ? 0 : 1  }})">
-                        <span class="fs-3 mt-2 text-light"> {{ $settings->theme == 0 ? "🌙" : "☀️"  }}</span>
+                        <span class="fs-3 {{ $settings->theme == 0 ? 'mb-2' : 'mt-2'  }} text-light"> {{ $settings->theme == 0 ? "🌙" : "☀️"  }}</span>
                     </button>
                     <span class=" fs-3 mx-2  {{ $settings->theme == 0 ? 'txet-dark' : 'text-light'  }}">
                         {{ $settings->theme == 0 ? "dark" : "light"  }}

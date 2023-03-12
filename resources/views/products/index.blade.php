@@ -41,8 +41,8 @@
         @can('Product Export')
         @include('products.export')
         @endcan
-        <div class="row g-2 my-3">
-            <div class="col-lg-3 col-md-6 col-12">
+        <div class="row g-3 my-3">
+            <div class="col-xl-2 col-lg-4 col-md-6 col-12">
                 <div class="input-icon">
                     <input type="text" class="form-control" placeholder="{{ __('header.search') }}" wire:model="search">
                     <span class="input-icon-addon">
@@ -50,7 +50,7 @@
                     </span>
                 </div>
             </div>
-            <div class="col-lg-1 col-md-6 col-6">
+            <div class="col-xl-2 col-lg-4 col-md-6 col-6">
                 <select class="form-select" wire:model="Category">
                     <option value="">{{ __('header.Categorys') }}</option>
                     @foreach ($categorys as $category)
@@ -58,7 +58,7 @@
                     @endforeach
                 </select>
             </div>
-            <div class="col-lg-2 col-md-6 col-6">
+            <div class="col-xl-2 col-lg-4 col-md-6 col-6">
                 <select class="form-select" wire:model="Supplier">
                     <option value="">{{ __('header.Suppliers') }}</option>
                     @forelse ($suppliers as $supplier )
@@ -68,7 +68,7 @@
                     @endforelse
                 </select>
             </div>
-            <div class="col-lg-2 col-md-6 col-6">
+            <div class="col-xl-2 col-lg-4 col-md-6 col-6">
                 <select class="form-select" wire:model="ExpiryOrStockedOut">
                     <option value="">{{ __('header.ExpiryOrStockedOut') }}</option>
                     <option value="e">{{ __('header.Expiry') }}</option>
@@ -76,43 +76,43 @@
                 </select>
             </div>
             @can('Product Export')
-            <div class="col-lg-1 col-sm-3 col-6 mx-lg-3">
-                <button class="btn pt-2" data-bs-toggle="modal" data-bs-target="#export">
+            <div class="col-xl-1 col-lg-4 col-md-2 col-6 mx-xl-2 mx-0">
+                <button class="btn pt-2 " data-bs-toggle="modal" data-bs-target="#export">
                     <i class="fa-solid fa-file-export mx-2 mb-1"></i>
                     {{ __('header.Export') }}
                 </button>
             </div>
             @endcan
             @can('Product Trash')
-            <div class="col-lg-1 col-sm-3 col-6 mx-lg-3">
-                <div class="d-flex align-items-center ">
-                    <button class="btn pt-2" wire:click="Trash">
-                        <i class="fa fa-trash mx-2 mb-1"></i>
-                        {{ __('header.Trash') }}
+            <div class="col-xl-1 col-lg-4 col-md-2 col-6 mx-xl-2 mx-0">
+                <button class="btn pt-2 " wire:click="Trash">
+                    <i class="fa fa-trash mx-2 mb-1"></i>
+                    {{ __('header.Trash') }}
+                </button>
+            </div>
+            @if($Trashed)
+            <div class="col-xl-1 col-lg-4 col-md-2 col-6 mx-xl-2 mx-0">
+                <div class="dropdown">
+                    <button class="btn btn-info  " type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                        {{ __('header.actions') }}
                     </button>
-                    @if($Trashed)
-                    <div class="dropdown">
-                        <button class="btn btn-info " type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                            {{ __('header.actions') }}
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            <li class="dropdwon-item mt-2">
-                                <button class=" btn shadow-none text-danger" wire:click.prevent="DeleteAll()">
-                                    <i class="fa-solid fa-trash-can mx-2 mb-2"></i>
-                                    {{ __('header.DeletedAll') }}
-                                </button>
-                            </li>
-                            <li class="dropdwon-item mt-2">
-                                <button class=" btn shadow-none text-success " wire:click.prevent="RestoreAll()">
-                                    <i class="fa-solid fa-recycle mx-2 mb-2"></i>
-                                    {{ __('header.RestoreAll') }}
-                                </button>
-                            </li>
-                        </ul>
-                    </div>
-                    @endif
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        <li class="dropdwon-item mt-2">
+                            <button class=" btn shadow-none text-danger" wire:click="DeleteAll">
+                                <i class="fa-solid fa-trash-can mx-2 mb-2"></i>
+                                {{ __('header.DeletedAll') }}
+                            </button>
+                        </li>
+                        <li class="dropdwon-item mt-2">
+                            <button class=" btn shadow-none text-success " wire:click="RestoreAll">
+                                <i class="fa-solid fa-recycle mx-2 mb-2"></i>
+                                {{ __('header.RestoreAll') }}
+                            </button>
+                        </li>
+                    </ul>
                 </div>
             </div>
+            @endif
             @endcan
         </div>
         <div class="row mt-3" wire:loading wire:target="search,Category,Supplier,previousPage,nextPage,gotoPage">

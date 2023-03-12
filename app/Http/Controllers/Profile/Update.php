@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Profile;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Hash;
-use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 
 class Update extends Component
@@ -36,7 +35,7 @@ class Update extends Component
         ]);
 
         flash()->addSuccess(__('header.updated'));
-        $this->emit('UpdateProfile');
+        $this->emit('UpdateProfile', ['name' => 'profile.index']);
         $this->image = null;
     }
     public function deleteImage($Image)
@@ -47,15 +46,14 @@ class Update extends Component
                 'image' => null,
             ]);
             flash()->addSuccess(__('header.deleted'));
-            $this->emit('UpdateProfile');
+            $this->emit('UpdateProfile', ['name' => 'profile.index']);
         } else {
             flash()->addWarning(__('header.no_image'));
         }
-        $this->emit('UpdateProfile');
+        $this->emit('UpdateProfile', ['name' => 'profile.index']);
     }
     public function done()
     {
-
         $this->resetValidation();
         $this->dispatchBrowserEvent('closeModal');
     }
@@ -120,7 +118,8 @@ class Update extends Component
         ];
         auth()->user()->InsertDataToFile(auth()->user()->id, 'Update', 'Profile', $oldData, $newData);
         flash()->addSuccess(__('header.updated'));
-        $this->emit('UpdateProfile');
+        $this->emit('UpdateProfile', ['name' => 'profile.index']);
+
         $this->done();
     }
     public function ChangePassword()

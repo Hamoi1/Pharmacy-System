@@ -19,7 +19,7 @@
         </p>
         <p>
             <span class="fw-bold mx-1">{{ __('header.purches_price') }} : </span>
-            <span class="fw-normal">{{ $product->purches_price }}  {{ __('header.currency') }}</span>
+            <span class="fw-normal">{{ $product->purches_price }} {{ __('header.currency') }}</span>
         </p>
         <p>
             <span class="fw-bold mx-1">{{ __('header.sale_price') }} : </span>
@@ -27,11 +27,11 @@
         </p>
         <p>
             <span class="fw-bold mx-1">{{ __('header.Category') }} : </span>
-            {{ $product->category_name ?? __('header.not have',['name'=>__('header.Category')]) }}
+            {{ $product->category ? $product->category->name  : __('header.not have',['name'=>__('header.Category')]) }}
         </p>
         <p>
             <span class="fw-bold mx-1">{{ __('header.supplier') }} : </span>
-            {{ $product->supplier_name ?? __('header.not have',['name'=>__('header.supplier')]) }}
+            {{ $product->supplier ? $product->supplier->name : __('header.not have',['name'=>__('header.supplier')]) }}
         </p>
         <p>
             <span class="fw-bold mx-1">{{ __('header.quantity') }} : </span>
@@ -57,8 +57,6 @@
             <span class="fw-bold mx-1">{{ __('header.about product') }} : </span>
             <span class="fw-normal">{{ $product->description  ?? __('header.nothing') }}</span>
         </p>
-
         @endif
     </div>
-
 </x-modal.view>

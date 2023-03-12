@@ -16,8 +16,8 @@ use App\Http\Controllers\ExportController;
 class Index extends Component
 {
     use WithPagination, WithFileUploads;
-    public $name, $barcode, $purches_price, $sale_price, $category_id, $supplier_id, $description, $quantity, $expire_date, $images = [], $search, $productID, $ExpiryOrStockedOut;
-    public $UpdateProduct = false, $product, $Category, $Supplier, $expire = false, $Trashed = false;
+    public $name, $barcode, $purches_price, $sale_price, $category_id, $supplier_id, $description, $quantity, $expire_date, $images = [], $search, $productID, $ExpiryOrStockedOut,
+        $UpdateProduct = false, $product, $Category, $Supplier, $expire = false, $Trashed = false;
     protected $paginationTheme = 'bootstrap';
     protected $queryString = [
         'search' => ['as' => 's', 'except' => ''], 'Category' => ['as' => 'category', 'except' => ''], 'Supplier' => ['as' => 'supplier', 'except' => ''],
@@ -271,9 +271,9 @@ class Index extends Component
         }
         $this->done();
     }
-    public function show(Products $product)
+    public function show($id)
     {
-        $this->product = $product;
+        $this->product  = Products::with('category', 'supplier')->findOrFail($id);
     }
     public function DeleteAll()
     {

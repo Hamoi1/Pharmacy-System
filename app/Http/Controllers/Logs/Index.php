@@ -18,7 +18,8 @@ class Index extends Component
             'Restore',
             'Login',
             'Logout',
-            'Profile'
+            'Profile',
+            'Export'
         ];
     protected $queryString = [
         'user' => ['except' => ''],
@@ -30,7 +31,6 @@ class Index extends Component
         if (!Gate::allows('View Log')) {
             $this->resetExcept();
             abort(404);
-
         }
         $users = User::whereNot('id', auth()->user()->id)->get();
         $user_select = $this->user;

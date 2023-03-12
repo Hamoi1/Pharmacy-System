@@ -45,7 +45,7 @@
         @include('user.export')
         @endcan
         <div class="row g-2 my-3">
-            <div class="col-lg-3 col-md-6 col-12">
+            <div class="col-xl-2 col-lg-4 col-md-6 col-12">
                 <div class="input-icon">
                     <input type="text" class="form-control" placeholder="{{ __('header.search') }}" wire:model="search">
                     <span class="input-icon-addon">
@@ -53,14 +53,14 @@
                     </span>
                 </div>
             </div>
-            <div class="col-lg-2 col-md-6 col-6">
+            <div class="col-xl-2 col-lg-4 col-md-6 col-6">
                 <select class="form-select" wire:model="status">
                     <option value="">{{ __('header.status') }}</option>
                     <option value="1">Active</option>
                     <option value="0">Not Active</option>
                 </select>
             </div>
-            <div class="col-lg-2 col-md-6 col-6">
+            <div class="col-xl-2 col-lg-4 col-md-6 col-6">
                 <select class="form-select" wire:model="permission_id">
                     <option value="">{{ __('header.permission') }}</option>
                     @foreach ($roless as $p)
@@ -69,7 +69,7 @@
                 </select>
             </div>
             @can('User Export')
-            <div class="col-lg-1 col-sm-3 col-6 mx-lg-3">
+            <div class="col-xl-1 col-lg-4 col-md-2 col-6 mx-xl-2 mx-0">
                 <button class="btn pt-2" data-bs-toggle="modal" data-bs-target="#export">
                     <i class="fa-solid fa-file-export mx-2 mb-1"></i>
                     {{ __('header.Export') }}
@@ -77,27 +77,27 @@
             </div>
             @endcan
             @can('User Trash')
-            <div class="col-lg-1 col-sm-3 col-6 mx-lg-2">
+            <div class="col-xl-1 col-lg-4 col-md-2 col-6 mx-xl-2 mx-0">
                 <button class="btn pt-2" wire:click="Trash">
                     <i class="fa fa-trash mx-2 mb-1"></i>
                     {{ __('header.Trash') }}
                 </button>
             </div>
             @if($Trashed)
-            <div class="col-lg-1 col-md-6 col-5 mx-lg-2">
+            <div class="col-xl-1 col-lg-4 col-md-2 col-6 mx-xl-2 mx-0">
                 <div class="dropdown">
                     <button class="btn btn-info " type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                         {{ __('header.actions') }}
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                         <li class="dropdwon-item mt-2">
-                            <button class=" btn shadow-none text-danger" wire:click="DeleteAll">
+                            <button class=" btn shadow-none text-danger d-flex align-items-center justify-content-center" wire:click="DeleteAll">
                                 <i class="fa-solid fa-trash-can mx-2 mb-2"></i>
                                 {{ __('header.DeletedAll') }}
                             </button>
                         </li>
                         <li class="dropdwon-item mt-2">
-                            <button class=" btn shadow-none text-success " wire:click="RestoreAll">
+                            <button class=" btn shadow-none text-success d-flex align-items-center justify-content-center " wire:click="RestoreAll">
                                 <i class="fa-solid fa-recycle mx-2 mb-2"></i>
                                 {{ __('header.RestoreAll') }}
                             </button>
