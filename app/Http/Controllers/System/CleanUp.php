@@ -21,6 +21,11 @@ class CleanUp extends Component
         foreach ($oldFiles as $file) {
             Storage::delete($file);
         }
+        // delete all files in Pharmacy-backup folder
+        $oldFiles = Storage::files('Pharmacy-backup');
+        foreach ($oldFiles as $file) {
+            Storage::delete($file);
+        }
         $file = fopen(storage_path('logs/laravel.log'), 'w');
         fclose($file);
         flash()->addSuccess(__('header.cleaned'));

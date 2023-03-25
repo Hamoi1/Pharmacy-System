@@ -13,7 +13,7 @@ class ForgetPassowrd extends Component
 {
     public $email, $VerifyCode, $code;
     protected $rules = [
-        'email' => 'required|email|exists:users,email',
+        'email' => 'required|email|regex:/^[a-zA-Z0-9_.+-]+@[a-zA-Z]+\.[a-zA-Z]+$/u|exists:users,email',
     ];
     public function mount()
     {
@@ -25,7 +25,7 @@ class ForgetPassowrd extends Component
             'email.required' => __('validation.required', ['attribute' => __('header.email')]),
             'email.email' => __('validation.email', ['attribute' => __('header.email')]),
             'email.exists' => __('validation.exists', ['attribute' => __('header.email')]),
-
+            'email.regex' => __('validation.regex', ['attribute' => __('header.email')]),
             'code.required' => __('validation.required', ['attribute' => __('header.code')]),
             'code.exists' => __('validation.exists', ['attribute' => __('header.code')]),
             'code.min' => __('validation.min.string', ['attribute' => __('header.code'), 'min' => 8]),

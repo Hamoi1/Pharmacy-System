@@ -23,10 +23,9 @@
         }
     </style>
     @endif
-
 </head>
 
-<body class=" @if (auth()->check()) {{ auth()->user()->theme == 0 ? 'theme-light' : 'theme-dark'  }} @endif ">
+<body class=" @if (auth()->check()) {{ auth()->user()->theme == 0 ? 'theme-light' : 'theme-dark'  }} @endif " wire:ignore.self>
     <div wire:offline>
         <div class="offline">
             <div class="offline-content">
@@ -38,7 +37,7 @@
         </div>
     </div>
     @auth
-    <div class="lodaing-seaction">
+    <div class="lodaing-seaction  d-print-none">
         <div class="building-blocks">
             <div></div>
             <div></div>
@@ -49,7 +48,7 @@
             <div></div>
         </div>
     </div>
-    <aside class="navbar navbar-vertical  {{ app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'navbar-right' : '' }} navbar-expand-lg navbar-light no-print">
+    <aside class="navbar navbar-vertical  d-print-none  {{ app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'navbar-right' : '' }} navbar-expand-lg navbar-light  d-print-none">
         <div class="container-fluid">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu">
                 <span class="navbar-toggler-icon"></span>
@@ -89,7 +88,7 @@
                         @endcan
                         @can('View DebtSale')
                         <li class="nav-item my-1 mx-lg-1 mx-md-4 mx-3 ">
-                            <a class="nav-link  {{  app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }}  active {{ Request()->is(app()->getLocale().'/sales/debt') ? 'active-page ' : '' }}  mx-md-2 mx-1   " href="{{ route('sales.debt',app()->getLocale()) }}">
+                            <a class="nav-link {{  app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }}  active {{ Request()->is(app()->getLocale().'/sales/debt') ? 'active-page ' : '' }}  mx-md-2 mx-1   " href="{{ route('sales.debt',app()->getLocale()) }}">
                                 <i class="fa-solid fa-money-bill-wave mb-2"></i>
                                 <span class="nav-link-title  mx-md-2 mx-1 ">
                                     {{ __('header.Debts') }}
@@ -98,13 +97,24 @@
                         </li>
                         @endcan
                         @can('View Product')
-                        <li class="nav-item my-1 mx-lg-1 mx-md-4 mx-3 ">
-                            <a class="nav-link  {{  app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }}  active {{ Request()->is(app()->getLocale().'/products') ? 'active-page' : '' }}  mx-md-2 mx-1  " href="{{ route('products',app()->getLocale()) }}">
+                        <li class="nav-item dropdown my-1 mx-lg-1 mx-md-4 mx-3 ">
+                            <a class="nav-link   {{  app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }}  active {{ Request()->is(app()->getLocale().'/products') ? 'active-page' : '' }}  mx-md-2 mx-1  " href="#" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
+                                <!-- {{ route('products',app()->getLocale()) }} -->
                                 <i class="fa fa-box mb-2"></i>
-                                <span class="nav-link-title  mx-2">
+                                <span class="nav-link-title mx-2">
                                     {{ __('header.Products') }}
                                 </span>
                             </a>
+                            <div class="dropdown-menu ">
+                                <div class="dropdown-menu-column">
+                                    <a class="dropdown-item mx-4 text-dark" href="{{ route('products',app()->getLocale()) }} ">
+                                        {{ __('header.Products') }}
+                                    </a>
+                                    <a class="dropdown-item mx-4 text-dark" href="{{ route('returnproduct',app()->getLocale()) }} ">
+                                        {{ __('header.Return Product')}}
+                                    </a>
+                                </div>
+                            </div>
                         </li>
                         @endcan
                         @can('View User')
@@ -113,26 +123,6 @@
                                 <i class="fa fa-user mb-2"></i>
                                 <span class="nav-link-title  mx-2">
                                     {{ __('header.Users') }}
-                                </span>
-                            </a>
-                        </li>
-                        @endcan
-                        @can('View ExpiryProduct')
-                        <li class="nav-item my-1 mx-lg-1 mx-md-4 mx-3">
-                            <a class="nav-link  {{  app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }}  active {{ Request()->is(app()->getLocale().'/ExpiryProducts') ? 'active-page' : '' }}  mx-2" href="{{ route('ExpiryProducts',app()->getLocale()) }}">
-                                <i class="fa-solid fa-triangle-exclamation mb-2"></i>
-                                <span class="nav-link-title  mx-2">
-                                    {{ __('header.ExpiryProducts') }}
-                                </span>
-                            </a>
-                        </li>
-                        @endcan
-                        @can('View StockOutProduct')
-                        <li class="nav-item my-1 mx-lg-1 mx-md-4 mx-3">
-                            <a class="nav-link  {{  app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }}  active {{ Request()->is(app()->getLocale().'/stock-out-products') ? 'active-page' : '' }}  mx-md-2 mx-1 " href="{{ route('StockOutProcuts',app()->getLocale()) }}">
-                                <i class="fa-solid fa-exclamation mb-2"></i>
-                                <span class="nav-link-title  mx-2">
-                                    {{ __('header.StockedOutProducts') }}
                                 </span>
                             </a>
                         </li>
@@ -157,6 +147,14 @@
                             </a>
                         </li>
                         @endcan
+                        <li class="nav-item my-1 mx-lg-1 mx-md-4 mx-3">
+                            <a class="nav-link  {{  app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }} active {{ Request()->is(app()->getLocale().'/customers') ? 'active-page' : '' }}  mx-2" href="{{ route('customers',app()->getLocale()) }}">
+                                <i class="fa fa-users mb-2"></i>
+                                <span class="nav-link-title  mx-2">
+                                    {{ __('header.Customers') }}
+                                </span>
+                            </a>
+                        </li>
                         @can('View Barcode')
                         <li class="nav-item my-1 mx-lg-1 mx-md-4 mx-3">
                             <a class="nav-link  {{  app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }} active {{ Request()->is(app()->getLocale().'/barcode') ? 'active-page' : '' }}  mx-2" href="{{ route('barcode',app()->getLocale()) }}">
@@ -209,6 +207,13 @@
         </div>
     </aside>
     <div class="page-wrapper ">
+        <div id="offcanvas" class="{{ app()->getLocale() == 'ckb' || app()->getLocale() == 'ar' ? 'left' : 'right' }}">
+            <a class="btn" data-bs-toggle="offcanvas" href="#Products" role="button" aria-controls="Products">
+                <span class="badge bg-orange badge-notification badge-blink"></span>
+                <i class="fa fa-box"></i>
+            </a>
+        </div>
+        @livewire('expiry-and-stockout')
         {{ $slot }}
     </div>
     </div>
@@ -219,7 +224,8 @@
 
     @livewireScripts
     <script src="{{ asset('assets/js/jquery-3.6.1.min.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script> -->
     <script src="{{ asset('assets/js/autosize.min.js') }}"></script>
     <script src="{{ asset('assets/js/main.js') }}"></script>
     <script src="{{ asset('assets/js/apexcharts.min.js') }}"></script>

@@ -13,7 +13,7 @@
         </div>
     </div>
     <div class="{{ app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }} px-lg-5 px-3">
-        <div class=" mt-4">
+        <div>
             <div class="page-header">
                 <div class="row align-items-center">
                     <div class="col">
@@ -44,8 +44,8 @@
         @can('User Export')
         @include('user.export')
         @endcan
-        <div class="row g-2 my-3">
-            <div class="col-xl-2 col-lg-4 col-md-6 col-12">
+        <div class="row g-2">
+            <div class="col-xl-2 col-lg-4 col-md-4 col-12">
                 <div class="input-icon">
                     <input type="text" class="form-control" placeholder="{{ __('header.search') }}" wire:model="search">
                     <span class="input-icon-addon">
@@ -53,14 +53,14 @@
                     </span>
                 </div>
             </div>
-            <div class="col-xl-2 col-lg-4 col-md-6 col-6">
+            <div class="col-xl-2 col-lg-4 col-md-4 col-6">
                 <select class="form-select" wire:model="status">
                     <option value="">{{ __('header.status') }}</option>
                     <option value="1">Active</option>
                     <option value="0">Not Active</option>
                 </select>
             </div>
-            <div class="col-xl-2 col-lg-4 col-md-6 col-6">
+            <div class="col-xl-2 col-lg-4 col-md-4 col-6">
                 <select class="form-select" wire:model="role_id">
                     <option value="">{{ __('header.permission') }}</option>
                     @foreach ($roless as $p)
@@ -68,47 +68,51 @@
                     @endforeach
                 </select>
             </div>
-            @can('User Export')
-            <div class="col-xl-1 col-lg-4 col-md-2 col-6 mx-xl-2 mx-0">
-                <button class="btn pt-2" data-bs-toggle="modal" data-bs-target="#export">
-                    <i class="fa-solid fa-file-export mx-2 mb-1"></i>
-                    {{ __('header.Export') }}
-                </button>
-            </div>
-            @endcan
-            @can('User Trash')
-            <div class="col-xl-1 col-lg-4 col-md-2 col-6 mx-xl-2 mx-0">
-                <button class="btn pt-2" wire:click="Trash">
-                    <i class="fa fa-trash mx-2 mb-1"></i>
-                    {{ __('header.Trash') }}
-                </button>
-            </div>
-            @if($Trashed)
-            <div class="col-xl-1 col-lg-4 col-md-2 col-6 mx-xl-2 mx-0">
-                <div class="dropdown">
-                    <button class="btn btn-info " type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                        {{ __('header.actions') }}
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                        <li class="dropdwon-item mt-2">
-                            <button class=" btn shadow-none text-danger d-flex align-items-center justify-content-center" wire:click="DeleteAll">
-                                <i class="fa-solid fa-trash-can mx-2 mb-2"></i>
-                                {{ __('header.DeletedAll') }}
+            <div class="col-xl-6 col-12">
+                <div class="d-flex aling-items-center flex-wrap gap-2">
+                    @can('User Export')
+                    <div>
+                        <button class="btn pt-2" data-bs-toggle="modal" data-bs-target="#export">
+                            <i class="fa-solid fa-file-export mx-2 mb-1"></i>
+                            {{ __('header.Export') }}
+                        </button>
+                    </div>
+                    @endcan
+                    @can('User Trash')
+                    <div>
+                        <button class="btn pt-2" wire:click="Trash">
+                            <i class="fa fa-trash mx-2 mb-1"></i>
+                            {{ __('header.Trash') }}
+                        </button>
+                    </div>
+                    @if($Trashed)
+                    <div>
+                        <div class="dropdown">
+                            <button class="btn btn-info " type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                {{ __('header.actions') }}
                             </button>
-                        </li>
-                        <li class="dropdwon-item mt-2">
-                            <button class=" btn shadow-none text-success d-flex align-items-center justify-content-center " wire:click="RestoreAll">
-                                <i class="fa-solid fa-recycle mx-2 mb-2"></i>
-                                {{ __('header.RestoreAll') }}
-                            </button>
-                        </li>
-                    </ul>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <li class="dropdwon-item mt-2">
+                                    <button class=" btn shadow-none text-danger d-flex align-items-center justify-content-center" wire:click="DeleteAll">
+                                        <i class="fa-solid fa-trash-can mx-2 mb-2"></i>
+                                        {{ __('header.DeletedAll') }}
+                                    </button>
+                                </li>
+                                <li class="dropdwon-item mt-2">
+                                    <button class=" btn shadow-none text-success d-flex align-items-center justify-content-center " wire:click="RestoreAll">
+                                        <i class="fa-solid fa-recycle mx-2 mb-2"></i>
+                                        {{ __('header.RestoreAll') }}
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    @endif
+                    @endcan
                 </div>
             </div>
-            @endif
-            @endcan
         </div>
-        <div class="row mt-3" wire:loading wire:target="search,status,previousPage,nextPage,gotoPage">
+        <div class="row mt-3" wire:loading wire:target="role_id,search,status,previousPage,nextPage,gotoPage">
             <div class="d-flex  gap-2">
                 <h3>
                     {{ __('header.waiting') }}
@@ -116,7 +120,7 @@
                 <div class="spinner-border" role="status"></div>
             </div>
         </div>
-        <div class="table-responsive mt-3" wire:loading.remove wire:target="search,status,previousPage,nextPage,gotoPage">
+        <div class="table-responsive mt-3" wire:loading.remove wire:target="role_id,search,status,previousPage,nextPage,gotoPage">
             <table class="table table-vcenter table-nowrap">
                 <thead>
                     <tr class="">
@@ -152,8 +156,7 @@
                             <div class="d-flex py-1 align-items-center">
                                 <img src="{{ $user->image($user->image) }}" class=" avatar  rounded-circle mx-2 object-cover d-none d-md-block">
                                 <div class="flex-fill">
-                                    <a class="mx-2 cursor-pointer" @if(!$Trashed) href="" wire:click.prevent="show({{ $user->id }})" data-bs-toggle="modal" data-bs-target="#view" @endif>
-                                        <!-- just show 10 letter of name -->
+                                    <a class="mx-2 cursor-pointer" @if(!$Trashed) href="" wire:click.prevent="ViewUser({{ $user->id }})" data-bs-toggle="modal" data-bs-target="#view" @endif>
                                         <span class="font-weight-medium">{{ Str::limit($user->name,15) }}</span>
                                     </a>
                                     @if ($user->create_at())

@@ -116,7 +116,7 @@ class Index extends Component
             ];
             auth()->user()->InsertToLogsTable(auth()->user()->id, "Barcode", 'Delete', $data, $data);
             $barcode->delete();
-            flash()->addSuccess(__('header.deleted'));
+            flash()->addSuccess(__('header.barcodes.index') . ' ' . __('header.deleted'));
         }
         $this->done();
     }

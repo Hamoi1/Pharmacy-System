@@ -3,7 +3,10 @@
     <div class="{{ app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }} px-lg-5 px-3 pt-4">
         <div class="row g-4 ">
             <div class="col-12">
-                <livewire:system.clean-up />
+                <div class="d-flex align-items-center">
+                    <livewire:system.clean-up />
+                    <livewire:system.backup />
+                </div>
             </div>
             <div class="col-12">
             </div>

@@ -7,36 +7,6 @@
                 </span>
                 <div class="lh-1 col-lg-3 col-6">
                     <input type="date" class="form-control" wire:model="date">
-                    <!-- <select class="form-select  rounded w-100 " wire:model="sales">
-                        <option value="today" selected>
-                            {{ __('header.today') }}
-                        </option>
-
-                        <option value="Yesterday">
-                            {{ __('header.yesterday') }}
-                        </option>
-                        <option value="ThisWeek">
-                            {{ __('header.this_week') }}
-                        </option>
-                        <option value="ThisMonth">
-                            {{ __('header.this_month') }}
-                        </option>
-                        <option value="3-month-ago">
-                            {{ __('header.3 month ago') }}
-                        </option>
-                        <option value="6-month-ago">
-                            {{ __('header.6 month ago') }}
-                        </option>
-                        <option value="ThisYear">
-                            {{ __('header.this_year') }}
-                        </option>
-                        <option value="one-year-ago">
-                            {{ __('header.one year ago') }}
-                        </option>
-                        <option value="3-year-ago">
-                            {{ __('header.3 year ago') }}
-                        </option>
-                    </select> -->
                 </div>
             </div>
             <div class="row">
@@ -45,7 +15,7 @@
                         <span class="fs-3 fw-bolder">
                             {{ __('header.Sales') }} :
                             <span class="text-muted fs-2 text-break">
-                                {{ number_format($TotalSale , 0) }}
+                                {{ number_format($TotalSale , 0,',',',') }}
                             </span>
                         </span>
                     </div>
@@ -53,7 +23,7 @@
                         <span class="fs-3 fw-bolder">
                             {{ __('header.Total Products') }} :
                             <span class="text-muted fs-2 text-break">
-                                {{ number_format($TotalSaleProduct , 0) }}
+                                {{ number_format($TotalSaleProduct , 0,',',',') }}
                             </span>
                         </span>
                     </div>
@@ -61,7 +31,7 @@
                         <span class="fs-3 fw-bolder">
                             {{ __('header.TotalPrice') }} :
                             <span class="text-muted fs-2 text-break">
-                                {{ number_format($TotalSalesPrice , 0) }}
+                                {{ number_format($TotalSalesPrice , 2,',',',') }}
                             </span>
                             {{ __('header.currency') }}
                         </span>

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\User;
 use App\Models\DebtSale;
+use App\Models\Customers;
 use App\Models\sale_details;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -18,6 +19,7 @@ class Sales extends Model
     {
         return $this->hasMany(sale_details::class, 'sale_id');
     }
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
@@ -27,18 +29,23 @@ class Sales extends Model
     {
         return $this->hasOne(DebtSale::class, 'sale_id');
     }
-    public function scopeSaleDebtName($query)
+
+    public function customers()
     {
-        return $query->addSelect([
-            'name' => DebtSale::select('name')
-                ->whereColumn('sale_id', 'sales.id')
-        ]);
+        return $this->belongsTo(Customers::class, 'customer_id');
     }
+
+    public function scopecustomersData($query)
+    {
+        return $query->addSelect(['customer_name' => Customers::select('name')->whereColumn('id', 'sales.customer_id')])
+            ->addSelect(['customer_phone' => Customers::select('phone')->whereColumn('id', 'sales.customer_id')]);
+    }
+
     public function scopeSaleData($query)
     {
         return $query->with('sale_details', function ($query) {
             return $query->whereNotNull('product_id')->with('products');
-        })->with('user', 'debt_sale');
+        })->with('user', 'debt_sale', 'customers');
     }
     public function scopeUser($query)
     {

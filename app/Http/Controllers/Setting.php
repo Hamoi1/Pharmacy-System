@@ -36,7 +36,7 @@ class Setting extends Component
         return [
             'name' => 'required|string|max:255',
             'phone' => 'required|numeric|digits:11',
-            'email' => 'required|email',
+            'email' => 'required|email|regex:/^[a-zA-Z0-9_.+-]+@[a-zA-Z]+\.[a-zA-Z]+$/u',
             'address' => 'required|string|max:255',
             'logo' => 'nullable|image|max:20000|mimes:jpg,jpeg,png,gif,svg,webp,ico',
         ];
@@ -52,6 +52,7 @@ class Setting extends Component
             'phone.digits' => __('validation.digits', ['attribute' => __('header.settings.phone'), 'digits' => 11]),
             'email.required' => __('validation.required', ['attribute' => __('header.settings.email')]),
             'email.email' => __('validation.email', ['attribute' => __('header.settings.email')]),
+            'email.regex' => __('validation.regex', ['attribute' => __('header.settings.email')]),
             'address.required' => __('validation.required', ['attribute' => __('header.settings.address')]),
             'address.string' => __('validation.string', ['attribute' => __('header.settings.address')]),
             'address.max' => __('validation.max.string', ['attribute' => __('header.settings.address'), 'max' => 255]),

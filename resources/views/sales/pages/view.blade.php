@@ -8,7 +8,7 @@
         </div>
     </div>
     <div wire:loading.remove wire:target="View">
-        <div>
+        <div class="d-print-block">
             @if ($saleView)
             <div class="row g-3">
                 <div class="shadow-sm  p-2 rounded mx-2 text-center my-3">
@@ -37,6 +37,12 @@
                     <span class="fw-bold">{{ __('header.discount') }} : </span>
                     <span>
                         {{ $saleView->discount != null ? number_format($saleView->discount,0) .' '. __('header.currency') : __('header.Not-discount') }}
+                    </span>
+                </div>
+                <div class="col-lg-6 col-12">
+                    <span class="fw-bold">{{ __('header.PaymnetMethod') }} : </span>
+                    <span>
+                        {{ $saleView->debt != null ? __('header.debt') : __('header.Cash') }}
                     </span>
                 </div>
                 <div class="hr-text mb-2 mt-3"></div>

@@ -82,13 +82,13 @@
                 <td class="col-1">
                     {{ $log->page }}
                 </td>
-                <td class="col-2 text-center">
+                <td class="col-1 text-center">
                     {{ $log->action }}
                 </td>
-                <td>
+                <td class="col-4 text-wrap">
                     @if (is_array($log->old_data))
                     @forelse ($log->old_data as $index => $data)
-                    <div class=" {{ $log->old_data != '' && count($log->old_data) !=0 && $loop->index == 0 ? '' : 'mt-1' }}  {{ $log->old_data != '' && count($log->old_data) !=0 && $log->new_data !=[] && $log->new_data[$index] !== $data ? 'different' : '' }}">
+                    <div class="{{ $log->old_data != '' && $loop->index == 0 ? '' : 'mt-1' }}  {{ $log->old_data != '' && $log->new_data !=[] && $log->new_data[$index] !== $data ? 'different' : '' }} ">
                         {{ $data }}
                     </div>
                     @empty
@@ -100,10 +100,10 @@
                     {{ $log->old_data }}
                     @endif
                 </td>
-                <td>
+                <td class="col-4 text-wrap">
                     @if (is_array($log->new_data))
                     @forelse ($log->new_data as $index => $data)
-                    <div class="{{ $log->old_data != '' && count($log->old_data) !=0 && $loop->index == 0 ? '' : 'mt-1' }}   {{ $log->old_data != '' &&  count($log->old_data) !=0 && $log->old_data !=[] && $log->old_data[$index] !== $data ? 'different' : '' }}">
+                    <div class="{{ $log->new_data != '' && $loop->index == 0 ? '' : 'mt-1' }}   {{ $log->old_data != '' && is_array($log->old_data) && $log->old_data != [] && $log->old_data[$index] !== $data ? 'different' : '' }}">
                         {{ $data }}
                     </div>
                     @empty

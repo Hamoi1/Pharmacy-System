@@ -5,9 +5,10 @@ namespace App\Http\Controllers\Logs;
 use App\Models\Logs;
 use App\Models\User;
 use Livewire\Component;
+use App\Events\UserStatus;
+use livewire\WithPagination;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Gate;
-use livewire\WithPagination;
 
 class Index extends Component
 {
@@ -29,6 +30,11 @@ class Index extends Component
         'action' => ['except' => '', 'as' => 'action'],
         'searchByDate' => ['except' => '', 'as' => 'date'],
     ], $paginationTheme = 'bootstrap';
+
+    public function updated($propertyName)
+    {
+        $this->resetPage();
+    }
     public function render()
     {
         if (!Gate::allows('View Log')) {
@@ -45,13 +51,18 @@ class Index extends Component
             $user_logs = [];
         }
 
-        if ($this->date != null) {
-            $user_logs = $user_logs->whereDate('created_at', $this->date);
-        }
         if ($this->action != null) {
-            $user_logs = $user_logs->orwhere('action', $this->action);
+            $user_logs = $user_logs->where('action', $this->action);
         }
-        return view('logs.index', ['user_logs' => $user_logs->paginate(10), 'users' => $users->get(), 'user_select' => $user_select]);
+        if ($this->date != null) {
+            $user_logs = $user_logs->whereDate('created_at', $this->date->format('Y-m-d'));
+        }
+        if ($this->user_id != null) {
+            $user_logs =   $user_logs->paginate(10);
+        } else {
+            $user_logs = [];
+        }
+        return view('logs.index', ['user_logs' => $user_logs, 'users' => $users->get(), 'user_select' => $user_select]);
     }
     public function delete($index)
     {
@@ -60,7 +71,7 @@ class Index extends Component
         } else {
             if ($this->user_id) {
                 auth()->user()->DeleteDataInLogs($this->user_id, $index);
-                flash()->addSuccess('Data has been deleted successfully !');
+                flash()->addSuccess(__('header.data').' '.__('header.deleted'));
             } else {
                 flash()->addWarning(__('header.user_data'));
             }

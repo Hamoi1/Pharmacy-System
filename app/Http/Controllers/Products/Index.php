@@ -11,7 +11,6 @@ use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\ExportController;
-use App\Models\ProductQuantity;
 
 class Index extends Component
 {
@@ -68,7 +67,6 @@ class Index extends Component
             }) : '';
         $this->Category ? $products->where('category_id', $this->Category) : '';
         $this->Supplier ? $products->where('supplier_id', $this->Supplier) : '';
-
         if ($this->ExpiryOrStockedOut === 'e') {
             $products->where('expiry_date', '<=', now());
         } elseif ($this->ExpiryOrStockedOut === 's') {
@@ -77,11 +75,10 @@ class Index extends Component
         $GetTrashDate = function ($date) {
             return $date->addMonth()->format('Y-m-d');
         };
-        // dd($products->orderByDesc('id')->suppliers()->categorys()->ProductQuantity()->with('ProductsQuantity')->paginate(10));
         return view('products.index', [
-            'products' => $products->orderByDesc('id')->suppliers()->categorys()->paginate(10), //ProductQuantity()->with('ProductsQuantity')->
-            'categorys' => Categorys::all(),
-            'suppliers' => Suppliers::all(),
+            'products' => $products->orderByDesc('id')->SalePrice()->ExpiryDate()->TotalQuantity()->suppliers()->categorys()->paginate(10),
+            'categorys' => Categorys::select(['id', 'name'])->get()->toArray(),
+            'suppliers' => Suppliers::select(['id', 'name'])->get()->toArray(),
             'GetTrashDate' => $GetTrashDate,
         ]);
     }
@@ -190,21 +187,13 @@ class Index extends Component
             $product->update([
                 'name' => $this->name,
                 'barcode' => $this->barcode,
-                'purches_price' => $this->purches_price,
-                'sale_price' => $this->sale_price,
-                'quantity' => $this->quantity,
                 'category_id' => $this->category_id,
                 'supplier_id' => $this->supplier_id,
-                'expiry_date' => $this->expire_date,
                 'description' => $this->description,
             ]);
             $newData = [
                 'Name : ' . $product->name,
                 'barcode : ' . $product->barcode,
-                'Quantity : ' . $product->quantity,
-                'expiry Date : ' . $product->expiry_date,
-                'Purches Price : ' . $product->purches_price,
-                'Sales Price : ' . $product->sale_price,
                 'Catrgory : ' . $product->category->name,
                 'Supplier : ' . $product->supplier->name,
             ];
@@ -213,15 +202,20 @@ class Index extends Component
             $product = Products::create([
                 'name' => $this->name,
                 'barcode' => $this->barcode,
-                'purches_price' => $this->purches_price,
-                'sale_price' => $this->sale_price,
                 'quantity' => $this->quantity,
+                'sale_price' => $this->sale_price,
+                'purches_price' => $this->purches_price,
                 'category_id' => $this->category_id,
                 'supplier_id' => $this->supplier_id,
-                'expiry_date' => $this->expire_date,
                 'description' => $this->description,
                 'image' => $images ? json_encode($images) : null,
                 'user_id' => auth()->id(),
+            ]);
+            $product->product_quantity()->create([
+                'quantity' => $this->quantity,
+                'purches_price' => $this->purches_price,
+                'sale_price' => $this->sale_price,
+                'expiry_date' => $this->expire_date,
             ]);
             $newData = [
                 'Name : ' . $this->name,
@@ -230,19 +224,16 @@ class Index extends Component
                 'expiry Date : ' . $this->expire_date,
                 'Purches Price : ' . $this->purches_price,
                 'Sales Price : ' . $this->sale_price,
-                'Catrgory : ' . $this->category->name,
-                'Supplier : ' . $this->supplier->name,
+                'Catrgory : ' . $product->category->name,
+                'Supplier : ' . $product->supplier->name,
             ];
             auth()->user()->InsertToLogsTable(auth()->user()->id, "Product", 'Create',  'nothing to show',  $newData);
         }
-        flash()->addSuccess($this->UpdateProduct ? __('header.updated') : __('header.add'));
+        flash()->addSuccess(__('header.Product') . ' ' . $this->UpdateProduct ? __('header.updated') : __('header.add'));
 
         $this->done();
     }
-    public function AddNewQuantity()
-    {
-        !$this->NewQuantity;
-    }
+
     public function updateProduct($id)
     {
         if (!Gate::allows('Update Product')) {
@@ -264,6 +255,7 @@ class Index extends Component
             $product->expiry_date <= now() ? $this->expire = true : $this->expire = false;
         }
     }
+
     public function removeImage($index)
     {
         unset($this->images[$index]);
@@ -283,7 +275,7 @@ class Index extends Component
     }
     public function show($id)
     {
-        $this->product  = Products::suppliers()->categorys()->findOrFail($id);
+        $this->product  = Products::with('product_quantity')->TotalQuantity()->SalePrice()->suppliers()->categorys()->findOrFail($id);
     }
     public function DeleteAll()
     {
@@ -300,7 +292,7 @@ class Index extends Component
         }
         $data = 'Delete  ' . implode(' , ', $ProductName) . '  form : ' . now();
         auth()->user()->InsertToLogsTable(auth()->user()->id, "Product", 'Delete',  $data,  $data);
-        flash()->addSuccess(__('header.deleted'));
+        flash()->addSuccess(__('header.Product') . ' ' . __('header.deleted'));
         $this->done();
     }
     public function RestoreAll()
@@ -323,7 +315,7 @@ class Index extends Component
         $product->restore();
         $data = 'Restore ( ' . $ProductName . ' ) form : ' . now();
         auth()->user()->InsertToLogsTable(auth()->user()->id, "Product", 'Restore',  $data,  'nothing to show');
-        flash()->addSuccess(__('header.RestoreMessage'));
+        flash()->addSuccess(__('header.Product') . ' ' . __('header.RestoreMessage'));
         $this->done();
     }
     public function Upload($data)

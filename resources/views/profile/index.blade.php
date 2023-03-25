@@ -13,7 +13,7 @@
                 <a href="{{ route('logout' ,app()->getLocale()) }}" class="dropdown-item bg-danger ">{{ __('header.loguot')  }}</a>
             </div>
         </div>
-        @if (Route::currentRouteName() != "sales.PrintSales")
+        @if (Route::currentRouteName() != 'UpdateQuantity')
         <div class="col-3 mb-1 ">
             <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Open user menu">
                 <i class="fa-solid fa-globe mx-1 fs-2 mt-md-1 mt-2"></i>
@@ -31,8 +31,5 @@
             </div>
         </div>
         @endif
-
-
-
     </div>
 </div>

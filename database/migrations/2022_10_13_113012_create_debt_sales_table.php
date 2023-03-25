@@ -14,13 +14,11 @@ return new class extends Migration
     public function up()
     {
         Schema::create('debt_sales', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id();
             $table->foreignId('sale_id')->constrained('sales')->cascadeOnDelete();
-            $table->string('name');
-            $table->string('phone');
-            $table->integer('amount');
-            $table->bigInteger('paid');
-            $table->bigInteger('remain');
+            $table->decimal('amount',  10, 2);
+            $table->decimal('paid',  10, 2);
+            $table->decimal('remain',  10, 2);
             $table->boolean('status')->default(0);
             $table->dateTime('delete_in')->nullable();
             $table->timestamps();

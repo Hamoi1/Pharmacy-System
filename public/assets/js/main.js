@@ -40,9 +40,30 @@ document.addEventListener('keydown', function (e) {
         barcode = '';
     }, 20);
 });
+
 const handleBarcode = (barcode) => {
     $('#barcode').val(barcode);
 }
+
+
+disableNetworkLogs = function () {
+    // get data form browser
+    var networkLogs = window.performance.getEntriesByType("resource");
+    // clear a networkLogs
+    networkLogs.forEach(function (log) {
+        if (log.name.indexOf('http') === 0) {
+            window.performance.clearResourceTimings();
+        }
+    });
+};
+disableNetworkLogs();
+$(document).on('click', function (event) {
+    if ($(event.target).hasClass('autocomplete-data') || $(event.target).attr('id') == 'barcode') {
+        $('.autocomplete').removeClass('d-none');
+    }else{
+        $('.autocomplete').addClass('d-none');
+    }
+});
 
 const PlayAudio = (src) => {
     let sound = new Audio();

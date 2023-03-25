@@ -1,6 +1,6 @@
-@push('title') Products @endpush
+@push('title') Sales @endpush
 <div class="saless">
-    <div wire:loading wire:target="destroy">
+    <div wire:loading wire:target="destroy" class="d-print-none">
         <div class="loading">
             <div class="loading-content">
                 <div class="loading-icon">
@@ -12,8 +12,8 @@
             </div>
         </div>
     </div>
-    <div class="{{ app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }} px-lg-5 px-3">
-        <div class="mt-4">
+    <div class="{{ app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }} px-lg-5 px-3 ">
+        <div class="mt-4 d-print-none">
             <div class="page-header">
                 <div class="row align">
                     <div class="col">
@@ -29,7 +29,7 @@
                 </div>
             </div>
         </div>
-        <div class="row gx-3 gy-3 align-items-center">
+        <div class="row gx-3 gy-3 align-items-center d-print-none">
             <div class="col-lg-2 col-md-4 col-12 not-reverse">
                 <div class="input-icon ">
                     <span class="input-icon-addon  ps-2">
@@ -54,7 +54,7 @@
         @include('sales.pages.delete')
         @endcan
         @include('sales.pages.view')
-        <div class="row mt-3" wire:loading wire:target="previousPage,nextPage,gotoPage,UserID,date">
+        <div class="row mt-3 d-print-none" wire:loading wire:target="previousPage,nextPage,gotoPage,UserID,date">
             <div class="d-flex  gap-2">
                 <h3>
                     {{ __('header.waiting') }}
@@ -62,7 +62,7 @@
                 <div class="spinner-border" role="status"></div>
             </div>
         </div>
-        <div class="table-responsive mt-3" wire:loading.remove wire:target="previousPage,nextPage,gotoPage,UserID,date">
+        <div class="table-responsive mt-3 d-print-none" wire:loading.remove wire:target="previousPage,nextPage,gotoPage,UserID,date">
             <table class="table table-vcenter table-nowrap">
                 <thead>
                     <tr>
@@ -113,18 +113,15 @@
                             {{ $sale->created_at->format('Y-m-d') }}
                         </td>
                         <td class="text-center">
-
                             <a href="" class="btn text-info" data-bs-toggle="modal" data-bs-target="#view" wire:click.prevent="View({{ $sale->id }})">
                                 <i class="fas fa-eye"></i>
                             </a>
-                            <a href="{{ route('sales.PrintSales' ,['lang'=>app()->getLocale(),'id'=>$sale->id , 'invoice'=> $sale->invoice]) }}" class="btn text-success">
+                            <a href="{{ route('sales.print' ,['lang'=>app()->getLocale(),'id'=>$sale->id]) }}" target="_blank" class="btn text-success">
                                 <i class="fa-solid fa-file-invoice"></i>
                             </a>
-                            @can('Delete Sales')
-                            <a href="" class="btn text-danger " data-bs-toggle="modal" data-bs-target="#delete" wire:click.prevent="$set('SaleID',{{ $sale->id }})">
-                                <i class="fas fa-trash"></i>
-                            </a>
-                            @endcan
+                            <!-- <a href="#" class="btn text-success" wire:click.prevent="convertToPdf({{ $sale->id }})">
+                                <i class="fa-solid fa-file-pdf"></i>
+                            </a> -->
                         </td>
                     </tr>
                     @empty

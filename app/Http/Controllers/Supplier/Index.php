@@ -11,7 +11,8 @@ class Index extends Component
 {
     use WithPagination;
     public $name, $email, $phone, $address, $search, $updateSupplier, $supplier_id, $Trashed = false;
-    protected $paginationTheme = 'bootstrap', $queryString = ['search', 'Trashed' => ['except' => false]];
+    protected $paginationTheme = 'bootstrap', $queryString = ['search', 'Trashed' => ['except' => false]],
+        $listeners = ['RefreshSupplier' => '$refresh'];
     public function mount()
     {
         if (!Gate::allows('View Supplier')) {
@@ -39,7 +40,6 @@ class Index extends Component
             'GetTrashDate' => $GetTrashDate
         ]);
     }
-
     public function updatingSearch()
     {
         $this->resetPage();
@@ -51,99 +51,9 @@ class Index extends Component
     }
     public function done()
     {
-        $this->reset(['name', 'email', 'phone', 'address']);
+        $this->reset();
         $this->resetValidation();
         $this->dispatchBrowserEvent('closeModal');
-    }
-    public function GetRuls()
-    {
-        return [
-            'name' => 'required|string|min:2|max:255',
-            'email' => 'required|email|unique:suppliers,email,' . $this->supplier_id ?? '',
-            'phone' => 'required|digits:11|unique:suppliers,phone,' . $this->supplier_id ?? '',
-            'address' => 'required|min:3|max:255',
-        ];
-    }
-    public function GetMessage()
-    {
-        return [
-            'name.required' => __('validation.required', ['attribute' => __('header.name')]),
-            'name.string' => __('validation.string', ['attribute' => __('header.name')]),
-            'name.min' => __('validation.min.string', ['attribute' => __('header.name'), 'min' => 2]),
-            'name.max' => __('validation.max.string', ['attribute' => __('header.name'), 'max' => 255]),
-            'email.required' => __('validation.required', ['attribute' => __('header.email')]),
-            'email.email' => __('validation.email', ['attribute' => __('header.email')]),
-            'email.unique' => __('validation.unique', ['attribute' => __('header.email')]),
-            'phone.required' => __('validation.required', ['attribute' => __('header.phone')]),
-            'phone.digits' => __('validation.digits', ['attribute' => __('header.phone'), 'digits' => 11]),
-            'phone.unique' => __('validation.unique', ['attribute' => __('header.phone')]),
-            'address.required' => __('validation.required', ['attribute' => __('header.address')]),
-            'address.min' => __('validation.min.string', ['attribute' => __('header.address'), 'min' => 3]),
-            'address.max' => __('validation.max.string', ['attribute' => __('header.address'), 'max' => 255]),
-        ];
-    }
-    public function add()
-    {
-        $this->updateSupplier = false;
-    }
-    public function update()
-    {
-        $this->updateSupplier = true;
-    }
-    public function submit()
-    {
-        $this->validate($this->GetRuls(), $this->GetMessage());
-        if ($this->updateSupplier &&  Gate::allows('Update Supplier')) {
-            $supplier = Suppliers::find($this->supplier_id);
-            $oldData = [
-                'name : ' . $supplier->name,
-                'email : ' . $supplier->email,
-                'phone : ' . $supplier->phone,
-                'address : ' . $supplier->address,
-            ];
-            $supplier->update([
-                'name' => $this->name,
-                'email' => $this->email,
-                'phone' => $this->phone,
-                'address' => $this->address,
-            ]);
-            $newData = [
-                'name : ' . $this->name,
-                'email : ' . $this->email,
-                'phone : ' . $this->phone,
-                'address : ' . $this->address,
-            ];
-            auth()->user()->InsertToLogsTable(auth()->user()->id, "Supplier", 'Update', $oldData, $newData);
-        } elseif ($this->updateSupplier == false && Gate::allows('Insert Supplier')) {
-            $supplier = Suppliers::create([
-                'name' => $this->name,
-                'email' => $this->email,
-                'phone' => $this->phone,
-                'address' => $this->address,
-            ]);
-            $newData = [
-                'name : ' . $this->name,
-                'email : ' . $this->email,
-                'phone : ' . $this->phone,
-                'address : ' . $this->address,
-            ];
-            auth()->user()->InsertToLogsTable(auth()->user()->id, "Supplier", 'Create',  'nothing to show', $newData);
-        }
-        flash()->addSuccess($this->updateSupplier ? __('header.updated') : __('header.add'));
-        $this->done();
-    }
-    public function edit(Suppliers  $supplier)
-    {
-        if (!Gate::allows('Update Supplier')) {
-            flash()->addError(__('header.NotAllowToDo'));
-        } else {
-            $this->updateSupplier = true;
-            $this->supplier_id = $supplier->id;
-            $this->name = $supplier->name;
-            $this->email = $supplier->email;
-            $this->phone = $supplier->phone;
-            $this->address = $supplier->address;
-        }
     }
     public function delete(Suppliers $supplier)
     {
@@ -203,7 +113,7 @@ class Index extends Component
         $data =  "Restore ( " . $supplier->name . " )  from :" . now();
         $supplier->restore();
         auth()->user()->InsertToLogsTable(auth()->user()->id, "Supplier", 'Restore', $data,  'nothing to show');
-        flash()->addSuccess(__('header.RestoreMessage'));
+        flash()->addSuccess(__('header.supplier') . ' ' . __('header.RestoreMessage'));
         $this->done();
     }
 }

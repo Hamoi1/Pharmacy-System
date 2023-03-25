@@ -21,6 +21,8 @@ class Dashboard extends Component
         })->with('products')->whereNotNull('product_id')->selectRaw('sum(quantity) as total_quantity, product_id')
             ->groupBy('product_id')->orderBy('total_quantity', 'desc')->take(10)->get();;
 
+
         return view('dashboard', ['users' => $users, 'products' => $products]);
     }
+
 }

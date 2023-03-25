@@ -14,21 +14,25 @@ class Index extends Component
     use WithPagination;
     public $SaleID, $saleView, $UserID, $date, $invoice;
     protected $paginationTheme = 'bootstrap';
-    protected $queryString = ['UserID' => ['as' => 'user', 'except' => ''], 'date' => ['as' => 'date', 'except' => ''], 'invoice' => ['except' => '']];
+    protected $queryString = [
+        'UserID' => ['as' => 'user', 'except' => ''],
+        'date' => ['except' => ''],
+        'invoice' => ['except' => '']
+    ];
     public function mount()
     {
         if (!Gate::allows('View Sales')) {
             abort(404);
         }
     }
-    public function updatedInvoice()
+    public function updated($propertyName)
     {
         $this->resetPage();
     }
     public function Sales()
     {
         $sale =  Sales::query();
-        if($this->date){
+        if ($this->date) {
             $sale->whereDate('created_at', $this->date);
         }
         if ($this->invoice) {
@@ -43,7 +47,7 @@ class Index extends Component
         if ($this->UserID) {
             $sales = $sales->where('user_id', $this->UserID);
         }
-        $sales =  $sales->Where('status', '=', 1)->SaleDebtName()->User()->latest()->paginate(10);
+        $sales =  $sales->Where('status', '=', 1)->User()->latest()->paginate(10);
         $users = User::all();
         return view('sales.index', [
             'sales' => $sales,
@@ -64,37 +68,22 @@ class Index extends Component
         $this->resetValidation();
         $this->dispatchBrowserEvent('closeModal');
     }
-    public function destroy($id)
-    {
-        $sale = Sales::with('debt_sale')->findOrFail($id);
-        if (!Gate::allows('Delete Sales')) {
-            flash()->addError(__('header.NotAllowToDo'));
-        } else {
-            $data = [
-                'invoice : ' . $sale->invoice,
-                'total Price : ' . (number_format($sale->total, 0, null, '.')),
-                'discount : '  . (number_format($sale->discount, 0, null, '.')),
-                'Paid : ' . ($sale->paid ? 'yes' : 'no'),
-            ];
-            if ($sale->debt_sale) {
-                $AddData = [
-                    'name : ' . ($sale->debt_sale->name ?? 'no name'),
-                    'phone : ' . ($sale->debt_sale->phone ?? 'no number'),
-                    'amount : ' . (number_format($sale->debt_sale->amount, 0, null, '.')),
-                    'paid : ' . (number_format($sale->debt_sale->paid, 0, null, '.')),
-                    'remain : ' . (number_format($sale->debt_sale->remain, 0, null, '.')),
-                ];
-            }
-            $data = array_merge($data, $AddData ?? []);
-            auth()->user()->InsertToLogsTable(auth()->user()->id, "Sale", 'Delete', $data,$data);
-            $sale->delete();
-            flash()->addSuccess(__('header.deleted'));
-        }
-        $this->done();
-    }
     public function View($id)
     {
-        $sale = Sales::SaleData()->findOrFail($id);
-        $this->saleView = $sale;
+        $this->saleView = Sales::SaleData()->findOrFail($id);
     }
+    // public function convertToPdf($id)
+    // {
+    //     $sale  = Sales::with(['sale_details' => function ($query) {
+    //         $query->with(['products' => function ($query) {
+    //             $query->select(['id', 'name', 'sale_price']);
+    //         }]);
+    //     }])->findorFail($id);
+
+    //     $pdf = Pdf::loadView('print.sale', ['sale' => $sale]);
+    //     // dd($pdf);
+    //     return response()->streamDownload(function () use ($pdf) {
+    //         echo $pdf->output();
+    //     }, 'invoice.pdf');
+    // }
 }

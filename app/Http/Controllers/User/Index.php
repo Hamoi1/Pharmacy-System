@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Http\Controllers\ExportController;
 use App\Models\Role;
 use App\Models\User;
 use Livewire\Component;
@@ -10,13 +9,20 @@ use Livewire\WithPagination;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Controllers\ExportController;
 
 class Index extends Component
 {
     use WithPagination, WithFileUploads;
     public $name, $username, $phone, $email, $address, $password, $confirm_password,
         $UpdateUser, $UserId, $search, $status, $user, $statu, $Trashed = false,
-        $permission = [], $ShowPermission = false, $role_id;
+        $permission = [], $ShowPermission = false, $role_id,
+        $salesPerPage = 10,
+        $salesPage = 1,
+        $lastPageSale,
+        $productsPerPage = 10,
+        $productsPage = 1,
+        $lastPageproducts;
     protected $paginationTheme = 'bootstrap',
         $queryString = [
             'search' => ['except' => ['id'], 'as' => 's'],
@@ -25,6 +31,7 @@ class Index extends Component
             'page',
             'role_id' => ['as' => 'permission']
         ];
+
     public $ExportData = [
             'name' => 'Name',
             'username' => 'Username',
@@ -77,7 +84,7 @@ class Index extends Component
         };
         $roless = Role::get();
         return view('user.index', [
-            'users' => $users->latest()->UserDetails()->paginate(10),
+            'users' => $users->orderByDesc('id')->UserDetails()->paginate(10),
             'GetTrashDate' => $GetTrashDate,
             'roless' => $roless
         ]);
@@ -85,6 +92,68 @@ class Index extends Component
     public function updateRole_id()
     {
         $this->role_id = $this->role_id;
+    }
+    public function ViewUser($id, $return = false)
+    {
+        $this->user = User::with([
+            'sales',
+            'products',
+        ])->find($id);
+        $this->Sales($this->salesPage);
+        $this->products($this->productsPage);
+        // dd($this->user->sales, $this->user->products);
+        if ($return) {
+            return $this->user;
+        }
+    }
+
+    public function Sales($numerPage)
+    {
+        $this->user->sales = $this->user->sales()->orderByDesc('id')->paginate(
+            $this->salesPerPage,
+            ['*'],
+            'sales',
+            $numerPage
+        );
+        $this->lastPageSale = $this->user->sales->lastPage();
+    }
+    public function products($numberPage)
+    {
+        $this->user->products = $this->user->products()->suppliers()->categorys()->orderByDesc('id')->paginate(
+            $this->productsPerPage,
+            ['*'],
+            'products',
+            $numberPage
+        );
+        $this->lastPageproducts = $this->user->products->lastPage();
+    }
+    public function prevPageSales()
+    {
+        if ($this->salesPage > 1) {
+            $this->salesPage--;
+            $this->Sales($this->salesPage);
+        }
+    }
+    public function nextPageSales()
+    {
+        if ($this->salesPage < $this->lastPageSale) {
+            $this->salesPage++;
+            $this->Sales($this->salesPage);
+        }
+    }
+    public function prevPageProduct()
+    {
+        if ($this->productsPage > 1) {
+            $this->productsPage--;
+            $this->products($this->productsPage);
+        }
+    }
+    public function nextPageProduct()
+    {
+        if ($this->productsPage < $this->lastPageproducts) {
+            $this->productsPage++;
+            $this->products($this->productsPage);
+        }
     }
 
     private static function Resets()
@@ -152,7 +221,7 @@ class Index extends Component
                 'name' => 'required|regex:/^[\p{N}\p{Arabic}a-zA-Z_ .-]*$/u|min:3|max:30',
                 'username' => 'required|string|alpha_dash|min:3|max:20|unique:users,username',
                 'phone' => 'required|numeric|digits:11|unique:users,phone',
-                'email' => 'required|email|unique:users,email|regex:/^[a-zA-Z0-9_.+-]+@[a-zA-Z]+\.[a-zA-Z]+$/u',
+                'email' => 'required|email|regex:/^[a-zA-Z0-9_.+-]+@[a-zA-Z]+\.[a-zA-Z]+$/u|unique:users,email',
                 'password' => 'required|min:8|max:40|same:confirm_password',
                 'address' => 'required|alpha_dash|min:3|max:40',
                 'permission' => 'array|exists:role,id',
@@ -269,7 +338,7 @@ class Index extends Component
             ];
             $user->InsertToLogsTable(auth()->user()->id, "User", 'Update', '', $new_data);
         }
-        flash()->addSuccess($this->UpdateUser ?  __('header.updated') :  __('header.add'));
+        flash()->addSuccess(__('header.User') . ' ' . $this->UpdateUser ?  __('header.updated') :  __('header.add'));
         $this->done();
     }
     public function Update($id)
@@ -306,10 +375,6 @@ class Index extends Component
         }
         $this->done();
     }
-    public function show($id)
-    {
-        $this->user = User::UserDetails()->findOrFail($id);
-    }
 
     public function toggleActive(User $user)
     {
@@ -328,7 +393,7 @@ class Index extends Component
                 $user->status ? 'status : Active' : 'status : Not Active'
             ];
             $user->InsertToLogsTable(auth()->user()->id, "User", 'Update', $old_data, $new_data);
-            flash()->addSuccess($user->status == 1 ? __('header.actived') : __('header.deactived'));
+            flash()->addSuccess($user->status == 1 ? __('header.User') . ' ' . __('header.actived') : __('header.User') . ' ' . __('header.deactived'));
         }
         $this->done();
     }
@@ -373,7 +438,7 @@ class Index extends Component
         $data = 'Restore ( ' . $user->name . ' ) form : ' . now();
         $user->restore();
         auth()->user()->InsertToLogsTable(auth()->user()->id, "User", 'Restore',  $data,  'nothing to show');
-        flash()->addSuccess(__('header.RestoreMessage'));
+        flash()->addSuccess(__('header.User') . ' ' . __('header.RestoreMessage'));
         $this->done();
     }
 

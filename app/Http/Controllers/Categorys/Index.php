@@ -108,7 +108,7 @@ class Index extends Component
             ];
             auth()->user()->InsertToLogsTable(auth()->user()->id, "Category", 'Create', 'nothing to show', $newData);
         }
-        flash()->addSuccess($this->updateCategory ?  __('header.updated') : __('header.add'));
+        flash()->addSuccess(__('header.Category') . ' ' . $this->updateCategory ?  __('header.updated') : __('header.add'));
         $this->done();
     }
     public function update(Categorys $category)
@@ -143,7 +143,7 @@ class Index extends Component
         $data = 'Restore ' . $categoryName . ' form :' . now();
         auth()->user()->InsertToLogsTable(auth()->user()->id, "Category", 'Restore', $data, 'nothing to show');
         if ($status) {
-            flash()->addSuccess(__('header.RestoreMessage'));
+            flash()->addSuccess(__('header.Category').' '.__('header.RestoreMessage'));
             $this->done();
         }
     }
@@ -159,7 +159,7 @@ class Index extends Component
         }
         $data = 'Delete ' . implode(',', $categoryName) . ' form :' . now();
         auth()->user()->InsertToLogsTable(auth()->user()->id, "Category", 'Delete', $data, $data);
-        flash()->addSuccess(__('header.deleted'));
+        flash()->addSuccess(__('header.Category').' '.__('header.deleted'));
         $this->done();
     }
     public function RestoreAll()

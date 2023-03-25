@@ -14,7 +14,7 @@
                 </div>
                 <div class="col ">
                     <span class="fs-2 fw-bolder ">
-                        {{ number_format($TotalSalePrice , 0) }} {{ __('header.currency') }}
+                        {{ number_format($TotalSalePrice , 2,',',',') }} {{ __('header.currency') }}
                     </span>
                 </div>
             </div>

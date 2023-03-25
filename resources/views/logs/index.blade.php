@@ -111,7 +111,7 @@
                             <td class="col-4 text-wrap">
                                 @if (is_array($log->old_data))
                                 @forelse ($log->old_data as $index => $data)
-                                <div class="{{ $log->old_data != '' && count($log->old_data) !=0 && $loop->index == 0 ? '' : 'mt-1' }}  {{ $log->old_data != '' && count($log->old_data) !=0 && $log->new_data !=[] && $log->new_data[$index] !== $data ? 'text-white bg-info py-1 rounded px-1' : '' }} ">
+                                <div class="{{ $log->old_data != '' && $loop->index == 0 ? '' : 'mt-1' }}  {{ $log->old_data != '' && $log->new_data !=[] && $log->new_data[$index] !== $data ? 'text-white bg-info py-1 rounded px-1' : '' }} ">
                                     {{ $data }}
                                 </div>
                                 @empty
@@ -126,7 +126,7 @@
                             <td class="col-4 text-wrap">
                                 @if (is_array($log->new_data))
                                 @forelse ($log->new_data as $index => $data)
-                                <div class="{{ $log->new_data != '' && $loop->index == 0 ? '' : 'mt-1' }}   {{ $log->old_data != '' &&  count($log->old_data) !=0 && $log->old_data !=[] && $log->old_data[$index] !== $data ? 'bg-yellow py-1 rounded px-1' : '' }}">
+                                <div class="{{ $log->new_data != '' && $loop->index == 0 ? '' : 'mt-1' }}   {{ $log->old_data != '' && is_array($log->old_data) && $log->old_data != [] && $log->old_data[$index] !== $data ? 'bg-yellow py-1 rounded px-1' : '' }}">
                                     {{ $data }}
                                 </div>
                                 @empty
@@ -159,10 +159,12 @@
                 </table>
             </div>
         </div>
-        <div class="row mt-3">
+        @if ($user_logs != null)
+        <div class="row mt-1">
             <div class="col-12">
                 {{ $user_logs->links() }}
             </div>
-            </div>
+        </div>
+        @endif
     </div>
 </div>

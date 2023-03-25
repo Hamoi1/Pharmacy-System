@@ -1,5 +1,5 @@
-<x-modal.add target="add-update" modalWidth="modal">
-    <div wire:loading wire:target="edit,add">
+<x-modal.add target="{{Route::currentRouteName() == 'sales' ? 'add-update-supplier' : 'add-update'}}" modalWidth="modal">
+    <div wire:loading>
         <div class="d-flex justify-content-center">
             <h3>
                 {{ __('header.waiting') }}
@@ -7,7 +7,7 @@
             </h3>
         </div>
     </div>
-    <div wire:loading.remove wire:target="edit,add">
+    <div wire:loading.remove>
         <div class="d-flex align-items-center justify-content-between">
             <h5 class="modal-title me-auto" id="staticBackdropLabel">
                 {{ $updateSupplier ?__('header.update_' , ['name'=> __('header.supplier')])  : __('header.add_', ['name'=> __('header.supplier')])}}
@@ -40,7 +40,7 @@
                     <button type="submit" class="btn btn-primary pt-2 px-3">
                         {{ $updateSupplier ? __('header.update') : __('header.add+') }}
                     </button>
-                    <div wire:loading wire:target="" submit>
+                    <div wire:loading wire:target="submit">
                         <span class="animated-dots mx-2 fs-3">
                             {{ __('header.waiting') }}
                         </span>

@@ -11,7 +11,7 @@ use Illuminate\Validation\Rules\RequiredIf;
 
 class UserReport extends Component
 {
-    protected $listeners = ['generateReport' => 'generateReport'];
+    protected $listeners = ['generateReport'];
     public $type, $UserId, $User_Name;
     public function reports()
     {

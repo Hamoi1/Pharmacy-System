@@ -1,5 +1,5 @@
 <x-modal.add target="add-update" title="{{ __('header.add_' , ['name'=>__('header.Product')]) }}" modalWidth="modal-lg" wire="">
-    <div wire:loading wire:target="add,updateProduct">
+    <div wire:loading wire:target="add,updateProduct,AddNewQuantity">
         <div class="d-flex justify-content-center">
             <h3>
                 {{ __('header.waiting') }}
@@ -7,7 +7,7 @@
             </h3>
         </div>
     </div>
-    <div wire:loading.remove wire:target="add,updateProduct">
+    <div wire:loading.remove wire:target="add,updateProduct,AddNewQuantity">
         <div class="d-flex align-items-center justify-content-between">
             <h5 class="modal-title me-auto" id="staticBackdropLabel">
                 {{ $UpdateProduct ?__('header.update_' , ['name'=> __('header.Product')])  : __('header.add_', ['name'=> __('header.Product')])  }}
@@ -49,7 +49,7 @@
                     <select class="form-select" wire:model="category_id">
                         <option value="">{{ __('header.category_product') }}</option>
                         @forelse ($categorys as $category )
-                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                        <option value="{{ $category['id'] }}">{{ $category['name'] }}</option>
                         @empty
                         <option value="">{{ __('header.NoData') }}</option>
                         @endforelse
@@ -61,13 +61,14 @@
                     <select class="form-select" wire:model="supplier_id">
                         <option value="">{{ __('header.Suppliers') }}</option>
                         @forelse ($suppliers as $supplier )
-                        <option value="{{ $supplier->id }}">{{ $supplier->name }}</option>
+                        <option value="{{ $supplier['id'] }}">{{ $supplier['name'] }}</option>
                         @empty
                         <option value="">{{ __('header.NoData') }}</option>
                         @endforelse
                     </select>
                     @error('supplier_id')<span class="text-danger">{{ $message }}</span>@enderror
                 </div>
+                @if(!$UpdateProduct)
                 <div class="col-lg-6 col-12">
                     <label>{{ __('header.purches_price') }}</label>
                     <input type="text" class="form-control" wire:model.defer="purches_price" placeholder="{{ __('header.enter_',['name'=> __('header.purches_price')]) }}" />
@@ -88,6 +89,7 @@
                     <input type="date" class="form-control" wire:model.defer="expire_date" />
                     @error('expire_date')<span class="text-danger">{{ $message }}</span>@enderror
                 </div>
+                @endif
                 @if (!$UpdateProduct)
                 <div class="col-12">
                     <p>

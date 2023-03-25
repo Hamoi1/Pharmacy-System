@@ -135,7 +135,7 @@ return [
     'starts_with' => 'The :attribute must start with one of the following: :values.',
     'string' => ':attribute پێویستە دەق بێت.',
     'timezone' => 'The :attribute must be a valid timezone.',
-    'unique' => ':attribute پێشتر بەکارهێنراوە ، دانەیەکی تر بنووسە.',
+    'unique' => 'ئەم :attributeە پێشتر بەکارهێنراوە ، دانەیەکی تر بنووسە.',
     'uploaded' => 'The :attribute failed to upload.',
     'url' => 'The :attribute must be a valid URL.',
     'uuid' => 'The :attribute must be a valid UUID.',

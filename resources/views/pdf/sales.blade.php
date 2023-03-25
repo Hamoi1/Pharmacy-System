@@ -29,10 +29,10 @@
                 {{ $sale->invoice }}
             </td>
             <td>
-                {{ number_format($sale->total,0)  }} IQD
+                {{ number_format($sale->total,2,',',',')  }} $
             </td>
             <td>
-                {{ $sale->discount != null ?  number_format($sale->discount,0) . 'IQD' : __('header.Not-discount') }}
+                {{ $sale->discount != null ?  number_format($sale->discount,2,',',',') . '$' : __('header.Not-discount') }}
             </td>
             <td>
                 <span class="badge bg-{{ $sale->paid ? 'success' : 'info' }}">

@@ -19,10 +19,10 @@
                     <thead>
                         <tr>
                             <th class="fs-4 print">{{ __('header.name') }}</th>
-                            <th class="fs-4 no-print text-center">{{ __('header.barcode') }}</th>
+                            <th class="fs-4  d-print-none text-center">{{ __('header.barcode') }}</th>
                             <th class="fs-4 print text-center">{{ __('header.price') }}</th>
                             <th class="fs-4 print text-center">{{ __('header.TotalQuantity') }}</th>
-                            <th class="fs-4 no-print text-center">{{ __('header.TotalPrice') }}</th>
+                            <th class="fs-4  d-print-none text-center">{{ __('header.TotalPrice') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -31,7 +31,7 @@
                             <td class="print">
                                 {{ $sale_detail->product_name }}
                             </td>
-                            <td class="no-print text-center">
+                            <td class=" d-print-none text-center">
                                 {{ $sale_detail->product_barcode }}
                             </td>
                             <td class="print text-center">
@@ -40,12 +40,12 @@
                             <td class="print text-center">
                                 {{ $sale_detail->quantity }}
                             </td>
-                            <td class="no-print text-center">
+                            <td class=" d-print-none text-center">
                                 {{ number_format($sale_detail->quantity *  $sale_detail->product_price, 0) }} {{ __('header.currency') }}
                             </td>
                         </tr>
                         @empty
-                        <tr class="no-print">
+                        <tr class=" d-print-none">
                             <td colspan="6" class="text-center">
                                 <h4>
                                     {{ __('header.NoData') }}
@@ -76,7 +76,7 @@
                         {{ __('header.debtPrice') }} : {{ number_format($sale->debt_sale->remain, 0) }} {{ __('header.currency') }}
                     </div>
                 </div>
-                <hr class="no-print">
+                <hr class=" d-print-none">
                 @endif
                 <div class="col-lg-6 col-12 Tabel-Fotter ">
                     <p class="w-100">
@@ -99,7 +99,7 @@
                             @endif
                         </span>
                     </p>
-                    <p class="fw-bolder {{ $sale->discount ?? 'no-print' }}">
+                    <p class="fw-bolder {{ $sale->discount ?? ' d-print-none' }}">
                         {{ __('header.discount') }} : {{ $sale->discount  ? number_format($sale->discount, 0) .' '. __('header.currency') : __('header.Not-discount') }}
                     </p>
                     <p class="fw-bolder">
@@ -117,7 +117,7 @@
                     </p>
                 </div>
             </div>
-            <div class="col-12 mt-2 my-3 no-print">
+            <div class="col-12 mt-2 my-3  d-print-none">
                 <button class="btn btn-success" onclick="printDiv()">
                     <i class="fas fa-print"></i>
                 </button>

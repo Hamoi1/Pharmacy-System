@@ -42,7 +42,7 @@
                                 <span> {{ $phone }} </span>
                             </p>
                             <p class="fw-bold">
-                                {{ __('header.debtPaid') }} :
+                                {{ __('header.TotalPriceDebt') }} :
                                 <span class="fw-bolder mx-1 fs-3">
                                     {{ number_format($amount , 0) }}
                                 </span>
@@ -128,6 +128,16 @@
                 </div>
             </div>
             <div class="col-lg-2 col-12">
+                <select class="form-select" wire:model="customer_id">
+                    <option value=""> {{ __('header.Customer') }}</option>
+                    @foreach ($customers as $customer)
+                    <option value="{{ $customer->id }}">
+                        {{ $customer->name }}
+                    </option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-lg-2 col-12">
                 <select class="form-select" wire:model="status">
                     <option value=""> {{ __('header.status') }}</option>
                     <option value="1">{{ __('header.debtsFinish') }}</option>
@@ -157,7 +167,7 @@
                             {{ __('header.phone') }}
                         </th>
                         <th class="col-1 fs-4">
-                            {{ __('header.debtPaid') }}
+                            {{ __('header.TotalPriceDebt') }}
                         </th>
                         <th class="col-1 fs-4">
                             {{ __('header.currentPaid') }}
@@ -178,15 +188,15 @@
                     @forelse ($debtSales as $debt )
                     <tr>
                         <td>
-                            {{ $debt->invoice }}
+                            {{ $debt->sale->invoice }}
                         </td>
 
                         <td>
-                            {{ $debt->name }}
+                            {{ $debt->sale->customer_name }}
                         </td>
 
                         <td>
-                            {{ $debt->phone }}
+                            {{ $debt->sale->customer_phone }}
                         </td>
 
                         <td>

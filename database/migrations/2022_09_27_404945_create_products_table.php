@@ -19,8 +19,8 @@ return new class extends Migration
             $table->bigInteger('barcode')->unique();
             $table->bigInteger('quantity')->nullable();
             $table->date('expiry_date');
-            $table->bigInteger('purches_price')->nullable();
-            $table->bigInteger('sale_price')->nullable();
+            $table->decimal('purches_price', 10, 2)->nullable();
+            $table->decimal('sale_price', 10, 2)->nullable();
             $table->longText('description')->nullable();
             $table->longText('image')->nullable();
             $table->foreignId('category_id')->nullable()->constrained('categorys')->onDelete('set null');

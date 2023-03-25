@@ -17,9 +17,11 @@ return new class extends Migration
             $table->id();
             $table->string('invoice')->uniqiue();
             $table->foreignId('user_id')->nullable()->constrained('users')->nullOnDelete();
+            $table->foreignId('customer_id')->nullable()->constrained('customers')->nullOnDelete();
+            $table->foreignId('supplier_id')->nullable()->constrained('suppliers')->nullOnDelete();
             $table->integer('total');
             $table->integer('discount')->nullable();
-            $table->boolean('status')->default('0')->comment('1 = paid or 0 = not paid');
+            $table->boolean('status')->default('0')->comment('1 = Sale Finished or 0 = Sale not Finished ');
             $table->boolean('paid')->default(1)->comment('1:paid, 0:debt');
             $table->timestamps();
         });

@@ -12,8 +12,6 @@
                 <livewire:dashboard.new-categorys />
                 <livewire:dashboard.today-sale />
                 <livewire:dashboard.today-sale-product />
-                <livewire:dashboard.expiry-product />
-                <livewire:dashboard.stock-out-product />
                 <livewire:dashboard.total-sales />
                 <livewire:dashboard.total-product />
                 <livewire:dashboard.total-users />
@@ -43,6 +41,7 @@
 
 @push('js')
 <script>
+    
     var Users = @js($users);
     var options = {
         series: [{

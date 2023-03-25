@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('password');
             $table->boolean('status')->default(1);
             $table->json('role_id')->nullable();
-            $table->boolean('theme')->nullable()->comment('0->light theme , 1->dark theme');
+            $table->boolean('theme')->nullable()->default(0)->comment('0->light theme , 1->dark theme');
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
