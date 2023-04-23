@@ -7,13 +7,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@stack('title')</title>
     <link rel="shortcut icon" href="{{  $settings->logo != null ? asset('storage/logo/'.$settings->logo) : asset('assets/images/capsules.png') }}" type="image/x-icon">
-    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/tabler-vendors.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/tabler.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/demo.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}" data-turbolinks-eval="false" data-turbo-eval="false">
+    <link rel="stylesheet" href="{{ asset('assets/css/tabler-vendors.min.css') }}" data-turbolinks-eval="false" data-turbo-eval="false">
+    <link rel="stylesheet" href="{{ asset('assets/css/tabler.min.css') }}" data-turbolinks-eval="false" data-turbo-eval="false">
+    <link rel="stylesheet" href="{{ asset('assets/css/demo.min.css') }}" data-turbolinks-eval="false" data-turbo-eval="false">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="{{ asset('assets/css/print.min.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/print.min.css') }}" data-turbolinks-eval="false" data-turbo-eval="false" />
+    <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}" data-turbolinks-eval="false" data-turbo-eval="false">
     @stack('css')
     @livewireStyles
     @if (app()->getLocale() == 'ckb')
@@ -37,7 +37,7 @@
         </div>
     </div>
     @auth
-    <div class="lodaing-seaction  d-print-none">
+    <div class="lodaing-seaction d-print-none">
         <div class="building-blocks">
             <div></div>
             <div></div>
@@ -107,10 +107,10 @@
                             </a>
                             <div class="dropdown-menu ">
                                 <div class="dropdown-menu-column">
-                                    <a class="dropdown-item mx-4 text-dark" href="{{ route('products',app()->getLocale()) }} ">
+                                    <a class="dropdown-item {{  app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'me-4' : 'ms-1' }} text-dark" href="{{ route('products',app()->getLocale()) }} ">
                                         {{ __('header.Products') }}
                                     </a>
-                                    <a class="dropdown-item mx-4 text-dark" href="{{ route('returnproduct',app()->getLocale()) }} ">
+                                    <a class="dropdown-item {{  app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'me-4' : 'ms-1' }} text-dark" href="{{ route('returnproduct',app()->getLocale()) }} ">
                                         {{ __('header.Return Product')}}
                                     </a>
                                 </div>
@@ -206,8 +206,8 @@
 
         </div>
     </aside>
-    <div class="page-wrapper ">
-        <div id="offcanvas" class="{{ app()->getLocale() == 'ckb' || app()->getLocale() == 'ar' ? 'left' : 'right' }}">
+        <div class="page-wrapper ">
+            <div id="offcanvas" class="{{ app()->getLocale() == 'ckb' || app()->getLocale() == 'ar' ? 'left' : 'right' }}">
             <a class="btn" data-bs-toggle="offcanvas" href="#Products" role="button" aria-controls="Products">
                 <span class="badge bg-orange badge-notification badge-blink"></span>
                 <i class="fa fa-box"></i>
@@ -223,13 +223,17 @@
     @endguest
 
     @livewireScripts
-    <script src="{{ asset('assets/js/jquery-3.6.1.min.js') }}"></script>
-    <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
+    <!-- <script type="module">
+        import turbo from 'https://cdn.skypack.dev/@hotwired/turbo';
+    </script>
+    <script src="https://cdn.jsdelivr.net/gh/livewire/turbolinks@v0.1.x/dist/livewire-turbolinks.js" data-turbolinks-eval="false" data-turbo-eval="false"></script> -->
+    <script src="{{ asset('assets/js/jquery-3.6.1.min.js') }}" data-turbolinks-eval="false" data-turbo-eval="false"></script>
+    <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}" data-turbolinks-eval="false" data-turbo-eval="false"></script>
     <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script> -->
-    <script src="{{ asset('assets/js/autosize.min.js') }}"></script>
-    <script src="{{ asset('assets/js/main.js') }}"></script>
-    <script src="{{ asset('assets/js/apexcharts.min.js') }}"></script>
-    <script>
+    <script src="{{ asset('assets/js/autosize.min.js') }}" data-turbolinks-eval="false" data-turbo-eval="false"></script>
+    <script src="{{ asset('assets/js/main.js') }}" data-turbolinks-eval="false" data-turbo-eval="false"></script>
+    <script src="{{ asset('assets/js/apexcharts.min.js') }}" data-turbolinks-eval="false" data-turbo-eval="false"></script>
+    <script data-turbolinks-eval="false" data-turbo-eval="false">
         $(document).ready(function() {
             window.addEventListener('closeModal', event => {
                 $('.modal').modal('hide');
@@ -247,7 +251,6 @@
             });
         });
         window.addEventListener('load', () => {
-            // if user offiline 
             $('.lodaing-seaction').fadeToggle(1000);
         });
         Livewire.on('ChangeTheme', theme => {

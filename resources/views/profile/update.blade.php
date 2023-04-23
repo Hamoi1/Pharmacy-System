@@ -16,6 +16,7 @@
         @include('profile.update.add-update')
         @include('profile.update.ChangePassword')
         <div class="d-flex justify-content-center  flex-wrap gap-3">
+
             <div class="col-lg-5 text-center">
                 @if (auth()->user()->user_details->image)
                 <img src="{{ auth()->user()->image(auth()->user()->user_details->image) }}" class="image-profile  rounded " alt="">
@@ -97,5 +98,4 @@
         });
     });
 </script>
-
 @endpush
