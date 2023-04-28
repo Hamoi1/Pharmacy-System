@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Customer;
 
+use App\Events\CustomerPage;
 use App\Models\Customers;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -106,6 +107,7 @@ class Index extends Component
     }
     public function done()
     {
+        event(new CustomerPage());
         $this->reset([
             'debt',
             'totalDebt'
@@ -123,7 +125,6 @@ class Index extends Component
         }
         Customers::find($id)->delete();
         flash()->addSuccess(__('header.Customer') . ' ' . __('header.deleted'));
-        event(new \App\Events\CustomerPage());
         $this->done();
     }
 }

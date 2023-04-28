@@ -17,6 +17,7 @@ class AddUpdate extends Component
     }
     public function done()
     {
+        event(new SupplierPage());
         $this->emit('RefreshSupplier');
         $this->reset(['name', 'email', 'phone', 'address', 'updateSupplier']);
         $this->resetValidation();
@@ -95,7 +96,7 @@ class AddUpdate extends Component
             auth()->user()->InsertToLogsTable(auth()->user()->id, "Supplier", 'Create',  'nothing to show', $newData);
         }
         flash()->addSuccess($this->updateSupplier ? __('header.supplier') . ' ' . __('header.updated') : __('header.supplier') . ' ' . __('header.add'));
-        event(new SupplierPage());
+
         $this->done();
     }
     public function UpdateSupplier(Suppliers  $supplier)

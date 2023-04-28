@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Customer;
 
+use App\Events\CustomerPage;
 use Livewire\Component;
 use App\Models\Customers;
 use Illuminate\Support\Facades\Gate;
@@ -24,6 +25,7 @@ class AddUpdate extends Component
     }
     public function done()
     {
+        event(new CustomerPage());
         $this->emit('RefreshCustomer');
         $this->reset([
             'name',
@@ -104,7 +106,6 @@ class AddUpdate extends Component
         $this->CustomerUpadate ?
             flash()->addSuccess(__('header.Customer') . ' ' . __('header.updated')) :
             flash()->addSuccess(__('header.Customer') . ' ' . __('header.add'));
-        event(new \App\Events\CustomerPage());
         $this->done();
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Events\UserActions;
 use App\Events\UserPage;
 use App\Events\UserStatus;
 use App\Models\Role;
@@ -182,6 +183,8 @@ class Index extends Component
     }
     public function done()
     {
+        event(new UserPage());
+        event(new UserActions());
         $this->add();
         $this->reset(self::Resets());
         $this->dispatchBrowserEvent('closeModal');
@@ -344,7 +347,6 @@ class Index extends Component
             $user->InsertToLogsTable(auth()->user()->id, "User", 'Update', '', $new_data);
         }
         flash()->addSuccess(__('header.User') . ' ' . $this->UpdateUser ?  __('header.updated') :  __('header.add'));
-        event(new UserPage());
         $this->done();
     }
     public function Update($id)
@@ -379,7 +381,6 @@ class Index extends Component
                 auth()->user()->InsertToLogsTable(auth()->user()->id, "User", 'Delete',  $data,  $data);
             }
         }
-        event(new UserPage());
         $this->done();
     }
 
@@ -422,7 +423,6 @@ class Index extends Component
         $data = 'Delete  ' . implode(' , ', $userName) . '  form : ' . now();
         auth()->user()->InsertToLogsTable(auth()->user()->id, "User", 'Delete',  $data,  $data);
         flash()->addSuccess(__('header.deleted'));
-        event(new UserPage());
         $this->done();
     }
     public function RestoreAll()
@@ -439,7 +439,6 @@ class Index extends Component
         $data = 'Restore   ' . implode(' , ', $userName) . '  form : ' . now();
         auth()->user()->InsertToLogsTable(auth()->user()->id, "User", 'Restore',  $data,  'nothing to show');
         flash()->addSuccess(__('header.RestoreMessage'));
-        event(new UserPage());
         $this->done();
     }
     public function restore($id)
@@ -449,7 +448,6 @@ class Index extends Component
         $user->restore();
         auth()->user()->InsertToLogsTable(auth()->user()->id, "User", 'Restore',  $data,  'nothing to show');
         flash()->addSuccess(__('header.User') . ' ' . __('header.RestoreMessage'));
-        event(new UserPage());
         $this->done();
     }
 

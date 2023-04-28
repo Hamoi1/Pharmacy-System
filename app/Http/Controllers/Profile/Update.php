@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Profile;
 
+use App\Events\UserPage;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Hash;
@@ -55,7 +56,7 @@ class Update extends Component
     }
     public function done()
     {
-        event(new \App\Events\UserPage());
+        event(new UserPage());
         $this->resetValidation();
         $this->dispatchBrowserEvent('closeModal');
     }

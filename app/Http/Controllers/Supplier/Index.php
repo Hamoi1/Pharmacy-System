@@ -52,6 +52,7 @@ class Index extends Component
     }
     public function done()
     {
+        event(new SupplierPage());
         $this->reset();
         $this->resetValidation();
         $this->dispatchBrowserEvent('closeModal');
@@ -73,7 +74,7 @@ class Index extends Component
             auth()->user()->InsertToLogsTable(auth()->user()->id, "Supplier", 'Delete', $data, $data);
             flash()->addSuccess(__('header.deleted_for_30_days'));
         }
-        event(new SupplierPage());
+
         $this->done();
     }
     public function DeleteAll()
@@ -89,7 +90,7 @@ class Index extends Component
         $data =  "Delete ( " . (implode(',', $supplierName)) . " )  from :" . now();
         auth()->user()->InsertToLogsTable(auth()->user()->id, "Supplier", 'Delete', $data, $data);
         flash()->addSuccess(__('header.deleted'));
-        event(new SupplierPage());
+
         $this->done();
     }
     public function RestoreAll()
@@ -105,7 +106,7 @@ class Index extends Component
         $data =  "Restore ( " . (implode(',', $supplierName)) . " )  from :" . now();
         auth()->user()->InsertToLogsTable(auth()->user()->id, "Supplier", 'Restore', $data,  'nothing to show');
         flash()->addSuccess(__('header.RestoreMessage'));
-        event(new SupplierPage());
+
         $this->done();
     }
     public function restore($id)
@@ -115,7 +116,7 @@ class Index extends Component
         $supplier->restore();
         auth()->user()->InsertToLogsTable(auth()->user()->id, "Supplier", 'Restore', $data,  'nothing to show');
         flash()->addSuccess(__('header.supplier') . ' ' . __('header.RestoreMessage'));
-        event(new SupplierPage());
+
         $this->done();
     }
 }

@@ -50,6 +50,7 @@ class Index extends Component
     }
     public function done()
     {
+        event(new CategoryPage());
         $this->reset($this->ResetData());
         $this->resetValidation();
         $this->dispatchBrowserEvent('closeModal');
@@ -110,7 +111,6 @@ class Index extends Component
             auth()->user()->InsertToLogsTable(auth()->user()->id, "Category", 'Create', 'nothing to show', $newData);
         }
         flash()->addSuccess(__('header.Category') . ' ' . $this->updateCategory ?  __('header.updated') : __('header.add'));
-        event(new CategoryPage());
         $this->done();
     }
     public function update(Categorys $category)
@@ -133,7 +133,6 @@ class Index extends Component
             $category->delete();
             flash()->addSuccess(__('header.deleted_for_30_days'));
         }
-        event(new CategoryPage());
         $this->done();
     }
     public function restore($id, $status = true)
@@ -148,7 +147,6 @@ class Index extends Component
             flash()->addSuccess(__('header.Category') . ' ' . __('header.RestoreMessage'));
             $this->done();
         }
-        event(new CategoryPage());
     }
     public function DeleteAll()
     {
@@ -163,7 +161,6 @@ class Index extends Component
         $data = 'Delete ' . implode(',', $categoryName) . ' form :' . now();
         auth()->user()->InsertToLogsTable(auth()->user()->id, "Category", 'Delete', $data, $data);
         flash()->addSuccess(__('header.Category') . ' ' . __('header.deleted'));
-        event(new CategoryPage());
         $this->done();
     }
     public function RestoreAll()
@@ -176,7 +173,6 @@ class Index extends Component
             $this->restore($category->id, false);
         }
         flash()->addSuccess(__('header.RestoreMessage'));
-        event(new CategoryPage());
         $this->done();
     }
 }
