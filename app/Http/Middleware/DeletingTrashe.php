@@ -17,64 +17,27 @@ class DeletingTrashe
      */
     public function handle(Request $request, Closure $next)
     {
-
-        // product 
         $products = \App\Models\Products::onlyTrashed()->get();
-        foreach ($products as $product) {
-            if ($product->deleted_at != null) {
-                if ($product->deleted_at->format('Y-m-d') <= now()->subMonth()->format('Y-m-d')) { // if deleted_at date is less than 1 month after that data will be delete forever
-                    $image = $product->image;
-                    if ($image != null) {
-                        $image = json_decode($image);
-                        foreach ($image as $img) {
-                            Storage::delete('public/products/' . $img);
-                        }
-                    }
-                    foreach ($product->sale_details as $p) {
-                        $p->update([
-                            'product_id' => null,
-                        ]);
-                    }
-                    $product->forceDelete();
-                }
-            }
-        }
-
-        // users
         $users = \App\Models\User::onlyTrashed()->get();
-        foreach ($users as $user) {
-            if ($user->deleted_at != null) {
-                if ($user->deleted_at->format('Y-m-d') <= now()->subMonth()->format('Y-m-d')) { // if deleted_at date is less than 1 month after that data will be delete forever
-                    $image = $user->user_details->image;
-                    if ($image != null) {
-                        Storage::delete('public/users/' . $image);
-                    }
-                    $user->forceDelete();
-                }
-            }
-        }
-
-        // categorys
         $categorys = \App\Models\Categorys::onlyTrashed()->get();
-        foreach ($categorys as $category) {
-            if ($category->deleted_at != null) {
-                if ($category->deleted_at->format('Y-m-d') <= now()->subMonth()->format('Y-m-d')) { // if deleted_at date is less than 1 month after that data will be delete forever
-                    $category->forceDelete();
-                }
-            }
-        }
-
-        // supplier
         $suppliers = \App\Models\Suppliers::onlyTrashed()->get();
-        foreach ($suppliers as $supplier) {
-            if ($supplier->deleted_at != null) {
-                if ($supplier->deleted_at->format('Y-m-d') <= now()->subMonth()->format('Y-m-d')) { // if deleted_at date is less than 1 month after that data will be delete forever
-                    $supplier->forceDelete();
+        
+        $this->Deleteing($products);
+        $this->Deleteing($users);
+        $this->Deleteing($categorys);
+        $this->Deleteing($suppliers);
+        
+        return $next($request);
+    }
+
+    private function Deleteing($models)
+    {
+        foreach ($models as $model) {
+            if ($model->deleted_at != null) {
+                if ($model->deleted_at->format('Y-m-d') <= now()->subMonth()->format('Y-m-d')) { // if deleted_at date is less than 1 month after that data will be delete forever
+                    $model->forceDelete();
                 }
             }
         }
-
-
-        return $next($request);
     }
 }

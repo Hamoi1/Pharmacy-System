@@ -278,12 +278,26 @@
             }
         });
         var ArrayActions = ['user-actions', 'user-page', 'category-page', 'supplier-page', 'customer-page'];
-        ArrayActions.forEach(index => {
-            var ChannelUserActions = pusher.subscribe(index);
-            ChannelUserActions.bind(index, function(data) {
-                Livewire.emit(index);
+        PusherActions = () => {
+            ArrayActions.forEach(index => {
+                var ChannelUserActions = pusher.subscribe(index);
+                ChannelUserActions.bind(index, function(data) {
+                    Livewire.emit(index);
+                });
             });
-        });
+        }
+        //    check if browser support navigator.connection
+        if (navigator.connection) {
+            // get effective type of connection
+            var effectiveType = navigator.connection.effectiveType;
+            // check if effective type is 4g or 3g or solwer
+            var array = ['2g', 'slow-2g'];
+            if (!array.includes(effectiveType)) {
+                PusherActions();
+            }
+        } else {
+            PusherActions();
+        }
     </script>
     @stack('js')
 </body>

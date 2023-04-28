@@ -140,6 +140,7 @@ class Index extends Component
         if ($id == null)
             return;
         $category = Categorys::onlyTrashed()->findorFail($id)->restore();
+        $category = Categorys::findorFail($id);
         $categoryName  = '( ' . $category->name . ' )';
         $data = 'Restore ' . $categoryName . ' form :' . now();
         auth()->user()->InsertToLogsTable(auth()->user()->id, "Category", 'Restore', $data, 'nothing to show');
