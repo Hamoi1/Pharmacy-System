@@ -97,7 +97,7 @@ return [
     'profile' => 'Profile',
     'setting' => 'Setting',
     'loguot' => 'Loguot',
-    "UserDetails" => "User Details",
+    "UserDetails" => "Account Details",
     'acount_create' => 'Acount Created ',
     'no_image' => 'Nothing do delete',
     'ProfileEdit' => 'Profile Edit',

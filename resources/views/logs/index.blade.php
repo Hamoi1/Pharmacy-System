@@ -1,5 +1,5 @@
 @push('title') Logs @endpush
-<div @if ($user_logs!=[] && $user_logs!='' ) wire:poll.10000ms @endif class="{{  app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }}"> <!-- every 10s page will be refresh -->
+<div class="{{  app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }}"> <!-- every 10s page will be refresh -->
     <div wire:loading wire:target="user,action_method_select,searchByDate,pdf,delete">
         <div class="loading">
             <div class="loading-content">

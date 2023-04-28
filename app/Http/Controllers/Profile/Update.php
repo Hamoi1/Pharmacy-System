@@ -11,6 +11,7 @@ class Update extends Component
 {
     use WithFileUploads;
     public $image, $name, $username, $email, $phone, $address, $password, $confirm_password;
+    protected $listeners = ['user-page' => 'render'];
     public function render()
     {
         return view('profile.update');
@@ -35,6 +36,7 @@ class Update extends Component
         ]);
         $this->emit('UpdateProfile', ['name' => 'profile.index']);
         $this->image = null;
+        $this->done();
     }
     public function deleteImage($Image)
     {
@@ -49,9 +51,11 @@ class Update extends Component
             flash()->addWarning(__('header.no_image'));
         }
         $this->emit('UpdateProfile', ['name' => 'profile.index']);
+        $this->done();
     }
     public function done()
     {
+        event(new \App\Events\UserPage());
         $this->resetValidation();
         $this->dispatchBrowserEvent('closeModal');
     }
@@ -117,7 +121,6 @@ class Update extends Component
         auth()->user()->InsertToLogsTable(auth()->user()->id, 'Update', 'Profile', $oldData, $newData);
         flash()->addSuccess(__('header.updated'));
         $this->emit('UpdateProfile', ['name' => 'profile.index']);
-
         $this->done();
     }
     public function ChangePassword()

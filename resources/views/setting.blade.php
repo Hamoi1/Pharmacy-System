@@ -1,15 +1,8 @@
 @push('title') Setting @endpush
 <div>
-    <div class="{{ app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }} px-lg-5 px-3 pt-4">
-        <div class="row g-4 ">
-            <div class="col-12">
-                <div class="d-flex align-items-center">
-                    <livewire:system.clean-up />
-                    <livewire:system.backup />
-                </div>
-            </div>
-            <div class="col-12">
-            </div>
+    <div class="{{ app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }} container-lg pt-4">
+        <div class="row g-4 shadow-sm pb-5 ">
+            
             <div class="col-lg-4 col-12">
                 <div class="col-12 my-2 fs-3 px-2 py-2">
                     <span class="fw-bold">{{ __('header.settings.name') }} :</span>
@@ -99,6 +92,13 @@
                         {{ auth()->user()->theme == 0 ? "dark" : "light"  }}
                     </span>
                 </form>
+            </div>
+
+            <div class="col-12">
+                <div class="d-flex align-items-center">
+                    <livewire:system.clean-up />
+                    <livewire:system.backup />
+                </div>
             </div>
         </div>
     </div>

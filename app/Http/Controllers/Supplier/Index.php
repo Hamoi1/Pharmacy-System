@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Supplier;
 
+use App\Events\SupplierPage;
 use Livewire\Component;
 use App\Models\Suppliers;
 use Livewire\WithPagination;
@@ -12,7 +13,7 @@ class Index extends Component
     use WithPagination;
     public $name, $email, $phone, $address, $search, $updateSupplier, $supplier_id, $Trashed = false;
     protected $paginationTheme = 'bootstrap', $queryString = ['search', 'Trashed' => ['except' => false]],
-        $listeners = ['RefreshSupplier' => '$refresh'];
+        $listeners = ['RefreshSupplier' => '$refresh', 'supplier-page' => 'render'];
     public function mount()
     {
         if (!Gate::allows('View Supplier')) {
@@ -68,11 +69,11 @@ class Index extends Component
                 $supplierName[] = '( ' . $product->name . ' )';
             }
             $supplier->delete();
-
             $data =  "Delete ( " . (implode(',', $supplierName)) . " )  from :" . now();
             auth()->user()->InsertToLogsTable(auth()->user()->id, "Supplier", 'Delete', $data, $data);
             flash()->addSuccess(__('header.deleted_for_30_days'));
         }
+        event(new SupplierPage());
         $this->done();
     }
     public function DeleteAll()
@@ -88,6 +89,7 @@ class Index extends Component
         $data =  "Delete ( " . (implode(',', $supplierName)) . " )  from :" . now();
         auth()->user()->InsertToLogsTable(auth()->user()->id, "Supplier", 'Delete', $data, $data);
         flash()->addSuccess(__('header.deleted'));
+        event(new SupplierPage());
         $this->done();
     }
     public function RestoreAll()
@@ -95,7 +97,6 @@ class Index extends Component
         $suppliers = $this->CheckTrashParameter()->get();
         if ($suppliers->count() == 0)
             return;
-
         $supplierName = [];
         foreach ($suppliers as $supplier) {
             $supplierName[] = '( ' . $product->name . ' )';
@@ -104,16 +105,17 @@ class Index extends Component
         $data =  "Restore ( " . (implode(',', $supplierName)) . " )  from :" . now();
         auth()->user()->InsertToLogsTable(auth()->user()->id, "Supplier", 'Restore', $data,  'nothing to show');
         flash()->addSuccess(__('header.RestoreMessage'));
+        event(new SupplierPage());
         $this->done();
     }
     public function restore($id)
     {
         $supplier = Suppliers::onlyTrashed()->findOrFail($id);
-
         $data =  "Restore ( " . $supplier->name . " )  from :" . now();
         $supplier->restore();
         auth()->user()->InsertToLogsTable(auth()->user()->id, "Supplier", 'Restore', $data,  'nothing to show');
         flash()->addSuccess(__('header.supplier') . ' ' . __('header.RestoreMessage'));
+        event(new SupplierPage());
         $this->done();
     }
 }

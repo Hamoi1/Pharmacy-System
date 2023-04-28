@@ -4,16 +4,18 @@ namespace App\Http\Controllers\Categorys;
 
 use Livewire\Component;
 use App\Models\Categorys;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
+use App\Events\CategoryPage;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\Gate;
 
 class Index extends Component
 {
     use WithPagination;
     public $name, $search, $category_id, $Trashed = false;
     public $updateCategory = false;
-    protected  $paginationTheme = 'bootstrap', $queryString = ['search' => ['as' => 's', 'except' => ''], 'Trashed' => ['except' => false]];
+    protected  $paginationTheme = 'bootstrap', $queryString = ['search' => ['as' => 's', 'except' => ''], 'Trashed' => ['except' => false]],
+        $listeners = ['category-page' => 'render'];
     public function mount()
     {
         if (!Gate::allows('View Category')) {
@@ -85,7 +87,6 @@ class Index extends Component
     {
         $this->validate($this->GetRuls(), $this->GetMessages());
         if ($this->updateCategory && Gate::allows('Update Category')) {
-
             $category =  Categorys::findorFail($this->category_id);
             $oldData = [
                 'name : ' . $category->name,
@@ -109,6 +110,7 @@ class Index extends Component
             auth()->user()->InsertToLogsTable(auth()->user()->id, "Category", 'Create', 'nothing to show', $newData);
         }
         flash()->addSuccess(__('header.Category') . ' ' . $this->updateCategory ?  __('header.updated') : __('header.add'));
+        event(new CategoryPage());
         $this->done();
     }
     public function update(Categorys $category)
@@ -131,21 +133,22 @@ class Index extends Component
             $category->delete();
             flash()->addSuccess(__('header.deleted_for_30_days'));
         }
+        event(new CategoryPage());
         $this->done();
     }
     public function restore($id, $status = true)
     {
         if ($id == null)
             return;
-
         $category = Categorys::onlyTrashed()->findorFail($id)->restore();
         $categoryName  = '( ' . $category->name . ' )';
         $data = 'Restore ' . $categoryName . ' form :' . now();
         auth()->user()->InsertToLogsTable(auth()->user()->id, "Category", 'Restore', $data, 'nothing to show');
         if ($status) {
-            flash()->addSuccess(__('header.Category').' '.__('header.RestoreMessage'));
+            flash()->addSuccess(__('header.Category') . ' ' . __('header.RestoreMessage'));
             $this->done();
         }
+        event(new CategoryPage());
     }
     public function DeleteAll()
     {
@@ -159,7 +162,8 @@ class Index extends Component
         }
         $data = 'Delete ' . implode(',', $categoryName) . ' form :' . now();
         auth()->user()->InsertToLogsTable(auth()->user()->id, "Category", 'Delete', $data, $data);
-        flash()->addSuccess(__('header.Category').' '.__('header.deleted'));
+        flash()->addSuccess(__('header.Category') . ' ' . __('header.deleted'));
+        event(new CategoryPage());
         $this->done();
     }
     public function RestoreAll()
@@ -172,6 +176,7 @@ class Index extends Component
             $this->restore($category->id, false);
         }
         flash()->addSuccess(__('header.RestoreMessage'));
+        event(new CategoryPage());
         $this->done();
     }
 }

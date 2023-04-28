@@ -16,7 +16,7 @@
                                         <label class="form-label">
                                             {{ __('header.email') }}
                                         </label>
-                                        <input type="email" class="form-control" placeholder="{{ __('header.enter_' ,['name'=> __('header.email')]) }}" wire:model.defer="email">
+                                        <input type="email" class="form-control" placeholder="{{ __('header.enter_' ,['name'=> __('header.email')]) }}" wire:model.defer="email" value="{{ $email }}">
                                         @error('email') <span class="text-danger">{{ $message }}</span> @enderror
                                     </div>
                                     <div class="mb-2">
@@ -48,13 +48,13 @@
                                     </div>
                                 </form>
                                 <div class=" text-center mt-3 d-flex align-items-center ">
-                                    <a  href="{{ route('login','en') }}" class="btn btn-sm shadow-sm rounded-2 mx-1 text-decoration-none ">
+                                    <a href="{{ route('login','en') }}" class="btn btn-sm shadow-sm rounded-2 mx-1 text-decoration-none ">
                                         English
                                     </a>
-                                    <a  href="{{ route('login','ar') }}" class="btn btn-sm shadow-sm rounded-2 mx-1 text-decoration-none ">
+                                    <a href="{{ route('login','ar') }}" class="btn btn-sm shadow-sm rounded-2 mx-1 text-decoration-none ">
                                         Arabic
                                     </a>
-                                    <a  href="{{ route('login','ckb') }}" class="btn btn-sm shadow-sm rounded-2 mx-1 text-decoration-none ">
+                                    <a href="{{ route('login','ckb') }}" class="btn btn-sm shadow-sm rounded-2 mx-1 text-decoration-none ">
                                         Kurdish
                                     </a>
                                 </div>

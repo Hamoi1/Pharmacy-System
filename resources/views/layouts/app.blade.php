@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, user-scalable=no">
     <title>@stack('title')</title>
     <link rel="shortcut icon" href="{{  $settings->logo != null ? asset('storage/logo/'.$settings->logo) : asset('assets/images/capsules.png') }}" type="image/x-icon">
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}" data-turbolinks-eval="false" data-turbo-eval="false">
@@ -206,8 +207,8 @@
 
         </div>
     </aside>
-        <div class="page-wrapper ">
-            <div id="offcanvas" class="{{ app()->getLocale() == 'ckb' || app()->getLocale() == 'ar' ? 'left' : 'right' }}">
+    <div class="page-wrapper ">
+        <div id="offcanvas" class="{{ app()->getLocale() == 'ckb' || app()->getLocale() == 'ar' ? 'left' : 'right' }}">
             <a class="btn" data-bs-toggle="offcanvas" href="#Products" role="button" aria-controls="Products">
                 <span class="badge bg-orange badge-notification badge-blink"></span>
                 <i class="fa fa-box"></i>
@@ -258,6 +259,30 @@
         });
         Livewire.on('UpdateProfile', data => {
             window.location.reload();
+        });
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pusher/8.0.2/pusher.min.js" integrity="sha512-FFchpqjQzRMR75a1q5Se4RZyBsc7UZhHE8faOLv197JcxmPJT0/Z4tGiB1mwKn+OZMEocLT+MmGl/bHa/kPKuQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script>
+        // Enable pusher logging - don't include this in production
+        // Pusher.logToConsole = true;
+        var pusher = new Pusher('f4447b80e7791998f4fe', {
+            encrypted: true,
+            cluster: 'ap2',
+        });
+        var ChannelUserStatus = pusher.subscribe('user-status-' + `{{ auth()->id() }}`);
+        ChannelUserStatus.bind('user-status', function(data) {
+            if (data.user.id == `{{ auth()->id() }}`) {
+                window.location.reload();
+            }
+        });
+        var ArrayActions = ['user-actions', 'user-page', 'category-page', 'supplier-page', 'customer-page'];
+        ArrayActions.forEach(index => {
+            var ChannelUserActions = pusher.subscribe(index);
+            ChannelUserActions.bind(index, function(data) {
+                Livewire.emit(index);
+            });
         });
     </script>
     @stack('js')

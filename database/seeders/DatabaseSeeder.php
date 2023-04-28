@@ -23,55 +23,55 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $roles = [
-            'View Dashboard',
-            'View Sales',
-            'View DebtSale',
-            'View Product',
-            'View User',
-            'View Category',
-            'View Supplier',
-            'View Barcode',
-            'View Setting',
-            'View Log',
-            'View Customer',
-            'Delete DebtSale',
-            'Delete Product',
-            'Delete User',
-            'Delete Category',
-            'Delete Supplier',
-            'Delete Barcode',
-            'Delete Logs',
-            'Delete Customer',
-            'Insert Sales',
-            'Insert Product',
-            'Insert User',
-            'Insert Category',
-            'Insert Supplier',
-            'Insert Barcode',
-            'Insert Customer',
-            'Update DebtSale',
-            'Update Product',
-            'Update User',
-            'Update Category',
-            'Update Supplier',
-            'Update Barcode',
-            'Update Customer',
-            'Product Trash',
-            'User Trash',
-            'Category Trash',
-            'Supplier Trash',
-            'Clear Log',
-            'User GenerateReport',
-            'User Export',
-            'Product Export'
-        ];
+        // $roles = [
+        //     'View Dashboard',
+        //     'View Sales',
+        //     'View DebtSale',
+        //     'View Product',
+        //     'View User',
+        //     'View Category',
+        //     'View Supplier',
+        //     'View Barcode',
+        //     'View Setting',
+        //     'View Log',
+        //     'View Customer',
+        //     'Delete DebtSale',
+        //     'Delete Product',
+        //     'Delete User',
+        //     'Delete Category',
+        //     'Delete Supplier',
+        //     'Delete Barcode',
+        //     'Delete Logs',
+        //     'Delete Customer',
+        //     'Insert Sales',
+        //     'Insert Product',
+        //     'Insert User',
+        //     'Insert Category',
+        //     'Insert Supplier',
+        //     'Insert Barcode',
+        //     'Insert Customer',
+        //     'Update DebtSale',
+        //     'Update Product',
+        //     'Update User',
+        //     'Update Category',
+        //     'Update Supplier',
+        //     'Update Barcode',
+        //     'Update Customer',
+        //     'Product Trash',
+        //     'User Trash',
+        //     'Category Trash',
+        //     'Supplier Trash',
+        //     'Clear Log',
+        //     'User GenerateReport',
+        //     'User Export',
+        //     'Product Export'
+        // ];
 
-        foreach ($roles as $role) {
-            Role::insert([
-                'name' => $role
-            ]);
-        }
+        // foreach ($roles as $role) {
+        //     Role::insert([
+        //         'name' => $role
+        //     ]);
+        // }
 
         $users = [
             [
@@ -164,7 +164,21 @@ class DatabaseSeeder extends Seeder
                 'address' => fake()->randomElement(['ranya', 'Sulimany', 'Hawler', 'Halabja']),
             ]);
         }
-        // foreach (range(1, 110) as $index) {
+     
+
+        // give permission for all user
+        $users = User::take(11)->get();
+        $roles = Role::all();
+        $role_id = [];
+        foreach ($roles as $role) {
+            $role_id[] = $role->id;
+        }
+
+        foreach ($users as $user) {
+            $user->role_id = json_encode($role_id);
+            $user->save();
+        }
+           // foreach (range(1, 1100) as $index) {
         //     $name = fake()->name;
         //     $name = Str::replace(' ', '', $name);
         //     $name = Str::replace('-', '', $name);
@@ -189,133 +203,120 @@ class DatabaseSeeder extends Seeder
         //         'address' => fake()->randomElement(['ranya', 'sulimany', 'qaladzi', 'hawler', 'Hallshow']),
         //     ]);
         // }
-
-        // // give permission for all user
-        $users = User::take(11)->get();
-        $roles = Role::all();
-        $role_id = [];
-        foreach ($roles as $role) {
-            $role_id[] = $role->id;
-        }
-
-        foreach ($users as $user) {
-            $user->role_id = json_encode($role_id);
-            $user->save();
-        }
-        $catagorys_data = [
-            [
-                'name' => 'darzi',
-                'slug' => Str::slug('darzi'),
-            ],
-            [
-                'name' => 'shrubi mndallan',
-                'slug' => Str::slug('shrubi mndallan'),
-            ],
-            [
-                'name' => '3abi saresha',
-                'slug' => Str::slug('3abi saresha'),
-            ],
-            [
-                'name' => 'shrubi zghesha',
-                'slug' => Str::slug('shrubi zghesha'),
-            ],
-            [
-                'name' => 'mal3ami dmwchaw',
-                'slug' => Str::slug('mal3ami dmwchaw'),
-            ],
-            [
-                'name' => 'shrub',
-                'slug' => Str::slug('shrub'),
-            ],
-            [
-                'name' => '3ab',
-                'slug' => Str::slug('3ab'),
-            ],
-            [
-                'name' => 'krim',
-                'slug' => Str::slug('krim'),
-            ],
-            [
-                'name' => 'qatra',
-                'slug' => Str::slug('qatra'),
-            ],
-            [
-                'name' => 'mal3am',
-                'slug' => Str::slug('mal3am'),
-            ],
-        ];
-        foreach ($catagorys_data as $category) {
-            \App\Models\Categorys::create($category, [
-                'created_at' => fake()->dateTimeBetween('-1 years', 'now'),
-            ]);
-        }
-        $suppliers = [
-            [
-                'name' => 'gilas',
-                'phone' => '07501122110',
-                'email' => 'gilas@gmail.com',
-                'address' => 'iraq'
-            ],
-            [
-                'name' => 'ahmad',
-                'phone' => '07501122111',
-                'email' => 'ahmad@gmail.com',
-                'address' => 'iraq'
-            ],
-            [
-                'name' => 'heshu',
-                'phone' => '07502122110',
-                'email' => 'heshu@gmail.com',
-                'address' => 'iraq'
-            ],
-            [
-                'name' => 'razhan',
-                'phone' => '07502122232',
-                'email' => 'razhan@gmail.com',
-                'address' => 'iraq'
-            ],
-            [
-                'name' => 'muhammad',
-                'phone' => '075022232',
-                'email' => 'muhammad@gmail.com',
-                'address' => 'iraq'
-            ],
-            [
-                'name' => 'ramyar',
-                'phone' => '07512122232',
-                'email' => 'ramyar@gmail.com',
-                'address' => 'iraq'
-            ],
-            [
-                'name' => 'mihraban',
-                'phone' => '07511212232',
-                'email' => 'mihraban@gmail.com',
-                'address' => 'iraq'
-            ],
-            [
-                'name' => 'danaz',
-                'phone' => '07511222232',
-                'email' => 'danaz@gmail.com',
-                'address' => 'iraq'
-            ],
-            [
-                'name' => 'sazyar',
-                'phone' => '07511222232',
-                'email' => 'sazyar@gmail.com',
-                'address' => 'iraq'
-            ],
-            [
-                'name' => 'savyar',
-                'phone' => '07511222232',
-                'email' => 'savyar@gmail.com',
-                'address' => 'iraq'
-            ],
-        ];
-        foreach ($suppliers as $supplier) {
-            \App\Models\Suppliers::create($supplier, [
-                'created_at' => fake()->dateTimeBetween('-1 years', 'now')->format('Y-m-d H:i:s'),
-            ]);
-        }
+        // $catagorys_data = [
+        //     [
+        //         'name' => 'darzi',
+        //         'slug' => Str::slug('darzi'),
+        //     ],
+        //     [
+        //         'name' => 'shrubi mndallan',
+        //         'slug' => Str::slug('shrubi mndallan'),
+        //     ],
+        //     [
+        //         'name' => '3abi saresha',
+        //         'slug' => Str::slug('3abi saresha'),
+        //     ],
+        //     [
+        //         'name' => 'shrubi zghesha',
+        //         'slug' => Str::slug('shrubi zghesha'),
+        //     ],
+        //     [
+        //         'name' => 'mal3ami dmwchaw',
+        //         'slug' => Str::slug('mal3ami dmwchaw'),
+        //     ],
+        //     [
+        //         'name' => 'shrub',
+        //         'slug' => Str::slug('shrub'),
+        //     ],
+        //     [
+        //         'name' => '3ab',
+        //         'slug' => Str::slug('3ab'),
+        //     ],
+        //     [
+        //         'name' => 'krim',
+        //         'slug' => Str::slug('krim'),
+        //     ],
+        //     [
+        //         'name' => 'qatra',
+        //         'slug' => Str::slug('qatra'),
+        //     ],
+        //     [
+        //         'name' => 'mal3am',
+        //         'slug' => Str::slug('mal3am'),
+        //     ],
+        // ];
+        // foreach ($catagorys_data as $category) {
+        //     \App\Models\Categorys::create($category, [
+        //         'created_at' => fake()->dateTimeBetween('-1 years', 'now'),
+        //     ]);
+        // }
+        // $suppliers = [
+        //     [
+        //         'name' => 'gilas',
+        //         'phone' => '07501122110',
+        //         'email' => 'gilas@gmail.com',
+        //         'address' => 'iraq'
+        //     ],
+        //     [
+        //         'name' => 'ahmad',
+        //         'phone' => '07501122111',
+        //         'email' => 'ahmad@gmail.com',
+        //         'address' => 'iraq'
+        //     ],
+        //     [
+        //         'name' => 'heshu',
+        //         'phone' => '07502122110',
+        //         'email' => 'heshu@gmail.com',
+        //         'address' => 'iraq'
+        //     ],
+        //     [
+        //         'name' => 'razhan',
+        //         'phone' => '07502122232',
+        //         'email' => 'razhan@gmail.com',
+        //         'address' => 'iraq'
+        //     ],
+        //     [
+        //         'name' => 'muhammad',
+        //         'phone' => '075022232',
+        //         'email' => 'muhammad@gmail.com',
+        //         'address' => 'iraq'
+        //     ],
+        //     [
+        //         'name' => 'ramyar',
+        //         'phone' => '07512122232',
+        //         'email' => 'ramyar@gmail.com',
+        //         'address' => 'iraq'
+        //     ],
+        //     [
+        //         'name' => 'mihraban',
+        //         'phone' => '07511212232',
+        //         'email' => 'mihraban@gmail.com',
+        //         'address' => 'iraq'
+        //     ],
+        //     [
+        //         'name' => 'danaz',
+        //         'phone' => '07511222232',
+        //         'email' => 'danaz@gmail.com',
+        //         'address' => 'iraq'
+        //     ],
+        //     [
+        //         'name' => 'sazyar',
+        //         'phone' => '07511222232',
+        //         'email' => 'sazyar@gmail.com',
+        //         'address' => 'iraq'
+        //     ],
+        //     [
+        //         'name' => 'savyar',
+        //         'phone' => '07511222232',
+        //         'email' => 'savyar@gmail.com',
+        //         'address' => 'iraq'
+        //     ],
+        // ];
+        // foreach ($suppliers as $supplier) {
+        //     \App\Models\Suppliers::create($supplier, [
+        //         'created_at' => fake()->dateTimeBetween('-1 years', 'now')->format('Y-m-d H:i:s'),
+        //     ]);
+        // }
         // $barcode = 1;
         // foreach (range(1, 100000) as $index) {
         //     // create a product
@@ -332,80 +333,80 @@ class DatabaseSeeder extends Seeder
         //         "created_at" => "2023-03-07 10:00:00"
         //     ]);
         // }
-        $medicines = [
-            [
-                "name" => "Aspirin",
-                "barcode" => "421321",
-                "quantity" => 500,
-                "expiry_date" => "2023-12-31",
-                "purches_price" => 1.5,
-                "sale_price" => 2,
-                'category_id' => Categorys::inRandomOrder()->first()->id,
-                'supplier_id' => Suppliers::inRandomOrder()->first()->id,
-                'user_id' => User::inRandomOrder()->first()->id,
-                "created_at" => "2023-03-07 10:00:00"
-            ],
-            [
-                "name" => "Ibuprofen",
-                "barcode" => "12312",
-                "quantity" => 300,
-                "expiry_date" => "2024-06-30",
-                "purches_price" => 1,
-                "sale_price" => 2,
-                'category_id' => Categorys::inRandomOrder()->first()->id,
-                'supplier_id' => Suppliers::inRandomOrder()->first()->id,
-                'user_id' => User::inRandomOrder()->first()->id,
-                "created_at" => "2023-03-07 11:00:00"
-            ],
-            [
-                "name" => "Paracetamol",
-                "barcode" => "21313",
-                "quantity" => 1000,
-                "expiry_date" => "2023-11-30",
-                "purches_price" => 0.5,
-                "sale_price" => 1,
-                'category_id' => Categorys::inRandomOrder()->first()->id,
-                'supplier_id' => Suppliers::inRandomOrder()->first()->id,
-                'user_id' => User::inRandomOrder()->first()->id,
-                "created_at" => "2023-03-08 08:00:00"
-            ],
-            [
-                "name" => "Amoxicillin",
-                "barcode" => "12321312",
-                "quantity" => 200,
-                "expiry_date" => "2024-02-28",
-                "purches_price" => 0.2,
-                "sale_price" => 0.5,
-                'category_id' => Categorys::inRandomOrder()->first()->id,
-                'supplier_id' => Suppliers::inRandomOrder()->first()->id,
-                'user_id' => User::inRandomOrder()->first()->id,
-                "created_at" => "2023-03-09 09:00:00"
-            ],
-            [
-                "name" => "Alprazolam",
-                "barcode" => "45901234",
-                "quantity" => 2000,
-                "expiry_date" => "2025-10-31",
-                "purches_price" => 2,
-                "sale_price" => 3,
-                'category_id' => Categorys::inRandomOrder()->first()->id,
-                'supplier_id' => Suppliers::inRandomOrder()->first()->id,
-                'user_id' => User::inRandomOrder()->first()->id,
-                "created_at" => "2023-03-29 05:00:00"
-            ],
-        ];
+        // $medicines = [
+        //     [
+        //         "name" => "Aspirin",
+        //         "barcode" => "421321",
+        //         "quantity" => 500,
+        //         "expiry_date" => "2023-12-31",
+        //         "purches_price" => 1.5,
+        //         "sale_price" => 2,
+        //         'category_id' => Categorys::inRandomOrder()->first()->id,
+        //         'supplier_id' => Suppliers::inRandomOrder()->first()->id,
+        //         'user_id' => User::inRandomOrder()->first()->id,
+        //         "created_at" => "2023-03-07 10:00:00"
+        //     ],
+        //     [
+        //         "name" => "Ibuprofen",
+        //         "barcode" => "12312",
+        //         "quantity" => 300,
+        //         "expiry_date" => "2024-06-30",
+        //         "purches_price" => 1,
+        //         "sale_price" => 2,
+        //         'category_id' => Categorys::inRandomOrder()->first()->id,
+        //         'supplier_id' => Suppliers::inRandomOrder()->first()->id,
+        //         'user_id' => User::inRandomOrder()->first()->id,
+        //         "created_at" => "2023-03-07 11:00:00"
+        //     ],
+        //     [
+        //         "name" => "Paracetamol",
+        //         "barcode" => "21313",
+        //         "quantity" => 1000,
+        //         "expiry_date" => "2023-11-30",
+        //         "purches_price" => 0.5,
+        //         "sale_price" => 1,
+        //         'category_id' => Categorys::inRandomOrder()->first()->id,
+        //         'supplier_id' => Suppliers::inRandomOrder()->first()->id,
+        //         'user_id' => User::inRandomOrder()->first()->id,
+        //         "created_at" => "2023-03-08 08:00:00"
+        //     ],
+        //     [
+        //         "name" => "Amoxicillin",
+        //         "barcode" => "12321312",
+        //         "quantity" => 200,
+        //         "expiry_date" => "2024-02-28",
+        //         "purches_price" => 0.2,
+        //         "sale_price" => 0.5,
+        //         'category_id' => Categorys::inRandomOrder()->first()->id,
+        //         'supplier_id' => Suppliers::inRandomOrder()->first()->id,
+        //         'user_id' => User::inRandomOrder()->first()->id,
+        //         "created_at" => "2023-03-09 09:00:00"
+        //     ],
+        //     [
+        //         "name" => "Alprazolam",
+        //         "barcode" => "45901234",
+        //         "quantity" => 2000,
+        //         "expiry_date" => "2025-10-31",
+        //         "purches_price" => 2,
+        //         "sale_price" => 3,
+        //         'category_id' => Categorys::inRandomOrder()->first()->id,
+        //         'supplier_id' => Suppliers::inRandomOrder()->first()->id,
+        //         'user_id' => User::inRandomOrder()->first()->id,
+        //         "created_at" => "2023-03-29 05:00:00"
+        //     ],
+        // ];
 
-        foreach ($medicines as $medicine) {
-            $product = Products::with('product_quantity')->create($medicine);
-            $product->product_quantity()->create([
-                'quantity' => $product->quantity,
-                'purches_price' => $product->purches_price,
-                'sale_price' => $product->sale_price,
-                'expiry_date' => $product->expiry_date,
-                'created_at' => $product->created_at,
-            ]);
-            $product->save();
-        }
+        // foreach ($medicines as $medicine) {
+        //     $product = Products::with('product_quantity')->create($medicine);
+        //     $product->product_quantity()->create([
+        //         'quantity' => $product->quantity,
+        //         'purches_price' => $product->purches_price,
+        //         'sale_price' => $product->sale_price,
+        //         'expiry_date' => $product->expiry_date,
+        //         'created_at' => $product->created_at,
+        //     ]);
+        //     $product->save();
+        // }
 
         // foreach (range(1, 20) as $index) {
         //     $number = fake()->unique()->numberBetween(0, 2147483647) . Str::random(1);

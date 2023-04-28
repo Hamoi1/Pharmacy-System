@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Events\UserActions;
 use App\Models\Logs;
 use App\Models\Sales;
 use App\Models\Products;
@@ -80,14 +82,6 @@ class User extends Authenticatable
         }
         return $role_name;
     }
-    public function files()
-    {
-        $files = scandir('logs');
-        // remove . and .. from array
-        array_shift($files);
-        array_shift($files);
-        return $files;
-    }
     // insert data to file but dont delete privewe
     public function InsertToLogsTable($UserID, $where,  $action, $old, $new)
     {
@@ -99,12 +93,14 @@ class User extends Authenticatable
             'old_data' => json_encode($old),
             'new_data' => json_encode($new),
         ]);
+        event(new  UserActions());
         return true;
     }
 
     public function GetDataLogs($UserID)
     {
         $logs = Logs::where('user_id', $UserID)->get();
+        event(new  UserActions());
         return $logs;
     }
 
@@ -112,11 +108,13 @@ class User extends Authenticatable
     {
         // delete data in logs table by id
         return Logs::where('user_id', $UserID)->delete();
+        event(new  UserActions());
     }
 
     public function DeleteDataInLogs($UserID, $index)
     {
         // delete data in logs table by id
         return Logs::where('user_id', $UserID)->where('id', $index)->delete();
+        event(new  UserActions());
     }
 }

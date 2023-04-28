@@ -104,6 +104,7 @@ class AddUpdate extends Component
         $this->CustomerUpadate ?
             flash()->addSuccess(__('header.Customer') . ' ' . __('header.updated')) :
             flash()->addSuccess(__('header.Customer') . ' ' . __('header.add'));
+        event(new \App\Events\CustomerPage());
         $this->done();
     }
 

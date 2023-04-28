@@ -157,7 +157,9 @@
                                 <img src="{{ $user->image($user->image) }}" class=" avatar  rounded-circle mx-2 object-cover d-none d-md-block">
                                 <div class="flex-fill">
                                     <a class="mx-2 cursor-pointer" @if(!$Trashed) href="" wire:click.prevent="ViewUser({{ $user->id }})" data-bs-toggle="modal" data-bs-target="#view" @endif>
-                                        <span class="font-weight-medium">{{ Str::limit($user->name,15) }}</span>
+                                        <span class="font-weight-medium">
+                                            {{ Str::limit($user->name,15) }}
+                                        </span>
                                     </a>
                                     @if ($user->create_at())
                                     <span class="badge bg-warning">

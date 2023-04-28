@@ -20,7 +20,7 @@ class Index extends Component
             'search' => ['except' => ['id'], 'as' => 's'],
             'debt' => ['except' => false],
         ],
-        $listeners = ['RefreshCustomer' => '$refresh'];
+        $listeners = ['RefreshCustomer' => '$refresh', 'customer-page' => 'render'];
     public function mount()
     {
         if (!Gate::allows('View Customer')) {
@@ -60,7 +60,6 @@ class Index extends Component
     public function Sales($numerPage, $action = null)
     {
         $query = $this->customer->sales();
-
         if ($action === 'whereHas') {
             $query->whereHas('debt_sale');
         }
@@ -124,6 +123,7 @@ class Index extends Component
         }
         Customers::find($id)->delete();
         flash()->addSuccess(__('header.Customer') . ' ' . __('header.deleted'));
+        event(new \App\Events\CustomerPage());
         $this->done();
     }
 }

@@ -19,6 +19,9 @@
                     <button type="submit" class="btn btn-primary  px-3 pt-2">
                         {{ __('header.backup') }}
                     </button>
+                    <button type="button" class="btn-outline-danger btn" data-bs-dismiss="modal" aria-label="Close">
+                        {{ __('header.cancel') }}
+                    </button>
                     <div wire:loading wire:target="submit">
                         {{ __('header.waiting') }}
                         <span class="animated-dots fs-3">
@@ -40,9 +43,7 @@
             </div>
         </div>
     </div>
-    <button class="btn btn-dark rounded-3 py-2" data-bs-toggle="modal" data-bs-target="#backup">
-        <span class="mx-2 d-none d-md-block">
-            {{ __('header.backup') }}
-        </span>
+    <button class="btn btn-outline-dark rounded-3 py-2" data-bs-toggle="modal" data-bs-target="#backup">
+        {{ __('header.backup') }}
     </button>
 </div>

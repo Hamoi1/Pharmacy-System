@@ -317,9 +317,11 @@ body.theme-light {
 .offcanvas {
     z-index: 9999;
 }
-.theme-dark .text-dark{
+
+.theme-dark .text-dark {
     color: #fff !important;
 }
+
 #offcanvas.left {
     left: 10px !important;
 }
@@ -421,12 +423,14 @@ th {
     width: 17.5rem !important;
 }
 
+
+
 .image-profile {
-    width: 350px !important;
-    height: 350px !important;
+    width: 100% !important;
+    height: 100% !important;
     /* height: 350px !important; */
     object-fit: cover !important;
-    border-radius: 20px !important;
+    border-radius: 10px !important;
     box-shadow: 20px 20px 40px rgba(0, 0, 0, .1);
 }
 
@@ -478,6 +482,7 @@ th {
         left: 0 !important;
         z-index: 100 !important;
         box-shadow: rgba(17, 17, 26, 0.1) 0px 0px 10px !important;
+        width: 100% !important;
     }
 
     .viewUser-Grid {
@@ -490,7 +495,7 @@ th {
         position: fixed !important;
         top: 55px !important;
         left: 0;
-        width: 100%;
+        width: 100% !important;
         height: 0;
         overflow: scroll !important;
         z-index: 100 !important;
@@ -510,6 +515,10 @@ th {
         transition: all 0.5s ease !important;
         overflow-y: scroll !important;
     }
+}
+
+.table th {
+    font-size: 12px !important;
 }
 
 @media only screen and (max-width: 500px) {

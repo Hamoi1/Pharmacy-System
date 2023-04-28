@@ -11,10 +11,12 @@
             </div>
         </div>
     </div>
-    <button class="btn btn-dark rounded-3" wire:click.prevent="CleanUp">
-        <span class="mx-2 d-none d-md-block">
-            {{ __('header.cleanSystem') }}
-        </span>
-        <img src="{{ asset('assets/images/clean.png') }}" width="25" class="rounded-circle mx-1" alt="">
+    <button class="btn btn-outline-dark rounded-3" wire:click.prevent="CleanUp">
+        <div class="d-flex align-itmes-center justify-content-center">
+            <span class="mt-1">
+                {{ __('header.cleanSystem') }}
+            </span>
+             <img src="{{ asset('assets/images/clean.png') }}" width="25" class="mx-1" alt="">
+        </div>
     </button>
 </div>

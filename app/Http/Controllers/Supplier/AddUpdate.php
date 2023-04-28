@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Supplier;
 
+use App\Events\SupplierPage;
 use Livewire\Component;
 use App\Models\Suppliers;
 use Illuminate\Support\Facades\Gate;
@@ -94,6 +95,7 @@ class AddUpdate extends Component
             auth()->user()->InsertToLogsTable(auth()->user()->id, "Supplier", 'Create',  'nothing to show', $newData);
         }
         flash()->addSuccess($this->updateSupplier ? __('header.supplier') . ' ' . __('header.updated') : __('header.supplier') . ' ' . __('header.add'));
+        event(new SupplierPage());
         $this->done();
     }
     public function UpdateSupplier(Suppliers  $supplier)

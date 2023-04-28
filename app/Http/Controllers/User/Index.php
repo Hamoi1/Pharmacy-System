@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Events\UserPage;
+use App\Events\UserStatus;
 use App\Models\Role;
 use App\Models\User;
 use Livewire\Component;
@@ -10,6 +12,8 @@ use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\ExportController;
+
+use function PHPSTORM_META\exitPoint;
 
 class Index extends Component
 {
@@ -30,7 +34,8 @@ class Index extends Component
             'Trashed' => ['except' => false],
             'page',
             'role_id' => ['as' => 'permission']
-        ];
+        ],
+        $listeners = ['user-page' => 'render'];
 
     public $ExportData = [
             'name' => 'Name',
@@ -101,7 +106,6 @@ class Index extends Component
         ])->find($id);
         $this->Sales($this->salesPage);
         $this->products($this->productsPage);
-        // dd($this->user->sales, $this->user->products);
         if ($return) {
             return $this->user;
         }
@@ -315,6 +319,7 @@ class Index extends Component
                 'address : ' .  $this->address,
             ];
             $user->InsertToLogsTable(auth()->user()->id, "User", 'Update', $old_data, $new_data);
+            event(new UserStatus($user));
         } elseif (!$this->UpdateUser && Gate::allows('Insert User')) {
             $user = User::create([
                 'name' => $this->name,
@@ -339,6 +344,7 @@ class Index extends Component
             $user->InsertToLogsTable(auth()->user()->id, "User", 'Update', '', $new_data);
         }
         flash()->addSuccess(__('header.User') . ' ' . $this->UpdateUser ?  __('header.updated') :  __('header.add'));
+        event(new UserPage());
         $this->done();
     }
     public function Update($id)
@@ -373,6 +379,7 @@ class Index extends Component
                 auth()->user()->InsertToLogsTable(auth()->user()->id, "User", 'Delete',  $data,  $data);
             }
         }
+        event(new UserPage());
         $this->done();
     }
 
@@ -394,6 +401,7 @@ class Index extends Component
             ];
             $user->InsertToLogsTable(auth()->user()->id, "User", 'Update', $old_data, $new_data);
             flash()->addSuccess($user->status == 1 ? __('header.User') . ' ' . __('header.actived') : __('header.User') . ' ' . __('header.deactived'));
+            event(new UserStatus($user));
         }
         $this->done();
     }
@@ -414,6 +422,7 @@ class Index extends Component
         $data = 'Delete  ' . implode(' , ', $userName) . '  form : ' . now();
         auth()->user()->InsertToLogsTable(auth()->user()->id, "User", 'Delete',  $data,  $data);
         flash()->addSuccess(__('header.deleted'));
+        event(new UserPage());
         $this->done();
     }
     public function RestoreAll()
@@ -430,6 +439,7 @@ class Index extends Component
         $data = 'Restore   ' . implode(' , ', $userName) . '  form : ' . now();
         auth()->user()->InsertToLogsTable(auth()->user()->id, "User", 'Restore',  $data,  'nothing to show');
         flash()->addSuccess(__('header.RestoreMessage'));
+        event(new UserPage());
         $this->done();
     }
     public function restore($id)
@@ -439,6 +449,7 @@ class Index extends Component
         $user->restore();
         auth()->user()->InsertToLogsTable(auth()->user()->id, "User", 'Restore',  $data,  'nothing to show');
         flash()->addSuccess(__('header.User') . ' ' . __('header.RestoreMessage'));
+        event(new UserPage());
         $this->done();
     }
 

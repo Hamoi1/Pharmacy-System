@@ -26,10 +26,11 @@ class Index extends Component
             'Export'
         ];
     protected $queryString = [
-        'user_id' => ['except' => '', 'as' => 'user'],
-        'action' => ['except' => '', 'as' => 'action'],
-        'searchByDate' => ['except' => '', 'as' => 'date'],
-    ], $paginationTheme = 'bootstrap';
+            'user_id' => ['except' => '', 'as' => 'user'],
+            'action' => ['except' => '', 'as' => 'action'],
+            'searchByDate' => ['except' => '', 'as' => 'date'],
+        ], $paginationTheme = 'bootstrap',
+        $listeners = ['user-actions' => 'render'];
 
     public function updated($propertyName)
     {
@@ -71,7 +72,7 @@ class Index extends Component
         } else {
             if ($this->user_id) {
                 auth()->user()->DeleteDataInLogs($this->user_id, $index);
-                flash()->addSuccess(__('header.data').' '.__('header.deleted'));
+                flash()->addSuccess(__('header.data') . ' ' . __('header.deleted'));
             } else {
                 flash()->addWarning(__('header.user_data'));
             }
