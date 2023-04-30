@@ -225,12 +225,11 @@
 
     @livewireScripts
     <!-- <script type="module">
-        import turbo from 'https://cdn.skypack.dev/@hotwired/turbo';
+        import hotwiredTurbo from 'https://cdn.skypack.dev/@hotwired/turbo';
     </script>
     <script src="https://cdn.jsdelivr.net/gh/livewire/turbolinks@v0.1.x/dist/livewire-turbolinks.js" data-turbolinks-eval="false" data-turbo-eval="false"></script> -->
     <script src="{{ asset('assets/js/jquery-3.6.1.min.js') }}" data-turbolinks-eval="false" data-turbo-eval="false"></script>
     <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}" data-turbolinks-eval="false" data-turbo-eval="false"></script>
-    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script> -->
     <script src="{{ asset('assets/js/autosize.min.js') }}" data-turbolinks-eval="false" data-turbo-eval="false"></script>
     <script src="{{ asset('assets/js/main.js') }}" data-turbolinks-eval="false" data-turbo-eval="false"></script>
     <script src="{{ asset('assets/js/apexcharts.min.js') }}" data-turbolinks-eval="false" data-turbo-eval="false"></script>
@@ -261,9 +260,7 @@
             window.location.reload();
         });
     </script>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pusher/8.0.2/pusher.min.js" integrity="sha512-FFchpqjQzRMR75a1q5Se4RZyBsc7UZhHE8faOLv197JcxmPJT0/Z4tGiB1mwKn+OZMEocLT+MmGl/bHa/kPKuQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
     <script>
         // Enable pusher logging - don't include this in production
         // Pusher.logToConsole = true;

@@ -111,7 +111,7 @@
                             </thead>
                             <tbody>
                                 @forelse ($CustomerSales as $sale )
-                                <tr wire:click="$set('SaleId','{{ $sale->id }}')" @class(['bg-dark'=>$SaleId == $sale->id,'cursor-pointer'])>
+                                <tr wire:click="$set('SaleId','{{ $sale->id }}')" @class(['bg-info'=>$SaleId == $sale->id,'cursor-pointer'])>
                                     <td>
                                         {{ $sale->invoice }}
                                     </td>
