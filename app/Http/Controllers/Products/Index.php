@@ -95,9 +95,9 @@ class Index extends Component
     }
     public function done()
     {
+        $this->dispatchBrowserEvent('closeModal');
         $this->reset($this->ResetData());
         $this->resetValidation();
-        $this->dispatchBrowserEvent('closeModal');
     }
     public function GetRuls()
     {

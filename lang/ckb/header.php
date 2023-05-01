@@ -14,6 +14,7 @@ return [
     'user' => [
         'index' => 'بەکارهێنەر',
     ],
+    'AllPermission' => 'هەموو دەسەڵاتەکان',
     'barcodeOrname' => 'بارکۆد یان ناو',
     'select' => ':name ی بەکارهێنەر',
     'update_' => 'دەستکاریکردنی :name',

@@ -33,9 +33,9 @@ class UpdateQuantity extends Component
     public function done()
     {
         $this->reset(['purches_price', 'sale_price', 'quantity', 'expire_date', 'UpdateProduct']);
+        $this->dispatchBrowserEvent('closeModal');
         $this->resetValidation();
         $this->UpdateProduct = false;
-        $this->dispatchBrowserEvent('closeModal');
         $this->mount($this->product_id);
     }
     public function add()

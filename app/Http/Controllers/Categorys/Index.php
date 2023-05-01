@@ -12,8 +12,7 @@ use Illuminate\Support\Facades\Gate;
 class Index extends Component
 {
     use WithPagination;
-    public $name, $search, $category_id, $Trashed = false;
-    public $updateCategory = false;
+    public $name, $search, $category_id, $Trashed = false, $updateCategory = false;
     protected  $paginationTheme = 'bootstrap', $queryString = ['search' => ['as' => 's', 'except' => ''], 'Trashed' => ['except' => false]],
         $listeners = ['category-page' => 'render'];
     public function mount()
@@ -48,45 +47,33 @@ class Index extends Component
             'GetTrashDate' => $GetTrashDate,
         ]);
     }
-    public function done()
+    public function done($action = true)
     {
-        event(new CategoryPage());
-        $this->reset($this->ResetData());
-        $this->resetValidation();
         $this->dispatchBrowserEvent('closeModal');
-    }
-    private function ResetData()
-    {
-        return [
+        $this->reset([
             'name',
-            'updateCategory',
             'category_id',
-        ];
+        ]);
+        $this->resetValidation();
+        if ($action)
+            event(new CategoryPage());
     }
-    public function add()
-    {
-        $this->updateCategory = false;
-    }
-    public function GetRuls()
-    {
-        return [
-            'name' => 'required|regex:/^[a-zA-Z0-9 _-]+$/|min:3|max:255|unique:categorys,name,' . $this->category_id ?? '',
-        ];
-    }
-    public function GetMessages()
-    {
-        return [
-            'name.required' => __('validation.required', ['attribute' => __('header.name')]),
-            'name.min' => __('validation.min.string', ['attribute' => __('header.name'), 'min' => 3]),
-            'name.max' => __('validation.max.string', ['attribute' => __('header.name'), 'max' => 255]),
-            'name.unique' => __('validation.unique', ['attribute' => __('header.name')]),
-            'name.regex' => __('validation.regex', ['attribute' => __('header.name')]),
-            'name.exists' => __('validation.exists', ['attribute' => __('header.name')]),
-        ];
+    public function add(){
+       return !$this->updateCategory;
     }
     public function submit()
     {
-        $this->validate($this->GetRuls(), $this->GetMessages());
+        $this->validate(
+            ['name' => 'required|regex:/^[a-zA-Z0-9 _-]+$/|min:3|max:255|unique:categorys,name,' . $this->category_id ?? '',],
+            [
+                'name.required' => __('validation.required', ['attribute' => __('header.name')]),
+                'name.min' => __('validation.min.string', ['attribute' => __('header.name'), 'min' => 3]),
+                'name.max' => __('validation.max.string', ['attribute' => __('header.name'), 'max' => 255]),
+                'name.unique' => __('validation.unique', ['attribute' => __('header.name')]),
+                'name.regex' => __('validation.regex', ['attribute' => __('header.name')]),
+                'name.exists' => __('validation.exists', ['attribute' => __('header.name')]),
+            ]
+        );
         if ($this->updateCategory && Gate::allows('Update Category')) {
             $category =  Categorys::findorFail($this->category_id);
             $oldData = [

@@ -1,5 +1,5 @@
 <x-modal.add target="{{Route::currentRouteName() == 'sales' ? 'add-update-supplier' : 'add-update'}}" modalWidth="modal">
-    <div wire:loading>
+    <div wire:loading >
         <div class="d-flex justify-content-center">
             <h3>
                 {{ __('header.waiting') }}
@@ -7,12 +7,12 @@
             </h3>
         </div>
     </div>
-    <div wire:loading.remove>
+    <div wire:loading.remove >
         <div class="d-flex align-items-center justify-content-between">
             <h5 class="modal-title me-auto" id="staticBackdropLabel">
                 {{ $updateSupplier ?__('header.update_' , ['name'=> __('header.supplier')])  : __('header.add_', ['name'=> __('header.supplier')])}}
             </h5>
-            <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close" wire:click=done></button>
+            <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close" wire:click="done(false)"></button>
         </div>
         <form wire:submit.prevent="submit">
             <div class="row g-3">

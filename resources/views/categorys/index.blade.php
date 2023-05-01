@@ -1,10 +1,13 @@
 @push('title') Categorys @endpush
 <div>
-    <div wire:loading wire:target="destroy,restore">
+    <div wire:loading
+        wire:target="destroy,restore">
         <div class="loading">
             <div class="loading-content">
                 <div class="loading-icon">
-                    <img src="{{ asset('assets/images/Spinner.gif') }}" width="150px" alt="">
+                    <img src="{{ asset('assets/images/Spinner.gif') }}"
+                        width="150px"
+                        alt="">
                 </div>
                 <h1 class="loading-title ">
                     {!! __('header.waiting') !!}
@@ -23,7 +26,11 @@
                     </div>
                     @can('Insert Category')
                     <div class="col-auto ms-auto">
-                        <a href="" class="btn btn-primary  btn-primary  " data-bs-toggle="modal" data-bs-target="#add-update" wire:click=add>
+                        <a href=""
+                            class="btn btn-primary  btn-primary  "
+                            data-bs-toggle="modal"
+                            data-bs-target="#add-update"
+                            wire:click="add()">
                             <i class="fa fa-plus"></i>
                         </a>
                     </div>
@@ -40,7 +47,10 @@
         <div class="row  gy-1 align-items-center ">
             <form class="col-lg-3 col-md-6 col-12">
                 <div class="input-icon">
-                    <input type="text" class="form-control" placeholder="{{ __('header.search') }}" wire:model="search">
+                    <input type="text"
+                        class="form-control"
+                        placeholder="{{ __('header.search') }}"
+                        wire:model="search">
                     <span class="input-icon-addon">
                         <i class="fa fa-search"></i>
                     </span>
@@ -50,7 +60,8 @@
                 <div class="d-flex align-items-center flex wrap gap-2">
                     @can('Category Trash')
                     <div>
-                        <button class=" btn pt-2" wire:click="Trash">
+                        <button class=" btn pt-2"
+                            wire:click="Trash">
                             <i class="fa fa-trash mx-2 mb-1"></i>
                             {{ __('header.Trash') }}
                         </button>
@@ -58,18 +69,25 @@
                     @if($Trashed)
                     <div>
                         <div class="dropdown">
-                            <button class="btn btn-info " type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                            <button class="btn btn-info "
+                                type="button"
+                                id="dropdownMenuButton1"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false">
                                 {{ __('header.actions') }}
                             </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <ul class="dropdown-menu"
+                                aria-labelledby="dropdownMenuButton1">
                                 <li class="dropdwon-item mt-2">
-                                    <button class=" btn shadow-none text-danger" wire:click="DeleteAll">
+                                    <button class=" btn shadow-none text-danger"
+                                        wire:click="DeleteAll">
                                         <i class="fa-solid fa-trash-can mx-2 mb-2"></i>
                                         {{ __('header.DeletedAll') }}
                                     </button>
                                 </li>
                                 <li class="dropdwon-item mt-2">
-                                    <button class=" btn shadow-none text-success " wire:click="RestoreAll">
+                                    <button class=" btn shadow-none text-success "
+                                        wire:click="RestoreAll">
                                         <i class="fa-solid fa-recycle mx-2 mb-2"></i>
                                         {{ __('header.RestoreAll') }}
                                     </button>
@@ -83,15 +101,20 @@
             </div>
         </div>
 
-        <div class="row mt-3" wire:loading wire:target="search,previousPage,nextPage,gotoPage">
+        <div class="row mt-3"
+            wire:loading
+            wire:target="search,previousPage,nextPage,gotoPage">
             <div class="d-flex  gap-2">
                 <h3>
                     {{ __('header.waiting') }}
                 </h3>
-                <div class="spinner-border" role="status"></div>
+                <div class="spinner-border"
+                    role="status"></div>
             </div>
         </div>
-        <div class="table-responsive mt-3" wire:loading.remove wire:target="search,previousPage,nextPage,gotoPage">
+        <div class="table-responsive mt-3"
+            wire:loading.remove
+            wire:target="search,previousPage,nextPage,gotoPage">
             <table class="table table-vcenter table-nowrap">
                 <thead>
                     <tr class="">
@@ -134,7 +157,8 @@
                             @endif
                         </td>
                         <td>
-                            <a href="{{ !$category->deleted_at ? route('products' ,['category'=> $category->id,'lang'=>app()->getLocale()]) : '' }}">
+                            <a
+                                href="{{ !$category->deleted_at ? route('products' ,['category'=> $category->id,'lang'=>app()->getLocale()]) : '' }}">
                                 {{ $category->slug }}
                             </a>
                         </td>
@@ -155,17 +179,26 @@
                         <td class=" col-1 text-center">
                             @if (!$Trashed)
                             @can('Update Category')
-                            <a class="btn" href="" data-bs-toggle="modal" data-bs-target="#add-update" wire:click.prevent="update({{ $category->id }})">
+                            <a class="btn"
+                                href=""
+                                data-bs-toggle="modal"
+                                data-bs-target="#add-update"
+                                wire:click.prevent="update({{ $category->id }})">
                                 <i class="fa-solid fa-edit text-primary"></i>
                             </a>
                             @endcan
                             @can('Delete Category')
-                            <a class="btn" href="" data-bs-toggle="modal" data-bs-target="#delete" wire:click.prevent="$set('category_id' , {{ $category->id }})">
+                            <a class="btn"
+                                href=""
+                                data-bs-toggle="modal"
+                                data-bs-target="#delete"
+                                wire:click.prevent="$set('category_id' , {{ $category->id }})">
                                 <i class="fa-solid fa-trash text-danger"></i>
                             </a>
                             @endcan
                             @else
-                            <button class="btn text-success" wire:click="restore({{ $category->id }})">
+                            <button class="btn text-success"
+                                wire:click="restore({{ $category->id }})">
                                 <i class="fa-solid fa-recycle"></i>
                             </button>
                             @endif
@@ -174,7 +207,8 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="4" class="text-center">
+                        <td colspan="4"
+                            class="text-center">
                             <h4>
                                 {{ __('header.NoData') }}
                             </h4>
@@ -184,7 +218,9 @@
                 </tbody>
             </table>
         </div>
-        <div class="my-3" wire:loading.remove wire:target="search,previousPage,nextPage,gotoPage">
+        <div class="my-3"
+            wire:loading.remove
+            wire:target="search,previousPage,nextPage,gotoPage">
             {!! $categorys->onEachSide(1)->links() !!}
         </div>
     </div>

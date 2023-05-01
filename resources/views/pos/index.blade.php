@@ -14,8 +14,29 @@
             </div>
         </div>
         <div class="row  d-print-none position-relative">
+            <div class="col-12  addInvoiceSeaction">
+                <div class="d-flex align-items-center pag-2 invoices py-2">
+                    @foreach ($invoices as $invoicePage)
+                    <div class=" d-flex align-items-center mx-1 {{ $invoicePage == $invoice ? 'shadow rounded': '' }}">
+                        <button class="btn btn-sm  py-1 rounded-2 px-2 {{ $invoicePage == $invoice ? 'bg-primary': '' }}" wire:click="$set('invoice','{{$invoicePage}}')">
+                            {{ $invoicePage}}
+                        </button>
+                        @if (count($invoices) > 1)
+                        <div class="delete-invoice me-1 ms-2 ">
+                            <i class="fas fa-trash cursor-pointer" wire:click="DeleteInvoicePage('{{ $loop->index }}')"></i>
+                        </div>
+                        @endif
+                    </div>
+                    @endforeach
+                </div>
+                <div class="addNewInvoice {{  app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'left' : 'right' }}">
+                    <button href="" class="btn btn-sm py-2" wire:click="AddNewInvoce">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+            </div>
             @livewire('supplier.add-update')
-            <livewire:customer.add-update />
+            @livewire('customer.add-update')
             <form class="row position-relative">
                 <div class="col-xl-3 mt-1 col-md-4 col-sm-6 col-12 position-relative">
                     <label class="form-label barcode-label">

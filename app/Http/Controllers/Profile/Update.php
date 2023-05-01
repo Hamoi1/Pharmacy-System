@@ -56,9 +56,9 @@ class Update extends Component
     }
     public function done()
     {
-        event(new UserPage());
-        $this->resetValidation();
         $this->dispatchBrowserEvent('closeModal');
+        $this->resetValidation();
+        event(new UserPage());
     }
     public function edit()
     {

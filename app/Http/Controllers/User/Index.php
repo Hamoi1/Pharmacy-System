@@ -13,6 +13,7 @@ use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\ExportController;
+use Illuminate\Support\Facades\DB;
 
 use function PHPSTORM_META\exitPoint;
 
@@ -88,7 +89,7 @@ class Index extends Component
         $GetTrashDate = function ($date) {
             return $date;
         };
-        $roless = Role::get();
+        $roless = DB::table('role')->get();
         return view('user.index', [
             'users' => $users->orderByDesc('id')->UserDetails()->paginate(10),
             'GetTrashDate' => $GetTrashDate,
@@ -99,7 +100,7 @@ class Index extends Component
     {
         $this->role_id = $this->role_id;
     }
-    public function ViewUser($id, $return = false)
+    public function ViewUser($id)
     {
         $this->user = User::with([
             'sales',
@@ -107,9 +108,6 @@ class Index extends Component
         ])->find($id);
         $this->Sales($this->salesPage);
         $this->products($this->productsPage);
-        if ($return) {
-            return $this->user;
-        }
     }
 
     public function Sales($numerPage)
@@ -178,21 +176,21 @@ class Index extends Component
             'permission',
             'ShowPermission',
             'ExportDataSelected',
-            'quantity'
+            'quantity',
+            'export',
+            'role_id',
+            'status',
         ];
     }
-    public function done()
+    public function done($action = true)
     {
-        event(new UserPage());
-        event(new UserActions());
-        $this->add();
-        $this->reset(self::Resets());
         $this->dispatchBrowserEvent('closeModal');
+        $this->reset(self::Resets());
         $this->resetValidation();
-    }
-    public function add()
-    {
-        $this->UpdateUser == false;
+        if ($action) {
+            event(new UserActions());
+            event(new UserPage());
+        }
     }
 
     public function updatstatus()
@@ -204,7 +202,6 @@ class Index extends Component
     {
         $this->Trashed = !$this->Trashed;
         $this->resetPage();
-        $this->done();
     }
 
     public function updatingSearch()
@@ -275,6 +272,11 @@ class Index extends Component
     }
     public function role_permission($role_id)
     {
+        // if $role_id = all 
+        //    add all role_id to role_permission array
+        if ($role_id == 'all') {
+            $this->permission = Role::pluck('id')->toArray();
+        }
         //    before add data to role_permission array check 
         //    if this role_id is exist in role_permission array or not
         if (!in_array($role_id, $this->permission)) {
@@ -284,6 +286,18 @@ class Index extends Component
             //    remove it from role_permission array
             $this->permission = array_diff($this->permission, [$role_id]);
         }
+    }
+    public function All_permission()
+    {
+        // check   if role_permission array is empty or not
+        // if role_permission array is empty
+        // add all role_id to role_permission array
+        if (empty($this->permission))
+            $this->permission = Role::pluck('id')->toArray();
+        // if role_permission array is not empty
+        // remove all role_id from role_permission array
+        else
+            $this->permission = [];
     }
 
     public function submit()
@@ -363,7 +377,7 @@ class Index extends Component
             $this->email = $user->email;
             $this->address = $user->address;
             $this->statu = $user->status;
-            $this->permission = json_decode($user->role_id, true);
+            $this->permission = json_decode($user->role_id, true) ?? [];
         }
     }
     public function delete($id)

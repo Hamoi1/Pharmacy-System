@@ -8,17 +8,43 @@ use App\Models\Products;
 use App\Models\Customers;
 use App\Models\Suppliers;
 use App\Models\sale_details;
-use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Str;
 
 class Index extends Component
 {
     public  $debt = false,
-        $name, $phone, $email, $address, $currentpaid, $discount, $data, $product, $saleID, $supplier, $customer, $guarantorphone, $guarantoraddress, $SupplierSearch, $CustomerSearch;
-    protected $queryString = ['debt' => ['except' => false], 'supplier' => ['except' => ''], 'customer' => ['except' => '']],
+        $name, $phone, $email, $address, $currentpaid, $discount, $data, $product, $saleID, $supplier, $customer, $guarantorphone, $guarantoraddress, $SupplierSearch, $CustomerSearch, $invoice, $invoices;
+    protected $queryString = ['debt' => ['except' => false], 'supplier' => ['except' => ''], 'customer' => ['except' => ''], 'invoice' => ['except' => '']],
         $listeners = ['RefreshCustomer' => '$refresh', 'RefreshSupplier' => '$refresh'];
+    public function mount()
+    {
+        // session()->forget('invoice');
+        // check if session('invoice') is array or not 
+        if (is_array(session('invoice'))) {
+            $invoices = array_values(session('invoice'));
+            $this->invoices = $invoices;
+        } else {
+            $this->invoices = [session('invoice')];
+        }
+        // dd($this->invoices);
+
+        $this->invoice = $this->invoices[0];
+    }
+    public function getInvoice()
+    {
+        $number = fake()->unique()->numberBetween(0, 2147483647) . Str::random(1);
+        $number = Str::limit($number, 9, '');
+        // check if invoice
+        $check = Sales::where('invoice', $number)->first();
+        if ($check) {
+            $this->getInvoice();
+        }
+        return Str::start($number, 'inv-');
+    }
     public function render()
     {
-        $sales = Sales::where('invoice',  session('invoice'))->with('sale_details', function ($query) {
+        // dd($this->invoices);
+        $sales = Sales::where('invoice',  $this->invoice)->with('sale_details', function ($query) {
             $query->orderByDesc('id')->product();
         })->first();
         $this->SupplierSearch != null ?
@@ -35,11 +61,37 @@ class Index extends Component
             $customers = Customers::select(['id', 'name',])->orderByDesc('id')->get();
         return view('pos.index', compact('sales', 'suppliers', 'customers'));
     }
+    public function AddNewInvoce()
+    {
+        $invoice = $this->getInvoice();
+        $sale = Sales::create([
+            'invoice' => $invoice,
+            'total' => 0,
+        ]);
+        array_push($this->invoices, $invoice);
+        $this->invoices = array_values($this->invoices);
+        session()->put('invoice', $this->invoices);
+    }
+
+    public function DeleteInvoicePage($index)
+    {
+        if (count($this->invoices) == 1) {
+            return;
+        }
+        unset($this->invoices[$index]);
+        $this->invoices =  array_values($this->invoices);
+        if (count($this->invoices) == 0) {
+            $this->AddNewInvoce();
+        }
+        session()->put('invoice', $this->invoices);
+        $this->invoice = $this->invoices[0];
+    }
+
     public function done()
     {
+        $this->dispatchBrowserEvent('closeModal');
         $this->reset(['name', 'email', 'phone', 'address', 'guarantorphone', 'guarantoraddress']);
         $this->resetValidation();
-        $this->dispatchBrowserEvent('closeModal');
     }
 
     public function debt()
@@ -76,12 +128,12 @@ class Index extends Component
         }
         $this->sessionSet(1, $product_quantity->id, $product_quantity->expiry_date);
         // dd($product_quantity);
-        $sales = Sales::where('invoice',  session('invoice'))->with('sale_details', function ($query) {
+        $sales = Sales::where('invoice', $this->invoice)->with('sale_details', function ($query) {
             $query->orderByDesc('id')->product();
         })->first();
         if ($sales == null) {
             $sales = Sales::create([
-                'invoice' => session('invoice'),
+                'invoice' => $this->invoice,
                 'total' => $checkProduct->sale_price
             ]);
             $sales->sale_details()->create([
@@ -164,7 +216,7 @@ class Index extends Component
         }
         // dd($product_quantity);
         if ($product_quantity) {
-           $quantitys[$product_quantity->id]->quantity = $quantitys[$product_quantity->id]->quantity - 1;
+            $quantitys[$product_quantity->id]->quantity = $quantitys[$product_quantity->id]->quantity - 1;
             $this->sessionSet($quantitys[$product_quantity->id]->quantity, $product_quantity->id, $product_quantity->expiry_date);
             // update product by expiry_date
             $product_quantity->update([
@@ -290,96 +342,6 @@ class Index extends Component
         $this->dispatchBrowserEvent('print', ['route' => $route]);
     }
 
-    public function addSupplier()
-    {
-        $this->validate(
-            [
-                'name' => 'required|string',
-                'phone' => 'required|numeric|digits:11|unique:suppliers,phone',
-                'email' => 'required|email|regex:/^[a-zA-Z0-9_.+-]+@[a-zA-Z]+\.[a-zA-Z]+$/u|unique:suppliers,email',
-                'address' => 'required|string',
-            ],
-            [
-                'name.required' => __('validation.required', ['attribute' => __('header.name')]),
-                'name.string' => __('validation.string', ['attribute' => __('header.name')]),
-                'email.required' => __('validation.required', ['attribute' => __('header.email')]),
-                'email.email' => __('validation.email', ['attribute' => __('header.email')]),
-                'email.regex' => __('validation.regex', ['attribute' => __('header.email')]),
-                'email.unique' => __('validation.unique', ['attribute' => __('header.email')]),
-                'phone.required' => __('validation.required', ['attribute' => __('header.phone')]),
-                'phone.numeric' => __('validation.numeric', ['attribute' => __('header.phone')]),
-                'phone.digits' => __('validation.digits', ['attribute' => __('header.phone')]),
-                'phone.unique' => __('validation.unique', ['attribute' => __('header.phone')]),
-                'address.required' => __('validation.required', ['attribute' => __('header.address')]),
-            ]
-        );
-        $supplier  = Suppliers::create([
-            'name' => $this->name,
-            'email' => $this->email,
-            'phone' => $this->phone,
-            'address' => $this->address,
-        ]);
-        $data = [
-            'name : ' . $supplier->name,
-            'email : ' . $supplier->email,
-            'phone : ' . $supplier->phone,
-            'address : ' . $supplier->address,
-        ];
-        auth()->user()->InsertToLogsTable(auth()->user()->id, "Supplier", 'Create', 'nothing to show', $data);
-        flash()->addSuccess(__('header.add'));
-        $this->done();
-    }
-
-    public function addCustomer($action = false)
-    {
-
-        $this->validate(
-            [
-                'name' => 'required|string',
-                'phone' => 'required|numeric|digits:11|unique:suppliers,phone',
-                'email' => 'required|email|regex:/^[a-zA-Z0-9_.+-]+@[a-zA-Z]+\.[a-zA-Z]+$/u|unique:customers,email',
-                'address' => 'required|string',
-                'guarantorphone' => 'nullable|numeric',
-                'guarantoraddress' => 'nullable|string',
-            ],
-            [
-                'name.required' => __('validation.required', ['attribute' => __('header.name')]),
-                'name.string' => __('validation.string', ['attribute' => __('header.name')]),
-                'email.required' => __('validation.required', ['attribute' => __('header.email')]),
-                'email.email' => __('validation.email', ['attribute' => __('header.email')]),
-                'email.unique' => __('validation.unique', ['attribute' => __('header.email')]),
-                'email.regex' => __('validation.regex', ['attribute' => __('header.email')]),
-                'phone.required' => __('validation.required', ['attribute' => __('header.phone')]),
-                'phone.numeric' => __('validation.numeric', ['attribute' => __('header.phone')]),
-                'phone.digits' => __('validation.digits', ['attribute' => __('header.phone')]),
-                'phone.unique' => __('validation.unique', ['attribute' => __('header.phone')]),
-                'address.required' => __('validation.required', ['attribute' => __('header.address')]),
-                'guarantorphone.numeric' => __('validation.numeric', ['attribute' => __('header.guarantorphone')]),
-                'guarantorphone.digits' => __('validation.digits', ['attribute' => __('header.guarantorphone')]),
-                'guarantoraddress.string' => __('validation.string', ['attribute' => __('header.guarantoraddress')]),
-            ]
-        );
-        $supplier  = Customers::create([
-            'name' => $this->name,
-            'email' => $this->email,
-            'phone' => $this->phone,
-            'address' => $this->address,
-            'guarantorphone' => $this->guarantorphone ?? 0,
-            'guarantoraddress' => $this->guarantoraddress ?? 0,
-        ]);
-        $data = [
-            'name : ' . $supplier->name,
-            'email : ' . $supplier->email,
-            'phone : ' . $supplier->phone,
-            'address : ' . $supplier->address,
-            'guarantorphone : ' . $supplier->guarantorphone,
-            'guarantoraddress : ' . $supplier->guarantoraddress,
-        ];
-        auth()->user()->InsertToLogsTable(auth()->user()->id, "Customer", 'Create', 'nothing to show', $data);
-        flash()->addSuccess(__('header.add'));
-        if (!$action)
-            $this->done();
-    }
 
     public function checkProductExpiryDate($product)
     {
@@ -409,7 +371,6 @@ class Index extends Component
             }
         }
         return $min_expiry_date;
-        // return $product_expiry_dates;
     }
     public function sessionSet($quantity, $index, $expiry_date)
     {

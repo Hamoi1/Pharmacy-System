@@ -7,7 +7,7 @@
                 <div class="login d-flex align-items-center py-5">
                     <div class="container">
                         <div class="row">
-                            <div class="col-md-9 col-lg-8 mx-auto">
+                            <div class="col-md-9 col-lg-8 mx-auto px-2">
                                 <p class="my-1 mb-4 fs-2 text-center">
                                     Welcome back to <span class="fw-bolder mx-2 ">{{ $settings->name }}</span>
                                 </p>

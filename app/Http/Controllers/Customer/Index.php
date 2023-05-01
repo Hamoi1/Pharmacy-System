@@ -107,14 +107,14 @@ class Index extends Component
     }
     public function done()
     {
-        event(new CustomerPage());
+        $this->dispatchBrowserEvent('closeModal');
         $this->reset([
             'debt',
             'totalDebt'
         ]);
         $this->resetErrorBag();
         $this->resetValidation();
-        $this->dispatchBrowserEvent('closeModal');
+        event(new CustomerPage());
     }
 
 

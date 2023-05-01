@@ -32,8 +32,8 @@ class UserReport extends Component
     }
     public function done()
     {
-        $this->reset(['type', 'UserId']);
         $this->dispatchBrowserEvent('closeModal');
+        $this->reset(['type', 'UserId']);
     }
     public function generate()
     {

@@ -14,6 +14,7 @@ return [
     'user' => [
         'index' => 'المستعمل',
     ],
+    'AllPermission' => 'كل الصلاحيات',
     'currentpaid' => 'المبلغ المدفوع حاليا',
     'select' => ':name المستعمل',
     'update_' => 'التحدیث :name',

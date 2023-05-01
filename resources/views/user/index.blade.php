@@ -23,7 +23,7 @@
                     </div>
                     @can('Insert User')
                     <div class="col-auto ms-auto">
-                        <a href="" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#add-update" wire="wire:click=add">
+                        <a href="" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#add-update" wire="wire:click='$set('UpdateUser','false')'">
                             <i class="fa fa-plus"></i>
                         </a>
                     </div>

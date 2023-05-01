@@ -228,17 +228,22 @@
         import hotwiredTurbo from 'https://cdn.skypack.dev/@hotwired/turbo';
     </script>
     <script src="https://cdn.jsdelivr.net/gh/livewire/turbolinks@v0.1.x/dist/livewire-turbolinks.js" data-turbolinks-eval="false" data-turbo-eval="false"></script> -->
-    <script src="{{ asset('assets/js/jquery-3.6.1.min.js') }}" data-turbolinks-eval="false" data-turbo-eval="false"></script>
-    <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}" data-turbolinks-eval="false" data-turbo-eval="false"></script>
-    <script src="{{ asset('assets/js/autosize.min.js') }}" data-turbolinks-eval="false" data-turbo-eval="false"></script>
-    <script src="{{ asset('assets/js/main.js') }}" data-turbolinks-eval="false" data-turbo-eval="false"></script>
-    <script src="{{ asset('assets/js/apexcharts.min.js') }}" data-turbolinks-eval="false" data-turbo-eval="false"></script>
-    <script data-turbolinks-eval="false" data-turbo-eval="false">
+    <script src="{{ asset('assets/js/jquery-3.6.1.min.js') }}" ></script>
+    <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}" ></script>
+    <script src="{{ asset('assets/js/autosize.min.js') }}" ></script>
+    <script src="{{ asset('assets/js/main.js') }}" ></script>
+    <script src="{{ asset('assets/js/apexcharts.min.js') }}" ></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script >
         $(document).ready(function() {
             window.addEventListener('closeModal', event => {
+                event.preventDefault();
                 $('.modal').modal('hide');
                 $('.modal-backdrop ').remove();
                 $('.input-export').prop('checked', false);
+                // reste the form inside modal
+                $('.modal form').trigger('reset');
+                $('.modal form error-*').html('');
             });
             window.addEventListener('play', event => {
                 if (event.detail.sound == 'beep') {

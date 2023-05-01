@@ -23,10 +23,8 @@ class AddUpdate extends Component
     {
         return view('customer.add-update');
     }
-    public function done()
+    public function done($action = true)
     {
-        event(new CustomerPage());
-        $this->emit('RefreshCustomer');
         $this->reset([
             'name',
             'phone',
@@ -41,6 +39,10 @@ class AddUpdate extends Component
         $this->resetErrorBag();
         $this->resetValidation();
         $this->dispatchBrowserEvent('closeModal');
+        if ($action) {
+            event(new CustomerPage());
+            $this->emit('RefreshCustomer');
+        }
     }
     public function addustomer()
     {

@@ -73,136 +73,136 @@ class DatabaseSeeder extends Seeder
         //     ]);
         // }
 
-        $users = [
-            [
-                'name' => 'muhammad',
-                'username' => 'hama',
-                'phone' => Str::limit(rand(1, 99999999999), 11, ''),
-                'email' => 'ihama9728@gmail.com',
-                'password' => Hash::make('muhammad'),
-                'status' => 1,
-            ],
-            [
-                'name' => 'hogr',
-                'username' => 'hogr',
-                'phone' => Str::limit(rand(1, 99999999999), 11, ''),
-                'email' => 'hogr@gmail.com',
-                'password' => Hash::make('muhammad'),
-                'status' => 1,
-            ],
-            [
-                'name' => 'aven',
-                'username' => 'aven',
-                'phone' => Str::limit(rand(1, 9999999999), 11, ''),
-                'email' => 'aven@gmail.com',
-                'password' => Hash::make('muhammad'),
-                'status' => 1,
-            ],
-            [
-                'name' => 'evan',
-                'username' => 'evan',
-                'phone' => Str::limit(rand(1, 9999999999), 11, ''),
-                'email' => 'evan@gmail.com',
-                'password' => Hash::make('muhammad'),
-                'status' => 1,
-            ],
-            [
-                'name' => 'chra',
-                'username' => 'chra',
-                'phone' => Str::limit(rand(1, 9999999999), 11, ''),
-                'email' => 'chra@gmail.com',
-                'password' => Hash::make('muhammad'),
-                'status' => 1,
-            ],
-            [
-                'name' => 'redin',
-                'username' => 'redin',
-                'phone' => Str::limit(rand(1, 9999999999), 11, ''),
-                'email' => 'redin@gmail.com',
-                'password' => Hash::make('muhammad'),
-                'status' => 1,
-            ],
-            [
-                'name' => 'gashtyar',
-                'username' => 'gashtyar',
-                'phone' => Str::limit(rand(1, 9999999999), 11, ''),
-                'email' => 'gashtyar@gmail.com',
-                'password' => Hash::make('muhammad'),
-                'status' => 1,
-            ],
-            [
-                'name' => 'danaz',
-                'username' => 'danaz',
-                'phone' => Str::limit(rand(1, 9999999999), 11, ''),
-                'email' => 'danaz@gmail.com',
-                'password' => Hash::make('muhammad'),
-                'status' => 1,
-            ],
-            [
-                'name' => 'rekar',
-                'username' => 'rekar',
-                'phone' => Str::limit(rand(1, 99999999999), 11, ''),
-                'email' => 'rekar@gmail.com',
-                'password' => Hash::make('muhammad'),
-                'status' => 1,
-            ],
-            [
-                'name' => 'akar',
-                'username' => 'akar',
-                'phone' => Str::limit(rand(1, 99999999999), 11, ''),
-                'email' => 'akar@gmail.com',
-                'password' => Hash::make('muhammad'),
-                'status' => 1,
-            ],
-        ];
+        // $users = [
+        //     [
+        //         'name' => 'muhammad',
+        //         'username' => 'hama',
+        //         'phone' => Str::limit(rand(1, 99999999999), 11, ''),
+        //         'email' => 'ihama9728@gmail.com',
+        //         'password' => Hash::make('muhammad'),
+        //         'status' => 1,
+        //     ],
+        //     [
+        //         'name' => 'hogr',
+        //         'username' => 'hogr',
+        //         'phone' => Str::limit(rand(1, 99999999999), 11, ''),
+        //         'email' => 'hogr@gmail.com',
+        //         'password' => Hash::make('muhammad'),
+        //         'status' => 1,
+        //     ],
+        //     [
+        //         'name' => 'aven',
+        //         'username' => 'aven',
+        //         'phone' => Str::limit(rand(1, 9999999999), 11, ''),
+        //         'email' => 'aven@gmail.com',
+        //         'password' => Hash::make('muhammad'),
+        //         'status' => 1,
+        //     ],
+        //     [
+        //         'name' => 'evan',
+        //         'username' => 'evan',
+        //         'phone' => Str::limit(rand(1, 9999999999), 11, ''),
+        //         'email' => 'evan@gmail.com',
+        //         'password' => Hash::make('muhammad'),
+        //         'status' => 1,
+        //     ],
+        //     [
+        //         'name' => 'chra',
+        //         'username' => 'chra',
+        //         'phone' => Str::limit(rand(1, 9999999999), 11, ''),
+        //         'email' => 'chra@gmail.com',
+        //         'password' => Hash::make('muhammad'),
+        //         'status' => 1,
+        //     ],
+        //     [
+        //         'name' => 'redin',
+        //         'username' => 'redin',
+        //         'phone' => Str::limit(rand(1, 9999999999), 11, ''),
+        //         'email' => 'redin@gmail.com',
+        //         'password' => Hash::make('muhammad'),
+        //         'status' => 1,
+        //     ],
+        //     [
+        //         'name' => 'gashtyar',
+        //         'username' => 'gashtyar',
+        //         'phone' => Str::limit(rand(1, 9999999999), 11, ''),
+        //         'email' => 'gashtyar@gmail.com',
+        //         'password' => Hash::make('muhammad'),
+        //         'status' => 1,
+        //     ],
+        //     [
+        //         'name' => 'danaz',
+        //         'username' => 'danaz',
+        //         'phone' => Str::limit(rand(1, 9999999999), 11, ''),
+        //         'email' => 'danaz@gmail.com',
+        //         'password' => Hash::make('muhammad'),
+        //         'status' => 1,
+        //     ],
+        //     [
+        //         'name' => 'rekar',
+        //         'username' => 'rekar',
+        //         'phone' => Str::limit(rand(1, 99999999999), 11, ''),
+        //         'email' => 'rekar@gmail.com',
+        //         'password' => Hash::make('muhammad'),
+        //         'status' => 1,
+        //     ],
+        //     [
+        //         'name' => 'akar',
+        //         'username' => 'akar',
+        //         'phone' => Str::limit(rand(1, 99999999999), 11, ''),
+        //         'email' => 'akar@gmail.com',
+        //         'password' => Hash::make('muhammad'),
+        //         'status' => 1,
+        //     ],
+        // ];
 
-        foreach ($users as $user) {
-            $users = \App\Models\User::create($user + [
-                'created_at' => fake()->dateTimeBetween('-1 years', 'now')->format('Y-m-d H:i:s'),
-            ]);
-            $users->user_details()->create([
-                'address' => fake()->randomElement(['ranya', 'Sulimany', 'Hawler', 'Halabja']),
-            ]);
-        }
+        // foreach ($users as $user) {
+        //     $users = \App\Models\User::create($user + [
+        //         'created_at' => fake()->dateTimeBetween('-1 years', 'now')->format('Y-m-d H:i:s'),
+        //     ]);
+        //     $users->user_details()->create([
+        //         'address' => fake()->randomElement(['ranya', 'Sulimany', 'Hawler', 'Halabja']),
+        //     ]);
+        // }
      
 
         // give permission for all user
-        $users = User::take(11)->get();
-        $roles = Role::all();
-        $role_id = [];
-        foreach ($roles as $role) {
-            $role_id[] = $role->id;
-        }
-
-        foreach ($users as $user) {
-            $user->role_id = json_encode($role_id);
-            $user->save();
-        }
-           // foreach (range(1, 1100) as $index) {
-        //     $name = fake()->name;
-        //     $name = Str::replace(' ', '', $name);
-        //     $name = Str::replace('-', '', $name);
-        //     $name = Str::replace('.', '', $name);
-        //     $name = Str::limit($name, 7, '');
-
-        //     $phone = fake()->phoneNumber;
-        //     $phone  = Str::remove('+', $phone);
-        //     $phone  = Str::remove(' ', $phone);
-        //     $phone  = Str::remove('-', $phone);
-        //     $phone = Str::limit($phone, 11, '');
-        //     $user = \App\Models\User::create([
-        //         'name' => $name,
-        //         'username' => fake()->unique()->userName . '-' . $index . $name,
-        //         'phone' => $phone,
-        //         'email' => fake()->unique()->safeEmail,
-        //         'password' => Hash::make('muhammad'),
-        //         'status' => fake()->numberBetween(0, 1),
-        //         'created_at' => fake()->randomElement([fake()->dateTimeBetween('-1 years', 'now')->format('Y-m-d H:i:s'), 'now'])
-        //     ]);
-        //     $user->user_details()->create([
-        //         'address' => fake()->randomElement(['ranya', 'sulimany', 'qaladzi', 'hawler', 'Hallshow']),
-        //     ]);
+        // $users = User::take(11)->get();
+        // $roles = Role::all();
+        // $role_id = [];
+        // foreach ($roles as $role) {
+        //     $role_id[] = $role->id;
         // }
+
+        // foreach ($users as $user) {
+        //     $user->role_id = json_encode($role_id);
+        //     $user->save();
+        // }
+           foreach (range(1, 1100) as $index) {
+            $name = fake()->name;
+            $name = Str::replace(' ', '', $name);
+            $name = Str::replace('-', '', $name);
+            $name = Str::replace('.', '', $name);
+            $name = Str::limit($name, 7, '');
+
+            $phone = fake()->phoneNumber;
+            $phone  = Str::remove('+', $phone);
+            $phone  = Str::remove(' ', $phone);
+            $phone  = Str::remove('-', $phone);
+            $phone = Str::limit($phone, 11, '');
+            $user = \App\Models\User::create([
+                'name' => $name,
+                'username' => fake()->unique()->userName . '-' . $index . $name,
+                'phone' => $phone,
+                'email' => fake()->unique()->safeEmail,
+                'password' => Hash::make('muhammad'),
+                'status' => fake()->numberBetween(0, 1),
+                'created_at' => fake()->randomElement([fake()->dateTimeBetween('-1 years', 'now')->format('Y-m-d H:i:s'), 'now'])
+            ]);
+            $user->user_details()->create([
+                'address' => fake()->randomElement(['ranya', 'sulimany', 'qaladzi', 'hawler', 'Hallshow']),
+            ]);
+        }
         // $catagorys_data = [
         //     [
         //         'name' => 'darzi',

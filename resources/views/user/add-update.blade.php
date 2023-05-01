@@ -12,7 +12,7 @@
             <h5 class="modal-title me-auto" id="staticBackdropLabel">
                 {{ $UpdateUser?__('header.update_' , ['name'=> __('header.User')])  : __('header.add_', ['name'=> __('header.User')])}}
             </h5>
-            <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close" wire:click=done></button>
+            <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close" wire:click="done(false)"></button>
         </div>
         <form wire:submit.prevent="submit">
             <div class="row g-3">
@@ -76,10 +76,14 @@
                         {{ __('header.back') }}
                     </button>
                     <div class="d-flex align-items-center flex-wrap gap-3 p-2 mt-3">
+                        <div class="col-12">
+                            <button type="button" class="btn  rounded bg-primary" wire:click="All_permission()">{{ __('header.AllPermission') }}
+                            </button>
+                        </div>
                         @foreach($roless as $role)
                         <div class="mt-2 mx-1">
                             <div class="form-check form-switch d-flex align-items-center justify-content-center gap-1 not-reverse">
-                                <input class="form-check-input permission" wire:loading.attr="disabled" type="checkbox" wire:click="role_permission({{ $role->id }})" value="{{ $role->id }}" @if ($UpdateUser) {{  in_array($role->id,$permission) ? 'checked' : '' }} @else {{  in_array($role->id,$permission) ? 'checked' : '' }} @endif>
+                                <input class="form-check-input permission" wire:loading.attr="disabled" type="checkbox" wire:click="role_permission({{ $role->id }})" value="{{ $role->id }}" @if ($UpdateUser &&  $permission != null) {{ in_array($role->id,$permission) ? 'checked' : '' }} @else {{  in_array($role->id,$permission) ? 'checked' : '' }} @endif>
                                 <label class="form-check-label mt-2">{{ $role->name }}</label>
                             </div>
                         </div>

@@ -64,9 +64,9 @@ class Index extends Component
     }
     public function done()
     {
+        $this->dispatchBrowserEvent('closeModal');
         $this->reset(['SaleID', 'saleView',]);
         $this->resetValidation();
-        $this->dispatchBrowserEvent('closeModal');
     }
     public function View($id)
     {

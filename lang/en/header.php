@@ -90,6 +90,7 @@ return [
     'total' => 'Total',
     'discount' => 'Discount',
     'supplier' => 'Supplier',
+    'AllPermission' => 'All Permission',
     'expire_date' => 'Expire Date',
     'porduct_is_expire' => 'Product is Expired',
     'Edit_Product_image' => 'Update Product image',

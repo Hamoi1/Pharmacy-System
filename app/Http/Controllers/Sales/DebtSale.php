@@ -48,9 +48,9 @@ class DebtSale extends Component
     }
     public function done()
     {
+        $this->dispatchBrowserEvent('closeModal');
         $this->reset(['Edit', 'name', 'phone', 'currentPaid', 'amount', 'remain', 'price']);
         $this->resetValidation();
-        $this->dispatchBrowserEvent('closeModal');
     }
     public function edit($id)
     {

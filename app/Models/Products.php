@@ -51,22 +51,18 @@ class Products extends Model
         return $this->hasMany(ProductsQuantity::class, 'product_id');
     }
 
-
-    // get total quantity form products_quantities
     public function scopeTotalQuantity($query)
     {
         return  $query->addSelect([
             'total_quantity' => ProductsQuantity::selectRaw('sum(quantity)')->whereColumn('product_id', 'products.id'),
         ]);
     }
-    // min Quantity
     public function scopeMinQuantity($query)
     {
         return  $query->addSelect([
             'min_quantity' => ProductsQuantity::selectRaw('min(quantity)')->whereColumn('product_id', 'products.id'),
         ]);
     }
-    // get min expiry date
     public function scopeExpiryDate($query)
     {
         return  $query->addSelect([
@@ -74,7 +70,6 @@ class Products extends Model
         ]);
     }
 
-    // Sale Price
     public function scopeSalePrice($query)
     {
         return  $query->addSelect([
@@ -83,6 +78,4 @@ class Products extends Model
             'final_sale_price' => ProductsQuantity::selectRaw('sum(sale_price * quantity) / sum(quantity) as sale_price_total')->whereColumn('product_id', 'products.id'),
         ]);
     }
-    // pproduct->sale_price ste  final_sale_price value and save in data base 
-
 }

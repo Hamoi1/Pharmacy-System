@@ -69,9 +69,9 @@ class UpdateImage extends Component
     }
     public function done()
     {
+        $this->dispatchBrowserEvent('closeModal');
         $this->resetValidation();
         $this->reset(['images']);
-        $this->dispatchBrowserEvent('closeModal');
         $this->mount($this->product->id);
     }
     public function remove($index)

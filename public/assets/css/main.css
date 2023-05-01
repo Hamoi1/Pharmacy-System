@@ -579,6 +579,33 @@ th {
     }
 }
 
+.addInvoiceSeaction {
+    width: 100%;
+    padding: 10px;
+    box-shadow: rgba(17, 17, 26, 0.1) 0px 0px 3px !important;
+    background: #fff;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    position: relative !important;
+    overflow:hidden !important;
+}
+.addInvoiceSeaction .invoices {
+    overflow-x: scroll !important;
+}
+.addInvoiceSeaction .addNewInvoice {
+    position: absolute !important;
+    top: 10px;
+    z-index: 1000;
+}
+
+.addInvoiceSeaction .addNewInvoice.right {
+    right: 10px;
+}
+
+.addInvoiceSeaction .addNewInvoice.left {
+    left: 10px;
+}
+
 
 
 

@@ -13,7 +13,7 @@ class Index extends Component
     use WithPagination;
     public $name, $email, $phone, $address, $search, $updateSupplier, $supplier_id, $Trashed = false;
     protected $paginationTheme = 'bootstrap', $queryString = ['search', 'Trashed' => ['except' => false]],
-        $listeners = ['RefreshSupplier' => '$refresh', 'supplier-page' => 'render'];
+        $listeners = ['RefreshSupplier' => 'render', 'supplier-page' => 'render'];
     public function mount()
     {
         if (!Gate::allows('View Supplier')) {
@@ -52,10 +52,10 @@ class Index extends Component
     }
     public function done()
     {
-        event(new SupplierPage());
+        $this->dispatchBrowserEvent('closeModal');
         $this->reset();
         $this->resetValidation();
-        $this->dispatchBrowserEvent('closeModal');
+        event(new SupplierPage());
     }
     public function delete(Suppliers $supplier)
     {
@@ -74,7 +74,6 @@ class Index extends Component
             auth()->user()->InsertToLogsTable(auth()->user()->id, "Supplier", 'Delete', $data, $data);
             flash()->addSuccess(__('header.deleted_for_30_days'));
         }
-
         $this->done();
     }
     public function DeleteAll()
