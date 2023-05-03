@@ -30,7 +30,7 @@ class UserReport extends Component
         $this->UserId = $id;
         $this->User_Name = User::FindOrFail($id)->name;
     }
-    public function done()
+    public function done($action = true)
     {
         $this->dispatchBrowserEvent('closeModal');
         $this->reset(['type', 'UserId']);

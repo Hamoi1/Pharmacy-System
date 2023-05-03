@@ -50,12 +50,14 @@ class Index extends Component
         $this->Trashed = !$this->Trashed;
         $this->resetPage();
     }
-    public function done()
+    public function done($action = true)
     {
         $this->dispatchBrowserEvent('closeModal');
         $this->reset();
         $this->resetValidation();
-        event(new SupplierPage());
+        if ($action) {
+            event(new SupplierPage());
+        }
     }
     public function delete(Suppliers $supplier)
     {

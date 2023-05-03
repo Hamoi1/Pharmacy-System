@@ -12,7 +12,7 @@
             <h5 class="modal-title me-auto" id="staticBackdropLabel">
                 {{ $CustomerUpadate ?__('header.update_' , ['name'=> __('header.Customer')])  : __('header.add_', ['name'=> __('header.Customer')])}}
             </h5>
-            <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close" wire:click="done(false)"></button>
+            <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <form wire:submit.prevent="submit">
             <div class="row g-3">

@@ -579,36 +579,24 @@ th {
     }
 }
 
-.addInvoiceSeaction {
-    width: 100%;
-    padding: 10px;
-    box-shadow: rgba(17, 17, 26, 0.1) 0px 0px 3px !important;
-    background: #fff;
-    margin-bottom: 20px;
-    border-radius: 5px;
+.invoice-section {
     position: relative !important;
-    overflow:hidden !important;
+    overflow: hidden !important;
 }
-.addInvoiceSeaction .invoices {
+
+.invoice-section .invoices {
     overflow-x: scroll !important;
-}
-.addInvoiceSeaction .addNewInvoice {
-    position: absolute !important;
-    top: 10px;
-    z-index: 1000;
+    position: relative;
 }
 
-.addInvoiceSeaction .addNewInvoice.right {
-    right: 10px;
+.invoice-section .invoices::-webkit-scrollbar {
+    display: none !important;
 }
-
-.addInvoiceSeaction .addNewInvoice.left {
-    left: 10px;
-}
-
-
-
-
+/* .puls-invoice{
+    position: absolute;
+    top: 10px !important;
+    left: 10px !important;
+} */
 .navbar-nav .nav-item {
     margin-top: 5px !important;
     font-size: 14px;

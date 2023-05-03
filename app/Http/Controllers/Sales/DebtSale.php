@@ -46,7 +46,7 @@ class DebtSale extends Component
             'customers' => $customers,
         ]);
     }
-    public function done()
+    public function done($action = true)
     {
         $this->dispatchBrowserEvent('closeModal');
         $this->reset(['Edit', 'name', 'phone', 'currentPaid', 'amount', 'remain', 'price']);

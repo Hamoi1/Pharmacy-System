@@ -30,7 +30,7 @@ class ReturnProduct extends Component
         return view('products.return.return-product');
     }
 
-    public function done()
+    public function done($action = true)
     {
         $this->reset(['SaleId', 'products']);
         $this->resetValidation();

@@ -24,12 +24,14 @@ class Index extends Component
         $barcodes = Barcode::paginate(10);
         return view('barcode.index', ['barcodes' => $barcodes]);
     }
-    public function done()
+    public function done($action = true)
     {
         $this->dispatchBrowserEvent('closeModal');
         $this->reset(['barcode', 'quantity', 'barcode_name', 'barcode_id', 'Barcode']);
         $this->resetValidation();
-        $this->resetErrorBag();
+        if ($action) {
+            $this->resetErrorBag();
+        }
     }
     private function  generate()
     {

@@ -54,11 +54,14 @@ class Update extends Component
         $this->emit('UpdateProfile', ['name' => 'profile.index']);
         $this->done();
     }
-    public function done()
+    public function done($action = true)
     {
         $this->dispatchBrowserEvent('closeModal');
         $this->resetValidation();
-        event(new UserPage());
+        $this->resetErrorBag();
+        if ($action) {
+            event(new UserPage());
+        }
     }
     public function edit()
     {

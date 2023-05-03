@@ -24,5 +24,4 @@ class Dashboard extends Component
 
         return view('dashboard', ['users' => $users, 'products' => $products]);
     }
-
 }

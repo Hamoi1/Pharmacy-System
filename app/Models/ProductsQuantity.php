@@ -22,13 +22,5 @@ class ProductsQuantity extends Model
         return $this->belongsTo(Products::class, 'product_id');
     }
 
-    // public function scopeProductQuantity($query)
-    // {
-    //     $query->addSelect([
-    //         'quantity_product' => ProductsQuantity::selectRaw('sum(quantity)')->whereColumn('product_id', 'products.id'),
-    //         'sale_price_product' => ProductsQuantity::selectRaw('CAST(sum(sale_price * quantity) / sum(quantity) as UNSIGNED) as sale_price_total')->whereColumn('product_id', 'products.id'),
-    //         // epiry_date
-    //         'expiry_date' => ProductsQuantity::selectRaw('min(expiry_date)')->whereColumn('product_id', 'products.id'),
-    //     ]);
-    // }
+  
 }

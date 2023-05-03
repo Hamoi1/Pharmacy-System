@@ -15,15 +15,13 @@ class AddUpdate extends Component
     {
         return view('supplier.add-update');
     }
-    public function done($action = true)
+    public function done()
     {
         $this->reset(['name', 'email', 'phone', 'address', 'updateSupplier', 'supplier_id']);
         $this->resetValidation();
         $this->dispatchBrowserEvent('closeModal');
-        if ($action) {
-            $this->emit('RefreshSupplier');
-            event(new SupplierPage());
-        }
+        $this->emit('RefreshSupplier');
+        event(new SupplierPage());
     }
     public function GetRuls()
     {
@@ -56,9 +54,7 @@ class AddUpdate extends Component
     public function AddSupplier()
     {
         $this->updateSupplier = false;
-        $this->reset(['name', 'email', 'phone', 'address', 'supplier_id']);
-        $this->resetValidation();
-        return;
+        $this->resetErrorBag();
     }
     public function submit()
     {

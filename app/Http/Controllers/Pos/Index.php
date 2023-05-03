@@ -6,8 +6,10 @@ use App\Models\Sales;
 use Livewire\Component;
 use App\Models\Products;
 use App\Models\Customers;
+use App\Models\ProductsQuantity;
 use App\Models\Suppliers;
 use App\Models\sale_details;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class Index extends Component
@@ -18,17 +20,11 @@ class Index extends Component
         $listeners = ['RefreshCustomer' => '$refresh', 'RefreshSupplier' => '$refresh'];
     public function mount()
     {
-        // session()->forget('invoice');
-        // check if session('invoice') is array or not 
-        if (is_array(session('invoice'))) {
-            $invoices = array_values(session('invoice'));
-            $this->invoices = $invoices;
-        } else {
+        is_array(session('invoice')) ?
+            $this->invoices = array_values(session('invoice'))
+            :
             $this->invoices = [session('invoice')];
-        }
-        // dd($this->invoices);
-
-        $this->invoice = $this->invoices[0];
+        $this->invoice =   $this->invoice == null ? $this->invoices[0] :  $this->invoice;
     }
     public function getInvoice()
     {
@@ -43,22 +39,23 @@ class Index extends Component
     }
     public function render()
     {
-        // dd($this->invoices);
         $sales = Sales::where('invoice',  $this->invoice)->with('sale_details', function ($query) {
             $query->orderByDesc('id')->product();
         })->first();
         $this->SupplierSearch != null ?
-            $suppliers = Suppliers::select(['id', 'name'])->where(function ($query) {
+            $suppliers = DB::table('suppliers')->select(['id', 'name'])->where(function ($query) {
                 $query->where('name', 'like', '%' . $this->SupplierSearch . '%')
                     ->orWhere('phone', 'like', '%' . $this->SupplierSearch . '%');
             })->orderByDesc('id')->get() :
-            $suppliers = Suppliers::select(['id', 'name'])->orderByDesc('id')->get();
+            $suppliers = DB::table('suppliers')->select(['id', 'name'])->orderByDesc('id')->get();
         $this->CustomerSearch != null ?
-            $customers =  Customers::select(['id', 'name',])->where(function ($query) {
+            $customers = DB::table('customers')->select(['id', 'name'])->where(function ($query) {
                 $query->where('name', 'like', '%' . $this->CustomerSearch . '%')
                     ->orWhere('phone', 'like', '%' . $this->CustomerSearch . '%');
             })->orderByDesc('id')->get() :
-            $customers = Customers::select(['id', 'name',])->orderByDesc('id')->get();
+            $customers = DB::table('customers')->select(['id', 'name'])->orderByDesc('id')->get();
+
+
         return view('pos.index', compact('sales', 'suppliers', 'customers'));
     }
     public function AddNewInvoce()
@@ -87,13 +84,6 @@ class Index extends Component
         $this->invoice = $this->invoices[0];
     }
 
-    public function done()
-    {
-        $this->dispatchBrowserEvent('closeModal');
-        $this->reset(['name', 'email', 'phone', 'address', 'guarantorphone', 'guarantoraddress']);
-        $this->resetValidation();
-    }
-
     public function debt()
     {
         $this->debt = !$this->debt;
@@ -108,55 +98,49 @@ class Index extends Component
             $this->data != null && $this->data != "" ?  $this->product = Products::where('name', 'like', '%' . $this->data . '%')->get() : $this->product = null;
         }
         $this->data = trim($this->data);
-        $product = Products::with('product_quantity')->TotalQuantity()->where('barcode', $this->data)->orWhere('name', $this->data);
-        $checkProduct =   $product->first();
-        if (!$checkProduct) {
+        $product = Products::with('product_quantity')->TotalQuantity()->where('barcode', $this->data)->orWhere('name', $this->data)->first();
+        if (!$product) {
             return;
         }
-        if ($checkProduct->total_quantity == 0) {
+        if ($product->total_quantity == 0) {
             $this->dispatchBrowserEvent('play', ['sound' => 'fail']);
             flash()->addError(__('header.out_of_stock'));
             return;
         }
-        $min_expiry_date = $this->checkProductExpiryDate($product);
-        $product_quantity = $checkProduct->product_quantity->where('expiry_date', $min_expiry_date)->first();
+        $product_quantity = $product->product_quantity()->where('quantity', '>', 0)->whereDate('expiry_date', '>', now())->first();
+
         if ($product_quantity->quantity  == 0) {
-            // get product_quantity wherenot expiry date != min_expiry_date 
-            $product_quantity = $checkProduct->product_quantity->where('expiry_date', '!=', $min_expiry_date)->where('quantity', '>', 0);
-            //  product_quantity store by expiry_date to low for high
-            $product_quantity = $product_quantity->sortBy('expiry_date')->first();
+            $product_quantity = $product->product_quantity()->where('quantity', '>', 0)->where('expiry_date', '!=', $product_quantity->expiry_date)->whereDate('expiry_date', '>', now())->first();
         }
-        $this->sessionSet(1, $product_quantity->id, $product_quantity->expiry_date);
-        // dd($product_quantity);
         $sales = Sales::where('invoice', $this->invoice)->with('sale_details', function ($query) {
             $query->orderByDesc('id')->product();
         })->first();
         if ($sales == null) {
             $sales = Sales::create([
                 'invoice' => $this->invoice,
-                'total' => $checkProduct->sale_price
+                'total' => $product->sale_price
             ]);
             $sales->sale_details()->create([
-                'product_id' => $checkProduct->id,
+                'product_id' => $product->id,
                 'quantity' => 1,
             ]);
             $product_quantity->update([
                 'quantity' => $product_quantity->quantity - 1
             ]);
         } else {
-            $sales->total = $sales->total + $checkProduct->sale_price;
-            $checkProduct_id =  $sales->sale_details()->where('product_id', $checkProduct->id)->first();
+            $sales->total = $sales->total + $product->sale_price;
+            $checkProduct_id =  $sales->sale_details()->where('product_id', $product->id)->first();
             if ($checkProduct_id) {
                 $checkProduct_id->update([
                     'quantity' => $checkProduct_id->quantity + 1,
                 ]);
             } else {
                 $sales->sale_details()->create([
-                    'product_id' => $checkProduct->id,
+                    'product_id' => $product->id,
                     'quantity' => 1,
                 ]);
             }
-            $sales->save();
+            $sales->saveQuietly();
             $product_quantity->update([
                 'quantity' => $product_quantity->quantity - 1
             ]);
@@ -164,7 +148,6 @@ class Index extends Component
         if (is_numeric($this->data)) {
             $this->reset('data');
         }
-        $this->resetValidation();
     }
     public function plus(sale_details $sale_details, $product_id, Sales $sales)
     {
@@ -343,58 +326,6 @@ class Index extends Component
     }
 
 
-    public function checkProductExpiryDate($product)
-    {
-        $check = $product;
-        $product = $product->first();
-        $min_expiry_date = $product->product_quantity->min('expiry_date');
-        // check a min_expiry date <= now() if true will be change a min_expiry date
-        $min_expiry_date_data = [];
-        if ($min_expiry_date <= now()) {
-            foreach ($product->product_quantity as $product_quantity) {
-                if ($product_quantity->expiry_date > now()) {
-                    $min_expiry_date_data[] = $product_quantity;
-                }
-            }
-        }
-        if (count($min_expiry_date_data) > 0) {
-            uasort($min_expiry_date_data, function ($a, $b) {
-                return $a->expiry_date <=> $b->expiry_date;
-            });
-            // get min expiry date from product_expiry_dates
-            $product_expiry_dates = array_values($min_expiry_date_data);
-            $product_expiry_dates  = collect($product_expiry_dates);
-            $min_expiry_date =  $product_expiry_dates->min('expiry_date');
-            $checkProduct = $check->first()->product_quantity->where('expiry_date', $min_expiry_date)->first();
-            if ($checkProduct->quantity == 0) {
-                $min_expiry_date = $check->first()->product_quantity->where('id', '!=', $checkProduct->id)->where('expiry_date', '>', now())->where('quantity', '!=', 0)->first()->expiry_date;
-            }
-        }
-        return $min_expiry_date;
-    }
-    public function sessionSet($quantity, $index, $expiry_date)
-    {
-        $quantitys = json_decode(session()->get('quantity'));
-        // change to array
-        $data = (array) $quantitys;
-        if ($quantity == 0) {
-            unset($data[$index]);
-        } else {
-            // chec data if index exist or not if exist update a quantity
-            if (array_key_exists($index, $data)) {
-                $data[$index]->quantity = $quantity + $data[$index]->quantity;
-            } else {
-                $data[$index] =
-                    [
-                        'quantity' => $quantity,
-                        'expiry_date' => $expiry_date
-                    ];
-            }
-        }
-        // update session
-        $data = json_encode($data);
-        session()->put('quantity', $data);
-    }
 
     // public function toCheckQuantitys($product)
     // {

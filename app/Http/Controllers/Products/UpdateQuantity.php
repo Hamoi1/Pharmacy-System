@@ -30,13 +30,16 @@ class UpdateQuantity extends Component
         return view('products.update.index');
     }
 
-    public function done()
+    public function done($action = true)
     {
-        $this->reset(['purches_price', 'sale_price', 'quantity', 'expire_date', 'UpdateProduct']);
         $this->dispatchBrowserEvent('closeModal');
+        $this->reset(['purches_price', 'sale_price', 'quantity', 'expire_date', 'UpdateProduct']);
         $this->resetValidation();
-        $this->UpdateProduct = false;
-        $this->mount($this->product_id);
+        if ($action) {
+            $this->resetErrorBag();
+            $this->UpdateProduct = false;
+            $this->mount($this->product_id);
+        }
     }
     public function add()
     {
