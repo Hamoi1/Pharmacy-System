@@ -6,8 +6,6 @@ use App\Models\Sales;
 use Livewire\Component;
 use App\Models\Products;
 use App\Models\Customers;
-use App\Models\ProductsQuantity;
-use App\Models\Suppliers;
 use App\Models\sale_details;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -15,8 +13,8 @@ use Illuminate\Support\Str;
 class Index extends Component
 {
     public  $debt = false,
-        $name, $phone, $email, $address, $currentpaid, $discount, $data, $product, $saleID, $supplier, $customer, $guarantorphone, $guarantoraddress, $SupplierSearch, $CustomerSearch, $invoice, $invoices;
-    protected $queryString = ['debt' => ['except' => false], 'supplier' => ['except' => ''], 'customer' => ['except' => ''], 'invoice' => ['except' => '']],
+        $name, $phone, $email, $address, $currentpaid, $discount, $data, $product, $saleID, $supplier, $customer, $guarantorphone, $guarantoraddress, $SupplierSearch, $CustomerSearch, $invoice, $invoices, $SaleTypeView;
+    protected $queryString = ['debt' => ['except' => false], 'supplier' => ['except' => ''], 'customer' => ['except' => ''], 'invoice' => ['except' => ''], 'SaleTypeView' => ['except' => '']],
         $listeners = ['RefreshCustomer' => '$refresh', 'RefreshSupplier' => '$refresh'];
     public function mount()
     {
@@ -25,6 +23,7 @@ class Index extends Component
             :
             $this->invoices = [session('invoice')];
         $this->invoice =   $this->invoice == null ? $this->invoices[0] :  $this->invoice;
+        $this->SaleTypeView = $this->SaleTypeView == null ? 'ListView' : $this->SaleTypeView;
     }
     public function getInvoice()
     {
@@ -54,9 +53,9 @@ class Index extends Component
                     ->orWhere('phone', 'like', '%' . $this->CustomerSearch . '%');
             })->orderByDesc('id')->get() :
             $customers = DB::table('customers')->select(['id', 'name'])->orderByDesc('id')->get();
-
-
-        return view('pos.index', compact('sales', 'suppliers', 'customers'));
+        $back = url()->previous();
+        $products = DB::table('products')->select(['id', 'name', 'barcode', 'image'])->orderByDesc('id')->get();
+        return view('pos.index', compact('sales', 'suppliers', 'customers', 'back', 'products'));
     }
     public function AddNewInvoce()
     {

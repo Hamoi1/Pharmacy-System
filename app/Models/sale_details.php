@@ -28,6 +28,7 @@ class sale_details extends Model
             $query
             ->addSelect(['product_id' => Products::select('id')->whereColumn('id', 'sale_details.product_id')])
             ->addSelect(['product_name' => Products::select('name')->whereColumn('id', 'sale_details.product_id')])->addSelect(['product_price' => Products::select('sale_price')->whereColumn('id', 'sale_details.product_id')])
-            ->addSelect(['product_barcode' => Products::select('barcode')->whereColumn('id', 'sale_details.product_id')]);
+            ->addSelect(['product_barcode' => Products::select('barcode')->whereColumn('id', 'sale_details.product_id')])
+            ->addSelect(['product_image' => Products::select('image')->whereColumn('id', 'sale_details.product_id')]);
     }
 }

@@ -120,6 +120,7 @@
         </div>
     </div>
     @auth
+    @if(Route::currentRouteName() != 'sales')
     <div class="lodaing-seaction d-print-none">
         <div class="building-blocks">
             <div></div>
@@ -152,7 +153,7 @@
                         </li>
                         @endcan
                         <li class="nav-item my-1 mx-lg-1 mx-md-4 mx-3 ">
-                            <a class="nav-link  {{  app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }}  active {{ Route::currentRouteName() == 'sales'  ? 'active-page' : '' }}  mx-md-2 mx-1  " href="{{ route('sales',app()->getLocale()) }}">
+                            <a class="nav-link  {{  app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }}  active {{ Request()->is(app()->getLocale().'/point-of-sale')   ? 'active-page' : '' }}  mx-md-2 mx-1  " href="{{ route('sales',app()->getLocale()) }}">
                                 <i class="fa fa-shopping-cart mb-2"></i>
                                 <span class="nav-link-title  mx-2">
                                     {{ __('header.PointOfSale') }}
@@ -297,6 +298,11 @@
         {{ $slot }}
     </div>
     </div>
+    @else
+    <div class="page-wrapper ">
+        {{ $slot }}
+    </div>
+    @endif
     @endauth
     @guest
     {{ $slot }}
