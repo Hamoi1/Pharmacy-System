@@ -41,7 +41,6 @@
 
 @push('js')
 <script>
-    
     var Users = @js($users);
     var options = {
         series: [{

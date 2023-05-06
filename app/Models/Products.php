@@ -16,7 +16,7 @@ class Products extends Model
     use HasFactory, SoftDeletes;
     protected $table = 'products';
     protected $guarded  = [];
-
+   
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');

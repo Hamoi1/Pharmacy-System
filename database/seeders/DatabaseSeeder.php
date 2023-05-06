@@ -23,162 +23,162 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $roles = [
-        //     'View Dashboard',
-        //     'View Sales',
-        //     'View DebtSale',
-        //     'View Product',
-        //     'View User',
-        //     'View Category',
-        //     'View Supplier',
-        //     'View Barcode',
-        //     'View Setting',
-        //     'View Log',
-        //     'View Customer',
-        //     'Delete DebtSale',
-        //     'Delete Product',
-        //     'Delete User',
-        //     'Delete Category',
-        //     'Delete Supplier',
-        //     'Delete Barcode',
-        //     'Delete Logs',
-        //     'Delete Customer',
-        //     'Insert Sales',
-        //     'Insert Product',
-        //     'Insert User',
-        //     'Insert Category',
-        //     'Insert Supplier',
-        //     'Insert Barcode',
-        //     'Insert Customer',
-        //     'Update DebtSale',
-        //     'Update Product',
-        //     'Update User',
-        //     'Update Category',
-        //     'Update Supplier',
-        //     'Update Barcode',
-        //     'Update Customer',
-        //     'Product Trash',
-        //     'User Trash',
-        //     'Category Trash',
-        //     'Supplier Trash',
-        //     'Clear Log',
-        //     'User GenerateReport',
-        //     'User Export',
-        //     'Product Export'
-        // ];
+        $roles = [
+            'View Dashboard',
+            'View Sales',
+            'View DebtSale',
+            'View Product',
+            'View User',
+            'View Category',
+            'View Supplier',
+            'View Barcode',
+            'View Setting',
+            'View Log',
+            'View Customer',
+            'Delete DebtSale',
+            'Delete Product',
+            'Delete User',
+            'Delete Category',
+            'Delete Supplier',
+            'Delete Barcode',
+            'Delete Logs',
+            'Delete Customer',
+            'Insert Sales',
+            'Insert Product',
+            'Insert User',
+            'Insert Category',
+            'Insert Supplier',
+            'Insert Barcode',
+            'Insert Customer',
+            'Update DebtSale',
+            'Update Product',
+            'Update User',
+            'Update Category',
+            'Update Supplier',
+            'Update Barcode',
+            'Update Customer',
+            'Product Trash',
+            'User Trash',
+            'Category Trash',
+            'Supplier Trash',
+            'Clear Log',
+            'User GenerateReport',
+            'User Export',
+            'Product Export'
+        ];
 
-        // foreach ($roles as $role) {
-        //     Role::insert([
-        //         'name' => $role
-        //     ]);
-        // }
+        foreach ($roles as $role) {
+            Role::insert([
+                'name' => $role
+            ]);
+        }
 
-        // $users = [
-        //     [
-        //         'name' => 'muhammad',
-        //         'username' => 'hama',
-        //         'phone' => Str::limit(rand(1, 99999999999), 11, ''),
-        //         'email' => 'ihama9728@gmail.com',
-        //         'password' => Hash::make('muhammad'),
-        //         'status' => 1,
-        //     ],
-        //     [
-        //         'name' => 'hogr',
-        //         'username' => 'hogr',
-        //         'phone' => Str::limit(rand(1, 99999999999), 11, ''),
-        //         'email' => 'hogr@gmail.com',
-        //         'password' => Hash::make('muhammad'),
-        //         'status' => 1,
-        //     ],
-        //     [
-        //         'name' => 'aven',
-        //         'username' => 'aven',
-        //         'phone' => Str::limit(rand(1, 9999999999), 11, ''),
-        //         'email' => 'aven@gmail.com',
-        //         'password' => Hash::make('muhammad'),
-        //         'status' => 1,
-        //     ],
-        //     [
-        //         'name' => 'evan',
-        //         'username' => 'evan',
-        //         'phone' => Str::limit(rand(1, 9999999999), 11, ''),
-        //         'email' => 'evan@gmail.com',
-        //         'password' => Hash::make('muhammad'),
-        //         'status' => 1,
-        //     ],
-        //     [
-        //         'name' => 'chra',
-        //         'username' => 'chra',
-        //         'phone' => Str::limit(rand(1, 9999999999), 11, ''),
-        //         'email' => 'chra@gmail.com',
-        //         'password' => Hash::make('muhammad'),
-        //         'status' => 1,
-        //     ],
-        //     [
-        //         'name' => 'redin',
-        //         'username' => 'redin',
-        //         'phone' => Str::limit(rand(1, 9999999999), 11, ''),
-        //         'email' => 'redin@gmail.com',
-        //         'password' => Hash::make('muhammad'),
-        //         'status' => 1,
-        //     ],
-        //     [
-        //         'name' => 'gashtyar',
-        //         'username' => 'gashtyar',
-        //         'phone' => Str::limit(rand(1, 9999999999), 11, ''),
-        //         'email' => 'gashtyar@gmail.com',
-        //         'password' => Hash::make('muhammad'),
-        //         'status' => 1,
-        //     ],
-        //     [
-        //         'name' => 'danaz',
-        //         'username' => 'danaz',
-        //         'phone' => Str::limit(rand(1, 9999999999), 11, ''),
-        //         'email' => 'danaz@gmail.com',
-        //         'password' => Hash::make('muhammad'),
-        //         'status' => 1,
-        //     ],
-        //     [
-        //         'name' => 'rekar',
-        //         'username' => 'rekar',
-        //         'phone' => Str::limit(rand(1, 99999999999), 11, ''),
-        //         'email' => 'rekar@gmail.com',
-        //         'password' => Hash::make('muhammad'),
-        //         'status' => 1,
-        //     ],
-        //     [
-        //         'name' => 'akar',
-        //         'username' => 'akar',
-        //         'phone' => Str::limit(rand(1, 99999999999), 11, ''),
-        //         'email' => 'akar@gmail.com',
-        //         'password' => Hash::make('muhammad'),
-        //         'status' => 1,
-        //     ],
-        // ];
+        $users = [
+            [
+                'name' => 'muhammad',
+                'username' => 'hama',
+                'phone' => Str::limit(rand(1, 99999999999), 11, ''),
+                'email' => 'ihama9728@gmail.com',
+                'password' => Hash::make('muhammad'),
+                'status' => 1,
+            ],
+            [
+                'name' => 'hogr',
+                'username' => 'hogr',
+                'phone' => Str::limit(rand(1, 99999999999), 11, ''),
+                'email' => 'hogr@gmail.com',
+                'password' => Hash::make('muhammad'),
+                'status' => 1,
+            ],
+            [
+                'name' => 'aven',
+                'username' => 'aven',
+                'phone' => Str::limit(rand(1, 9999999999), 11, ''),
+                'email' => 'aven@gmail.com',
+                'password' => Hash::make('muhammad'),
+                'status' => 1,
+            ],
+            [
+                'name' => 'evan',
+                'username' => 'evan',
+                'phone' => Str::limit(rand(1, 9999999999), 11, ''),
+                'email' => 'evan@gmail.com',
+                'password' => Hash::make('muhammad'),
+                'status' => 1,
+            ],
+            [
+                'name' => 'chra',
+                'username' => 'chra',
+                'phone' => Str::limit(rand(1, 9999999999), 11, ''),
+                'email' => 'chra@gmail.com',
+                'password' => Hash::make('muhammad'),
+                'status' => 1,
+            ],
+            [
+                'name' => 'redin',
+                'username' => 'redin',
+                'phone' => Str::limit(rand(1, 9999999999), 11, ''),
+                'email' => 'redin@gmail.com',
+                'password' => Hash::make('muhammad'),
+                'status' => 1,
+            ],
+            [
+                'name' => 'gashtyar',
+                'username' => 'gashtyar',
+                'phone' => Str::limit(rand(1, 9999999999), 11, ''),
+                'email' => 'gashtyar@gmail.com',
+                'password' => Hash::make('muhammad'),
+                'status' => 1,
+            ],
+            [
+                'name' => 'danaz',
+                'username' => 'danaz',
+                'phone' => Str::limit(rand(1, 9999999999), 11, ''),
+                'email' => 'danaz@gmail.com',
+                'password' => Hash::make('muhammad'),
+                'status' => 1,
+            ],
+            [
+                'name' => 'rekar',
+                'username' => 'rekar',
+                'phone' => Str::limit(rand(1, 99999999999), 11, ''),
+                'email' => 'rekar@gmail.com',
+                'password' => Hash::make('muhammad'),
+                'status' => 1,
+            ],
+            [
+                'name' => 'akar',
+                'username' => 'akar',
+                'phone' => Str::limit(rand(1, 99999999999), 11, ''),
+                'email' => 'akar@gmail.com',
+                'password' => Hash::make('muhammad'),
+                'status' => 1,
+            ],
+        ];
 
-        // foreach ($users as $user) {
-        //     $users = \App\Models\User::create($user + [
-        //         'created_at' => fake()->dateTimeBetween('-1 years', 'now')->format('Y-m-d H:i:s'),
-        //     ]);
-        //     $users->user_details()->create([
-        //         'address' => fake()->randomElement(['ranya', 'Sulimany', 'Hawler', 'Halabja']),
-        //     ]);
-        // }
-     
+        foreach ($users as $user) {
+            $users = \App\Models\User::create($user + [
+                'created_at' => fake()->dateTimeBetween('-1 years', 'now')->format('Y-m-d H:i:s'),
+            ]);
+            $users->user_details()->create([
+                'address' => fake()->randomElement(['ranya', 'Sulimany', 'Hawler', 'Halabja']),
+            ]);
+        }
+
 
         // give permission for all user
-        // $users = User::take(11)->get();
-        // $roles = Role::all();
-        // $role_id = [];
-        // foreach ($roles as $role) {
-        //     $role_id[] = $role->id;
-        // }
+        $users = User::take(11)->get();
+        $roles = Role::all();
+        $role_id = [];
+        foreach ($roles as $role) {
+            $role_id[] = $role->id;
+        }
 
-        // foreach ($users as $user) {
-        //     $user->role_id = json_encode($role_id);
-        //     $user->save();
-        // }
-           foreach (range(1, 1100) as $index) {
+        foreach ($users as $user) {
+            $user->role_id = json_encode($role_id);
+            $user->save();
+        }
+        foreach (range(1, 1100) as $index) {
             $name = fake()->name;
             $name = Str::replace(' ', '', $name);
             $name = Str::replace('-', '', $name);
@@ -202,121 +202,124 @@ class DatabaseSeeder extends Seeder
             $user->user_details()->create([
                 'address' => fake()->randomElement(['ranya', 'sulimany', 'qaladzi', 'hawler', 'Hallshow']),
             ]);
+
+            $user->role_id = json_encode([fake()->numberBetween(1, count(Role::all()))]);
+            $user->saveQuietly();
         }
-        // $catagorys_data = [
-        //     [
-        //         'name' => 'darzi',
-        //         'slug' => Str::slug('darzi'),
-        //     ],
-        //     [
-        //         'name' => 'shrubi mndallan',
-        //         'slug' => Str::slug('shrubi mndallan'),
-        //     ],
-        //     [
-        //         'name' => '3abi saresha',
-        //         'slug' => Str::slug('3abi saresha'),
-        //     ],
-        //     [
-        //         'name' => 'shrubi zghesha',
-        //         'slug' => Str::slug('shrubi zghesha'),
-        //     ],
-        //     [
-        //         'name' => 'mal3ami dmwchaw',
-        //         'slug' => Str::slug('mal3ami dmwchaw'),
-        //     ],
-        //     [
-        //         'name' => 'shrub',
-        //         'slug' => Str::slug('shrub'),
-        //     ],
-        //     [
-        //         'name' => '3ab',
-        //         'slug' => Str::slug('3ab'),
-        //     ],
-        //     [
-        //         'name' => 'krim',
-        //         'slug' => Str::slug('krim'),
-        //     ],
-        //     [
-        //         'name' => 'qatra',
-        //         'slug' => Str::slug('qatra'),
-        //     ],
-        //     [
-        //         'name' => 'mal3am',
-        //         'slug' => Str::slug('mal3am'),
-        //     ],
-        // ];
-        // foreach ($catagorys_data as $category) {
-        //     \App\Models\Categorys::create($category, [
-        //         'created_at' => fake()->dateTimeBetween('-1 years', 'now'),
-        //     ]);
-        // }
-        // $suppliers = [
-        //     [
-        //         'name' => 'gilas',
-        //         'phone' => '07501122110',
-        //         'email' => 'gilas@gmail.com',
-        //         'address' => 'iraq'
-        //     ],
-        //     [
-        //         'name' => 'ahmad',
-        //         'phone' => '07501122111',
-        //         'email' => 'ahmad@gmail.com',
-        //         'address' => 'iraq'
-        //     ],
-        //     [
-        //         'name' => 'heshu',
-        //         'phone' => '07502122110',
-        //         'email' => 'heshu@gmail.com',
-        //         'address' => 'iraq'
-        //     ],
-        //     [
-        //         'name' => 'razhan',
-        //         'phone' => '07502122232',
-        //         'email' => 'razhan@gmail.com',
-        //         'address' => 'iraq'
-        //     ],
-        //     [
-        //         'name' => 'muhammad',
-        //         'phone' => '075022232',
-        //         'email' => 'muhammad@gmail.com',
-        //         'address' => 'iraq'
-        //     ],
-        //     [
-        //         'name' => 'ramyar',
-        //         'phone' => '07512122232',
-        //         'email' => 'ramyar@gmail.com',
-        //         'address' => 'iraq'
-        //     ],
-        //     [
-        //         'name' => 'mihraban',
-        //         'phone' => '07511212232',
-        //         'email' => 'mihraban@gmail.com',
-        //         'address' => 'iraq'
-        //     ],
-        //     [
-        //         'name' => 'danaz',
-        //         'phone' => '07511222232',
-        //         'email' => 'danaz@gmail.com',
-        //         'address' => 'iraq'
-        //     ],
-        //     [
-        //         'name' => 'sazyar',
-        //         'phone' => '07511222232',
-        //         'email' => 'sazyar@gmail.com',
-        //         'address' => 'iraq'
-        //     ],
-        //     [
-        //         'name' => 'savyar',
-        //         'phone' => '07511222232',
-        //         'email' => 'savyar@gmail.com',
-        //         'address' => 'iraq'
-        //     ],
-        // ];
-        // foreach ($suppliers as $supplier) {
-        //     \App\Models\Suppliers::create($supplier, [
-        //         'created_at' => fake()->dateTimeBetween('-1 years', 'now')->format('Y-m-d H:i:s'),
-        //     ]);
-        // }
+        $catagorys_data = [
+            [
+                'name' => 'darzi',
+                'slug' => Str::slug('darzi'),
+            ],
+            [
+                'name' => 'shrubi mndallan',
+                'slug' => Str::slug('shrubi mndallan'),
+            ],
+            [
+                'name' => '3abi saresha',
+                'slug' => Str::slug('3abi saresha'),
+            ],
+            [
+                'name' => 'shrubi zghesha',
+                'slug' => Str::slug('shrubi zghesha'),
+            ],
+            [
+                'name' => 'mal3ami dmwchaw',
+                'slug' => Str::slug('mal3ami dmwchaw'),
+            ],
+            [
+                'name' => 'shrub',
+                'slug' => Str::slug('shrub'),
+            ],
+            [
+                'name' => '3ab',
+                'slug' => Str::slug('3ab'),
+            ],
+            [
+                'name' => 'krim',
+                'slug' => Str::slug('krim'),
+            ],
+            [
+                'name' => 'qatra',
+                'slug' => Str::slug('qatra'),
+            ],
+            [
+                'name' => 'mal3am',
+                'slug' => Str::slug('mal3am'),
+            ],
+        ];
+        foreach ($catagorys_data as $category) {
+            \App\Models\Categorys::create($category, [
+                'created_at' => fake()->dateTimeBetween('-1 years', 'now'),
+            ]);
+        }
+        $suppliers = [
+            [
+                'name' => 'gilas',
+                'phone' => '07501122110',
+                'email' => 'gilas@gmail.com',
+                'address' => 'iraq'
+            ],
+            [
+                'name' => 'ahmad',
+                'phone' => '07501122111',
+                'email' => 'ahmad@gmail.com',
+                'address' => 'iraq'
+            ],
+            [
+                'name' => 'heshu',
+                'phone' => '07502122110',
+                'email' => 'heshu@gmail.com',
+                'address' => 'iraq'
+            ],
+            [
+                'name' => 'razhan',
+                'phone' => '07502122232',
+                'email' => 'razhan@gmail.com',
+                'address' => 'iraq'
+            ],
+            [
+                'name' => 'muhammad',
+                'phone' => '075022232',
+                'email' => 'muhammad@gmail.com',
+                'address' => 'iraq'
+            ],
+            [
+                'name' => 'ramyar',
+                'phone' => '07512122232',
+                'email' => 'ramyar@gmail.com',
+                'address' => 'iraq'
+            ],
+            [
+                'name' => 'mihraban',
+                'phone' => '07511212232',
+                'email' => 'mihraban@gmail.com',
+                'address' => 'iraq'
+            ],
+            [
+                'name' => 'danaz',
+                'phone' => '07511222232',
+                'email' => 'danaz@gmail.com',
+                'address' => 'iraq'
+            ],
+            [
+                'name' => 'sazyar',
+                'phone' => '07511222232',
+                'email' => 'sazyar@gmail.com',
+                'address' => 'iraq'
+            ],
+            [
+                'name' => 'savyar',
+                'phone' => '07511222232',
+                'email' => 'savyar@gmail.com',
+                'address' => 'iraq'
+            ],
+        ];
+        foreach ($suppliers as $supplier) {
+            \App\Models\Suppliers::create($supplier, [
+                'created_at' => fake()->dateTimeBetween('-1 years', 'now')->format('Y-m-d H:i:s'),
+            ]);
+        }
         // $barcode = 1;
         // foreach (range(1, 100000) as $index) {
         //     // create a product

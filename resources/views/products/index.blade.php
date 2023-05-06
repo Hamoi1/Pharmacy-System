@@ -54,7 +54,7 @@
                 <select class="form-select" wire:model="Category">
                     <option value="">{{ __('header.Categorys') }}</option>
                     @foreach ($categorys as $category)
-                    <option value="{{ $category['id'] }}">{{ $category['name'] }}</option>
+                    <option value="{{ $category->id }}">{{ $category->name }}</option>
                     @endforeach
                 </select>
             </div>
@@ -62,7 +62,7 @@
                 <select class="form-select" wire:model="Supplier">
                     <option value="">{{ __('header.Suppliers') }}</option>
                     @forelse ($suppliers as $supplier )
-                    <option value="{{ $supplier['id'] }}">{{ $supplier['name'] }}</option>
+                    <option value="{{ $supplier->id }}">{{ $supplier->name }}</option>
                     @empty
                     <option value="">{{ __('header.NoData') }}</option>
                     @endforelse
@@ -129,6 +129,9 @@
             <table class="table table-vcenter table-nowrap">
                 <thead>
                     <tr>
+                        <th class="col-1 fs-4">
+                            {{ __('header.image') }}
+                        </th>
                         <th class="col-1 fs-4">{{ __('header.name') }}</th>
                         <th class="col-1 fs-4">{{ __('header.barcode') }}</th>
                         <th class="fs-4">{{ __('header.Category') }}</th>
@@ -147,6 +150,10 @@
                 <tbody>
                     @forelse ($products as $product )
                     <tr>
+                        <td>
+                            <img src="{{  $product->image != '' ? asset('storage/product/' . $product->image) : asset('assets/images/image_not_available.png') }}"
+                             class="img-fluid" width="50" alt="">
+                        </td>
                         <td>
                             <a href="" class="" data-bs-toggle="modal" data-bs-target="#view" wire:click.prevent="show({{ $product->id }})">
                                 {{ $product->name }}
@@ -198,9 +205,6 @@
                             </a>
                             <a class="btn" href="{{ route('UpdateQuantity',['lang'=>app()->getLocale() ,'id'=>$product->id]) }}">
                                 {{ __('header.AddOrEditQuantity') }}
-                            </a>
-                            <a class="btn" href="{{ route('products.image.update',['lang'=>app()->getLocale() ,'id'=>$product->id]) }}">
-                                <i class="fa-solid fa-image text-info"></i>
                             </a>
                             @endcan
                             @can('Delete Product')

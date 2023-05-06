@@ -33,16 +33,12 @@
             <span class="fw-bold mx-1">{{ __('header.TotalQuantity') }} : </span>
             <span class="fw-normal">{{ $product->total_quantity }}</span>
         </p>
-        @if($product->image != null && $product->image != '[]' )
+        @if($product->image)
         <div class="row g-3">
             <span>
                 <span class="fw-bold mx-1">{{ __('header.image') }} : </span>
             </span>
-            @foreach (json_decode($product->image) as $image )
-            <div class="col-12 col-md-6 col-lg-4 col-xl-3">
-                <img src="{{ asset('storage/products/'.$image) }}" class="img-fluid rounded-3" alt="">
-            </div>
-            @endforeach
+            <img src="{{ asset('storage/product/'.$product->image) }}" class="img-fluid" alt="image" width="100%" height="400" />
         </div>
         @endif
         <p class="mt-3 text-break">

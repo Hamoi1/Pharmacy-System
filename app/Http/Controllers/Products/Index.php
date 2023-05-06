@@ -11,11 +11,12 @@ use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\ExportController;
+use Illuminate\Support\Facades\DB;
 
 class Index extends Component
 {
     use WithPagination, WithFileUploads;
-    public $name, $barcode, $purches_price, $sale_price, $category_id, $supplier_id, $description, $quantity, $expire_date, $images = [], $search, $productID, $ExpiryOrStockedOut,
+    public $name, $barcode, $purches_price, $sale_price, $category_id, $supplier_id, $description, $quantity, $expiry_date, $image, $Oldimage, $search, $productID, $ExpiryOrStockedOut,
         $UpdateProduct = false, $product, $product_quantity = [], $Category, $Supplier, $expire = false, $Trashed = false;
     protected $paginationTheme = 'bootstrap';
     protected $queryString = [
@@ -77,21 +78,21 @@ class Index extends Component
         };
         return view('products.index', [
             'products' => $products->orderByDesc('id')->SalePrice()->ExpiryDate()->TotalQuantity()->suppliers()->categorys()->paginate(10),
-            'categorys' => Categorys::select(['id', 'name'])->get()->toArray(),
-            'suppliers' => Suppliers::select(['id', 'name'])->get()->toArray(),
+            'categorys' => DB::table('categorys')->select(['id', 'name'])->get(),
+            'suppliers' => DB::table('suppliers')->select(['id', 'name'])->get(),
             'GetTrashDate' => $GetTrashDate,
         ]);
-    }
-    public function ResetData()
-    {
-        return [
-            'name', 'barcode', 'purches_price', 'sale_price', 'category_id', 'supplier_id', 'quantity', 'expire_date', 'images', 'UpdateProduct', 'productID', 'description', 'expire', 'ExportDataSelected', 'Productquantity'
-        ];
     }
     public function add()
     {
         $this->UpdateProduct = false;
         $this->expire = false;
+    }
+    public function ResetData()
+    {
+        return [
+            'name', 'barcode', 'purches_price', 'sale_price', 'category_id', 'supplier_id', 'quantity', 'expiry_date', 'image', 'UpdateProduct', 'productID', 'description', 'expire', 'ExportDataSelected', 'Productquantity', 'Oldimage'
+        ];
     }
     public function done()
     {
@@ -101,18 +102,24 @@ class Index extends Component
     }
     public function GetRuls()
     {
-        return [
+        $Rule = [
             'name' => 'required|string|min:2|max:255|regex:/^[a-zA-Z0-9 \s]+$/|unique:products,name,' . $this->productID ?? '',
             'barcode' => 'required|min:3|numeric|unique:products,barcode,' . $this->productID ?? '',
-            'purches_price' => 'required|numeric|min:3',
-            'sale_price' => 'required|numeric|min:3',
             'category_id' => 'nullable|numeric|exists:categorys,id',
             'supplier_id' => 'nullable|numeric|exists:suppliers,id',
-            'quantity' => 'required|numeric|min:1',
-            'expire_date' => 'required|date|after:today',
-            'images.*' => 'image|max:20000|mimes:jpg,jpeg,png,svg|nullable',
+            'image' => 'image|max:20000|mimes:jpg,jpeg,png,svg|nullable', // 20MB Max
             'description' => 'nullable|string',
         ];
+        if (!$this->UpdateProduct) {
+            return array_merge($Rule, [
+                'purches_price' => 'required|numeric|min:1',
+                'sale_price' => 'required|numeric|min:1',
+                'quantity' => 'required|numeric|min:1',
+                'expiry_date' => 'required|date|after:today',
+            ]);
+        }
+
+        return $Rule;
     }
     public function GetMessage()
     {
@@ -142,20 +149,14 @@ class Index extends Component
             'quantity.required' => __('validation.required', ['attribute' => __('header.quantity')]),
             'quantity.numeric' => __('validation.numeric', ['attribute' => __('header.quantity')]),
             'quantity.min' => __('validation.min', ['attribute' => __('header.quantity'), 'min' => 1]),
-            'images.*.image' => __('validation.image', ['attribute' => __('header.image')]),
-            'images.*.max' => __('validation.max', ['attribute' => __('header.image'), 'max' => 20000]),
-            'images.*.mimes' => __('validation.mimes', ['attribute' => __('header.image'), 'values' => 'jpg,jpeg,png,svg']),
-            'expire_date.required' => __('validation.required', ['attribute' => __('header.expire_date')]),
-            'expire_date.date' => __('validation.date', ['attribute' => __('header.expire_date')]),
-            'expire_date.after' => __('validation.after', ['attribute' => __('header.expire_date'), 'date' => __('header.today')]),
+            'image.image' => __('validation.image', ['attribute' => __('header.image')]),
+            'image.max' => __('validation.max', ['attribute' => __('header.image'), 'max' => 20000]),
+            'image.mimes' => __('validation.mimes', ['attribute' => __('header.image'), 'values' => 'jpg,jpeg,png,svg']),
+            'expiry_date.required' => __('validation.required', ['attribute' => __('header.expire_date')]),
+            'expiry_date.date' => __('validation.date', ['attribute' => __('header.expire_date')]),
+            'expiry_date.after' => __('validation.after', ['attribute' => __('header.expire_date'), 'date' => __('header.today')]),
             'description.string' => __('validation.string', ['attribute' => __('header.description')]),
         ];
-    }
-    public function updatedimages()
-    {
-        $this->validate([
-            'images.*' => 'image|max:20000|mimes:jpg,jpeg,png,svg|nullable',
-        ], $this->GetMessage());
     }
     public function updated($propertyName)
     {
@@ -164,22 +165,27 @@ class Index extends Component
     public function submit()
     {
         $this->validate($this->GetRuls(), $this->GetMessage());
-        $images = [];
-        if ($this->images) {
-            foreach ($this->images as $image) {
-                $imageName = time() . '-' . uniqid() . '-' . uniqid() . '.' . $image->GetClientOriginalExtension();
-                Storage::put('public/products/' . $imageName);
-                $images[] = $imageName;
-            }
-        }
         if ($this->UpdateProduct && Gate::allows('Update Product')) {
             $product =  Products::findOrFail($this->productID);
+            // check product image
+            if (empty($this->Oldimage)) {
+                if (Storage::exists('public/product/' . $product->image))
+                    Storage::delete('public/product/' . $product->image);
+            }
+            if (!empty($this->image) && empty($this->Oldimage)) {
+                $imageName = $this->name . time() . '-' . uniqid() . '-' . uniqid() . '.' . $this->image->getClientOriginalExtension();
+                Storage::disk('public')
+                    ->putFileAs(
+                        'product',
+                        $this->image,
+                        $imageName
+                    );
+            } else {
+                $imageName = $this->Oldimage;
+            }
             $oldData = [
                 'Name : ' . $product->name,
                 'barcode : ' . $product->barcode,
-                'Quantity : ' . $product->quantity,
-                'expiry Date : ' . $product->expiry_date,
-                'Purches Price : ' . $product->purches_price,
                 'Sales Price : ' . $product->sale_price,
                 'Catrgory : ' . $product->category->name,
                 'Supplier : ' . $product->supplier->name,
@@ -190,6 +196,7 @@ class Index extends Component
                 'category_id' => $this->category_id,
                 'supplier_id' => $this->supplier_id,
                 'description' => $this->description,
+                'image' => $imageName,
             ]);
             $newData = [
                 'Name : ' . $product->name,
@@ -199,29 +206,38 @@ class Index extends Component
             ];
             auth()->user()->InsertToLogsTable(auth()->user()->id, "Product", 'Update',  $oldData,  $newData);
         } else if (!$this->UpdateProduct  && Gate::allows('Insert Product')) {
+            if (!empty($this->image)) {
+                $imageName = $this->name . time() . '-' . uniqid() . '-' . uniqid() . '.' . $this->image->getClientOriginalExtension();
+                Storage::disk('public')
+                    ->putFileAs(
+                        'product',
+                        $this->image,
+                        $imageName
+                    );
+            } else {
+                $imageName = '';
+            }
             $product = Products::create([
                 'name' => $this->name,
                 'barcode' => $this->barcode,
-                'quantity' => $this->quantity,
-                'sale_price' => $this->sale_price,
-                'purches_price' => $this->purches_price,
                 'category_id' => $this->category_id,
                 'supplier_id' => $this->supplier_id,
                 'description' => $this->description,
-                'image' => $images ? json_encode($images) : null,
+                'image' => $imageName,
+                'expiry_date' => $this->expiry_date,
                 'user_id' => auth()->id(),
             ]);
             $product->product_quantity()->create([
                 'quantity' => $this->quantity,
                 'purches_price' => $this->purches_price,
                 'sale_price' => $this->sale_price,
-                'expiry_date' => $this->expire_date,
+                'expiry_date' => $this->expiry_date,
             ]);
             $newData = [
                 'Name : ' . $this->name,
                 'barcode : ' . $this->barcode,
                 'Quantity : ' . $this->quantity,
-                'expiry Date : ' . $this->expire_date,
+                'expiry Date : ' . $this->expiry_date,
                 'Purches Price : ' . $this->purches_price,
                 'Sales Price : ' . $this->sale_price,
                 'Catrgory : ' . $product->category->name,
@@ -230,10 +246,12 @@ class Index extends Component
             auth()->user()->InsertToLogsTable(auth()->user()->id, "Product", 'Create',  'nothing to show',  $newData);
         }
         flash()->addSuccess(__('header.Product') . ' ' . $this->UpdateProduct ? __('header.updated') : __('header.add'));
-
         $this->done();
     }
-
+    public function updatedImage()
+    {
+        $this->Oldimage = '';
+    }
     public function updateProduct($id)
     {
         if (!Gate::allows('Update Product')) {
@@ -247,20 +265,12 @@ class Index extends Component
             $this->barcode = $product->barcode;
             $this->category_id = $product->category_id;
             $this->supplier_id = $product->supplier_id;
+            $this->Oldimage = $product->image;
             $this->description = $product->description;
-            $this->purches_price = $product->purches_price;
-            $this->sale_price = $product->sale_price;
-            $this->quantity = $product->quantity;
-            $this->expire_date = $product->expiry_date;
             $product->expiry_date <= now() ? $this->expire = true : $this->expire = false;
         }
     }
 
-    public function removeImage($index)
-    {
-        unset($this->images[$index]);
-        $this->images = array_values($this->images);
-    }
     public function delete(Products $product)
     {
         if (!Gate::allows('Delete Product')) {

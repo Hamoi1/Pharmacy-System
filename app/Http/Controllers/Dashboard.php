@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use finfo;
 use App\Models\User;
 use Livewire\Component;
 use App\Models\sale_details;

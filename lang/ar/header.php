@@ -69,7 +69,7 @@ return [
     'resendMessage' => 'تم إرسال رمز التأكيد إلى بريدك الإلكتروني',
     'password_changed_successfully' => 'تم تغیر كلمة المرور الخاصة بك بنجاح',
     'NoData' => 'ليس هنالك معلومات',
-    'choose_image' => 'اختيار الصورة تعسفي',
+    'choose_image' => 'اختر صورة مفضلة',
     'Dashboard' => 'الصفحة الرئيسية',
     'Users' => 'المستخدمين',
     'Products' => 'منتجات',

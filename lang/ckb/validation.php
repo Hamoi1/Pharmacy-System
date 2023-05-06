@@ -96,7 +96,7 @@ return [
     'min' => [
         'array' => 'The :attribute must have at least :min items.',
         'file' => 'The :attribute must be at least :min kilobytes.',
-        'numeric' => ':attribute پێویستە لە :min کەمتر نییە.',
+        'numeric' => ':attribute پێویستە لە :min کەمتر نەبێت.',
         'string' => ':attribute پێویستە لە :min پیت کەمتر نەبێت.',
     ],
     'min_digits' => 'The :attribute must have at least :min digits.',

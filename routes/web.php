@@ -2,6 +2,17 @@
 
 use Illuminate\Support\Facades\Route;
 
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
+
 Route::redirect('/', app()->getLocale() . '/login');
 Route::group([
     'prefix' => '{lang}',
@@ -16,7 +27,6 @@ Route::group([
         Route::get('/products', App\Http\Controllers\Products\Index::class)->name('products');
         Route::get('/product/return', App\Http\Controllers\Products\ReturnProduct::class)->name('returnproduct');
         Route::get('/product/update/{id}', App\Http\Controllers\Products\UpdateQuantity::class)->name('UpdateQuantity');
-        Route::get('/products/image/update/{id}', App\Http\Controllers\Products\UpdateImage::class)->name('products.image.update');
         Route::get('/categorys', App\Http\Controllers\Categorys\Index::class)->name('categorys');
         Route::get('/suppliers', App\Http\Controllers\Supplier\Index::class)->name('suppliers');
         Route::get('/pont-of-sale', App\Http\Controllers\Pos\Index::class)->name('sales');

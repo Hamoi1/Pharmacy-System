@@ -49,7 +49,7 @@
                     <select class="form-select" wire:model="category_id">
                         <option value="">{{ __('header.category_product') }}</option>
                         @forelse ($categorys as $category )
-                        <option value="{{ $category['id'] }}">{{ $category['name'] }}</option>
+                        <option value="{{ $category->id }}">{{ $category->name }}</option>
                         @empty
                         <option value="">{{ __('header.NoData') }}</option>
                         @endforelse
@@ -61,7 +61,7 @@
                     <select class="form-select" wire:model="supplier_id">
                         <option value="">{{ __('header.Suppliers') }}</option>
                         @forelse ($suppliers as $supplier )
-                        <option value="{{ $supplier['id'] }}">{{ $supplier['name'] }}</option>
+                        <option value="{{ $supplier->id }}">{{ $supplier->name }}</option>
                         @empty
                         <option value="">{{ __('header.NoData') }}</option>
                         @endforelse
@@ -86,44 +86,34 @@
                 </div>
                 <div class="col-lg-6 col-12">
                     <label>{{ __('header.expire_date') }}</label>
-                    <input type="date" class="form-control" wire:model.defer="expire_date" />
-                    @error('expire_date')<span class="text-danger">{{ $message }}</span>@enderror
+                    <input type="date" class="form-control" wire:model.defer="expiry_date" />
+                    @error('expiry_date')<span class="text-danger">{{ $message }}</span>@enderror
                 </div>
                 @endif
-                @if (!$UpdateProduct)
                 <div class="col-12">
                     <p>
                         <i class="fa-solid fa-circle-exclamation"></i>
                         {{ __('header.choose_image') }}
                     </p>
                     <label>{{ __('header.image') }}</label>
-                    <input type="file" class="form-control" multiple wire:model="images" accept="image/*" />
-                    <div class="mt-3" wire:loading wire:target="images">
+                    <input type="file" class="form-control" wire:model="image" accept="image/*" />
+                    <div class="mt-3" wire:loading wire:target="image">
                         <span>{{ __('header.uploading') }}</span>
                         <span class="spinner-border mx-2 text-primary fs-5" role="status"></span>
                     </div>
-                    @error('images.*')<span class="text-danger">{{ $message }}</span>@enderror
+                    @error('image')<span class="text-danger">{{ $message }}</span>@enderror
                 </div>
-                @if($images)
-                <div class="col-12">
-                    <div class="row text-center g-lg-2 gy-3">
-                        @foreach ($images as $image)
-                        @if (in_array($image->getClientOriginalExtension(), ['jpg', 'jpeg', 'png', 'svg']))
-                        <div class="col-lg-3 col-md-6 col-12 position-relative">
-                            <img src="{{ $image->temporaryUrl() }}" width="300px" height="300px" class="img-fluid rounded object-cover">
-                            <span class="position-absolute top-0 left-0 delete-img" wire:click.prevent="removeImage({{ $loop->index }})">
-                                <i class="fa fa-times"></i>
-                            </span>
-                        </div>
-                        @endif
-                        @endforeach
-                    </div>
+                @if(!empty($Oldimage) || !empty($image))
+                <div class="col-12 position-relative">
+                    <img src="{{ $Oldimage != '' ? asset('storage/product/'.$Oldimage) : $image->temporaryUrl() }}" class="img-fluid" alt="image" width="100%" height="400" />
+                    <button type="button" class="btn  btn-danger rounded-circle position-absolute top-20 end-20 p-2 " @if(empty($image) ) wire:click="$set('Oldimage','')" @else wire:click="$set('image','')" @endif>
+                        <i class="fa fa-times"></i>
+                    </button>
                 </div>
-                @endif
                 @endif
                 <div class="col-12">
                     <label>{{ __('header.about product') }}</label>
-                    <textarea class="form-control" wire:model.defer="description" placeholder="{{ __('header.enter_' , ['name'=>__('header.about product')]) }}" rows="4"></textarea>
+                    <textarea class="form-control" wire:model.defer="description" placeholder="{{ __('header.enter_' , ['name'=>__('header.about product')]) }}" rows="8"></textarea>
                     @error('description')<span class="text-danger">{{ $message }}</span>@enderror
                 </div>
             </div>

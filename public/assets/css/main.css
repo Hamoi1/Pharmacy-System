@@ -662,6 +662,19 @@ th {
     height: 100vh !important;
     overflow: hidden;
     z-index: 100000;
+    animation: hide 2s ease forwards;
+}
+
+@keyframes hide {
+    0% {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    100% {
+        opacity: 0;
+        visibility: hidden;
+    }
 }
 
 .building-blocks {

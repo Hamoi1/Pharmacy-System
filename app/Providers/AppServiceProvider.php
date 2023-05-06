@@ -37,37 +37,39 @@ class AppServiceProvider extends ServiceProvider
                 session()->put('invoice',  $this->getInvoice());
             }
         }
-        $date = now()->addMonths(2)->format('Y-m-d');
-        $numberOfStockout = 20;
-        $product =  Products::with('product_quantity')->ExpiryDate()->MinQuantity()->TotalQuantity();
-        $checkProduct = $product->get();
-        $countExpiry = 0;
-        foreach ($checkProduct as $key => $value) {
-            $min = $value->product_quantity->min('expiry_date');
-            $value->expiry_date = $min;
-            $value->save();
-            if ($min == now()) {
-                $countExpiry++;
-            }
-        }
-        $expiry = $product->whereDate('expiry_date', '<=', $date)->orderByDesc('expiry_date')->get();
-        $stockout = $product->where('quantity', '<=', $numberOfStockout)->orderByDesc('quantity')->get();
-        $countStockout = 0;
-        foreach ($stockout as $key => $value) {
-            if ($value->quantity == 0) {
-                $countStockout++;
-            }
-        }
-        // count stocked out
-        $calculatedate = function ($expiryDate) {
-            if ($expiryDate > now()) {
-                return \Carbon\Carbon::parse(now()->format('Y-m-d'))->diffInDays($expiryDate);
-            } else {
-                return 0;
-            }
-        };
+        // $date = now()->addMonths(2)->format('Y-m-d');
+        // $numberOfStockout = 20;
+        // $product =  Products::with('product_quantity')->ExpiryDate()->MinQuantity()->TotalQuantity();
+        // $checkProduct = $product->get();
+        // $countExpiry = 0;
+        // foreach ($checkProduct as $key => $value) {
+        //     $min = $value->product_quantity->min('expiry_date');
+        //     $value->expiry_date = $min;
+        //     $value->save();
+        //     if ($min == now()) {
+        //         $countExpiry++;
+        //     }
+        // }
+        // $expiry = $product->whereDate('expiry_date', '<=', $date)->orderByDesc('expiry_date')->get();
+        // $stockout = $product->where('quantity', '<=', $numberOfStockout)->orderByDesc('quantity')->get();
+        // $countStockout = 0;
+        // foreach ($stockout as $key => $value) {
+        //     if ($value->quantity == 0) {
+        //         $countStockout++;
+        //     }
+        // }
+        // // count stocked out
+        // $calculatedate = function ($expiryDate) {
+        //     if ($expiryDate > now()) {
+        //         return \Carbon\Carbon::parse(now()->format('Y-m-d'))->diffInDays($expiryDate);
+        //     } else {
+        //         return 0;
+        //     }
+        // };
         view()->share([
-            'settings' => \App\Models\Settings::firstOrCreate(), 'expiry' => $expiry, 'stockout' => $stockout, 'calculatedate' => $calculatedate, 'countExpiry' => $countExpiry, 'countStockout' => $countStockout,
+            'settings' => \App\Models\Settings::firstOrCreate(),
+
+            // 'expiry' => $expiry, 'stockout' => $stockout, 'calculatedate' => $calculatedate, 'countExpiry' => $countExpiry, 'countStockout' => $countStockout,
         ]);
     }
     public function getInvoice()
