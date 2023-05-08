@@ -27,16 +27,16 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        if (session('invoice') == null) {
-            session()->put('invoice',  $this->getInvoice());
-        }
-        // check invoce has inside sale table
-        if (session('invoice') != null) {
-            $sale = Sales::where('invoice', session('invoice'))->first();
-            if ($sale != null) {
-                session()->put('invoice',  $this->getInvoice());
-            }
-        }
+        // if (session('invoice') == null) {
+        //     session()->put('invoice',  $this->getInvoice());
+        // }
+        // // check invoce has inside sale table
+        // if (session('invoice') != null) {
+        //     $sale = Sales::where('invoice', session('invoice'))->first();
+        //     if ($sale != null) {
+        //         session()->put('invoice',  $this->getInvoice());
+        //     }
+        // }
         // $date = now()->addMonths(2)->format('Y-m-d');
         // $numberOfStockout = 20;
         // $product =  Products::with('product_quantity')->ExpiryDate()->MinQuantity()->TotalQuantity();

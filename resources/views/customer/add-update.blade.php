@@ -48,7 +48,7 @@
                 </div>
                 <div class="col-12 mt-4">
                     <button type="submit" class="btn btn-primary pt-2 px-3">
-                        {{ __('header.add+') }}
+                        {{  $CustomerUpadate ?  __('header.update'): __('header.add+') }}
                     </button>
                     <div wire:loading wire:target="submit" wire:target="submit">
                         <span class="animated-dots mx-2 fs-3">

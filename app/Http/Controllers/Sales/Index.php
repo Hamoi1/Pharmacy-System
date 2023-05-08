@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Sales;
 
 use App\Models\User;
 use App\Models\Sales;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Illuminate\Support\Str;
 use Livewire\WithPagination;
@@ -29,26 +30,22 @@ class Index extends Component
     {
         $this->resetPage();
     }
-    public function Sales()
+
+    public function render()
     {
-        $sale =  Sales::query();
+        $sales =  Sales::query();
         if ($this->date) {
-            $sale->whereDate('created_at', $this->date);
+            $sales->whereDate('created_at', $this->date);
         }
         if ($this->invoice) {
             $invoice = Str::start($this->invoice, 'inv-');
-            $sale->where('invoice', 'like', '%' . $invoice . '%');
+            $sales->where('invoice', 'like', '%' . $invoice . '%');
         }
-        return $sale;
-    }
-    public function render()
-    {
-        $sales = $this->Sales();
         if ($this->UserID) {
             $sales = $sales->where('user_id', $this->UserID);
         }
         $sales =  $sales->Where('status', '=', 1)->User()->latest()->paginate(10);
-        $users = User::all();
+        $users = DB::table('users')->select(['id', 'name'])->get();
         return view('sales.index', [
             'sales' => $sales,
             'users' => $users,
@@ -70,8 +67,13 @@ class Index extends Component
     }
     public function View($id)
     {
-        $this->saleView = Sales::SaleData()->findOrFail($id);
+        $this->saleView = Sales::with(['sale_details' => function ($query) {
+            return $query->whereNotNull('product_id')
+                ->with('products');
+        }, 'user', 'debt_sale', 'customers'])->findOrFail($id);
     }
+
+    
     // public function convertToPdf($id)
     // {
     //     $sale  = Sales::with(['sale_details' => function ($query) {

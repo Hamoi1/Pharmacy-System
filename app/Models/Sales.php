@@ -41,12 +41,6 @@ class Sales extends Model
             ->addSelect(['customer_phone' => Customers::select('phone')->whereColumn('id', 'sales.customer_id')]);
     }
 
-    public function scopeSaleData($query)
-    {
-        return $query->with('sale_details', function ($query) {
-            return $query->whereNotNull('product_id')->with('products');
-        })->with('user', 'debt_sale', 'customers');
-    }
     public function scopeUser($query)
     {
         return $query->addSelect(['user_name' => User::select('name')->whereColumn('id', 'sales.user_id')]);

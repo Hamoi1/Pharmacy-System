@@ -47,6 +47,7 @@ class AddUpdate extends Component
     public function addustomer()
     {
         $this->CustomerUpadate == false;
+        
         $this->resetErrorBag();
     }
     private function Rule()

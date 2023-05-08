@@ -15,7 +15,6 @@ class UpdateQuantity extends Component
 
     public function mount($id)
     {
-        // dd($lang,$id);
         if (!Gate::allows('Update Product')) {
             abort(404);
         }
@@ -27,6 +26,9 @@ class UpdateQuantity extends Component
         $this->product = Products::with(['product_quantity' => function ($query) {
             $query->orderBy('expiry_date');
         }])->categorys()->suppliers()->TotalQuantity()->SalePrice()->findOrFail($this->product_id);
+        $this->product->update([
+            'sale_price' => $this->product->final_sale_price,
+        ]);
         return view('products.update.index');
     }
 
@@ -85,6 +87,7 @@ class UpdateQuantity extends Component
     public function submit()
     {
         $this->validate($this->GetRuls(), $this->GetMessage());
+
         if ($this->UpdateProduct) {
             $ProductQuantity = ProductsQuantity::findOrFail($this->product_quantity_id);
             $ProductQuantity->update([
@@ -104,10 +107,9 @@ class UpdateQuantity extends Component
             ]);
             flash()->addSuccess(__('header.add'));
         }
-        $product = $this->product->TotalQuantity()->SalePrice()->find($this->product_id);
-        $final_sale_price =  $product->final_sale_price;
+        $product =  $this->product->SalePrice()->findOrFail($this->product_id);
         $product->update([
-            'sale_price' => $final_sale_price,
+            'sale_price' => $product->final_sale_price,
         ]);
         $this->done();
     }
@@ -116,12 +118,7 @@ class UpdateQuantity extends Component
         if (!Gate::allows('Delete Product')) {
             abort(404);
         }
-        $product_id = $ProductQuantity->product_id;
-        $product = $this->product->TotalQuantity()->SalePrice()->find($product_id);
-        $final_sale_price =  $product->final_sale_price;
-        $product->update([
-            'sale_price' => $final_sale_price,
-        ]);
+       
         $ProductQuantity->delete();
         flash()->addSuccess(__('header.deleted'));
         $this->done();

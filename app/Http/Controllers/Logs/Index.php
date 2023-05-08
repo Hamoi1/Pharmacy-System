@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Gate;
 class Index extends Component
 {
     use WithPagination;
-    public $user_id, $userSelect, $date, $action, $searchByDate,
+    public $user_id, $userSelect, $action, $searchByDate,
         $action_method = [
             'Sale',
             'Create',
@@ -50,20 +50,24 @@ class Index extends Component
             $this->userSelect = User::whereNot('id', auth()->user()->id)->select('id', 'name')->where('id', $this->user_id)->first();
         } else {
             $user_logs = [];
+            $this->action = null;
+            $this->searchByDate = null;
         }
-
-        if ($this->action != null) {
-            $user_logs = $user_logs->where('action', $this->action);
-        }
-        if ($this->date != null) {
-            $user_logs = $user_logs->whereDate('created_at', $this->date->format('Y-m-d'));
-        }
-        if ($this->user_id != null) {
+        if ($user_logs != null) {
+            if ($this->action != null) {
+                $user_logs = $user_logs->where('action', $this->action);
+            }
+            if ($this->searchByDate != null) {
+                $user_logs = $user_logs->whereDate('created_at', $this->searchByDate);
+            }
             $user_logs =   $user_logs->paginate(10);
-        } else {
-            $user_logs = [];
         }
         return view('logs.index', ['user_logs' => $user_logs, 'users' => $users->get(), 'user_select' => $user_select]);
+    }
+    public function updatedUser_id()
+    {
+        $this->resetPage();
+        $this->reset(['action', 'searchByDate']);
     }
     public function delete($index)
     {

@@ -6,16 +6,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="viewport" content="width=device-width, user-scalable=no">
-    <meta name="turbolinks-cache-control" content="no-cache">
+    <meta name="turbo-cache-control" content="no-cache">
     <title>@stack('title')</title>
     <link rel="shortcut icon" href="{{  $settings->logo != null ? asset('storage/logo/'.$settings->logo) : asset('assets/images/capsules.png') }}" type="image/x-icon">
-    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}" data-turbolinks-eval="false" data-turbo-eval="false">
-    <link rel="stylesheet" href="{{ asset('assets/css/tabler-vendors.min.css') }}" data-turbolinks-eval="false" data-turbo-eval="false">
-    <link rel="stylesheet" href="{{ asset('assets/css/tabler.min.css') }}" data-turbolinks-eval="false" data-turbo-eval="false">
-    <link rel="stylesheet" href="{{ asset('assets/css/demo.min.css') }}" data-turbolinks-eval="false" data-turbo-eval="false">
+    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/tabler-vendors.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/tabler.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/demo.min.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="{{ asset('assets/css/print.min.css') }}" data-turbolinks-eval="false" data-turbo-eval="false" />
-    <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}" data-turbolinks-eval="false" data-turbo-eval="false">
+    <link rel="stylesheet" href="{{ asset('assets/css/print.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+
     @stack('css')
     @livewireStyles
     @if (app()->getLocale() == 'ckb')
@@ -36,12 +38,10 @@
     <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('assets/js/autosize.min.js') }}"></script>
     <script src="{{ asset('assets/js/apexcharts.min.js') }}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js" integrity="sha512-6lplKUSl86rUVprDIjiW8DuOniNX8UDoRATqZSds/7t6zCQZfaCe3e5zcGaQwxa8Kpn5RTM9Fvl3X2lLV4grPQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="{{ asset('assets/js/main.js') }}"></script>
     <script>
         $(document).ready(function() {
-            // console.clear(); 
-
+            // console.clear();
             window.addEventListener('closeModal', event => {
                 event.preventDefault();
                 $('.modal').modal('hide');
@@ -59,12 +59,15 @@
                     PlayAudio("/assets/audio/undo.mp3");
                 }
             });
-        });
-        Livewire.on('ChangeTheme', theme => {
-            window.location.reload();
-        });
-        Livewire.on('UpdateProfile', data => {
-            window.location.reload();
+            Livewire.on('ChangeTheme', theme => {
+                window.location.reload();
+            });
+            Livewire.on('UpdateProfile', data => {
+                window.location.reload();
+            });
+            document.addEventListener("turbo:before-cache", function() {
+                console.log('turbo:before-cache');
+            });
         });
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pusher/8.0.2/pusher.min.js" integrity="sha512-FFchpqjQzRMR75a1q5Se4RZyBsc7UZhHE8faOLv197JcxmPJT0/Z4tGiB1mwKn+OZMEocLT+MmGl/bHa/kPKuQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>

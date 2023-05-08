@@ -26,9 +26,16 @@ class sale_details extends Model
     {
         return
             $query
-            ->addSelect(['product_id' => Products::select('id')->whereColumn('id', 'sale_details.product_id')])
-            ->addSelect(['product_name' => Products::select('name')->whereColumn('id', 'sale_details.product_id')])->addSelect(['product_price' => Products::select('sale_price')->whereColumn('id', 'sale_details.product_id')])
+            ->addSelect(['product_name' => Products::select('name')->whereColumn('id', 'sale_details.product_id')])
+            ->addSelect(['product_price' => Products::select('sale_price')->whereColumn('id', 'sale_details.product_id')])
             ->addSelect(['product_barcode' => Products::select('barcode')->whereColumn('id', 'sale_details.product_id')])
             ->addSelect(['product_image' => Products::select('image')->whereColumn('id', 'sale_details.product_id')]);
     }
+
+    public function ProductQuantity()
+    {
+        return $this->belongsTo(ProductsQuantity::class, 'product_quantity_id');
+    }
+
+    
 }

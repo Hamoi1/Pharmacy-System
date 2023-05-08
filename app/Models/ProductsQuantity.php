@@ -22,5 +22,8 @@ class ProductsQuantity extends Model
         return $this->belongsTo(Products::class, 'product_id');
     }
 
-  
+    public function saleDetails()
+    {
+        return $this->hasMany(sale_details::class, 'product_quantity_id');
+    }
 }

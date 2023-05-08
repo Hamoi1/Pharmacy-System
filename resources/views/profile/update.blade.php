@@ -52,7 +52,7 @@
                                 <i class="fas fa-lock"></i>
                             </a>
                             @error('image')
-                            <div class="col-12 mt-2">
+                            <div class="col-12 mt-2 text-center">
                                 <span class="text-danger">
                                     {{ $message }}
                                 </span>

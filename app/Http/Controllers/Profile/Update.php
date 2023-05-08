@@ -12,7 +12,7 @@ class Update extends Component
 {
     use WithFileUploads;
     public $image, $name, $username, $email, $phone, $address, $password, $confirm_password;
-    protected $listeners = ['user-page' => 'render'];
+    protected $listeners = ['user-page' => 'render',];
     public function render()
     {
         return view('profile.update');
@@ -20,7 +20,7 @@ class Update extends Component
     public function updatedImage()
     {
         $this->validate([
-            'image' => 'image|max:20000|mimes:jpeg,jpg,png,gif,svg',
+            'image' => 'max:20000|mimes:jpeg,jpg,png,gif,svg',
         ], [
             'image.image' => __('validation.image', ['attribute' => __('header.image')]),
             'image.max' => __('validation.max.file', ['attribute' => __('header.image'), 'max' => 20000 . "MB"]),

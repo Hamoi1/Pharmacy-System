@@ -1,7 +1,7 @@
 @push('title') POS @endpush
 <div class="point-of-sales" wire:ignore.self>
     <div class="px-lg-5 px-3 mt-4 user-select-none {{  app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }}">
-        <div wire:loading wire:target="invoice,SaleType">
+        <div wire:loading wire:target="invoice,SaleType,submit">
             <div class="loading">
                 <div class="loading-content">
                     <div class="loading-icon">
@@ -21,15 +21,22 @@
             </div>
             <div class="col-md-4 col-10">
                 <div class="d-flex align-items-center justify-content-between">
-                    <div class="col-md-8 col-6 ">
-                        <select name="" class="form-select" id="" wire:model="invoice">
-                            <option value="">
-                                {{ __('Select Invoices') }}
-                            </option>
-                            @foreach ($invoices as $i)
-                            <option value="{{ $i }}" {{ $i == $invoice ? 'selected' :'' }}>{{ $i }}</option>
-                            @endforeach
-                        </select>
+                    <div class="col-md-8 col-10 ">
+                        <div class="d-flex align-items-center gap-2">
+                            <select name="" class="form-select" id="" wire:model="invoice">
+                                <option value="">
+                                    {{ __('Select Invoices') }}
+                                </option>
+                                @foreach ($invoices as $i)
+                                <option value="{{ $i->invoice }}" {{ $i == $invoice ? 'selected' :'' }}>{{ $i->invoice }}</option>
+                                @endforeach
+                            </select>
+                            <div class="addNewInvoice {{  app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'left' : 'right' }}">
+                                <button href="" class="btn btn-sm py-2" wire:click="AddNewInvoce">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-md-4 text-center">
                         @php
@@ -60,8 +67,8 @@
                     @if ($product != null)
                     <div class="border p-2  mt-1 rounded autocomplete">
                         <span class="dropdown-header">{{ __('header.Products') }}</span>
-                        @forelse ($product as $p )
-                        <div class="dropdown-item autocomplete-data" wire:click="$set('data','{{ $p->name }}')">
+                        @forelse ($product as $p)
+                        <div class="dropdown-item autocomplete-data" wire:click="AddProduct('{{ $p->id }}')">
                             {{ $p->name }}
                         </div>
                         @empty
@@ -121,335 +128,15 @@
         <div class="col-12">
             <div class="row mt-3 ">
                 @if ($SaleTypeView == 'ImageView')
-                <div class="col-md-6 col-12 border ">
+                <div class="col-md-6 col-12 ">
                     <div class="image-grid">
                         @forelse ($products as $product )
-                        <div class="image-card text-center">
+                        <div class="image-card text-center" wire:click.prvent="$set('data','{{ $product->barcode }}')">
                             <div>
                                 <img src="{{  $product->image != '' ? asset('storage/product/' . $product->image) : asset('assets/images/image_not_available.png') }}" width="100" alt="">
                             </div>
                             <span class="text-center text-wrap fw-bolder">
-                                {{ $product->name }} 
-                            </span>
-                        </div>
-                        <div class="image-card text-center">
-                            <div>
-                                <img src="{{  $product->image != '' ? asset('storage/product/' . $product->image) : asset('assets/images/image_not_available.png') }}" width="100" alt="">
-                            </div>
-                            <span class="text-center text-wrap fw-bolder">
-                                {{ $product->name }} 
-                            </span>
-                        </div>
-                        <div class="image-card text-center">
-                            <div>
-                                <img src="{{  $product->image != '' ? asset('storage/product/' . $product->image) : asset('assets/images/image_not_available.png') }}" width="100" alt="">
-                            </div>
-                            <span class="text-center text-wrap fw-bolder">
-                                {{ $product->name }} 
-                            </span>
-                        </div>
-                        <div class="image-card text-center">
-                            <div>
-                                <img src="{{  $product->image != '' ? asset('storage/product/' . $product->image) : asset('assets/images/image_not_available.png') }}" width="100" alt="">
-                            </div>
-                            <span class="text-center text-wrap fw-bolder">
-                                {{ $product->name }} 
-                            </span>
-                        </div>
-                        <div class="image-card text-center">
-                            <div>
-                                <img src="{{  $product->image != '' ? asset('storage/product/' . $product->image) : asset('assets/images/image_not_available.png') }}" width="100" alt="">
-                            </div>
-                            <span class="text-center text-wrap fw-bolder">
-                                {{ $product->name }} 
-                            </span>
-                        </div>
-                        <div class="image-card text-center">
-                            <div>
-                                <img src="{{  $product->image != '' ? asset('storage/product/' . $product->image) : asset('assets/images/image_not_available.png') }}" width="100" alt="">
-                            </div>
-                            <span class="text-center text-wrap fw-bolder">
-                                {{ $product->name }} 
-                            </span>
-                        </div>
-                        <div class="image-card text-center">
-                            <div>
-                                <img src="{{  $product->image != '' ? asset('storage/product/' . $product->image) : asset('assets/images/image_not_available.png') }}" width="100" alt="">
-                            </div>
-                            <span class="text-center text-wrap fw-bolder">
-                                {{ $product->name }} 
-                            </span>
-                        </div>
-                        <div class="image-card text-center">
-                            <div>
-                                <img src="{{  $product->image != '' ? asset('storage/product/' . $product->image) : asset('assets/images/image_not_available.png') }}" width="100" alt="">
-                            </div>
-                            <span class="text-center text-wrap fw-bolder">
-                                {{ $product->name }} 
-                            </span>
-                        </div>
-                        <div class="image-card text-center">
-                            <div>
-                                <img src="{{  $product->image != '' ? asset('storage/product/' . $product->image) : asset('assets/images/image_not_available.png') }}" width="100" alt="">
-                            </div>
-                            <span class="text-center text-wrap fw-bolder">
-                                {{ $product->name }} 
-                            </span>
-                        </div>
-                        <div class="image-card text-center">
-                            <div>
-                                <img src="{{  $product->image != '' ? asset('storage/product/' . $product->image) : asset('assets/images/image_not_available.png') }}" width="100" alt="">
-                            </div>
-                            <span class="text-center text-wrap fw-bolder">
-                                {{ $product->name }} 
-                            </span>
-                        </div>
-                        <div class="image-card text-center">
-                            <div>
-                                <img src="{{  $product->image != '' ? asset('storage/product/' . $product->image) : asset('assets/images/image_not_available.png') }}" width="100" alt="">
-                            </div>
-                            <span class="text-center text-wrap fw-bolder">
-                                {{ $product->name }} 
-                            </span>
-                        </div>
-                        <div class="image-card text-center">
-                            <div>
-                                <img src="{{  $product->image != '' ? asset('storage/product/' . $product->image) : asset('assets/images/image_not_available.png') }}" width="100" alt="">
-                            </div>
-                            <span class="text-center text-wrap fw-bolder">
-                                {{ $product->name }} 
-                            </span>
-                        </div>
-                        <div class="image-card text-center">
-                            <div>
-                                <img src="{{  $product->image != '' ? asset('storage/product/' . $product->image) : asset('assets/images/image_not_available.png') }}" width="100" alt="">
-                            </div>
-                            <span class="text-center text-wrap fw-bolder">
-                                {{ $product->name }} 
-                            </span>
-                        </div>
-                        <div class="image-card text-center">
-                            <div>
-                                <img src="{{  $product->image != '' ? asset('storage/product/' . $product->image) : asset('assets/images/image_not_available.png') }}" width="100" alt="">
-                            </div>
-                            <span class="text-center text-wrap fw-bolder">
-                                {{ $product->name }} 
-                            </span>
-                        </div>
-                        <div class="image-card text-center">
-                            <div>
-                                <img src="{{  $product->image != '' ? asset('storage/product/' . $product->image) : asset('assets/images/image_not_available.png') }}" width="100" alt="">
-                            </div>
-                            <span class="text-center text-wrap fw-bolder">
-                                {{ $product->name }} 
-                            </span>
-                        </div>
-                        <div class="image-card text-center">
-                            <div>
-                                <img src="{{  $product->image != '' ? asset('storage/product/' . $product->image) : asset('assets/images/image_not_available.png') }}" width="100" alt="">
-                            </div>
-                            <span class="text-center text-wrap fw-bolder">
-                                {{ $product->name }} 
-                            </span>
-                        </div>
-                        <div class="image-card text-center">
-                            <div>
-                                <img src="{{  $product->image != '' ? asset('storage/product/' . $product->image) : asset('assets/images/image_not_available.png') }}" width="100" alt="">
-                            </div>
-                            <span class="text-center text-wrap fw-bolder">
-                                {{ $product->name }} 
-                            </span>
-                        </div>
-                        <div class="image-card text-center">
-                            <div>
-                                <img src="{{  $product->image != '' ? asset('storage/product/' . $product->image) : asset('assets/images/image_not_available.png') }}" width="100" alt="">
-                            </div>
-                            <span class="text-center text-wrap fw-bolder">
-                                {{ $product->name }} 
-                            </span>
-                        </div>
-                        <div class="image-card text-center">
-                            <div>
-                                <img src="{{  $product->image != '' ? asset('storage/product/' . $product->image) : asset('assets/images/image_not_available.png') }}" width="100" alt="">
-                            </div>
-                            <span class="text-center text-wrap fw-bolder">
-                                {{ $product->name }} 
-                            </span>
-                        </div>
-                        <div class="image-card text-center">
-                            <div>
-                                <img src="{{  $product->image != '' ? asset('storage/product/' . $product->image) : asset('assets/images/image_not_available.png') }}" width="100" alt="">
-                            </div>
-                            <span class="text-center text-wrap fw-bolder">
-                                {{ $product->name }} 
-                            </span>
-                        </div>
-                        <div class="image-card text-center">
-                            <div>
-                                <img src="{{  $product->image != '' ? asset('storage/product/' . $product->image) : asset('assets/images/image_not_available.png') }}" width="100" alt="">
-                            </div>
-                            <span class="text-center text-wrap fw-bolder">
-                                {{ $product->name }} 
-                            </span>
-                        </div>
-                        <div class="image-card text-center">
-                            <div>
-                                <img src="{{  $product->image != '' ? asset('storage/product/' . $product->image) : asset('assets/images/image_not_available.png') }}" width="100" alt="">
-                            </div>
-                            <span class="text-center text-wrap fw-bolder">
-                                {{ $product->name }} 
-                            </span>
-                        </div>
-                        <div class="image-card text-center">
-                            <div>
-                                <img src="{{  $product->image != '' ? asset('storage/product/' . $product->image) : asset('assets/images/image_not_available.png') }}" width="100" alt="">
-                            </div>
-                            <span class="text-center text-wrap fw-bolder">
-                                {{ $product->name }} 
-                            </span>
-                        </div>
-                        <div class="image-card text-center">
-                            <div>
-                                <img src="{{  $product->image != '' ? asset('storage/product/' . $product->image) : asset('assets/images/image_not_available.png') }}" width="100" alt="">
-                            </div>
-                            <span class="text-center text-wrap fw-bolder">
-                                {{ $product->name }} 
-                            </span>
-                        </div>
-                        <div class="image-card text-center">
-                            <div>
-                                <img src="{{  $product->image != '' ? asset('storage/product/' . $product->image) : asset('assets/images/image_not_available.png') }}" width="100" alt="">
-                            </div>
-                            <span class="text-center text-wrap fw-bolder">
-                                {{ $product->name }} 
-                            </span>
-                        </div>
-                        <div class="image-card text-center">
-                            <div>
-                                <img src="{{  $product->image != '' ? asset('storage/product/' . $product->image) : asset('assets/images/image_not_available.png') }}" width="100" alt="">
-                            </div>
-                            <span class="text-center text-wrap fw-bolder">
-                                {{ $product->name }} 
-                            </span>
-                        </div>
-                        <div class="image-card text-center">
-                            <div>
-                                <img src="{{  $product->image != '' ? asset('storage/product/' . $product->image) : asset('assets/images/image_not_available.png') }}" width="100" alt="">
-                            </div>
-                            <span class="text-center text-wrap fw-bolder">
-                                {{ $product->name }} 
-                            </span>
-                        </div>
-                        <div class="image-card text-center">
-                            <div>
-                                <img src="{{  $product->image != '' ? asset('storage/product/' . $product->image) : asset('assets/images/image_not_available.png') }}" width="100" alt="">
-                            </div>
-                            <span class="text-center text-wrap fw-bolder">
-                                {{ $product->name }} 
-                            </span>
-                        </div>
-                        <div class="image-card text-center">
-                            <div>
-                                <img src="{{  $product->image != '' ? asset('storage/product/' . $product->image) : asset('assets/images/image_not_available.png') }}" width="100" alt="">
-                            </div>
-                            <span class="text-center text-wrap fw-bolder">
-                                {{ $product->name }} 
-                            </span>
-                        </div>
-                        <div class="image-card text-center">
-                            <div>
-                                <img src="{{  $product->image != '' ? asset('storage/product/' . $product->image) : asset('assets/images/image_not_available.png') }}" width="100" alt="">
-                            </div>
-                            <span class="text-center text-wrap fw-bolder">
-                                {{ $product->name }} 
-                            </span>
-                        </div>
-                        <div class="image-card text-center">
-                            <div>
-                                <img src="{{  $product->image != '' ? asset('storage/product/' . $product->image) : asset('assets/images/image_not_available.png') }}" width="100" alt="">
-                            </div>
-                            <span class="text-center text-wrap fw-bolder">
-                                {{ $product->name }} 
-                            </span>
-                        </div>
-                        <div class="image-card text-center">
-                            <div>
-                                <img src="{{  $product->image != '' ? asset('storage/product/' . $product->image) : asset('assets/images/image_not_available.png') }}" width="100" alt="">
-                            </div>
-                            <span class="text-center text-wrap fw-bolder">
-                                {{ $product->name }} 
-                            </span>
-                        </div>
-                        <div class="image-card text-center">
-                            <div>
-                                <img src="{{  $product->image != '' ? asset('storage/product/' . $product->image) : asset('assets/images/image_not_available.png') }}" width="100" alt="">
-                            </div>
-                            <span class="text-center text-wrap fw-bolder">
-                                {{ $product->name }} 
-                            </span>
-                        </div>
-                        <div class="image-card text-center">
-                            <div>
-                                <img src="{{  $product->image != '' ? asset('storage/product/' . $product->image) : asset('assets/images/image_not_available.png') }}" width="100" alt="">
-                            </div>
-                            <span class="text-center text-wrap fw-bolder">
-                                {{ $product->name }} 
-                            </span>
-                        </div>
-                        <div class="image-card text-center">
-                            <div>
-                                <img src="{{  $product->image != '' ? asset('storage/product/' . $product->image) : asset('assets/images/image_not_available.png') }}" width="100" alt="">
-                            </div>
-                            <span class="text-center text-wrap fw-bolder">
-                                {{ $product->name }} 
-                            </span>
-                        </div>
-                        <div class="image-card text-center">
-                            <div>
-                                <img src="{{  $product->image != '' ? asset('storage/product/' . $product->image) : asset('assets/images/image_not_available.png') }}" width="100" alt="">
-                            </div>
-                            <span class="text-center text-wrap fw-bolder">
-                                {{ $product->name }} 
-                            </span>
-                        </div>
-                        <div class="image-card text-center">
-                            <div>
-                                <img src="{{  $product->image != '' ? asset('storage/product/' . $product->image) : asset('assets/images/image_not_available.png') }}" width="100" alt="">
-                            </div>
-                            <span class="text-center text-wrap fw-bolder">
-                                {{ $product->name }} 
-                            </span>
-                        </div>
-                        <div class="image-card text-center">
-                            <div>
-                                <img src="{{  $product->image != '' ? asset('storage/product/' . $product->image) : asset('assets/images/image_not_available.png') }}" width="100" alt="">
-                            </div>
-                            <span class="text-center text-wrap fw-bolder">
-                                {{ $product->name }} 
-                            </span>
-                        </div>
-                        <div class="image-card text-center">
-                            <div>
-                                <img src="{{  $product->image != '' ? asset('storage/product/' . $product->image) : asset('assets/images/image_not_available.png') }}" width="100" alt="">
-                            </div>
-                            <span class="text-center text-wrap fw-bolder">
-                                {{ $product->name }} 
-                            </span>
-                        </div>
-                        <div class="image-card text-center">
-                            <div>
-                                <img src="{{  $product->image != '' ? asset('storage/product/' . $product->image) : asset('assets/images/image_not_available.png') }}" width="100" alt="">
-                            </div>
-                            <span class="text-center text-wrap fw-bolder">
-                                {{ $product->name }} 
-                            </span>
-                        </div>
-                        <div class="image-card text-center">
-                            <div>
-                                <img src="{{  $product->image != '' ? asset('storage/product/' . $product->image) : asset('assets/images/image_not_available.png') }}" width="100" alt="">
-                            </div>
-                            <span class="text-center text-wrap fw-bolder">
-                                {{ $product->name }} 
+                                {{ $product->name }}
                             </span>
                         </div>
                         @empty
@@ -461,7 +148,7 @@
                 </div>
                 @endif
                 <div class="{{ $SaleTypeView == 'ImageView' ? 'col-md-6 col-12' : 'col-12' }} ">
-                    <div class="table-responsive mt-3 overflow-y-hidden">
+                    <div class="table-responsive mt-1 overflow-y-hidden product-sale-table">
                         <table class="table table-vcenter table-nowrap print">
                             <thead>
                                 <tr>
@@ -473,12 +160,13 @@
                                     <th class="fs-4 print text-center ">{{ __('header.price') }}</th>
                                     <th class="fs-4 print text-center">{{ __('header.TotalQuantity') }}</th>
                                     <th class="fs-4  d-print-none text-center">{{ __('header.TotalPrice') }}</th>
+                                    <th class="fs-4  d-print-none text-center">{{ __('header.expire_date') }}</th>
                                     <th class="fs-4 text-center  d-print-none">{{ __('header.actions') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @if ($sales)
-                                @forelse ($sales->sale_details as $sale_detail )
+                                @forelse ($sales->sale_details as $sale_detail)
                                 <tr>
                                     <td class=" d-print-none">
                                         <button class="btn" wire:click="destroy({{ $sale_detail->id }},{{ $sale_detail->product_id }} ,{{ $sales->id }})">
@@ -500,113 +188,105 @@
                                     <td class=" d-print-none text-center">
                                         {{ number_format($sale_detail->quantity *  $sale_detail->product_price , 2,',',',') }} {{ __('header.currency') }}
                                     </td>
+                                    <td class=" d-print-none text-center">
+                                        {{ $sale_detail->ProductQuantity?->expiry_date }}
+                                    </td>
                                     <td class="col-1 text-center  d-print-none">
-                                        <button class="btn " wire:click.prevent="plus({{ $sale_detail->id }},{{ $sale_detail->product_id }} ,{{ $sales->id }})">
+                                        <button class="btn " wire:click.prevent="plus({{ $sale_detail->id }},{{ $sale_detail->ProductQuantity?->id }} ,{{ $sales->id }})">
                                             <i class="fas fa-plus"></i>
                                         </button>
-                                        <button class="btn " wire:click.prevent="minus({{ $sale_detail->id }},{{ $sale_detail->product_id }} ,{{ $sales->id }})">
+                                        <button class="btn " wire:click.prevent="minus({{ $sale_detail->id }},{{ $sale_detail->ProductQuantity?->id }} ,{{ $sales->id }})">
                                             <i class="fas fa-minus"></i>
                                         </button>
                                     </td>
                                 </tr>
                                 @empty
                                 <tr class=" d-print-none">
-                                    <td colspan="6" class="text-center">
+                                    <td colspan="7" class="text-center">
                                         <h4>
                                             {{ __('header.NoData') }}
                                         </h4>
                                     </td>
                                 </tr>
                                 @endforelse
-                                @else
-                                <tr class=" d-print-none">
-                                    <td colspan="6" class="text-center">
-                                        <h4>
-                                            {{ __('header.NoData') }}
-                                        </h4>
-                                    </td>
-                                </tr>
                                 @endif
                             </tbody>
                         </table>
                     </div>
-
-                    <div class="mt-4 bottom-pos">
-                        <div class="col-md-6 col-12 mt-4 ">
-                            <div class="mt-3">
-                                <div class="col-lg-6 col-12 Tabel-Fotter">
-                                    <p class="w-100">
-                                        {{ __('header.PaymnetMethod') }} :
-                                        <span class=" mx-1">
-                                            @if ($debt)
-                                            {{ __('header.debt') }}
-                                            @else
-                                            {{ __('header.Cash') }}
-                                            @endif
-                                        </span>
-                                    </p>
-                                    <p class="fw-bolder">
-                                        {{ __('header.TotalQuantity') }} :
-                                        <span class="fs-3 mx-1">
-                                            @if ($sales)
-                                            {{ $sales->sale_details->sum('quantity') }}
-                                            @else
-                                            0
-                                            @endif
-                                        </span>
-                                    </p>
-                                    <p class="fw-bolder">
-                                        {{ __('header.TotalPrice') }} :
-                                        <span class="fs-3 mx-1">
-                                            @if ($sales)
-                                            {{ number_format($sales->total,2,',',',') }} {{ __('header.currency') }}
-                                            @else
-                                            0 {{ __('header.currency') }}
-                                            @endif
-                                        </span>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mb-5 ">
-                            <div class="col-md-6 col-12 mt-4  d-print-none ">
-                                <div class="d-flex justify-content-between aligin-items-center">
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" wire:model="debt">
-                                        <label class="form-check-label pt-1">
-                                            {{ __('header.debt') }}
-                                        </label>
-                                    </div>
-                                </div>
-                                @if ($debt)
-                                <div class="col-12">
-                                    <div class="my-2">
-                                        <label for="" class="form-label">{{ __('header.currentPaid') }}</label>
-                                        <input type="number" class="form-control price" value="0" placeholder="0" wire:model.defer="currentpaid">
-                                        @error('currentpaid') <span class="text-danger"> {{ $message }}</span> @enderror
-                                    </div>
-                                </div>
-                                @endif
-                                <div class="my-2">
-                                    <label for="" class="form-label">{{ __('header.discount') }}</label>
-                                    <input type="number" class="form-control price" value="0" placeholder="0" wire:model.defer="discount">
-                                    @error('discount') <span class="text-danger"> {{ $message }}</span> @enderror
-                                </div>
-                            </div>
-                            @if ($sales)
-                            <div class="row mb-5 mt-3">
-                                <div class=" d-print-none">
-                                    <button class="btn btn-cyan px-4 " wire:click.prevent="submit(true)">
-                                        {{ __('header.sale') }}
-                                    </button>
-                                    <button class="btn btn-blue px-4 " wire:click.prevent=" salePrint">
-                                        {{ __('header.saleAndPrint') }}
-                                    </button>
-                                </div>
-                            </div>
-                            @endif
+                </div>
+            </div>
+            <div class="col-12 mt-3 mt-md-1">
+                <div class="col-md-6 col-12 ">
+                    <div class="">
+                        <div class="col-lg-6 col-12 Tabel-Fotter">
+                            <p class="w-100">
+                                {{ __('header.PaymnetMethod') }} :
+                                <span class=" mx-1">
+                                    @if ($debt)
+                                    {{ __('header.debt') }}
+                                    @else
+                                    {{ __('header.Cash') }}
+                                    @endif
+                                </span>
+                            </p>
+                            <p class="fw-bolder">
+                                {{ __('header.TotalQuantity') }} :
+                                <span class="fs-3 mx-1">
+                                    @if ($sales)
+                                    {{ $sales->sale_details->sum('quantity') }}
+                                    @else
+                                    0
+                                    @endif
+                                </span>
+                            </p>
+                            <p class="fw-bolder">
+                                {{ __('header.TotalPrice') }} :
+                                <span class="fs-3 mx-1">
+                                    @if ($sales)
+                                    {{ number_format($sales->total,2,',',',') }} {{ __('header.currency') }}
+                                    @else
+                                    0 {{ __('header.currency') }}
+                                    @endif
+                                </span>
+                            </p>
                         </div>
                     </div>
+                </div>
+                <div class="row mb-5 ">
+                    <div class="col-md-6 col-12 mt-4  d-print-none ">
+                        <div class="d-flex justify-content-between aligin-items-center">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" wire:model="debt">
+                                <label class="form-check-label pt-1">
+                                    {{ __('header.debt') }}
+                                </label>
+                            </div>
+                        </div>
+                        @if ($debt)
+                        <div class="col-12">
+                            <div class="my-2">
+                                <label for="" class="form-label">{{ __('header.currentPaid') }}</label>
+                                <input type="number" class="form-control price" value="0" placeholder="0" wire:model.defer="currentpaid">
+                                @error('currentpaid') <span class="text-danger"> {{ $message }}</span> @enderror
+                            </div>
+                        </div>
+                        @endif
+                        <div class="my-2">
+                            <label for="" class="form-label">{{ __('header.discount') }}</label>
+                            <input type="number" class="form-control price" value="0" placeholder="0" wire:model.defer="discount">
+                            @error('discount') <span class="text-danger"> {{ $message }}</span> @enderror
+                        </div>
+                    </div>
+                    @if ($sales)
+                        <div class="mt-1 d-print-none d-flex align-items-center gap-3 flex-wrap">
+                            <button class="btn btn-cyan px-4 " wire:click="submit(true)">
+                                {{ __('header.sale') }}
+                            </button>
+                            <button class="btn btn-blue px-4 " wire:click=" salePrint">
+                                {{ __('header.saleAndPrint') }}
+                            </button>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -618,6 +298,13 @@
         window.addEventListener('print', function(event) {
             window.open(event.detail.route, '_blank');
             window.location.reload();
+        });
+
+        $('#barcode').click(function(e) {
+            e.preventDefault();
+            // check if the input isn't empty
+            if (this.value != '')
+                Livewire.emit('dataCheck');
         });
     });
 </script>

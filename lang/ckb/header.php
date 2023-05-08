@@ -252,4 +252,5 @@ return [
     'MinExpiryDate' => 'کەمترین ڕۆژی بەسەرچوون',
     'AddOrEditQuantity' => 'زیادکردنی یان گۆڕینی بڕ',
     'FinalSalePrice' => 'نرخی فرۆشتنی کۆتای',
+    'or' => 'یان',
 ];

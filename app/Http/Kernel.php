@@ -25,7 +25,7 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\DeletingTrashe::class,
         \App\Http\Middleware\DeleteUserLog::class,
         \App\Http\Middleware\CheckSale::class,
-        // \App\Http\Middleware\CheckProduct::class,
+        \App\Http\Middleware\CheckProduct::class,
     ];
 
     /**

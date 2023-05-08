@@ -1,6 +1,6 @@
 @push('title') Logs @endpush
 <div class="{{  app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }}"> <!-- every 10s page will be refresh -->
-    <div wire:loading wire:target="user,action_method_select,searchByDate,pdf,delete">
+    <div wire:loading wire:target="user,action,searchByDate,pdf,delete,user_id">
         <div class="loading">
             <div class="loading-content">
                 <div class="loading-icon">
@@ -49,7 +49,7 @@
                         </button>
                     </div>
                     @endcan
-                    @if (count($user_logs) > 0)
+                    @if ($user_logs->count() > 0)
                     <div class="col-md-2 col-6">
                         <button type="button" class="btn btn-dark" wire:click="pdf">
                             {{ __('header.PdfConvert') }}
@@ -110,10 +110,16 @@
                             </td>
                             <td class="col-4 text-wrap">
                                 @if (is_array($log->old_data))
-                                @forelse ($log->old_data as $index => $data)
-                                <div class="{{ $log->old_data != '' && $loop->index == 0 ? '' : 'mt-1' }}  {{ $log->old_data != '' && $log->new_data !=[] && $log->new_data[$index] !== $data ? 'text-white bg-info py-1 rounded px-1' : '' }} ">
-                                    {{ $data }}
+                                @forelse ($log->old_data as $key => $value)
+                                @if (is_array($log->new_data) && $log->new_data[$key] != $value)
+                                <div class="mt-1 bg-yellow py-1 rounded px-1">
+                                    {{ $value }}
                                 </div>
+                                @else
+                                <div class="{{ $log->old_data != '' && $key == 0 ? '' : 'mt-1' }}">
+                                    {{ $value }}
+                                </div>
+                                @endif
                                 @empty
                                 <p>
                                     {{ __('header.No Data') }}
@@ -125,9 +131,9 @@
                             </td>
                             <td class="col-4 text-wrap">
                                 @if (is_array($log->new_data))
-                                @forelse ($log->new_data as $index => $data)
-                                <div class="{{ $log->new_data != '' && $loop->index == 0 ? '' : 'mt-1' }}   {{ $log->old_data != '' && is_array($log->old_data) && $log->old_data != [] && $log->old_data[$index] !== $data ? 'bg-yellow py-1 rounded px-1' : '' }}">
-                                    {{ $data }}
+                                @forelse ($log->new_data as $key => $value)
+                                <div class="{{ $log->new_data != '' && $key == 0 ? '' : 'mt-1' }}   {{ is_array($log->old_data) && $log->old_data[$key] != $value ? 'bg-yellow py-1 rounded px-1' : '' }}">
+                                    {{ $value }}
                                 </div>
                                 @empty
                                 <p>
@@ -146,7 +152,6 @@
                                 </a>
                             </td>
                             @endcan
-
                         </tr>
                         @empty
                         <tr>
@@ -160,7 +165,7 @@
             </div>
         </div>
         @if ($user_logs != null)
-        <div class="row mt-1">
+        <div class="row mt-4 mb-4">
             <div class="col-12">
                 {{ $user_logs->links() }}
             </div>

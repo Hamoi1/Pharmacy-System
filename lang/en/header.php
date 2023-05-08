@@ -14,6 +14,7 @@ return [
     'user' => [
         'index' => 'User',
     ],
+    'or' => 'Or', 
     'select' => 'User :name',
     'update_' => 'Update :name',
     'add_' => 'Add :name',
