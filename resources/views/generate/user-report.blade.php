@@ -1,11 +1,11 @@
 <div>
-    <x-modal.generate-pdf target="generate" title="{{ __('header.GeneratePDF') }}" modalWidth="modal" wire="wire:click=done">
+    <x-modal.generate-pdf target="generate" title="{{ __('header.GeneratePDF') }}" modalWidth="modal" wire="wire:click='done()'">
         <div>
             <div class="d-flex align-items-center justify-content-between">
                 <h5 class="modal-title me-auto" id="staticBackdropLabel">
                     {{ __('header.GeneratePDF') }}
                 </h5>
-                <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close" wire:click=done></button>
+                <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close" wire:click="done()"></button>
             </div>
             <div wire:loading wire:target="type">
                 <div class="d-flex justify-content-center">

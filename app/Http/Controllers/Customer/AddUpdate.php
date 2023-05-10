@@ -47,7 +47,7 @@ class AddUpdate extends Component
     public function addustomer()
     {
         $this->CustomerUpadate == false;
-        
+
         $this->resetErrorBag();
     }
     private function Rule()
@@ -107,9 +107,7 @@ class AddUpdate extends Component
                 'guarantoraddress' => $this->guarantoraddress,
             ]);
         }
-        $this->CustomerUpadate ?
-            flash()->addSuccess(__('header.Customer') . ' ' . __('header.updated')) :
-            flash()->addSuccess(__('header.Customer') . ' ' . __('header.add'));
+        $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' =>   $this->CustomerUpadate ? __('header.Customer') . ' ' . __('header.updated') :__('header.Customer') . ' ' . __('header.add')]);
         $this->done();
     }
 

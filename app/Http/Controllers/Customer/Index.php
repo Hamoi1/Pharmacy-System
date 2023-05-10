@@ -124,7 +124,7 @@ class Index extends Component
             abort(404);
         }
         Customers::find($id)->delete();
-        flash()->addSuccess(__('header.Customer') . ' ' . __('header.deleted'));
+        $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' =>   __('header.Customer') . ' ' . __('header.deleted')]);
         $this->done();
     }
 }

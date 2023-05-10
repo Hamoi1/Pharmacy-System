@@ -12,7 +12,7 @@
             <h5 class="modal-title me-auto" id="staticBackdropLabel">
                 {{ __('header.barcodes.generate') }}
             </h5>
-            <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close" wire:click=done></button>
+            <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close" wire:click="done()"></button>
         </div>
         <form wire:submit.prevent="submit">
             <div class="row">

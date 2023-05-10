@@ -62,7 +62,7 @@ class Index extends Component
     public function delete(Suppliers $supplier)
     {
         if (!Gate::allows('Delete Supplier')) {
-            flash()->addError(__('header.NotAllowToDo'));
+            $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.NotAllowToDo')]);
         } else {
             $supplierName = [];
             foreach ($supplier->products as $product) {
@@ -74,7 +74,7 @@ class Index extends Component
             $supplier->delete();
             $data =  "Delete ( " . (implode(',', $supplierName)) . " )  from :" . now();
             auth()->user()->InsertToLogsTable(auth()->user()->id, "Supplier", 'Delete', $data, $data);
-            flash()->addSuccess(__('header.deleted_for_30_days'));
+            $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.deleted_for_30_days')]);       
         }
         $this->done();
     }
@@ -90,8 +90,7 @@ class Index extends Component
         }
         $data =  "Delete ( " . (implode(',', $supplierName)) . " )  from :" . now();
         auth()->user()->InsertToLogsTable(auth()->user()->id, "Supplier", 'Delete', $data, $data);
-        flash()->addSuccess(__('header.deleted'));
-
+        $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.deleted')]);       
         $this->done();
     }
     public function RestoreAll()
@@ -106,8 +105,7 @@ class Index extends Component
         }
         $data =  "Restore ( " . (implode(',', $supplierName)) . " )  from :" . now();
         auth()->user()->InsertToLogsTable(auth()->user()->id, "Supplier", 'Restore', $data,  'nothing to show');
-        flash()->addSuccess(__('header.RestoreMessage'));
-
+        $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.RestoreMessage')]);       
         $this->done();
     }
     public function restore($id)
@@ -117,7 +115,7 @@ class Index extends Component
         $supplier->restore();
         auth()->user()->InsertToLogsTable(auth()->user()->id, "Supplier", 'Restore', $data,  'nothing to show');
         flash()->addSuccess(__('header.supplier') . ' ' . __('header.RestoreMessage'));
-
+        $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.RestoreMessage')]);       
         $this->done();
     }
 }

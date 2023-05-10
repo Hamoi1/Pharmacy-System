@@ -40,15 +40,12 @@ class Login extends Component
         $this->validate($this->rules(), $this->messages());
         if (auth()->attempt(['email' => $this->email, 'password' => $this->password])) {
             if (auth()->user()->status === 1) {
-                $this->reset();
-                $this->resetErrorBag();
-                $this->resetValidation();
                 $data = auth()->user()->name . ' Login to System ';
                 auth()->user()->InsertToLogsTable(auth()->user()->id, 'Login', 'Login', $data, $data);
                 return redirect()->route('dashboard', app()->getLocale());
             } else {
                 auth()->logout();
-                flash()->addError(__('header.Account_not_active'));
+                $this->dispatchBrowserEvent('message', ['type' => 'error', 'message' => __('header.Account_not_active')]);
             }
         } else {
             $this->addError('email', __('header.failed'));

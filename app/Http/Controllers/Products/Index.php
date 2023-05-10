@@ -245,7 +245,7 @@ class Index extends Component
             ];
             auth()->user()->InsertToLogsTable(auth()->user()->id, "Product", 'Create',  'nothing to show',  $newData);
         }
-        flash()->addSuccess(__('header.Product') . ' ' . $this->UpdateProduct ? __('header.updated') : __('header.add'));
+        $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.Product') . ' ' . $this->UpdateProduct ? __('header.updated') : __('header.add')]);
         $this->done();
     }
     public function updatedImage()
@@ -255,7 +255,7 @@ class Index extends Component
     public function updateProduct($id)
     {
         if (!Gate::allows('Update Product')) {
-            flash()->adderror(__('header.NotAllowToDo'));
+            $this->dispatchBrowserEvent('message', ['type' => 'error', 'message' => __('header.NotAllowToDo')]);
         } else {
             $product = Products::findOrFail($id);
             $this->product = $product;
@@ -274,12 +274,12 @@ class Index extends Component
     public function delete(Products $product)
     {
         if (!Gate::allows('Delete Product')) {
-            flash()->adderror(__('header.NotAllowToDo'));
+            $this->dispatchBrowserEvent('message', ['type' => 'error', 'message' => __('header.NotAllowToDo')]);
         } else {
             $data = 'Delete ( ' . $product->name . ' ) form : ' . now();
             auth()->user()->InsertToLogsTable(auth()->user()->id, "Product", 'Delete',  $data,  $data);
             $product->delete();
-            flash()->addSuccess(__('header.deleted_for_30_days'));
+            $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.deleted_for_30_days')]);
         }
         $this->done();
     }
@@ -302,7 +302,8 @@ class Index extends Component
         }
         $data = 'Delete  ' . implode(' , ', $ProductName) . '  form : ' . now();
         auth()->user()->InsertToLogsTable(auth()->user()->id, "Product", 'Delete',  $data,  $data);
-        flash()->addSuccess(__('header.Product') . ' ' . __('header.deleted'));
+        $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.Product') . ' ' . __('header.deleted')]);
+
         $this->done();
     }
     public function RestoreAll()
@@ -315,7 +316,8 @@ class Index extends Component
         }
         $data = 'Restore  ' . implode(' , ', $ProductName) . '  form : ' . now();
         auth()->user()->InsertToLogsTable(auth()->user()->id, "Product", 'Restore',  $data, 'nothing to show');
-        flash()->addSuccess(__('header.RestoreMessage'));
+        $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.RestoreMessage')]);
+
         $this->done();
     }
     public function restore($id)
@@ -325,7 +327,7 @@ class Index extends Component
         $product->restore();
         $data = 'Restore ( ' . $ProductName . ' ) form : ' . now();
         auth()->user()->InsertToLogsTable(auth()->user()->id, "Product", 'Restore',  $data,  'nothing to show');
-        flash()->addSuccess(__('header.Product') . ' ' . __('header.RestoreMessage'));
+        $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.Product') . ' ' . __('header.RestoreMessage')]);
         $this->done();
     }
     public function Upload($data)

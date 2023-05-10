@@ -56,7 +56,7 @@ class DebtSale extends Component
     {
         $debtSale =  DebtSaleModel::query();
         if (!Gate::allows('Update DebtSale')) {
-            flash()->addError(__('header.NotAllowToDo'));
+            $this->dispatchBrowserEvent('message', ['type' => 'error', 'message' => __('header.NotAllowToDo')]);
         } else {
             $debtSale = $debtSale->with('sale', function ($query) {
                 $query->select(['id', 'invoice'])->customersData();
@@ -73,7 +73,7 @@ class DebtSale extends Component
     public function submit()
     {
         if (!Gate::allows('Update DebtSale')) {
-            flash()->addError(__('header.NotAllowToDo'));
+            $this->dispatchBrowserEvent('message', ['type' => 'error', 'message' => __('header.NotAllowToDo')]);
         } else {
             $this->validate([
                 'price' => 'required|numeric|min:1|max:' . $this->remain,
@@ -109,14 +109,14 @@ class DebtSale extends Component
                 'remain : ' . (number_format($debtSale->remain, 0, null, '.')),
             ];
             auth()->user()->InsertToLogsTable(auth()->user()->id, "Debt sale", 'Update', $oldData, $newData);
-            flash()->addSuccess(__('header.updated'));
+            $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.updated')]);
         }
         $this->done();
     }
     public function destroy(DebtSaleModel $debtSale)
     {
         if (!Gate::allows('Delete DebtSale')) {
-            flash()->addError(__('header.NotAllowToDo'));
+            $this->dispatchBrowserEvent('message', ['type' => 'error', 'message' => __('header.NotAllowToDo')]);
         } else {
             $data = [
                 'name : ' . $debtSale->name,
@@ -127,8 +127,8 @@ class DebtSale extends Component
             ];
             auth()->user()->InsertToLogsTable(auth()->user()->id, "Debt sale", 'Delete', $data,  'nothing to show');
             $debtSale->delete();
-            flash()->addSuccess(__('header.deleted'));
-        }
+            $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.deleted')]);
+        }   
         $this->done();
     }
 }

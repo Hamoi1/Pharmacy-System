@@ -360,7 +360,7 @@ class Index extends Component
             ];
             $user->InsertToLogsTable(auth()->user()->id, "User", 'Update', '', $new_data);
         }
-        flash()->addSuccess(__('header.User') . ' ' . $this->UpdateUser ?  __('header.updated') :  __('header.add'));
+        $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.User') . ' ' . $this->UpdateUser ?  __('header.updated') :  __('header.add')]);
         $this->done();
     }
     public function Update($id)
@@ -387,11 +387,11 @@ class Index extends Component
         } else {
             $user = User::findOrFail($id);
             if ($user->id == auth()->user()->id) {
-                flash()->addError(__('header.CanNotDeleteUser'));
+                $this->dispatchBrowserEvent('message', ['type' => 'error', 'message' => __('header.CanNotDeleteUser')]);
             } else {
                 $data = 'Delete ( ' . $user->name . ' ) form : ' . now();
                 $user->delete();
-                flash()->addSuccess(__('header.deleted_for_30_days'));
+                $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.deleted_for_30_days')]);
                 auth()->user()->InsertToLogsTable(auth()->user()->id, "User", 'Delete',  $data,  $data);
             }
         }
@@ -401,7 +401,7 @@ class Index extends Component
     public function toggleActive(User $user)
     {
         if (!Gate::allows('Update User')) {
-            flash()->addError(__('header.NotAllowToDo'));
+            $this->dispatchBrowserEvent('message', ['type' => 'error', 'message' => __('header.NotAllowToDo')]);
         } else {
             $old_data = [
                 'Name : ' . $user->name,
@@ -415,7 +415,7 @@ class Index extends Component
                 $user->status ? 'status : Active' : 'status : Not Active'
             ];
             $user->InsertToLogsTable(auth()->user()->id, "User", 'Update', $old_data, $new_data);
-            flash()->addSuccess($user->status == 1 ? __('header.User') . ' ' . __('header.actived') : __('header.User') . ' ' . __('header.deactived'));
+            $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => $user->status == 1 ? __('header.User') . ' ' . __('header.actived') : __('header.User') . ' ' . __('header.deactived')]);
             event(new UserStatus($user));
         }
         $this->done();
@@ -436,7 +436,7 @@ class Index extends Component
         }
         $data = 'Delete  ' . implode(' , ', $userName) . '  form : ' . now();
         auth()->user()->InsertToLogsTable(auth()->user()->id, "User", 'Delete',  $data,  $data);
-        flash()->addSuccess(__('header.deleted'));
+        $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.deleted')]);
         $this->done();
     }
     public function RestoreAll()
@@ -452,7 +452,7 @@ class Index extends Component
         }
         $data = 'Restore   ' . implode(' , ', $userName) . '  form : ' . now();
         auth()->user()->InsertToLogsTable(auth()->user()->id, "User", 'Restore',  $data,  'nothing to show');
-        flash()->addSuccess(__('header.RestoreMessage'));
+        $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.RestoreMessage')]);
         $this->done();
     }
     public function restore($id)
@@ -461,7 +461,7 @@ class Index extends Component
         $data = 'Restore ( ' . $user->name . ' ) form : ' . now();
         $user->restore();
         auth()->user()->InsertToLogsTable(auth()->user()->id, "User", 'Restore',  $data,  'nothing to show');
-        flash()->addSuccess(__('header.User') . ' ' . __('header.RestoreMessage'));
+        $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.User') . ' ' . __('header.RestoreMessage')]);
         $this->done();
     }
 

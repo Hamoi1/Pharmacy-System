@@ -31,19 +31,15 @@ class Setting extends Component
         $this->oldLogo = $this->setting->logo;
         return view('setting');
     }
-    public function GetRuls()
+    public function submit()
     {
-        return [
+        $this->validate([
             'name' => 'required|string|max:255',
             'phone' => 'required|numeric|digits:11',
             'email' => 'required|email|regex:/^[a-zA-Z0-9_.+-]+@[a-zA-Z]+\.[a-zA-Z]+$/u',
             'address' => 'required|string|max:255',
             'logo' => 'nullable|image|max:20000|mimes:jpg,jpeg,png,gif,svg,webp,ico',
-        ];
-    }
-    public function GetMessage()
-    {
-        return [
+        ], [
             'name.required' => __('validation.required', ['attribute' => __('header.settings.name')]),
             'name.string' => __('validation.string', ['attribute' => __('header.settings.name')]),
             'name.max' => __('validation.max.string', ['attribute' => __('header.settings.name'), 'max' => 255]),
@@ -59,11 +55,7 @@ class Setting extends Component
             'logo.image' => __('validation.image', ['attribute' => __('header.image')]),
             'logo.max' => __('validation.max.file', ['attribute' => __('header.image'), 'max' => 20000]),
             'logo.mimes' => __('validation.mimes', ['attribute' => __('header.image'), 'values' => 'jpg,jpeg,png,gif,svg,webp,ico']),
-        ];
-    }
-    public function submit()
-    {
-        $this->validate($this->GetRuls(), $this->GetMessage());
+        ]);
         if ($this->logo) {
             $logoName = time() . '-' . uniqid() . '.' . $this->logo->getClientOriginalExtension();
             $this->logo->storeAs('public/logo', $logoName);
@@ -78,9 +70,8 @@ class Setting extends Component
             'address' => $this->address,
             'logo' => $logoName ?? $this->oldLogo,
         ]);
-        flash()->addSuccess(__('header.updated'));
-        $this->reset('logo');
-        $this->resetValidation();
+        $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.updated')]);
+        $this->resetErrorBag();
     }
 
     public function ChangeTheme($theme)

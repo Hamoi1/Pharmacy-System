@@ -95,14 +95,13 @@ class AddUpdate extends Component
             ];
             auth()->user()->InsertToLogsTable(auth()->user()->id, "Supplier", 'Create',  'nothing to show', $newData);
         }
-        flash()->addSuccess($this->updateSupplier ? __('header.supplier') . ' ' . __('header.updated') : __('header.supplier') . ' ' . __('header.add'));
-
+        $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => $this->updateSupplier ? __('header.supplier') . ' ' . __('header.updated') : __('header.supplier') . ' ' . __('header.add')]);
         $this->done();
     }
     public function UpdateSupplier(Suppliers  $supplier)
     {
         if (!Gate::allows('Update Supplier')) {
-            flash()->addError(__('header.NotAllowToDo'));
+            $this->dispatchBrowserEvent('message', ['type' => 'error', 'message' => __('header.NotAllowToDo')]);
         } else {
             $this->updateSupplier = true;
             $this->supplier_id = $supplier->id;

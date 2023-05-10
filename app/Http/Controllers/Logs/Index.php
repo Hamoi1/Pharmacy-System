@@ -40,7 +40,6 @@ class Index extends Component
     public function render()
     {
         if (!Gate::allows('View Log')) {
-            $this->resetExcept();
             abort(404);
         }
         $user_select = $this->user_id;
@@ -73,26 +72,26 @@ class Index extends Component
     public function delete($index)
     {
         if (!Gate::allows('Delete Logs')) {
-            flash()->addSuccess(__('header.NotAllowToDo'));
+            $this->dispatchBrowserEvent('message', ['type' => 'error', 'message' => __('header.NotAllowToDo')]);
         } else {
             if ($this->user_id) {
                 auth()->user()->DeleteDataInLogs($this->user_id, $index);
-                flash()->addSuccess(__('header.data') . ' ' . __('header.deleted'));
+                $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.data')]);
             } else {
-                flash()->addWarning(__('header.user_data'));
+                $this->dispatchBrowserEvent('message', ['type' => 'warning', 'message' => __('header.user_data')]);
             }
         }
     }
     public function clear()
     {
         if (!Gate::allows('Clear Log')) {
-            flash()->addSuccess(__('header.NotAllowToDo'));
+            $this->dispatchBrowserEvent('message', ['type' => 'error', 'message' => __('header.NotAllowToDo')]);
         } else {
             if ($this->user_id) {
                 auth()->user()->DeleteLogs($this->user_id);
-                flash()->addSuccess(__('header.data_clear'));
+                $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.data_clear')]);
             } else {
-                flash()->addWarning(__('header.user_data'));
+                $this->dispatchBrowserEvent('message', ['type' => 'warning', 'message' => __('header.user_data')]);
             }
         }
     }

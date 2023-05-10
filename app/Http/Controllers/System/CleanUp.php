@@ -28,6 +28,6 @@ class CleanUp extends Component
         }
         $file = fopen(storage_path('logs/laravel.log'), 'w');
         fclose($file);
-        flash()->addSuccess(__('header.cleaned'));
+        $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.cleaned')]);
     }
 }

@@ -14,8 +14,6 @@ class Backup extends Component
     {
         return view('system.backup');
     }
-
-
     public function submit()
     {
         $this->validate([
@@ -42,14 +40,11 @@ class Backup extends Component
                 Storage::disk('local')->delete($file);
             }
         }
-
         $file = Storage::disk('local')->get($lastFile);
         // send file to email
         Notification::route('mail', $email)->notify(new Sendfile($file));
-        $this->reset('email');
-        flash()->addSuccess(__('header.backupSuccessfully'));
+        $this->resetErrorBag();
+        $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.backupSuccessfully')]);
         $this->dispatchBrowserEvent('closeModal');
     }
 }
-
-// auth()->user()->notify(new \App\Notifications\Sendfile($file));

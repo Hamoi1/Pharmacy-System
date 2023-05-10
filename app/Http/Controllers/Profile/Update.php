@@ -46,10 +46,10 @@ class Update extends Component
             auth()->user()->user_details->update([
                 'image' => null,
             ]);
-            flash()->addSuccess(__('header.deleted'));
+            $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.deleted')]);
             $this->emit('UpdateProfile', ['name' => 'profile.index']);
         } else {
-            flash()->addWarning(__('header.no_image'));
+            $this->dispatchBrowserEvent('message', ['type' => 'warning', 'message' => __('header.no_image')]);
         }
         $this->emit('UpdateProfile', ['name' => 'profile.index']);
         $this->done();
@@ -123,7 +123,8 @@ class Update extends Component
             'address : ' .  auth()->user()->user_details->address,
         ];
         auth()->user()->InsertToLogsTable(auth()->user()->id, 'Update', 'Profile', $oldData, $newData);
-        flash()->addSuccess(__('header.updated'));
+        $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.updated')]);
+      
         $this->emit('UpdateProfile', ['name' => 'profile.index']);
         $this->done();
     }
@@ -143,7 +144,7 @@ class Update extends Component
         auth()->user()->update([
             'password' => Hash::make($this->password),
         ]);
-        flash()->addSuccess(__('header.updated'));
+        $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.updated')]);
         $this->reset('password', 'confirm_password');
         $this->done();
     }

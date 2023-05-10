@@ -40,7 +40,6 @@ class Index extends Component
         $this->sales = Sales::where('invoice', $this->invoice)->where('status', 0)->with('sale_details', function ($query) {
             $query->with(['ProductQuantity'])->orderByDesc('id')->product();
         })->first();
-
         $this->SupplierSearch != null ?
             $suppliers = DB::table('suppliers')->select(['id', 'name'])->where(function ($query) {
                 $query->where('name', 'like', '%' . $this->SupplierSearch . '%')
@@ -54,7 +53,6 @@ class Index extends Component
             })->orderByDesc('id')->get() :
             $customers = DB::table('customers')->select(['id', 'name'])->orderByDesc('id')->get();
         $back = url()->previous();
-        // dd($this->sales->sale_details);
         $products = DB::table('products')->select(['id', 'name', 'barcode', 'image'])->orderByDesc('id')->get();
         return view('pos.index', compact('suppliers', 'customers', 'back', 'products'));
     }
@@ -67,21 +65,6 @@ class Index extends Component
         ]);
         $this->invoices = $this->invoices;
     }
-
-    public function DeleteInvoicePage($index)
-    {
-        if (count($this->invoices) == 1) {
-            return;
-        }
-        unset($this->invoices[$index]);
-        $this->invoices =  array_values($this->invoices);
-        if (count($this->invoices) == 0) {
-            $this->AddNewInvoce();
-        }
-        session()->put('invoice', $this->invoices);
-        $this->invoice = $this->invoices[0];
-    }
-
     public function debt()
     {
         $this->debt = !$this->debt;
@@ -167,7 +150,7 @@ class Index extends Component
         }])->find($id);
         if ($product_quantity == null) {
             $this->dispatchBrowserEvent('play', ['sound' => 'fail']);
-            flash()->addError(__('header.expired') . ' ' . __('header.or') . ' ' . __('header.StockOut'));
+            $this->dispatchBrowserEvent('message', ['type' => 'error', 'message' => __('header.expired') . ' ' . __('header.or') . ' ' . __('header.StockOut')]);
             return;
         }
         $sale_details->update([
@@ -180,14 +163,15 @@ class Index extends Component
             'total' => $sales->total + $product_quantity->sale_price
         ]);
         $this->dispatchBrowserEvent('play', ['sound' => 'beep']);
-        flash()->addSuccess(__('header.add'));
+        $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.add')]);
     }
     public function minus(sale_details $sale_details, $id, Sales $sales)
     {
         $product_quantity = ProductsQuantity::find($id);
+        dd($sales->total - $product_quantity->sale_price);
         if ($product_quantity == null) {
             $this->dispatchBrowserEvent('play', ['sound' => 'fail']);
-            flash()->addError(__('header.NoData'));
+            $this->dispatchBrowserEvent('message', ['type' => 'error', 'message' => __('header.NoData')]);
             return;
         }
         if ($sale_details->quantity == 1) {
@@ -205,7 +189,7 @@ class Index extends Component
             'total' => $total
         ]);
         $this->dispatchBrowserEvent('play', ['sound' => 'undo']);
-        flash()->addSuccess(__('header.deleted'));
+        $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.deleted')]);
     }
     public function destroy(sale_details $sale_details, $id, Sales $sales)
     {
@@ -219,14 +203,14 @@ class Index extends Component
         $sales->update([
             'total' => $sales->total - ($product_quantity->products->final_sale_price * $sale_details->quantity)
         ]);
-        $sales->total < 0 ?  0 : $sales->total;
+        $sales->total = $sales->total < 0 ?  0 : $sales->total;
         $sales->saveQuietly();
         $product_quantity->update([
             'quantity' => $product_quantity->quantity + $sale_details->quantity
         ]);
         $sale_details->delete();
         $this->dispatchBrowserEvent('play', ['sound' => 'undo']);
-        flash()->addWarning(__('header.deleted'));
+        $this->dispatchBrowserEvent('message', ['type' => 'warning', 'message' => __('header.deleted')]);
     }
     public function submit($check)
     {
@@ -288,11 +272,9 @@ class Index extends Component
             'currentpaid : ' . ($this->currentpaid ? number_format($this->currentpaid, 2, ',', ',') : 'no paid'),
         ];
         auth()->user()->InsertToLogsTable(auth()->user()->id, "Sale", 'Sale', 'nothing to show', $data);
-        session()->forget('invoice');
-        if ($check) {
-            flash()->addSuccess(__('header.successSale'));
-            return redirect()->route('sales', app()->getLocale());
-        }
+        $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.successSale')]);
+        $this->AddNewInvoce();
+        $this->resetErrorBag();
     }
     public function salePrint()
     {

@@ -26,9 +26,6 @@ class UpdateQuantity extends Component
         $this->product = Products::with(['product_quantity' => function ($query) {
             $query->orderBy('expiry_date');
         }])->categorys()->suppliers()->TotalQuantity()->SalePrice()->findOrFail($this->product_id);
-        $this->product->update([
-            'sale_price' => $this->product->final_sale_price,
-        ]);
         return view('products.update.index');
     }
 
@@ -87,7 +84,6 @@ class UpdateQuantity extends Component
     public function submit()
     {
         $this->validate($this->GetRuls(), $this->GetMessage());
-
         if ($this->UpdateProduct) {
             $ProductQuantity = ProductsQuantity::findOrFail($this->product_quantity_id);
             $ProductQuantity->update([
@@ -96,7 +92,7 @@ class UpdateQuantity extends Component
                 'quantity' => $this->quantity,
                 'expiry_date' => $this->expire_date ?? $ProductQuantity->expiry_date,
             ]);
-            flash()->addSuccess(__('header.updated'));
+            $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.updated')]);
         } else {
             ProductsQuantity::create([
                 'product_id' => $this->product_id,
@@ -105,7 +101,7 @@ class UpdateQuantity extends Component
                 'quantity' => $this->quantity,
                 'expiry_date' => $this->expire_date,
             ]);
-            flash()->addSuccess(__('header.add'));
+            $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.add')]);
         }
         $product =  $this->product->SalePrice()->findOrFail($this->product_id);
         $product->update([
@@ -118,9 +114,9 @@ class UpdateQuantity extends Component
         if (!Gate::allows('Delete Product')) {
             abort(404);
         }
-       
+
         $ProductQuantity->delete();
-        flash()->addSuccess(__('header.deleted'));
+        $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.deleted')]);
         $this->done();
     }
 }

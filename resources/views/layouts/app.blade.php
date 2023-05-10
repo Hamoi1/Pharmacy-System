@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="{{ asset('assets/css/print.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css" defer>
 
     @stack('css')
     @livewireStyles
@@ -39,6 +39,69 @@
     <script src="{{ asset('assets/js/autosize.min.js') }}"></script>
     <script src="{{ asset('assets/js/apexcharts.min.js') }}"></script>
     <script src="{{ asset('assets/js/main.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js" defer></script>
+    <script defer>
+        $(document).ready(function() {
+            window.addEventListener('message', respnose => {
+                var notyf = new Notyf({
+                    duration: 3000,
+                    position: {
+                        x: 'center',
+                        y: 'top',
+                    },
+                    types: [{
+                            type: 'info',
+                            background: '#3f6ad8',
+                            icon: {
+                                className: 'fas fa-info-circle',
+                                tagName: 'span',
+                                color: '#fff'
+                            },
+                        },
+                        {
+                            type: 'success',
+                            background: '#2ecc71',
+                            icon: {
+                                className: 'fas fa-check-circle',
+                                tagName: 'span',
+                                color: '#fff'
+                            },
+                        },
+                        {
+                            type: 'error',
+                            background: '#e74c3c',
+                            icon: {
+                                className: 'fas fa-times-circle',
+                                tagName: 'span',
+                                color: '#fff'
+                            },
+                        },
+                        {
+                            type: 'warning',
+                            background: '#f1c40f',
+                            icon: {
+                                className: 'fas fa-exclamation-circle',
+                                tagName: 'span',
+                                color: '#fff'
+                            },
+                        },
+                    ]
+                });
+                if (respnose.detail.type == 'success') {
+                    notyf.success(respnose.detail.message);
+                }
+                if (respnose.detail.type == 'error') {
+                    notyf.error(respnose.detail.message);
+                }
+                if (respnose.detail.type == 'info') {
+                    notyf.info(respnose.detail.message);
+                }
+                if (respnose.detail.type == 'warning') {
+                    notyf.warning(respnose.detail.message);
+                }
+            });
+        });
+    </script>
     <script>
         $(document).ready(function() {
             // console.clear();
@@ -65,9 +128,7 @@
             Livewire.on('UpdateProfile', data => {
                 window.location.reload();
             });
-            document.addEventListener("turbo:before-cache", function() {
-                console.log('turbo:before-cache');
-            });
+
         });
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pusher/8.0.2/pusher.min.js" integrity="sha512-FFchpqjQzRMR75a1q5Se4RZyBsc7UZhHE8faOLv197JcxmPJT0/Z4tGiB1mwKn+OZMEocLT+MmGl/bHa/kPKuQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>

@@ -58,8 +58,9 @@ class Index extends Component
         if ($action)
             event(new CategoryPage());
     }
-    public function add(){
-       return !$this->updateCategory;
+    public function add()
+    {
+        return !$this->updateCategory;
     }
     public function submit()
     {
@@ -97,13 +98,13 @@ class Index extends Component
             ];
             auth()->user()->InsertToLogsTable(auth()->user()->id, "Category", 'Create', 'nothing to show', $newData);
         }
-        flash()->addSuccess(__('header.Category') . ' ' . $this->updateCategory ?  __('header.updated') : __('header.add'));
+        $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' =>  __('header.Category') . ' ' . $this->updateCategory ?  __('header.updated') : __('header.add')]);
         $this->done();
     }
     public function update(Categorys $category)
     {
         if (!Gate::allows('Update Category')) {
-            flash()->addError(__('header.NotAllowToDo'));
+            $this->dispatchBrowserEvent('message', ['type' => 'error', 'message' =>  __('header.NotAllowToDo')]);
         } else {
             $this->updateCategory = true;
             $this->name = $category->name;
@@ -113,12 +114,12 @@ class Index extends Component
     public function destroy(Categorys $category)
     {
         if (!Gate::allows('Delete Category')) {
-            flash()->addError(__('header.NotAllowToDo'));
+            $this->dispatchBrowserEvent('message', ['type' => 'error', 'message' =>  __('header.NotAllowToDo')]);
         } else {
             $data = 'Delete ( ' . $category->name . ' ) form :' . now();
             auth()->user()->InsertToLogsTable(auth()->user()->id, "Category", 'Delete', $data, $data);
             $category->delete();
-            flash()->addSuccess(__('header.deleted_for_30_days'));
+            $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' =>  __('header.deleted_for_30_days')]);
         }
         $this->done();
     }
@@ -132,7 +133,7 @@ class Index extends Component
         $data = 'Restore ' . $categoryName . ' form :' . now();
         auth()->user()->InsertToLogsTable(auth()->user()->id, "Category", 'Restore', $data, 'nothing to show');
         if ($status) {
-            flash()->addSuccess(__('header.Category') . ' ' . __('header.RestoreMessage'));
+            $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.Category') . ' ' . __('header.RestoreMessage')]);
             $this->done();
         }
     }
@@ -148,7 +149,7 @@ class Index extends Component
         }
         $data = 'Delete ' . implode(',', $categoryName) . ' form :' . now();
         auth()->user()->InsertToLogsTable(auth()->user()->id, "Category", 'Delete', $data, $data);
-        flash()->addSuccess(__('header.Category') . ' ' . __('header.deleted'));
+        $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.Category') . ' ' . __('header.deleted')]);
         $this->done();
     }
     public function RestoreAll()
@@ -160,7 +161,7 @@ class Index extends Component
         foreach ($categorys as $category) {
             $this->restore($category->id, false);
         }
-        flash()->addSuccess(__('header.RestoreMessage'));
+        $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.RestoreMessage')]);
         $this->done();
     }
 }

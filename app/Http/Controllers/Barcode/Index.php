@@ -24,14 +24,11 @@ class Index extends Component
         $barcodes = Barcode::paginate(10);
         return view('barcode.index', ['barcodes' => $barcodes]);
     }
-    public function done($action = true)
+    public function done()
     {
         $this->dispatchBrowserEvent('closeModal');
         $this->reset(['barcode', 'quantity', 'barcode_name', 'barcode_id', 'Barcode']);
-        $this->resetValidation();
-        if ($action) {
-            $this->resetErrorBag();
-        }
+        $this->resetErrorBag();
     }
     private function  generate()
     {
@@ -102,14 +99,14 @@ class Index extends Component
                 'Quantity : ' . $this->quantity,
             ];
             auth()->user()->InsertToLogsTable(auth()->user()->id, "Barcode", 'Create', 'nothing to show', $data);
-            flash()->addSuccess(__('header.barcodes.SuccessfullyGenerated'));
+            $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.barcodes.SuccessfullyGenerated')]);
         }
         $this->done();
     }
     public function destroy(Barcode $barcode)
     {
         if (!Gate::allows('Delete Barcode')) {
-            flash()->addError(__('header.NotAllowToDo'));
+            $this->dispatchBrowserEvent('message', ['type' => 'error', 'message' => __('header.NotAllowToDo')]);
         } else {
             $data = [
                 'Name : ' . ($barcode->name ?? 'No name'),
@@ -118,7 +115,7 @@ class Index extends Component
             ];
             auth()->user()->InsertToLogsTable(auth()->user()->id, "Barcode", 'Delete', $data, $data);
             $barcode->delete();
-            flash()->addSuccess(__('header.barcodes.index') . ' ' . __('header.deleted'));
+            $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.barcodes.index') . ' ' . __('header.deleted')]);
         }
         $this->done();
     }
