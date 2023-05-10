@@ -8,6 +8,7 @@ use Livewire\Component;
 use App\Events\UserStatus;
 use livewire\WithPagination;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 
 class Index extends Component
@@ -30,7 +31,7 @@ class Index extends Component
             'action' => ['except' => '', 'as' => 'action'],
             'searchByDate' => ['except' => '', 'as' => 'date'],
         ], $paginationTheme = 'bootstrap',
-        $listeners = ['user-actions' => 'render'];
+        $listeners = ['user-actions' => '$refresh'];
 
     public function updated($propertyName)
     {
@@ -43,7 +44,7 @@ class Index extends Component
             abort(404);
         }
         $user_select = $this->user_id;
-        $users = User::whereNot('id', auth()->user()->id)->select('id', 'name');
+        $users = DB::table('users')->whereNot('id', auth()->user()->id)->select('id', 'name');
         $user_logs = Logs::query();
         if ($this->user_id != null) {
             $user_logs = Logs::where('user_id', $this->user_id)->latest();
@@ -99,10 +100,14 @@ class Index extends Component
     {
         $logs = Logs::where('user_id', $this->user_id)->latest()->get();
         $pdf = Pdf::loadView('pdf.logs', ['logs' => $logs, 'user' => $this->userSelect]);
-        return response()->streamDownload(function () use ($pdf) {
-            echo $pdf->output();
-        }, 'logs.pdf', [
-            'Content-Type' => 'application/pdf',
-        ]);
+        return response()->streamDownload(
+            function () use ($pdf) {
+                echo $pdf->output();
+            },
+            $this->userSelect->name . '-logs.pdf',
+            [
+                'Content-Type' => 'application/pdf',
+            ]
+        );
     }
 }

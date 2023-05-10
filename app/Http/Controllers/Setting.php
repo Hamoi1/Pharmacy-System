@@ -14,7 +14,7 @@ class Setting extends Component
     use WithFileUploads;
     public $name, $phone, $email, $address, $logo, $oldLogo;
     public  $setting;
-    protected $listeners = ['ChangeTheme' => 'render'];
+    protected $listeners = ['ChangeTheme' => '$refresh'];
     public function mount()
     {
         if (!Gate::allows('View Setting')) {

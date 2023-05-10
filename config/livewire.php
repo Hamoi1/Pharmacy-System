@@ -110,7 +110,7 @@ return [
             '3gpp2', '3gp2', '3gpp', '3gpp2',
             '3g2', '3gpp', '3gpp2', '3g2',
         ],
-        'max_upload_time' => 50, // Max duration (in minutes) before an upload gets invalidated.
+        'max_upload_time' => 100, // Max duration (in minutes) before an upload gets invalidated.
     ],
 
     /*

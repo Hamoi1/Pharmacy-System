@@ -169,7 +169,7 @@
                                 @forelse ($sales->sale_details as $sale_detail)
                                 <tr>
                                     <td class=" d-print-none">
-                                        <button class="btn" wire:click="destroy({{ $sale_detail->id }},{{ $sale_detail->product_id }} ,{{ $sales->id }})">
+                                        <button class="btn" wire:click="destroy({{ $sale_detail->id }},{{ $sale_detail->ProductQuantity?->id }} ,{{ $sales->id }})">
                                             <i class="fa fa-trash text-danger"></i>
                                         </button>
                                     </td>

@@ -6,15 +6,248 @@
                 <livewire:system.clean-up />
             </div>
             <div class="row row-deck row-cards">
-                <livewire:dashboard.new-products />
-                <livewire:dashboard.new-users />
-                <livewire:dashboard.new-suppliers />
-                <livewire:dashboard.new-categorys />
-                <livewire:dashboard.today-sale />
-                <livewire:dashboard.today-sale-product />
-                <livewire:dashboard.total-sales />
-                <livewire:dashboard.total-product />
-                <livewire:dashboard.total-users />
+                <div class="col-sm-6 col-lg-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex flex-column">
+                                <span class="fw-bolder fs-3">
+                                    {{ __('header.New Products') }}
+                                </span>
+                                <span class="text-muted">
+                                    {{ __('header.today') }}
+                                </span>
+                            </div>
+                            <div class="row align-items-center  mt-3">
+                                <div class="col-auto">
+                                    <span class="bg-info avatar">
+                                        <i class="fa-solid fa-box fs-2"></i>
+                                    </span>
+                                </div>
+                                <div class="col">
+                                    <span class="fs-1 fw-bolder">
+                                        {{ number_format($TotalProducts , 0) }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex flex-column">
+                                <span class="fw-bolder fs-3">
+                                    {{ __('header.New Users') }}
+                                </span>
+                                <span class="text-muted">
+                                    {{ __('header.today') }}
+                                </span>
+                            </div>
+                            <div class="row align-items-center  mt-3">
+                                <div class="col-auto">
+                                    <span class="bg-dark avatar">
+                                        <i class="fa-solid fa-user fs-2"></i>
+                                    </span>
+                                </div>
+                                <div class="col">
+                                    <span class="fs-1 fw-bolder">
+                                        {{ number_format($TotalUsers , 0) }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex flex-column">
+                                <span class="fw-bolder fs-3">
+                                    {{ __('header.New Suppliers') }}
+                                </span>
+                                <span class="text-muted">
+                                    {{ __('header.today') }}
+                                </span>
+                            </div>
+                            <div class="row align-items-center  mt-3">
+                                <div class="col-auto">
+                                    <span class="bg-dark avatar">
+                                        <i class="fa-solid fa-user fs-2"></i>
+                                    </span>
+                                </div>
+                                <div class="col">
+                                    <span class="fs-1 fw-bolder">
+                                        {{ number_format($TotalSuppliers , 0) }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex flex-column">
+                                <span class="fw-bolder fs-3">
+                                    {{ __('header.New Categorys') }}
+                                </span>
+                                <span class="text-muted">
+                                    {{ __('header.today') }}
+                                </span>
+                            </div>
+                            <div class="row align-items-center  mt-3">
+                                <div class="col-auto">
+                                    <span class="bg-cyan avatar">
+                                        <i class="fa-solid fa-list fs-2"></i>
+                                    </span>
+                                </div>
+                                <div class="col">
+                                    <span class="fs-1 fw-bolder">
+                                        {{ number_format($TotalCategorys , 0) }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <span class="fw-bolder fs-3">
+                                    {{ __('header.Today Sales') }}
+                                </span>
+                            </div>
+                            <div class="row align-items-center  mt-4">
+                                <div class="col-auto">
+                                    <span class="bg-blue avatar">
+                                        <i class="fa-solid fa-money-bill-1-wave fs-2"></i>
+                                    </span>
+                                </div>
+                                <div class="col ">
+                                    <span class="fs-2 fw-bolder ">
+                                        {{ number_format($TotalSalePrice , 2,',',',') }} {{ __('header.currency') }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex flex-column">
+                                <span class="fw-bolder fs-3">
+                                    {{ __('header.Sales') }}
+                                </span>
+                                <span class="text-muted">
+                                    {{ __('header.today') }}
+                                </span>
+                            </div>
+                            <div class="row align-items-center  mt-3">
+                                <div class="col-auto">
+                                    <span class="bg-blue avatar">
+                                        <i class="fa-solid fa-box fs-2"></i>
+                                    </span>
+                                </div>
+                                <div class="col">
+                                    <span class="fs-1 fw-bolder">
+                                        {{ number_format($TotalSoldProduct , 0) }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <span class="fw-bolder fs-3">
+                                    {{ __('header.total_sales') }}
+                                </span>
+                                <div class="lh-1 col-lg-3 col-6">
+                                    <input type="date" class="form-control" wire:model="date">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="d-flex align-items-center mt-3 flex-wrap ">
+                                    <div class="col-lg-4 col-md-6">
+                                        <span class="fs-3 fw-bolder">
+                                            {{ __('header.Sales') }} :
+                                            <span class="text-muted fs-2 text-break">
+                                                {{ number_format($TotalSale , 0,',',',') }}
+                                            </span>
+                                        </span>
+                                    </div>
+                                    <div class="col-lg-4 col-md-6">
+                                        <span class="fs-3 fw-bolder">
+                                            {{ __('header.Total Products') }} :
+                                            <span class="text-muted fs-2 text-break">
+                                                {{ number_format($TotalSaleProduct , 0,',',',') }}
+                                            </span>
+                                        </span>
+                                    </div>
+                                    <div class="col-lg-4 col-md-6">
+                                        <span class="fs-3 fw-bolder">
+                                            {{ __('header.TotalPrice') }} :
+                                            <span class="text-muted fs-2 text-break">
+                                                {{ number_format($TotalSalesPrice , 2,',',',') }}
+                                            </span>
+                                            {{ __('header.currency') }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <span class="fw-bolder fs-3">
+                                    {{ __('header.Total Products') }}
+                                </span>
+                            </div>
+                            <div class="row align-items-center  mt-4">
+                                <div class="col-auto">
+                                    <span class="bg-blue avatar">
+                                        <i class="fa-solid fa-box fs-2"></i>
+                                    </span>
+                                </div>
+                                <div class="col">
+                                    <span class="fs-1 fw-bolder">
+                                        {{ number_format($ProductCount , 0) }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <span class="fw-bolder fs-3">
+                                    {{ __('header.Total Users') }}
+                                </span>
+                            </div>
+                            <div class="row align-items-center  mt-4">
+                                <div class="col-auto">
+                                    <span class="bg-blue avatar">
+                                        <i class="fa-solid fa-users fs-2"></i>
+                                    </span>
+                                </div>
+                                <div class="col">
+                                    <span class="fs-1 fw-bolder">
+                                        {{ number_format($UsersCount  , 0) }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="row mt-4 gy-3 not-reverse">
                     <div class="col-12">
                         <h3 class="">{{ __('Top 10 User Sales') }}</h3>
@@ -38,137 +271,3 @@
         </div>
     </div>
 </div>
-
-@push('js')
-<script>
-    var Users = @js($users);
-    var options = {
-        series: [{
-            name: 'Sales',
-            data: Users.map(function(user) {
-                return user.sales_count
-            })
-        }],
-        chart: {
-            height: 350,
-            type: 'bar',
-        },
-        plotOptions: {
-            bar: {
-                horizontal: false,
-                columnWidth: '40%',
-                endingShape: 'rounded'
-            },
-        },
-        dataLabels: {
-            enabled: true,
-            offsetX: 0,
-            style: {
-                fontSize: '12px',
-                colors: ['#fff']
-            }
-        },
-        stroke: {
-            show: true,
-            width: 2,
-            colors: ['transparent']
-        },
-        xaxis: {
-            categories: Users.map(function(user) {
-                return user.name
-            }),
-        },
-        yaxis: {
-            title: {
-                text: 'Sales'
-            }
-        },
-        fill: {
-            opacity: 1
-        },
-        tooltip: {
-            y: {
-                formatter: function(val) {
-                    return val
-                }
-            }
-        },
-        // resopsive
-        responsive: [{
-            breakpoint: 550,
-            options: {
-                legend: {
-                    position: 'bottom',
-                    offsetX: -10,
-                    offsetY: 0
-                },
-                chart: {
-                    height: 250,
-                },
-                plotOptions: {
-                    bar: {
-                        horizontal: false,
-                        columnWidth: '40%',
-                        endingShape: 'rounded'
-                    },
-                },
-            }
-        }],
-    };
-    var chart = new ApexCharts(document.querySelector("#chart"), options);
-    chart.render();
-    var Products = @js($products);
-    var options = {
-        series: [{
-            name: 'Quantity Product Sale',
-            data: Products.map(function(product) {
-                return product.total_quantity
-            })
-        }],
-        chart: {
-            height: 350,
-            type: 'bar',
-        },
-        plotOptions: {
-            bar: {
-                horizontal: true,
-                columnWidth: '50%',
-                endingShape: 'rounded'
-            },
-        },
-        dataLabels: {
-            enabled: true,
-            offsetX: 0,
-            style: {
-                fontSize: '12px',
-                colors: ['#fff']
-            }
-        },
-        stroke: {
-            show: true,
-            width: 4,
-            colors: ['transparent']
-        },
-        xaxis: {
-            categories: Products.map(function(product) {
-                return product.products.name;
-            }),
-        },
-        yaxis: {},
-        fill: {
-            opacity: .7,
-            colors: ['#1C2833']
-        },
-        tooltip: {
-            y: {
-                formatter: function(val) {
-                    return val
-                }
-            }
-        }
-    };
-    var chart = new ApexCharts(document.querySelector("#chart-product"), options);
-    chart.render();
-</script>
-
-@endpush

@@ -30,11 +30,14 @@ class Index extends Component
     public function render()
     {
         $this->invoices = DB::table('sales')->select('invoice')->where('status', 0)->orderByDesc('id')->get()->toArray();
+        if ($this->invoices == null) {
+            $this->AddNewInvoce();
+        }
         if ($this->invoices != null) {
             $this->invoice =   $this->invoice == null ? $this->invoices[0]->invoice :  $this->invoice;
         }
         $this->SaleTypeView = $this->SaleTypeView == null ? 'ListView' : $this->SaleTypeView;
-        $this->sales = Sales::where('invoice',$this->invoice)->where('status',0)->with('sale_details', function ($query) {
+        $this->sales = Sales::where('invoice', $this->invoice)->where('status', 0)->with('sale_details', function ($query) {
             $query->with(['ProductQuantity'])->orderByDesc('id')->product();
         })->first();
 
@@ -151,11 +154,8 @@ class Index extends Component
                         'quantity' => $product_quantity->quantity - 1
                     ]);
                 }
-                if (is_numeric($this->data)) {
-                    $this->reset('data');
-                }
             }
-            $this->data = $product->name ?? null;
+            $this->data =  null;
             $this->product = null;
             $this->resetErrorBag();
         }
@@ -207,25 +207,27 @@ class Index extends Component
         $this->dispatchBrowserEvent('play', ['sound' => 'undo']);
         flash()->addSuccess(__('header.deleted'));
     }
-    // public function destroy(sale_details $sale_details, $product_id, Sales $sales)
-    // {
-    //     $product = Products::with('product_quantity')->TotalQuantity()->SalePrice()->find($product_id);
-    //     if (!$sale_details && !$product && !$sales) {
-    //         return;
-    //     }
-    //     $sales->total = $sales->total - ($product->sale_price * $sale_details->quantity);
-    //     $sales->total < 0 ?  0 : $sales->total;
-    //     $sales->save();
-    //     $min_expiry_date = $product->product_quantity->min('expiry_date');
-    //     $quantity = $product->product_quantity->where('expiry_date', $min_expiry_date)->first();
-    //     $quantity->update([
-    //         'quantity' => $quantity->quantity + $sale_details->quantity
-    //     ]);
-    //     $sale_details->delete();
-    //     $this->dispatchBrowserEvent('play', ['sound' => 'undo']);
-    //     flash()->addWarning(__('header.deleted'));
-    //     $this->reset();
-    // }
+    public function destroy(sale_details $sale_details, $id, Sales $sales)
+    {
+        $product_quantity = ProductsQuantity::with(['products' => function ($query) {
+            $query->select(['id'])->SalePrice();
+        }])->find($id);
+        if ($product_quantity == null) {
+            flash()->addError(__('header.NoData'));
+            return;
+        }
+        $sales->update([
+            'total' => $sales->total - ($product_quantity->products->final_sale_price * $sale_details->quantity)
+        ]);
+        $sales->total < 0 ?  0 : $sales->total;
+        $sales->saveQuietly();
+        $product_quantity->update([
+            'quantity' => $product_quantity->quantity + $sale_details->quantity
+        ]);
+        $sale_details->delete();
+        $this->dispatchBrowserEvent('play', ['sound' => 'undo']);
+        flash()->addWarning(__('header.deleted'));
+    }
     public function submit($check)
     {
         $this->validate([

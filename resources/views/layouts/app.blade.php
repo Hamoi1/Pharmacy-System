@@ -233,6 +233,7 @@
                             </a>
                         </li>
                         @endcan
+                        @can('View Customer')
                         <li class="nav-item my-1 mx-lg-1 mx-md-4 mx-3">
                             <a class="nav-link  {{  app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }} active {{ Request()->is(app()->getLocale().'/customers') ? 'active-page' : '' }}  mx-2" href="{{ route('customers',app()->getLocale()) }}">
                                 <i class="fa fa-users mb-2"></i>
@@ -241,6 +242,7 @@
                                 </span>
                             </a>
                         </li>
+                        @endcan
                         @can('View Barcode')
                         <li class="nav-item my-1 mx-lg-1 mx-md-4 mx-3">
                             <a class="nav-link  {{  app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }} active {{ Request()->is(app()->getLocale().'/barcode') ? 'active-page' : '' }}  mx-2" href="{{ route('barcode',app()->getLocale()) }}">

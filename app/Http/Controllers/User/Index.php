@@ -37,7 +37,7 @@ class Index extends Component
             'page',
             'role_id' => ['as' => 'permission']
         ],
-        $listeners = ['user-page' => 'render'];
+        $listeners = ['user-page' => '$refresh'];
 
     public $ExportData = [
             'name' => 'Name',
@@ -186,7 +186,7 @@ class Index extends Component
     {
         $this->dispatchBrowserEvent('closeModal');
         $this->reset(self::Resets());
-        $this->resetValidation();
+        $this->resetErrorBag();
         if ($action) {
             event(new UserActions());
             event(new UserPage());

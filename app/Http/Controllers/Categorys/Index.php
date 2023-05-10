@@ -14,7 +14,7 @@ class Index extends Component
     use WithPagination;
     public $name, $search, $category_id, $Trashed = false, $updateCategory = false;
     protected  $paginationTheme = 'bootstrap', $queryString = ['search' => ['as' => 's', 'except' => ''], 'Trashed' => ['except' => false]],
-        $listeners = ['category-page' => 'render'];
+        $listeners = ['category-page' => '$refresh'];
     public function mount()
     {
         if (!Gate::allows('View Category')) {

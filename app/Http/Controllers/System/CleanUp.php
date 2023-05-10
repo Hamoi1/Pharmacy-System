@@ -17,13 +17,13 @@ class CleanUp extends Component
         if ($File) {
             $File->deleteDirectory(''); // delete all files in debugbar folder
         }
-        $oldFiles = Storage::files('livewire-tmp');
-        foreach ($oldFiles as $file) {
+        $livewireFiles = Storage::files('livewire-tmp');
+        foreach ($livewireFiles as $file) {
             Storage::delete($file);
         }
         // delete all files in Pharmacy-backup folder
-        $oldFiles = Storage::files('Pharmacy-backup');
-        foreach ($oldFiles as $file) {
+        $Pharmacy_backup_Files = Storage::files('Pharmacy-backup');
+        foreach ($Pharmacy_backup_Files as $file) {
             Storage::delete($file);
         }
         $file = fopen(storage_path('logs/laravel.log'), 'w');

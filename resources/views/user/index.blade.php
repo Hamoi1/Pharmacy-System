@@ -191,7 +191,7 @@
                                 @can('Update User')
                                 <span>
                                     <label class="form-check form-switch mt-1 mx-2">
-                                        <input class="form-check-input" type="checkbox" {{ $user->status == 1 ? 'checked' : '' }} wire:click="toggleActive({{ $user->id }})">
+                                        <input class="form-check-input" type="checkbox" {{ $user->status == 1 ? "checked" : "" }} wire:click="toggleActive('{{ $user->id }}')">
                                     </label>
                                 </span>
                                 @endcan

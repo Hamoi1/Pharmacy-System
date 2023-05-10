@@ -3,7 +3,6 @@
 namespace App\Http\Middleware;
 
 use App\Models\Logs;
-use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
 
@@ -19,11 +18,11 @@ class DeleteUserLog
     public function handle(Request $request, Closure $next)
     {
         $logs  = Logs::select('id', 'created_at')->get();
-        $logs->each(function ($log) {
-            if ($log->created_at <= now()->subMonth()) {
+        foreach ($logs as $log) {
+            if ($log->created_at <= now()->subMonths(6)) {
                 $log->delete();
             }
-        });
+        }
         return $next($request);
     }
 }

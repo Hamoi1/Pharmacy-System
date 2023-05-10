@@ -13,7 +13,7 @@ class Index extends Component
     use WithPagination;
     public $name, $email, $phone, $address, $search, $updateSupplier, $supplier_id, $Trashed = false;
     protected $paginationTheme = 'bootstrap', $queryString = ['search', 'Trashed' => ['except' => false]],
-        $listeners = ['RefreshSupplier' => 'render', 'supplier-page' => 'render'];
+        $listeners = ['RefreshSupplier' => '$refresh', 'supplier-page' => '$refresh'];
     public function mount()
     {
         if (!Gate::allows('View Supplier')) {

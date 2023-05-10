@@ -21,8 +21,8 @@
         <div class="col-12">
             <form>
                 <div class="row g-2">
-                    <div class="col-md-3 col-12">
-                        <select name="" id="" class="form-select" wire:model="user_id">
+                    <div class="col-md-4 col-12">
+                        <select class="form-select" wire:model="user_id">
                             <option value="">{{ __('header.select_user') }}</option>
                             @foreach ($users as $user)
                             <option value="{{ $user->id }}">{{ $user->name }}</option>
@@ -30,8 +30,8 @@
                         </select>
                     </div>
                     @if ($user_select != '' || $user_select != null)
-                    <div class="col-md-3 col-6">
-                        <select name="" id="" class="form-select" wire:model="action">
+                    <div class="col-md-2 col-6">
+                        <select class="form-select" wire:model="action">
                             <option value="">{{ __('header.select_action') }}</option>
                             @foreach ($action_method as $action)
                             <option value="{{ $action }}">{{ $action }}</option>

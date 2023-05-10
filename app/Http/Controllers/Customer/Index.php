@@ -21,7 +21,7 @@ class Index extends Component
             'search' => ['except' => ['id'], 'as' => 's'],
             'debt' => ['except' => false],
         ],
-        $listeners = ['RefreshCustomer' => '$refresh', 'customer-page' => 'render'];
+        $listeners = ['RefreshCustomer' => '$refresh', 'customer-page' => '$refresh'];
     public function mount()
     {
         if (!Gate::allows('View Customer')) {

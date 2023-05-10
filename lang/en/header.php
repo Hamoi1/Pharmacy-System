@@ -249,6 +249,6 @@ return [
     'returnQuantity' => 'Return Quantity',
     'TotalDebtPrice' => 'Total Debt Price',
     'MinExpiryDate' => 'Min Expiry Date',
-    'AddOrUpdateQuantity' => 'Add Or Update Quantity',
+    'AddOrEditQuantity' => 'Add Or Update Quantity',
     'FinalSalePrice' => 'Final Sale Price',
 ];

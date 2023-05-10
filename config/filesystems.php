@@ -51,6 +51,10 @@ return [
             'driver' => 'local',
             'root' => storage_path('debugbar'),
         ],
+        'SessionsFolder' => [
+            'driver' => 'local',
+            'root' => storage_path('freamwork/sessions'),
+        ],
 
         's3' => [
             'driver' => 's3',

@@ -14,9 +14,9 @@
             </div>
         </div>
         @if (Route::currentRouteName() != 'UpdateQuantity')
-        <div class="col-3 mb-1 ">
+        <div class="col-3 mb-1 me-3 mt-md-1 mt-2">
             <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Open user menu">
-                <i class="fa-solid fa-globe mx-1 fs-2 mt-md-1 mt-2"></i>
+                <i class="fa-solid fa-globe fs-1 "></i>
             </a>
             <div class="dropdown-menu dropdown-menu-end ">
                 <a href="{{ route(Route::currentRouteName(),'ckb')}}" class="dropdown-item">
