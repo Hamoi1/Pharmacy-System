@@ -2,8 +2,10 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\ProductsQuantity;
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class UpdateProducts
 {
@@ -16,11 +18,8 @@ class UpdateProducts
      */
     public function handle(Request $request, Closure $next)
     {
-
         $products = \App\Models\Products::ExpiryDate()->TotalQuantity()->get();
         foreach ($products as $product) {
-            if ($product->expiry_date == $product->min_expiry_date)
-                continue;
             $product->expiry_date = $product->min_expiry_date;
             $product->quantity = $product->total_quantity;
             $product->save();

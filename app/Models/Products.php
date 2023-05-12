@@ -67,16 +67,16 @@ class Products extends Model
     {
         return  $query->addSelect([
             'min_expiry_date' => ProductsQuantity::selectRaw('min(expiry_date)')->whereColumn('product_id', 'products.id')
-                ->where('expiry_date', '>', now()->format('Y-m-d')),
+                ->whereDate('expiry_date', '>', now()->format('Y-m-d')),
+
         ]);
     }
 
     public function scopeSalePrice($query)
     {
         return  $query->addSelect([
-            // 'final_sale_price' => ProductsQuantity::selectRaw('CAST(sum(sale_price * quantity) / sum(quantity) as UNSIGNED) as sale_price_total')->whereColumn('product_id', 'products.id'),
-            // remove cast
-            'final_sale_price' => ProductsQuantity::selectRaw('sum(sale_price * quantity) / sum(quantity) as sale_price_total')->whereColumn('product_id', 'products.id'),
+            // 'final_sale_price' => ProductsQuantity::selectRaw('sum(sale_price * quantity) / sum(quantity) as sale_price_total')->whereColumn('product_id', 'products.id'),
+            'final_sale_price' => ProductsQuantity::selectRaw('SUM(CAST(sale_price AS DECIMAL) * CAST(quantity AS DECIMAL)) / SUM(CAST(quantity AS DECIMAL)) as sale_price_total')->whereColumn('product_id', 'products.id'),
         ]);
     }
 }
