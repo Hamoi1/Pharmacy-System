@@ -16,7 +16,7 @@ class Products extends Model
     use HasFactory, SoftDeletes;
     protected $table = 'products';
     protected $guarded  = [];
-   
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
@@ -66,7 +66,8 @@ class Products extends Model
     public function scopeExpiryDate($query)
     {
         return  $query->addSelect([
-            'min_expiry_date' => ProductsQuantity::selectRaw('min(expiry_date)')->whereColumn('product_id', 'products.id'),
+            'min_expiry_date' => ProductsQuantity::selectRaw('min(expiry_date)')->whereColumn('product_id', 'products.id')
+                ->where('expiry_date', '>', now()->format('Y-m-d')),
         ]);
     }
 

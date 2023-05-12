@@ -151,8 +151,7 @@
                     @forelse ($products as $product )
                     <tr>
                         <td>
-                            <img src="{{  $product->image != '' ? asset('storage/product/' . $product->image) : asset('assets/images/image_not_available.png') }}"
-                             class="img-fluid" width="50" alt="">
+                            <img src="{{  $product->image != '' ? asset('storage/product/' . $product->image) : asset('assets/images/image_not_available.png') }}" class="img-fluid" width="50" alt="">
                         </td>
                         <td>
                             <a href="" class="" data-bs-toggle="modal" data-bs-target="#view" wire:click.prevent="show({{ $product->id }})">
@@ -184,8 +183,8 @@
                             @endif
                         </td>
                         <td class="text-center p-0 m-0">
-                            {{ __('header.MinExpiryDate') }} : {{ $product->min_expiry_date }}
-                            @if ($product->min_expiry_date <= now()) <span class="badge bg-danger mx-2">
+                            {{ __('header.MinExpiryDate') }} : {{ $product->expiry_date }}
+                            @if ($product->expiry_date <= now()) <span class="badge bg-danger mx-2">
                                 {{ __('header.expired') }}
                                 </span>
                                 @endif

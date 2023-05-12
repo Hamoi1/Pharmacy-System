@@ -90,7 +90,7 @@ class Index extends Component
         } else {
             if ($product->total_quantity == 0) {
                 $this->dispatchBrowserEvent('play', ['sound' => 'fail']);
-                flash()->addError(__('header.out_of_stock'));
+                $this->dispatchBrowserEvent('message', ['type' => 'error', 'message' => __('header.out_of_stock')]);
             } else {
                 $product_quantity = $product->product_quantity()->where('quantity', '>', 0)->whereDate('expiry_date', '>', now())->first();
                 if ($product_quantity?->quantity  == 0) {
@@ -98,50 +98,51 @@ class Index extends Component
                 }
                 if ($product_quantity == null) {
                     $this->dispatchBrowserEvent('play', ['sound' => 'fail']);
-                    flash()->addError(__('header.expired') . ' ' . __('header.or') . ' ' . __('header.StockOut'));
-                    return;
-                }
-                $sales = $this->sales;
-                if ($sales == null) {
-                    $sales = Sales::create([
-                        'invoice' => $this->invoice,
-                        'total' => $product->sale_price
-                    ]);
-                    $sales->sale_details()->create([
-                        'product_id' => $product->id,
-                        'product_quantity_id' => $product_quantity->id, // 'product_quantity_id
-                        'quantity' => 1,
-                    ]);
-                    $product_quantity->update([
-                        'quantity' => $product_quantity->quantity - 1
-                    ]);
+                    $this->dispatchBrowserEvent('message', ['type' => 'error', 'message' => __('header.expired')]);
                 } else {
-                    $sales->total = $sales->total + $product->sale_price;
-                    $checkProduct_id =  $sales->sale_details
-                        ->where('product_id', $product->id)
-                        ->where('product_quantity_id', $product_quantity->id) // 'product_quantity_id
-                        ->first();
-                    if ($checkProduct_id) {
-                        $checkProduct_id->update([
-                            'quantity' => $checkProduct_id->quantity + 1,
+
+                    $sales = $this->sales;
+                    if ($sales == null) {
+                        $sales = Sales::create([
+                            'invoice' => $this->invoice,
+                            'total' => $product->sale_price
                         ]);
-                    } else {
                         $sales->sale_details()->create([
                             'product_id' => $product->id,
                             'product_quantity_id' => $product_quantity->id, // 'product_quantity_id
                             'quantity' => 1,
                         ]);
+                        $product_quantity->update([
+                            'quantity' => $product_quantity->quantity - 1
+                        ]);
+                    } else {
+                        $sales->total = $sales->total + $product->sale_price;
+                        $checkProduct_id =  $sales->sale_details
+                            ->where('product_id', $product->id)
+                            ->where('product_quantity_id', $product_quantity->id) // 'product_quantity_id
+                            ->first();
+                        if ($checkProduct_id) {
+                            $checkProduct_id->update([
+                                'quantity' => $checkProduct_id->quantity + 1,
+                            ]);
+                        } else {
+                            $sales->sale_details()->create([
+                                'product_id' => $product->id,
+                                'product_quantity_id' => $product_quantity->id, // 'product_quantity_id
+                                'quantity' => 1,
+                            ]);
+                        }
+                        $sales->saveQuietly();
+                        $product_quantity->update([
+                            'quantity' => $product_quantity->quantity - 1
+                        ]);
                     }
-                    $sales->saveQuietly();
-                    $product_quantity->update([
-                        'quantity' => $product_quantity->quantity - 1
-                    ]);
+                    $this->product = null;
                 }
             }
-            $this->data =  null;
-            $this->product = null;
-            $this->resetErrorBag();
         }
+        $this->data =  null;
+        $this->resetErrorBag();
     }
     public function plus(sale_details $sale_details, $id, Sales $sales)
     {
@@ -160,15 +161,16 @@ class Index extends Component
             'quantity' => $product_quantity->quantity - 1
         ]);
         $sales->update([
-            'total' => $sales->total + $product_quantity->sale_price
+            'total' => $sales->total + $product_quantity->products->final_sale_price
         ]);
         $this->dispatchBrowserEvent('play', ['sound' => 'beep']);
         $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.add')]);
     }
     public function minus(sale_details $sale_details, $id, Sales $sales)
     {
-        $product_quantity = ProductsQuantity::find($id);
-        dd($sales->total - $product_quantity->sale_price);
+        $product_quantity = ProductsQuantity::with(['products' => function ($query) {
+            $query->SalePrice();
+        }])->find($id);
         if ($product_quantity == null) {
             $this->dispatchBrowserEvent('play', ['sound' => 'fail']);
             $this->dispatchBrowserEvent('message', ['type' => 'error', 'message' => __('header.NoData')]);
@@ -184,7 +186,7 @@ class Index extends Component
         $product_quantity->update([
             'quantity' => $product_quantity->quantity + 1
         ]);
-        $total = $sales->total - $product_quantity->sale_price < 0 ? 0 : $sales->total - $product_quantity->sale_price;
+        $total = $sales->total - $product_quantity->products->final_sale_price < 0 ? 0 : $sales->total - $product_quantity->products->final_sale_price;
         $sales->update([
             'total' => $total
         ]);

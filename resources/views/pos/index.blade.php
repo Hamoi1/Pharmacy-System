@@ -68,8 +68,8 @@
                     <div class="border p-2  mt-1 rounded autocomplete">
                         <span class="dropdown-header">{{ __('header.Products') }}</span>
                         @forelse ($product as $p)
-                        <div class="dropdown-item autocomplete-data" wire:click="AddProduct('{{ $p->id }}')">
-                            {{ $p->name }}
+                        <div class="dropdown-item autocomplete-data" wire:click="AddProduct('{{ $p->id ?? ''  }}')">
+                            {{ $p->name ?? '' }}
                         </div>
                         @empty
                         <div class="dropdown-item">
@@ -278,14 +278,14 @@
                         </div>
                     </div>
                     @if ($sales)
-                        <div class="mt-1 d-print-none d-flex align-items-center gap-3 flex-wrap">
-                            <button class="btn btn-cyan px-4 " wire:click="submit(true)">
-                                {{ __('header.sale') }}
-                            </button>
-                            <button class="btn btn-blue px-4 " wire:click=" salePrint">
-                                {{ __('header.saleAndPrint') }}
-                            </button>
-                        </div>
+                    <div class="mt-1 d-print-none d-flex align-items-center gap-3 flex-wrap">
+                        <button class="btn btn-cyan px-4 " wire:click="submit(true)">
+                            {{ __('header.sale') }}
+                        </button>
+                        <button class="btn btn-blue px-4 " wire:click=" salePrint">
+                            {{ __('header.saleAndPrint') }}
+                        </button>
+                    </div>
                     @endif
                 </div>
             </div>

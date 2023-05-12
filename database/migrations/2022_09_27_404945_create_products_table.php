@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->bigInteger('barcode')->unique();
             $table->bigInteger('quantity')->nullable();
-            $table->date('expiry_date');
+            $table->date('expiry_date')->nullable();
             $table->decimal('purches_price', 10, 2)->nullable();
             $table->decimal('sale_price', 10, 2)->nullable();
             $table->longText('description')->nullable();
