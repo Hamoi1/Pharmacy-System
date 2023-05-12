@@ -35,7 +35,8 @@ class Update extends Component
         auth()->user()->user_details->update([
             'image' => $imageName,
         ]);
-        $this->emit('UpdateProfile', ['name' => 'profile.index']);
+        $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.updated')]);
+        $this->dispatchBrowserEvent('UpdateProfile', ['image' => auth()->user()->image(auth()->user()->user_details->image)]);
         $this->image = null;
         $this->done();
     }
@@ -47,11 +48,10 @@ class Update extends Component
                 'image' => null,
             ]);
             $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.deleted')]);
-            $this->emit('UpdateProfile', ['name' => 'profile.index']);
+            $this->dispatchBrowserEvent('UpdateProfile', ['image' => auth()->user()->image(auth()->user()->user_details->image)]);
         } else {
             $this->dispatchBrowserEvent('message', ['type' => 'warning', 'message' => __('header.no_image')]);
         }
-        $this->emit('UpdateProfile', ['name' => 'profile.index']);
         $this->done();
     }
     public function done($action = true)
@@ -124,8 +124,11 @@ class Update extends Component
         ];
         auth()->user()->InsertToLogsTable(auth()->user()->id, 'Update', 'Profile', $oldData, $newData);
         $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.updated')]);
-      
-        $this->emit('UpdateProfile', ['name' => 'profile.index']);
+        $this->dispatchBrowserEvent(
+            'UpdateProfile',
+            ['image' => auth()->user()->image(auth()->user()->user_details->image), 'name' => auth()->user()->name]
+        );
+
         $this->done();
     }
     public function ChangePassword()

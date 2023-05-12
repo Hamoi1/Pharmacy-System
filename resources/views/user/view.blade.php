@@ -1,4 +1,4 @@
-<x-modal.view target="view" title="{{ __('header.title_view' , ['name'=>__('header.User')]) }}" modalWidth="modal-fullscreen" wire="wire:click=done">
+<x-modal.view target="view" title="{{ __('header.title_view' , ['name'=>__('header.User')]) }}" modalWidth="modal-fullscreen" wire="wire:click=done(false)">
     <div wire:loading>
         <div class="d-flex justify-content-center">
             <h3>

@@ -122,10 +122,12 @@
                     PlayAudio("/assets/audio/undo.mp3");
                 }
             });
-            Livewire.on('ChangeTheme', theme => {
-                window.location.reload();
+            window.addEventListener('UpdateProfile', event => {
+                $('#user-image-profile').attr('src', event.detail.image);
+                if (event.detail.name)
+                    $('#user-name-profile').text(event.detail.name.substring(0, 10));
             });
-            Livewire.on('UpdateProfile', data => {
+            Livewire.on('ChangeTheme', theme => {
                 window.location.reload();
             });
         });

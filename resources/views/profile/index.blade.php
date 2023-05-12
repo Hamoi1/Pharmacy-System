@@ -2,9 +2,9 @@
     <div class="d-flex align-items-center justify-content-between {{ app()->getLocale() =='ckb' ? 'flex-reverse ' : '' }}">
         <div class="col-9">
             <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Open user menu">
-                <img src="{{ auth()->user()->image(auth()->user()->user_details->image) }}" class="avatar  rounded-circle mx-2 object-cover img-fulid" alt="">
+                <img id="user-image-profile" src="{{ auth()->user()->image(auth()->user()->user_details->image) }}" class="avatar  rounded-circle mx-2 object-cover img-fulid" alt="">
                 <div class="">
-                    <span class="fw-bolder  d-none d-lg-inline ">{{ Str::limit(auth()->user()->name,10) }}</span>
+                    <span class="fw-bolder d-none d-lg-inline" id="user-name-profile">{{ Str::limit(auth()->user()->name,10) }}</span>
                 </div>
             </a>
             <div class="dropdown-menu dropdown-menu-end ">
