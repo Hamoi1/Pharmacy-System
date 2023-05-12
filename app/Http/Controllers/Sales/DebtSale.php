@@ -100,7 +100,7 @@ class DebtSale extends Component
             $debtSale->sale()->update([
                 'paid' => $debtSale->remain == 0 ? 1 : 0,
             ]);
-            $debtSale->save();
+            $debtSale->saveQuietly();
             $newData = [
                 'name : ' . $debtSale->name,
                 'phone : ' . $debtSale->phone,

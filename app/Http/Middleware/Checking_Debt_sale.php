@@ -17,9 +17,9 @@ class Checking_Debt_sale
      */
     public function handle(Request $request, Closure $next)
     {
-        $debtSale = DebtSaleModel::all();
+        $debtSale = DebtSaleModel::get();
         foreach ($debtSale as $debt) {
-            if ($debt->delete_in <= now()  && $debt->remain == 0 && $debt->status == 1) {
+            if ($debt->delete_in <= now()  && $debt->remain == 0 && $debt->status == 1) { // if debt delete_in <= now() and remain == 0 and status == 1 then delete
                 $debt->delete();
             }
         }
