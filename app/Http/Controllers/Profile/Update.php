@@ -12,7 +12,7 @@ class Update extends Component
 {
     use WithFileUploads;
     public $image, $name, $username, $email, $phone, $address, $password, $confirm_password;
-    protected $listeners = ['user-page' => '$refresh',];
+    protected $listeners = ['user-page' => '$refresh'];
     public function render()
     {
         return view('profile.update');

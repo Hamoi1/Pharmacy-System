@@ -72,10 +72,10 @@
                                         {{ $sale_detail->products->name }}
                                     </td>
                                     <td>
-                                        {{ number_format($sale_detail->products->sale_price, 0) }} {{ __('header.currency') }}
+                                        {{ number_format($sale_detail->products->sale_price, 2,',',',') }} {{ __('header.currency') }}
                                     </td>
                                     <td>
-                                        {{ number_format($sale_detail->quantity, 0) }}
+                                        {{ number_format($sale_detail->quantity, 2,',',',') }}
                                     </td>
                                 </tr>
                                 @empty

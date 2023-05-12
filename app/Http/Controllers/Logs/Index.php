@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Logs;
 use App\Models\Logs;
 use App\Models\User;
 use Livewire\Component;
-use App\Events\UserStatus;
 use livewire\WithPagination;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
@@ -76,7 +75,7 @@ class Index extends Component
         } else {
             if ($this->user_id) {
                 auth()->user()->DeleteDataInLogs($this->user_id, $index);
-                $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.data')]);
+                $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.data_clear')]);
             } else {
                 $this->dispatchBrowserEvent('message', ['type' => 'warning', 'message' => __('header.user_data')]);
             }

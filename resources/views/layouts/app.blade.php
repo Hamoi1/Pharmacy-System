@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="viewport" content="width=device-width, user-scalable=no">
     <meta name="turbo-cache-control" content="no-cache">
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
     <title>@stack('title')</title>
     <link rel="shortcut icon" href="{{  $settings->logo != null ? asset('storage/logo/'.$settings->logo) : asset('assets/images/capsules.png') }}" type="image/x-icon">
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
@@ -78,12 +79,11 @@
                         },
                         {
                             type: 'warning',
-                            background: '#f1c40f',
+                            background: 'orange',
                             icon: {
-                                className: 'fas fa-exclamation-circle',
-                                tagName: 'span',
-                                color: '#fff'
-                            },
+                                className: 'fas fa-exclamation-triangle',
+                                tagName: 'i',
+                            }
                         },
                     ]
                 });
@@ -97,7 +97,10 @@
                     notyf.info(respnose.detail.message);
                 }
                 if (respnose.detail.type == 'warning') {
-                    notyf.warning(respnose.detail.message);
+                    notyf.open({
+                        type: 'warning',
+                        message: respnose.detail.message,
+                    });
                 }
             });
         });
@@ -211,7 +214,7 @@
                         <li class="nav-item my-1 mx-lg-1 mx-md-4 mx-3">
                             <a class="nav-link  {{  app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }} active {{ Request()->is(app()->getLocale().'/dashboard') ? 'active-page' : '' }}  mx-md-2 mx-1  " href="{{ route('dashboard',app()->getLocale()) }}">
                                 <i class="fa fa-home mb-2"></i>
-                                <span class="nav-link-title  mx-2">
+                                <span class="nav-link-title mx-md-2 mx-1">
                                     {{ __('header.Dashboard') }}
                                 </span>
                             </a>
@@ -220,7 +223,7 @@
                         <li class="nav-item my-1 mx-lg-1 mx-md-4 mx-3 ">
                             <a class="nav-link  {{  app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }}  active {{ Request()->is(app()->getLocale().'/point-of-sale')   ? 'active-page' : '' }}  mx-md-2 mx-1  " href="{{ route('sales',app()->getLocale()) }}">
                                 <i class="fa fa-shopping-cart mb-2"></i>
-                                <span class="nav-link-title  mx-2">
+                                <span class="nav-link-title mx-md-2 mx-1">
                                     {{ __('header.PointOfSale') }}
                                 </span>
                             </a>
@@ -249,7 +252,7 @@
                         <li class="nav-item dropdown my-1 mx-lg-1 mx-md-4 mx-3 ">
                             <a class="nav-link   {{  app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }}  active {{ Request()->is(app()->getLocale().'/products') ? 'active-page' : '' }}  mx-md-2 mx-1  " href="#" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
                                 <i class="fa fa-box mb-2"></i>
-                                <span class="nav-link-title mx-2">
+                                <span class="nav-link-titlemx-md-2 mx-1">
                                     {{ __('header.Products') }}
                                 </span>
                             </a>
@@ -269,7 +272,7 @@
                         <li class="nav-item my-1 mx-lg-1 mx-md-4 mx-3">
                             <a class="nav-link  {{  app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }} active {{ Request()->is(app()->getLocale().'/users') ? 'active-page' : '' }}  mx-md-2 mx-1  " href="{{ route('users',app()->getLocale()) }}">
                                 <i class="fa fa-user mb-2"></i>
-                                <span class="nav-link-title  mx-2">
+                                <span class="nav-link-title mx-md-2 mx-1">
                                     {{ __('header.Users') }}
                                 </span>
                             </a>
@@ -277,9 +280,9 @@
                         @endcan
                         @can('View Category')
                         <li class="nav-item my-1 mx-lg-1 mx-md-4 mx-3">
-                            <a class="nav-link  {{  app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }} active {{ Request()->is(app()->getLocale().'/categorys') ? 'active-page' : '' }}  mx-2" href="{{ route('categorys',app()->getLocale()) }}">
+                            <a class="nav-link  {{  app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }} active {{ Request()->is(app()->getLocale().'/categorys') ? 'active-page' : '' }} mx-md-2 mx-1" href="{{ route('categorys',app()->getLocale()) }}">
                                 <i class="fa fa-list mb-2"></i>
-                                <span class="nav-link-title  mx-2">
+                                <span class="nav-link-title mx-md-2 mx-1">
                                     {{ __('header.Categorys') }}
                                 </span>
                             </a>
@@ -287,9 +290,9 @@
                         @endcan
                         @can('View Supplier')
                         <li class="nav-item my-1 mx-lg-1 mx-md-4 mx-3">
-                            <a class="nav-link  {{  app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }} active {{ Request()->is(app()->getLocale().'/suppliers') ? 'active-page' : '' }}  mx-2" href="{{ route('suppliers',app()->getLocale()) }}">
+                            <a class="nav-link  {{  app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }} active {{ Request()->is(app()->getLocale().'/suppliers') ? 'active-page' : '' }} mx-md-2 mx-1" href="{{ route('suppliers',app()->getLocale()) }}">
                                 <i class="fa fa-truck mb-2"></i>
-                                <span class="nav-link-title  mx-2">
+                                <span class="nav-link-title mx-md-2 mx-1">
                                     {{ __('header.Suppliers') }}
                                 </span>
                             </a>
@@ -297,9 +300,9 @@
                         @endcan
                         @can('View Customer')
                         <li class="nav-item my-1 mx-lg-1 mx-md-4 mx-3">
-                            <a class="nav-link  {{  app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }} active {{ Request()->is(app()->getLocale().'/customers') ? 'active-page' : '' }}  mx-2" href="{{ route('customers',app()->getLocale()) }}">
+                            <a class="nav-link  {{  app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }} active {{ Request()->is(app()->getLocale().'/customers') ? 'active-page' : '' }} mx-md-2 mx-1" href="{{ route('customers',app()->getLocale()) }}">
                                 <i class="fa fa-users mb-2"></i>
-                                <span class="nav-link-title  mx-2">
+                                <span class="nav-link-title mx-md-2 mx-1">
                                     {{ __('header.Customers') }}
                                 </span>
                             </a>
@@ -307,9 +310,9 @@
                         @endcan
                         @can('View Barcode')
                         <li class="nav-item my-1 mx-lg-1 mx-md-4 mx-3">
-                            <a class="nav-link  {{  app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }} active {{ Request()->is(app()->getLocale().'/barcode') ? 'active-page' : '' }}  mx-2" href="{{ route('barcode',app()->getLocale()) }}">
+                            <a class="nav-link  {{  app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }} active {{ Request()->is(app()->getLocale().'/barcode') ? 'active-page' : '' }} mx-md-2 mx-1" href="{{ route('barcode',app()->getLocale()) }}">
                                 <i class="fa fa-barcode mb-2"></i>
-                                <span class="nav-link-title  mx-2">
+                                <span class="nav-link-title mx-md-2 mx-1">
                                     {{ __('header.barcode') }}
                                 </span>
                             </a>
@@ -317,9 +320,9 @@
                         @endcan
                         @can('View Log')
                         <li class="nav-item my-1 mx-lg-1 mx-md-4 mx-3">
-                            <a class="nav-link  active {{ Request()->is(app()->getLocale().'/logs') ? 'active-page' : '' }}  mx-2" href="{{ route('logs',app()->getLocale()) }}">
+                            <a class="nav-link  active {{ Request()->is(app()->getLocale().'/logs') ? 'active-page' : '' }} mx-md-2 mx-1 " href="{{ route('logs',app()->getLocale()) }}">
                                 <i class="fa-solid fa-file mb-2"></i>
-                                <span class="nav-link-title  mx-2">
+                                <span class="nav-link-title  mx-md-2 mx-1">
                                     {{ __('header.Logs') }}
                                 </span>
                             </a>
@@ -327,18 +330,18 @@
                         @endcan
                         @can('View Setting')
                         <li class="nav-item my-1 mx-lg-1 mx-md-4 mx-3">
-                            <a class="nav-link  {{  app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }} active {{ Request()->is(app()->getLocale().'/settings') ? 'active-page' : '' }}  mx-2" href="{{ route('settings',app()->getLocale()) }}">
+                            <a class="nav-link  {{  app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }} active {{ Request()->is(app()->getLocale().'/settings') ? 'active-page' : '' }}  mx-md-2 mx-1" href="{{ route('settings',app()->getLocale()) }}">
                                 <i class="fa fa-cog mb-2"></i>
-                                <span class="nav-link-title  mx-2">
+                                <span class="nav-link-title  mx-md-2 mx-1">
                                     {{ __('header.setting') }}
                                 </span>
                             </a>
                         </li>
                         @endcan
                         <li class="nav-item my-1 mx-lg-1 mx-md-4 mx-3">
-                            <a class="nav-link  {{  app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }} active {{ Request()->is(app()->getLocale().'/profile') ? 'active-page' : '' }}  mx-2" href="{{ route('profile.update',app()->getLocale()) }}">
+                            <a class="nav-link  {{  app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }} active {{ Request()->is(app()->getLocale().'/profile') ? 'active-page' : '' }}  mx-md-2 mx-1" href="{{ route('profile.update',app()->getLocale()) }}">
                                 <i class="fa fa-user-edit mb-2"></i>
-                                <span class="nav-link-title  mx-2">
+                                <span class="nav-link-title  mx-md-2 mx-1">
                                     {{ __('header.profile') }}
                                 </span>
                             </a>

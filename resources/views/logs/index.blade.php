@@ -21,7 +21,7 @@
         <div class="col-12">
             <form>
                 <div class="row g-2">
-                    <div class="col-md-4 col-12">
+                    <div class="col-lg-3 col-md-4 col-12">
                         <select class="form-select" wire:model="user_id">
                             <option value="">{{ __('header.select_user') }}</option>
                             @foreach ($users as $user)
@@ -30,7 +30,7 @@
                         </select>
                     </div>
                     @if ($user_select != '' || $user_select != null)
-                    <div class="col-md-2 col-6">
+                    <div class="col-lg-3 col-md-3 col-6">
                         <select class="form-select" wire:model="action">
                             <option value="">{{ __('header.select_action') }}</option>
                             @foreach ($action_method as $action)
@@ -38,11 +38,11 @@
                             @endforeach
                         </select>
                     </div>
-                    <div class="col-md-2 col-6">
+                    <div class="col-lg-3 col-md-3 col-6">
                         <input type="date" class="form-control" wire:model="searchByDate">
                     </div>
                     @can('Clear Log')
-                    <div class="col-md-2 col-6">
+                    <div class="col-lg-2 col-md-3 col-6">
                         <button type="button" class="btn btn-danger pt-2" wire:click="clear">
                             <i class="fas fa-trash-alt mx-2 mb-1"></i>
                             {{ __('header.Clear') }}
@@ -50,7 +50,7 @@
                     </div>
                     @endcan
                     @if ($user_logs->count() > 0)
-                    <div class="col-md-2 col-6">
+                    <div class="col-lg-2 col-md-3 col-12">
                         <button type="button" class="btn btn-dark" wire:click="pdf">
                             {{ __('header.PdfConvert') }}
                         </button>

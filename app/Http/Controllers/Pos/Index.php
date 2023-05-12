@@ -137,12 +137,10 @@ class Index extends Component
                             'quantity' => $product_quantity->quantity - 1
                         ]);
                     }
-                    $this->product = null;
+                    // $this->product = null;
                 }
             }
         }
-        $this->data =  null;
-        $this->resetErrorBag();
     }
     public function plus(sale_details $sale_details, $id, Sales $sales)
     {

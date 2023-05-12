@@ -251,4 +251,5 @@ return [
     'MinExpiryDate' => 'Min Expiry Date',
     'AddOrEditQuantity' => 'Add Or Update Quantity',
     'FinalSalePrice' => 'Final Sale Price',
+    'fullscreen' => 'Fullscreen',
 ];

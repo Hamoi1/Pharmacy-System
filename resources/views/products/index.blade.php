@@ -151,7 +151,7 @@
                     @forelse ($products as $product )
                     <tr>
                         <td>
-                            <img src="{{  $product->image != '' ? asset('storage/product/' . $product->image) : asset('assets/images/image_not_available.png') }}" class="img-fluid" width="50" alt="">
+                            <img src="{{  $product->image != '' ? asset('storage/product/' . $product->image) : asset('assets/images/image_not_available.png') }}" class="object-cover " width="70px"  alt="">
                         </td>
                         <td>
                             <a href="" class="" data-bs-toggle="modal" data-bs-target="#view" wire:click.prevent="show({{ $product->id }})">

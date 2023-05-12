@@ -1,6 +1,6 @@
 @push('title') Profile @endpush
 <div class="mt-md-4 mt-2 ">
-    <div wire:loading wire:target="image">
+    <div wire:loading wire:target="image,deleteImage">
         <div class="loading profile">
             <div class="loading-content">
                 <div class="loading-icon">

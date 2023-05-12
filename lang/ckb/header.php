@@ -253,4 +253,5 @@ return [
     'AddOrEditQuantity' => 'زیادکردنی یان گۆڕینی بڕ',
     'FinalSalePrice' => 'نرخی فرۆشتنی کۆتای',
     'or' => 'یان',
+    'fullscreen' => 'هەموو شاشەکە',
 ];
