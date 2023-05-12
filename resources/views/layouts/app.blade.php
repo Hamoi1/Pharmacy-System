@@ -102,7 +102,7 @@
             });
         });
     </script>
-    <script>
+    <script defer>
         $(document).ready(function() {
             // console.clear();
             window.addEventListener('closeModal', event => {
@@ -128,11 +128,10 @@
             Livewire.on('UpdateProfile', data => {
                 window.location.reload();
             });
-
         });
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pusher/8.0.2/pusher.min.js" integrity="sha512-FFchpqjQzRMR75a1q5Se4RZyBsc7UZhHE8faOLv197JcxmPJT0/Z4tGiB1mwKn+OZMEocLT+MmGl/bHa/kPKuQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script>
+    <script defer>
         // Enable pusher logging - don't include this in production
         // Pusher.logToConsole = true;
         var pusher = new Pusher('f4447b80e7791998f4fe', {
@@ -355,12 +354,6 @@
         </div>
     </aside>
     <div class="page-wrapper ">
-        <div id="offcanvas" class="{{ app()->getLocale() == 'ckb' || app()->getLocale() == 'ar' ? 'left' : 'right' }}">
-            <a class="btn" data-bs-toggle="offcanvas" href="#Products" role="button" aria-controls="Products">
-                <span class="badge bg-orange badge-notification badge-blink"></span>
-                <i class="fa fa-box"></i>
-            </a>
-        </div>
         {{ $slot }}
     </div>
     </div>

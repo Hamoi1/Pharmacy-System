@@ -475,9 +475,11 @@ th {
     overflow-y: scroll !important;
     height: 400px !important;
 }
-.product-sale-table{
+
+.product-sale-table {
     height: 400px !important;
 }
+
 .image-grid .image-card {
     width: 100% !important;
     height: 150px !important;
