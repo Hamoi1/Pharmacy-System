@@ -297,6 +297,9 @@ class Index extends Component
                     'product_id' => null,
                 ]);
             }
+            if (!empty($product->image)) {
+                Storage::disk('public')->delete('product/' . $product->image);
+            }
             $ProductName[] = '( ' . $product->name . ' )';
             $product->forceDelete();
         }

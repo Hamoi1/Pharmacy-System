@@ -75,8 +75,7 @@ class Products extends Model
     public function scopeSalePrice($query)
     {
         return  $query->addSelect([
-            // 'final_sale_price' => ProductsQuantity::selectRaw('sum(sale_price * quantity) / sum(quantity) as sale_price_total')->whereColumn('product_id', 'products.id'),
-            'final_sale_price' => ProductsQuantity::selectRaw('SUM(CAST(sale_price AS DECIMAL) * CAST(quantity AS DECIMAL)) / SUM(CAST(quantity AS DECIMAL)) as sale_price_total')->whereColumn('product_id', 'products.id'),
+            'final_sale_price' => ProductsQuantity::selectRaw('sum(sale_price * quantity) / sum(quantity) as sale_price_total')->whereColumn('product_id', 'products.id'),
         ]);
     }
 }

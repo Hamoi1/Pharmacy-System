@@ -105,7 +105,7 @@ class UpdateQuantity extends Component
         }
         $product =  $this->product->SalePrice()->findOrFail($this->product_id);
         $product->update([
-            'sale_price' => number_format($product->final_sale_price, 2)
+            'sale_price' => $product->final_sale_price
         ]);
         $this->done();
     }

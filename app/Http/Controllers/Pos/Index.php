@@ -266,12 +266,12 @@ class Index extends Component
         $this->customer ? $customer = Customers::select(['name', 'phone'])->find($this->customer) : $customer = null;
         $data = [
             'invoice : ' . $sale->invoice,
-            'total Price : ' . (number_format($sale->total, 0, ',', ',')),
-            'discount : '  . (number_format($sale->discount, 0, ',', ',')),
+            'total Price : ' . (number_format($sale->total, 0)),
+            'discount : '  . (number_format($sale->discount, 0)),
             'debt : ' . ($this->debt ? 'yes' : 'no'),
             'name : ' . ($customer?->name),
             'phone : ' . ($customer?->phone),
-            'currentpaid : ' . ($this->currentpaid ? number_format($this->currentpaid, 2, ',', ',') : 'no paid'),
+            'currentpaid : ' . ($this->currentpaid ? number_format($this->currentpaid, 2) : 'no paid'),
         ];
         auth()->user()->InsertToLogsTable(auth()->user()->id, "Sale", 'Sale', 'nothing to show', $data);
         $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.successSale')]);

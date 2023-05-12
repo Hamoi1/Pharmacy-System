@@ -173,7 +173,7 @@
                             {{ $product->supplier_name ?? __('header.not have',['name'=>__('header.supplier')]) }}
                         </td>
                         <td>
-                            {{__('header.FinalSalePrice')}} : {{ number_format($product->final_sale_price,2,',',',') }} {{ __('header.currency') }}
+                            {{__('header.FinalSalePrice')}} : {{ number_format($product->final_sale_price,3,',',',') }} {{ __('header.currency') }}
                         </td>
                         <td>
                             {{ __('header.TotalQuantity') }} : {{ number_format($product->total_quantity,0,',',',')  }}

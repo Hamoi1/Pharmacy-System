@@ -178,7 +178,7 @@ class DatabaseSeeder extends Seeder
             $user->role_id = json_encode($role_id);
             $user->save();
         }
-        foreach (range(1, 1100) as $index) {
+        foreach (range(1, 10) as $index) {
             $name = fake()->name;
             $name = Str::replace(' ', '', $name);
             $name = Str::replace('-', '', $name);

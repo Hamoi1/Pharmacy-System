@@ -64,10 +64,10 @@
                     @foreach ($product->product_quantity as $p )
                     <tr>
                         <td>
-                            {{ number_format($p->purches_price,2,',',',') }} {{ __('header.currency') }}
+                            {{ number_format($p->purches_price,0,',',',') }} {{ __('header.currency') }}
                         </td>
                         <td>
-                            {{ number_format($p->sale_price,2,',',',') }} {{ __('header.currency') }}
+                            {{ number_format($p->sale_price,0,',',',') }} {{ __('header.currency') }}
                         </td>
                         <td>
                             {{ $p->quantity }}

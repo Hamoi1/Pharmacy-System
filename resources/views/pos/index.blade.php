@@ -180,13 +180,13 @@
                                         {{ $sale_detail->product_barcode }}
                                     </td>
                                     <td class="print text-center">
-                                        {{ number_format($sale_detail->product_price , 2,',',',') }} {{ __('header.currency') }}
+                                        {{ number_format($sale_detail->product_price , 3,',',',') }} {{ __('header.currency') }}
                                     </td>
                                     <td class="print text-center col-1 ">
                                         {{ $sale_detail->quantity }}
                                     </td>
                                     <td class=" d-print-none text-center">
-                                        {{ number_format($sale_detail->quantity *  $sale_detail->product_price , 2,',',',') }} {{ __('header.currency') }}
+                                        {{ number_format($sale_detail->quantity *  $sale_detail->product_price , 3,',',',') }} {{ __('header.currency') }}
                                     </td>
                                     <td class=" d-print-none text-center">
                                         {{ $sale_detail->ProductQuantity?->expiry_date }}
@@ -243,7 +243,7 @@
                                 {{ __('header.TotalPrice') }} :
                                 <span class="fs-3 mx-1">
                                     @if ($sales)
-                                    {{ number_format($sales->total,2,',',',') }} {{ __('header.currency') }}
+                                    {{ number_format($sales->total,3,',',',') }} {{ __('header.currency') }}
                                     @else
                                     0 {{ __('header.currency') }}
                                     @endif
