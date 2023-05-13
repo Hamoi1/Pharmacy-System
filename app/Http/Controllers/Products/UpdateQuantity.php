@@ -101,12 +101,12 @@ class UpdateQuantity extends Component
                 'quantity' => $this->quantity,
                 'expiry_date' => $this->expire_date,
             ]);
+            $product =  $this->product->SalePrice()->findOrFail($this->product_id);
+            $product->update([
+                'sale_price' => $product->final_sale_price
+            ]);
             $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.add')]);
         }
-        $product =  $this->product->SalePrice()->findOrFail($this->product_id);
-        $product->update([
-            'sale_price' => $product->final_sale_price
-        ]);
         $this->done();
     }
     public function delete(ProductsQuantity $ProductQuantity)

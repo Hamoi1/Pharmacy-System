@@ -125,7 +125,7 @@ class DebtSale extends Component
                 'paid : ' . (number_format($debtSale->paid, 0, null, '.')),
                 'remain : ' . (number_format($debtSale->remain, 0, null, '.')),
             ];
-            auth()->user()->InsertToLogsTable(auth()->user()->id, "Debt sale", 'Delete', $data,  'nothing to show');
+            auth()->user()->InsertToLogsTable(auth()->user()->id, "Debt sale", 'Delete', $data,  '["nothing to show"]');
             $debtSale->delete();
             $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.deleted')]);
         }   

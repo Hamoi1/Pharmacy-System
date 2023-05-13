@@ -389,7 +389,7 @@ class Index extends Component
             if ($user->id == auth()->user()->id) {
                 $this->dispatchBrowserEvent('message', ['type' => 'error', 'message' => __('header.CanNotDeleteUser')]);
             } else {
-                $data = 'Delete ( ' . $user->name . ' ) form : ' . now();
+                $data = ['Delete ( ' . $user->name . ' ) form : ' . now()];
                 $user->delete();
                 $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.deleted_for_30_days')]);
                 auth()->user()->InsertToLogsTable(auth()->user()->id, "User", 'Delete',  $data,  $data);
@@ -434,7 +434,7 @@ class Index extends Component
             $userName[] = '( ' . $user->name . ' )';
             $user->forceDelete();
         }
-        $data = 'Delete  ' . implode(' , ', $userName) . '  form : ' . now();
+        $data = ['Delete  ' . implode(' , ', $userName) . '  form : ' . now()];
         auth()->user()->InsertToLogsTable(auth()->user()->id, "User", 'Delete',  $data,  $data);
         $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.deleted')]);
         $this->done();
@@ -450,17 +450,17 @@ class Index extends Component
             $userName[] = '( ' . $user->name . ' )';
             $user->restore();
         }
-        $data = 'Restore   ' . implode(' , ', $userName) . '  form : ' . now();
-        auth()->user()->InsertToLogsTable(auth()->user()->id, "User", 'Restore',  $data,  'nothing to show');
+        $data = ['Restore   ' . implode(' , ', $userName) . '  form : ' . now()];
+        auth()->user()->InsertToLogsTable(auth()->user()->id, "User", 'Restore',  $data,  '["nothing to show"]');
         $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.RestoreMessage')]);
         $this->done();
     }
     public function restore($id)
     {
         $user = User::onlyTrashed()->findOrFail($id);
-        $data = 'Restore ( ' . $user->name . ' ) form : ' . now();
+        $data = ['Restore ( ' . $user->name . ' ) form : ' . now()];
         $user->restore();
-        auth()->user()->InsertToLogsTable(auth()->user()->id, "User", 'Restore',  $data,  'nothing to show');
+        auth()->user()->InsertToLogsTable(auth()->user()->id, "User", 'Restore',  $data,  '["nothing to show"]');
         $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.User') . ' ' . __('header.RestoreMessage')]);
         $this->done();
     }
@@ -494,7 +494,7 @@ class Index extends Component
         foreach ($this->ExportDataSelected as $key => $value) {
             $data .= $value . ' , ';
         }
-        $data = 'Export  ' . $data . '  form : ' . now();
+        $data = ['Export  ' . $data . '  form : ' . now()];
         auth()->user()->InsertToLogsTable(auth()->user()->id, "User", 'Export',  $data,  $data);
         $this->ExportDataSelected = array_unique($this->ExportDataSelected);
         return ExportController::export($this->ExportDataSelected, 'users', $this->quantity);

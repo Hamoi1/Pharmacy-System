@@ -123,7 +123,10 @@ class Index extends Component
         if (!Gate::allows('Delete Customer')) {
             abort(404);
         }
-        Customers::find($id)->delete();
+        $customer = Customers::find($id);
+        $data = ["delete $customer->name from " . now()->format('Y-m-d h:i:s')];
+        $customer->delete();
+        auth()->user()->InsertToLogsTable(auth()->user()->id, "User", 'Export',  $data,  $data);
         $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' =>   __('header.Customer') . ' ' . __('header.deleted')]);
         $this->done();
     }

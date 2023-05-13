@@ -243,7 +243,7 @@ class Index extends Component
                 'Catrgory : ' . $product->category->name,
                 'Supplier : ' . $product->supplier->name,
             ];
-            auth()->user()->InsertToLogsTable(auth()->user()->id, "Product", 'Create',  'nothing to show',  $newData);
+            auth()->user()->InsertToLogsTable(auth()->user()->id, "Product", 'Create',  '["nothing to show"]',  $newData);
         }
         $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.Product') . ' ' . $this->UpdateProduct ? __('header.updated') : __('header.add')]);
         $this->done();
@@ -276,7 +276,7 @@ class Index extends Component
         if (!Gate::allows('Delete Product')) {
             $this->dispatchBrowserEvent('message', ['type' => 'error', 'message' => __('header.NotAllowToDo')]);
         } else {
-            $data = 'Delete ( ' . $product->name . ' ) form : ' . now();
+            $data = ['Delete ( ' . $product->name . ' ) form : ' . now()];
             auth()->user()->InsertToLogsTable(auth()->user()->id, "Product", 'Delete',  $data,  $data);
             $product->delete();
             $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.deleted_for_30_days')]);
@@ -303,7 +303,7 @@ class Index extends Component
             $ProductName[] = '( ' . $product->name . ' )';
             $product->forceDelete();
         }
-        $data = 'Delete  ' . implode(' , ', $ProductName) . '  form : ' . now();
+        $data = ['Delete  ' . implode(' , ', $ProductName) . '  form : ' . now()];
         auth()->user()->InsertToLogsTable(auth()->user()->id, "Product", 'Delete',  $data,  $data);
         $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.Product') . ' ' . __('header.deleted')]);
 
@@ -317,8 +317,8 @@ class Index extends Component
             $ProductName[] = '( ' . $product->name . ' )';
             $product->restore();
         }
-        $data = 'Restore  ' . implode(' , ', $ProductName) . '  form : ' . now();
-        auth()->user()->InsertToLogsTable(auth()->user()->id, "Product", 'Restore',  $data, 'nothing to show');
+        $data = ['Restore  ' . implode(' , ', $ProductName) . '  form : ' . now()];
+        auth()->user()->InsertToLogsTable(auth()->user()->id, "Product", 'Restore',  $data, '["nothing to show"]');
         $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.RestoreMessage')]);
 
         $this->done();
@@ -328,8 +328,8 @@ class Index extends Component
         $product = Products::onlyTrashed()->findOrFail($id);
         $ProductName = $product->name;
         $product->restore();
-        $data = 'Restore ( ' . $ProductName . ' ) form : ' . now();
-        auth()->user()->InsertToLogsTable(auth()->user()->id, "Product", 'Restore',  $data,  'nothing to show');
+        $data = ['Restore ( ' . $ProductName . ' ) form : ' . now()];
+        auth()->user()->InsertToLogsTable(auth()->user()->id, "Product", 'Restore',  $data,  '["nothing to show"]');
         $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.Product') . ' ' . __('header.RestoreMessage')]);
         $this->done();
     }
@@ -358,7 +358,7 @@ class Index extends Component
         foreach ($this->ExportDataSelected as $key => $value) {
             $data .= $value . ' , ';
         }
-        $data = 'Export  ' . $data . '  form : ' . now();
+        $data = ['Export  ' . $data . '  form : ' . now()];
         auth()->user()->InsertToLogsTable(auth()->user()->id, "User", 'Export',  $data,  $data);
         $this->ExportDataSelected = array_unique($this->ExportDataSelected);
         return  ExportController::export($this->ExportDataSelected, 'products', $this->Productquantity);

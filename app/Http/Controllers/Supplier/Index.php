@@ -72,7 +72,7 @@ class Index extends Component
                 $supplierName[] = '( ' . $product->name . ' )';
             }
             $supplier->delete();
-            $data =  "Delete ( " . (implode(',', $supplierName)) . " )  from :" . now();
+            $data =  ["Delete ( " . (implode(',', $supplierName)) . " )  from :" . now()];
             auth()->user()->InsertToLogsTable(auth()->user()->id, "Supplier", 'Delete', $data, $data);
             $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.deleted_for_30_days')]);       
         }
@@ -88,7 +88,7 @@ class Index extends Component
             $supplierName[] = '( ' . $product->name . ' )';
             $supplier->forceDelete();
         }
-        $data =  "Delete ( " . (implode(',', $supplierName)) . " )  from :" . now();
+        $data =  ["Delete ( " . (implode(',', $supplierName)) . " )  from :" . now()];
         auth()->user()->InsertToLogsTable(auth()->user()->id, "Supplier", 'Delete', $data, $data);
         $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.deleted')]);       
         $this->done();
@@ -103,17 +103,17 @@ class Index extends Component
             $supplierName[] = '( ' . $product->name . ' )';
             $supplier->restore();
         }
-        $data =  "Restore ( " . (implode(',', $supplierName)) . " )  from :" . now();
-        auth()->user()->InsertToLogsTable(auth()->user()->id, "Supplier", 'Restore', $data,  'nothing to show');
+        $data =  ["Restore ( " . (implode(',', $supplierName)) . " )  from :" . now()];
+        auth()->user()->InsertToLogsTable(auth()->user()->id, "Supplier", 'Restore', $data,  '["nothing to show"]');
         $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.RestoreMessage')]);       
         $this->done();
     }
     public function restore($id)
     {
         $supplier = Suppliers::onlyTrashed()->findOrFail($id);
-        $data =  "Restore ( " . $supplier->name . " )  from :" . now();
+        $data =  ["Restore ( " . $supplier->name . " )  from :" . now()];
         $supplier->restore();
-        auth()->user()->InsertToLogsTable(auth()->user()->id, "Supplier", 'Restore', $data,  'nothing to show');
+        auth()->user()->InsertToLogsTable(auth()->user()->id, "Supplier", 'Restore', $data,  '["nothing to show"]');
         flash()->addSuccess(__('header.supplier') . ' ' . __('header.RestoreMessage'));
         $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.RestoreMessage')]);       
         $this->done();

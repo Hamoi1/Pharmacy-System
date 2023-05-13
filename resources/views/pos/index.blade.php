@@ -62,7 +62,7 @@
                     <label class="form-label barcode-label">
                         {{ __('header.barcodeOrname') }}
                     </label>
-                    <input type="text" id="barcode" wire:model.debounce.20ms="data" value="{{ $data ?? '' }}" class="form-control" placeholder="{{ __('header.barcodeOrname') }}" autocomplete="off">
+                    <input type="text" id="barcode" wire:model.debounce.4ms="data" value="{{ $data ?? '' }}" class="form-control" placeholder="{{ __('header.barcodeOrname') }}" autocomplete="off">
                     @error('data') <span class="text-danger"> {{ $message }}</span> @enderror
                     @if ($product != null)
                     <div class="border p-2  mt-1 rounded autocomplete">

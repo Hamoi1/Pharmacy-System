@@ -96,7 +96,7 @@ class Index extends Component
             $newData = [
                 'name : ' . $category->name,
             ];
-            auth()->user()->InsertToLogsTable(auth()->user()->id, "Category", 'Create', 'nothing to show', $newData);
+            auth()->user()->InsertToLogsTable(auth()->user()->id, "Category", 'Create', '["nothing to show"]', $newData);
         }
         $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' =>  __('header.Category') . ' ' . $this->updateCategory ?  __('header.updated') : __('header.add')]);
         $this->done();
@@ -116,7 +116,7 @@ class Index extends Component
         if (!Gate::allows('Delete Category')) {
             $this->dispatchBrowserEvent('message', ['type' => 'error', 'message' =>  __('header.NotAllowToDo')]);
         } else {
-            $data = 'Delete ( ' . $category->name . ' ) form :' . now();
+            $data = ['Delete ( ' . $category->name . ' ) form :' . now()];
             auth()->user()->InsertToLogsTable(auth()->user()->id, "Category", 'Delete', $data, $data);
             $category->delete();
             $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' =>  __('header.deleted_for_30_days')]);
@@ -130,8 +130,8 @@ class Index extends Component
         $category = Categorys::onlyTrashed()->findorFail($id)->restore();
         $category = Categorys::findorFail($id);
         $categoryName  = '( ' . $category->name . ' )';
-        $data = 'Restore ' . $categoryName . ' form :' . now();
-        auth()->user()->InsertToLogsTable(auth()->user()->id, "Category", 'Restore', $data, 'nothing to show');
+        $data = ['Restore ' . $categoryName . ' form :' . now()];
+        auth()->user()->InsertToLogsTable(auth()->user()->id, "Category", 'Restore', $data, '["nothing to show"]');
         if ($status) {
             $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.Category') . ' ' . __('header.RestoreMessage')]);
             $this->done();
@@ -147,7 +147,7 @@ class Index extends Component
             $categoryName[] = '( ' . $category->name . ' )';
             $category->forceDelete();
         }
-        $data = 'Delete ' . implode(',', $categoryName) . ' form :' . now();
+        $data = ['Delete ' . implode(',', $categoryName) . ' form :' . now()];
         auth()->user()->InsertToLogsTable(auth()->user()->id, "Category", 'Delete', $data, $data);
         $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.Category') . ' ' . __('header.deleted')]);
         $this->done();
@@ -158,9 +158,14 @@ class Index extends Component
 
         if ($categorys->count() == 0)
             return;
+        $categoryName = [];
         foreach ($categorys as $category) {
+            $categoryName[] = '( ' . $category->name . ' )';
             $this->restore($category->id, false);
         }
+        $data = ['Restore ' . implode(',', $categoryName) . ' form :' . now()];
+        auth()->user()->InsertToLogsTable(auth()->user()->id, "User", 'Export',  $data,  $data);
+
         $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.RestoreMessage')]);
         $this->done();
     }

@@ -93,7 +93,7 @@ class AddUpdate extends Component
                 'phone : ' . $this->phone,
                 'address : ' . $this->address,
             ];
-            auth()->user()->InsertToLogsTable(auth()->user()->id, "Supplier", 'Create',  'nothing to show', $newData);
+            auth()->user()->InsertToLogsTable(auth()->user()->id, "Supplier", 'Create',  '["nothing to show"]', $newData);
         }
         $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => $this->updateSupplier ? __('header.supplier') . ' ' . __('header.updated') : __('header.supplier') . ' ' . __('header.add')]);
         $this->done();

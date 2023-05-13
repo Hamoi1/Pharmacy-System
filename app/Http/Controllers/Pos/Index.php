@@ -137,8 +137,10 @@ class Index extends Component
                             'quantity' => $product_quantity->quantity - 1
                         ]);
                     }
-                    // $this->product = null;
                 }
+            }
+            if (is_numeric($this->data)) {
+                $this->data = null;
             }
         }
     }
@@ -271,7 +273,7 @@ class Index extends Component
             'phone : ' . ($customer?->phone),
             'currentpaid : ' . ($this->currentpaid ? number_format($this->currentpaid, 2) : 'no paid'),
         ];
-        auth()->user()->InsertToLogsTable(auth()->user()->id, "Sale", 'Sale', 'nothing to show', $data);
+        auth()->user()->InsertToLogsTable(auth()->user()->id, "Sale", 'Sale', '["nothing to show"]', $data);
         $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.successSale')]);
         $this->AddNewInvoce();
         $this->resetErrorBag();

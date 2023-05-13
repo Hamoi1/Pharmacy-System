@@ -98,7 +98,7 @@ class Index extends Component
                 'Barcode : ' . $this->barcode,
                 'Quantity : ' . $this->quantity,
             ];
-            auth()->user()->InsertToLogsTable(auth()->user()->id, "Barcode", 'Create', 'nothing to show', $data);
+            auth()->user()->InsertToLogsTable(auth()->user()->id, "Barcode", 'Create', '["nothing to show"]', $data);
             $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.barcodes.SuccessfullyGenerated')]);
         }
         $this->done();

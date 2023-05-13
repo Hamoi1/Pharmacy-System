@@ -34,7 +34,7 @@
                     {{ __('header.TotalQuantity').' : '.number_format($product->total_quantity,0,',',',') }}
                 </span>
                 <span class="d-block mt-2">
-                    {{ __('header.FinalSalePrice').' : '. number_format($product->final_sale_price,2,',',',') }} {{ __('header.currency') }}
+                    {{ __('header.FinalSalePrice').' : '. $product->final_sale_price }} {{ __('header.currency') }}
                 </span>
             </div>
         </div>
@@ -64,10 +64,10 @@
                     @foreach ($product->product_quantity as $p )
                     <tr>
                         <td>
-                            {{ number_format($p->purches_price,2,',',',') }} {{ __('header.currency') }}
+                            {{ $p->purches_price }} {{ __('header.currency') }}
                         </td>
                         <td>
-                            {{ number_format($p->sale_price,2,',',',') }} {{ __('header.currency') }}
+                            {{ $p->sale_price }} {{ __('header.currency') }}
                         </td>
                         <td>
                             {{ $p->quantity }}
