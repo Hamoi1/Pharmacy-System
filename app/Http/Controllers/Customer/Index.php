@@ -112,7 +112,6 @@ class Index extends Component
             'debt',
             'totalDebt'
         ]);
-        $this->resetErrorBag();
         $this->resetValidation();
         event(new CustomerPage());
     }

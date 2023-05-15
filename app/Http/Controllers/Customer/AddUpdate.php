@@ -36,7 +36,6 @@ class AddUpdate extends Component
             'customer',
             'CustomerUpadate'
         ]);
-        $this->resetErrorBag();
         $this->resetValidation();
         $this->dispatchBrowserEvent('closeModal');
         if ($action) {
@@ -47,8 +46,6 @@ class AddUpdate extends Component
     public function addustomer()
     {
         $this->CustomerUpadate == false;
-
-        $this->resetErrorBag();
     }
     private function Rule()
     {

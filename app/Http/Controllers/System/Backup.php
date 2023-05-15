@@ -43,7 +43,7 @@ class Backup extends Component
         $file = Storage::disk('local')->get($lastFile);
         // send file to email
         Notification::route('mail', $email)->notify(new Sendfile($file));
-        $this->resetErrorBag();
+        $this->resetValidation();
         $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.backupSuccessfully')]);
         $this->dispatchBrowserEvent('closeModal');
     }

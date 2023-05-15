@@ -186,7 +186,7 @@ class Index extends Component
     {
         $this->dispatchBrowserEvent('closeModal');
         $this->reset(self::Resets());
-        $this->resetErrorBag();
+        $this->resetValidation();
         if ($action) {
             event(new UserActions());
             event(new UserPage());

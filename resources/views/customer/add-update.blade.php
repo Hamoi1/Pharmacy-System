@@ -12,7 +12,7 @@
             <h5 class="modal-title me-auto" id="staticBackdropLabel">
                 {{ $CustomerUpadate ?__('header.update_' , ['name'=> __('header.Customer')])  : __('header.add_', ['name'=> __('header.Customer')])}}
             </h5>
-            <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close"></button>
+            <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close" wire.click:"done(false)"></button>
         </div>
         <form wire:submit.prevent="submit">
             <div class="row g-3">
@@ -48,7 +48,7 @@
                 </div>
                 <div class="col-12 mt-4">
                     <button type="submit" class="btn btn-primary pt-2 px-3">
-                        {{  $CustomerUpadate ?  __('header.update'): __('header.add+') }}
+                        {{ $CustomerUpadate ?  __('header.update'): __('header.add+') }}
                     </button>
                     <div wire:loading wire:target="submit" wire:target="submit">
                         <span class="animated-dots mx-2 fs-3">

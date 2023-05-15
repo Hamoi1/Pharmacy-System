@@ -71,7 +71,7 @@ class Setting extends Component
             'logo' => $logoName ?? $this->oldLogo,
         ]);
         $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.updated')]);
-        $this->resetErrorBag();
+        $this->resetValidation();
     }
 
     public function ChangeTheme($theme)

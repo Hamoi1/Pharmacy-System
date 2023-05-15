@@ -9,49 +9,49 @@
     </div>
     @if($customer)
     <div wire:loading.remove wire:target="show" class="viewUser-Grid px-md-4 py-md-2  {{ app()->getLocale() == 'ckb'   || app()->getLocale() == 'ar' ? 'reverse' : '' }}">
-    <div class="">
-        <p class=" fw-bolder fs-3">
-        {{ __('header.customerDetails') }}
-        </p>
-        <div class="align-center">
-            <p>
-                <span class="fw-bold">{{ __('header.name') }} :</span>
-                {{ $customer->name }}
+        <div class="">
+            <p class=" fw-bolder fs-3">
+                {{ __('header.customerDetails') }}
             </p>
-            <p>
-                <span class="fw-bold">{{ __('header.email') }} :</span>
-                {{ $customer->email }}
-            </p>
-            <p>
-                <span class="fw-bold">{{ __('header.phone') }} :</span>
-                {{ $customer->phone }}
-            </p>
-            <p>
-                <span class="fw-bold">{{ __('header.address') }} :</span>
-                {{ $customer->address }}
-            </p>
-            <p>
-                <span class="fw-bold">{{ __('header.guarantoraddress') }} :</span>
-                {{ $customer->guarantoraddress  ?? __('header.not have' ,['name'=> __('header.guarantoraddress')]) }}
-            </p>
-            <p>
-                <span class="fw-bold">{{ __('header.guarantorphone') }} :</span>
-                {{ $customer->guarantorphone  ?? __('header.not have' ,['name'=> __('header.guarantorphone')]) }}
-            </p>
-            <p>
-                <span class="fw-bold">{{ __('header.created_at') }} :</span>
-                {{ $customer->created_at->diffForHumans() }}
-            </p>
-            <p>
-                <span class="fw-bold">{{ __('header.barwar') }} :</span>
-                {{ $customer->created_at->format('Y-m-d') }}
-            </p>
-            <p>
-                <span class="fw-bold">{{ __('header.TotalDebtPrice') }} :</span>
-                {{ $totalDebt ? number_format($totalDebt,2,',',',').' '. __('header.dolar')  : 0 }}
-            </p>
+            <div class="align-center">
+                <p>
+                    <span class="fw-bold">{{ __('header.name') }} :</span>
+                    {{ $customer->name }}
+                </p>
+                <p>
+                    <span class="fw-bold">{{ __('header.email') }} :</span>
+                    {{ $customer->email }}
+                </p>
+                <p>
+                    <span class="fw-bold">{{ __('header.phone') }} :</span>
+                    {{ $customer->phone }}
+                </p>
+                <p>
+                    <span class="fw-bold">{{ __('header.address') }} :</span>
+                    {{ $customer->address }}
+                </p>
+                <p>
+                    <span class="fw-bold">{{ __('header.guarantoraddress') }} :</span>
+                    {{ $customer->guarantoraddress  ?? __('header.not have' ,['name'=> __('header.guarantoraddress')]) }}
+                </p>
+                <p>
+                    <span class="fw-bold">{{ __('header.guarantorphone') }} :</span>
+                    {{ $customer->guarantorphone  ?? __('header.not have' ,['name'=> __('header.guarantorphone')]) }}
+                </p>
+                <p>
+                    <span class="fw-bold">{{ __('header.created_at') }} :</span>
+                    {{ $customer->created_at->diffForHumans() }}
+                </p>
+                <p>
+                    <span class="fw-bold">{{ __('header.barwar') }} :</span>
+                    {{ $customer->created_at->format('Y-m-d') }}
+                </p>
+                <p>
+                    <span class="fw-bold">{{ __('header.TotalDebtPrice') }} :</span>
+                    {{ $totalDebt ? number_format($totalDebt,2,',',',').' '. __('header.dolar')  : 0 }}
+                </p>
+            </div>
         </div>
-    </div>
     </div>
     <div class="col-12">
         <ul class="nav nav-pills mb-3 border-bottom" id="pills-tab" role="tablist">
@@ -69,7 +69,15 @@
         <div class="tab-content" id="pills-tabContent">
             @if($customer->sales != null)
             <div class="tab-pane fade show active" id="pills-sales" role="tabpanel" aria-labelledby="pills-sales-tab" tabindex="0">
-                <div class="table-responsive mt-3" wire:loading.remove wire:target="prevPageSales,nextPageSales">
+                <div class="row mt-3" wire:loading wire:target="prevPageSales,nextPageSales,debt_sale">
+                    <div class="d-flex  gap-2">
+                        <h3>
+                            {{ __('header.waiting') }}
+                        </h3>
+                        <div class="spinner-border" role="status"></div>
+                    </div>
+                </div>
+                <div class="table-responsive mt-3" wire:loading.remove wire:target="prevPageSales,nextPageSales,debt_sale">
                     <table class="table table-vcenter table-nowrap">
                         <thead>
                             <tr>
@@ -118,6 +126,7 @@
                                 </td>
                                 <td>
                                     {{ number_format($sale->total,2,',',',')  }} {{ __('header.dolar') }}
+                                    {{ $ConvertDolarToDinar($sale->total) }} {{ __('header.dinar') }}
                                 </td>
                                 <td>
                                     {{ $sale->discount != null ?  number_format($sale->discount,2,',',',') .' '. __('header.dolar') : __('header.Not-discount') }}
@@ -128,13 +137,22 @@
                                     </span>
                                 </td>
                                 <td>
-                                    {{ $sale->debt_sale != null ?  number_format($sale->debt_sale->amount,2,',',',') .' '. __('header.dolar') : '' }}
+                                    {{ $sale->debt_sale != null ?  number_format($sale->debt_sale->amount,2,',',',') .' '. __('header.dolar') : __('header.nothing') }}
+                                    @if ($sale->debt_sale != null)
+                                    {{ $ConvertDolarToDinar($sale->debt_sale->amount) }} {{ __('header.dinar') }}
+                                    @endif
                                 </td>
                                 <td>
-                                    {{ $sale->debt_sale != null ?  number_format($sale->debt_sale->paid,2,',',',') .' '. __('header.dolar') : '' }}
+                                    {{ $sale->debt_sale != null ?  number_format($sale->debt_sale->paid,2,',',',') .' '. __('header.dolar') : __('header.nothing') }}
+                                    @if ($sale->debt_sale != null)
+                                    {{ $ConvertDolarToDinar($sale->debt_sale->paid) }} {{ __('header.dinar') }}
+                                    @endif
                                 </td>
                                 <td>
-                                    {{ $sale->debt_sale != null ?  number_format($sale->debt_sale->remain,2,',',',') .' '. __('header.dolar') : '' }}
+                                    {{ $sale->debt_sale != null ?  number_format($sale->debt_sale->remain,2,',',',') .' '. __('header.dolar') : __('header.nothing') }}
+                                    @if ($sale->debt_sale != null)
+                                    {{ $ConvertDolarToDinar($sale->debt_sale->remain) }} {{ __('header.dinar') }}
+                                    @endif
                                 </td>
                                 <td>
                                     {{ $sale->created_at->format('Y-m-d') }}

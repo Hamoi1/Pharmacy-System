@@ -28,7 +28,7 @@ class Index extends Component
     {
         $this->dispatchBrowserEvent('closeModal');
         $this->reset(['barcode', 'quantity', 'barcode_name', 'barcode_id', 'Barcode']);
-        $this->resetErrorBag();
+        $this->resetValidation();
     }
     private function  generate()
     {

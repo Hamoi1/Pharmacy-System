@@ -285,7 +285,7 @@ class Index extends Component
         auth()->user()->InsertToLogsTable(auth()->user()->id, "Sale", 'Sale', '["nothing to show"]', $data);
         $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.successSale')]);
         $this->AddNewInvoce();
-        $this->resetErrorBag();
+        $this->resetValidation();
     }
     public function salePrint()
     {

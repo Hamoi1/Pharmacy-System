@@ -54,7 +54,6 @@ class AddUpdate extends Component
     public function AddSupplier()
     {
         $this->updateSupplier = false;
-        $this->resetErrorBag();
     }
     public function submit()
     {

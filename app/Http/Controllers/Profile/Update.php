@@ -58,7 +58,6 @@ class Update extends Component
     {
         $this->dispatchBrowserEvent('closeModal');
         $this->resetValidation();
-        $this->resetErrorBag();
         if ($action) {
             event(new UserPage());
         }
