@@ -1,4 +1,4 @@
-<x-modal.view target="view" title="{{ __('header.title_view' , ['name'=>__('header.Product')]) }}" modalWidth="modal-lg" wire="wire:click=done">
+<x-modal.view target="view" title="{{ __('header.title_view' , ['name'=>__('header.Product')]) }}" modalWidth="modal-lg" wire="">
     <div wire:loading wire:target="show">
         <div class="d-flex justify-content-center">
             <h3>
@@ -27,7 +27,8 @@
         </p>
         <p>
             <span class="fw-bold mx-1">{{ __('header.FinalSalePrice') }} : </span>
-            <span class="fw-normal">{{ number_format($product->final_sale_price,2,',',',')}} {{ __('header.currency') }}</span>
+            <span class="fw-normal mx-2">{{ number_format($product->final_sale_price,0,',',',')}} {{ __('header.dolar') }} </span>
+            <span>{{ $ConvertDolarToDinar($product->final_sale_price) }} {{ __('header.dinar') }} </span>
         </p>
         <p>
             <span class="fw-bold mx-1">{{ __('header.TotalQuantity') }} : </span>
@@ -61,10 +62,10 @@
                     @foreach ($product->product_quantity as $p )
                     <tr>
                         <td>
-                            {{ number_format($p->purches_price,2,',',',') }} {{ __('header.currency') }}
+                            {{ number_format($p->purches_price,0,',',',') }} {{ __('header.dolar') }}
                         </td>
                         <td>
-                            {{ number_format($p->sale_price,2,',',',') }} {{ __('header.currency') }}
+                            {{ number_format($p->sale_price,0,',',',') }} {{ __('header.dolar') }}
                         </td>
                         <td>
                             {{ $p->quantity }}

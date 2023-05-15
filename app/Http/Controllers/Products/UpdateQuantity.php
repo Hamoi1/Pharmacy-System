@@ -32,10 +32,8 @@ class UpdateQuantity extends Component
     public function done($action = true)
     {
         $this->dispatchBrowserEvent('closeModal');
-        $this->reset(['purches_price', 'sale_price', 'quantity', 'expire_date', 'UpdateProduct']);
-        $this->resetValidation();
+        $this->resetErrorBag();
         if ($action) {
-            $this->resetErrorBag();
             $this->UpdateProduct = false;
             $this->mount($this->product_id);
         }
@@ -86,12 +84,21 @@ class UpdateQuantity extends Component
         $this->validate($this->GetRuls(), $this->GetMessage());
         if ($this->UpdateProduct) {
             $ProductQuantity = ProductsQuantity::findOrFail($this->product_quantity_id);
+            // get old product quantity
+            $old_quantity = $ProductQuantity->quantity;
+
             $ProductQuantity->update([
                 'purches_price' => $this->purches_price,
                 'sale_price' => $this->sale_price,
                 'quantity' => $this->quantity,
                 'expiry_date' => $this->expire_date ?? $ProductQuantity->expiry_date,
             ]);
+            if ($old_quantity < $this->quantity) {
+                $product =  $this->product->SalePrice()->findOrFail($this->product_id);
+                $product->update([
+                    'sale_price' => $product->final_sale_price
+                ]);
+            }
             $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.updated')]);
         } else {
             ProductsQuantity::create([
@@ -114,8 +121,11 @@ class UpdateQuantity extends Component
         if (!Gate::allows('Delete Product')) {
             abort(404);
         }
-
         $ProductQuantity->delete();
+        $product =  $this->product->SalePrice()->findOrFail($this->product_id);
+        $product->update([
+            'sale_price' => $product->final_sale_price
+        ]);
         $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.deleted')]);
         $this->done();
     }

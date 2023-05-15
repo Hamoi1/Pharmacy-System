@@ -12,7 +12,7 @@
             <h5 class="modal-title me-auto" id="staticBackdropLabel">
                 {{ __('header.Export')}}
             </h5>
-            <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close" wire:click=done></button>
+            <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close" wire:click="done(false)"></button>
         </div>
         <form wire:submit.prevent="ExportData">
             <div class="form-group">

@@ -62,7 +62,7 @@
                     <label class="form-label barcode-label">
                         {{ __('header.barcodeOrname') }}
                     </label>
-                    <input type="text" id="barcode" wire:model.debounce.4ms="data" value="{{ $data ?? '' }}" class="form-control" placeholder="{{ __('header.barcodeOrname') }}" autocomplete="off">
+                    <input type="text" id="barcode" wire:model.debounce.1ms="data" value="{{ $data ?? '' }}" class="form-control" placeholder="{{ __('header.barcodeOrname') }}" autocomplete="off">
                     @error('data') <span class="text-danger"> {{ $message }}</span> @enderror
                     @if ($product != null)
                     <div class="border p-2  mt-1 rounded autocomplete">
@@ -169,7 +169,7 @@
                                 @forelse ($sales->sale_details as $sale_detail)
                                 <tr>
                                     <td class=" d-print-none">
-                                        <button class="btn" wire:click="destroy({{ $sale_detail->id }},{{ $sale_detail->ProductQuantity?->id }} ,{{ $sales->id }})">
+                                        <button class="btn" wire:click="destroy('{{ $sale_detail->id }}','{{ $sale_detail->ProductQuantity?->id }}' ,'{{ $sales->id }}','{{ number_format($sale_detail->quantity *  $sale_detail->product_price,2,',',',') }}')">
                                             <i class="fa fa-trash text-danger"></i>
                                         </button>
                                     </td>
@@ -180,24 +180,27 @@
                                         {{ $sale_detail->product_barcode }}
                                     </td>
                                     <td class="print text-center">
-                                        {{ number_format($sale_detail->product_price , 2,',',',') }} {{ __('header.currency') }}
+                                        {{ number_format($sale_detail->product_price,2,',',',') }} {{ __('header.dolar') }}
                                     </td>
                                     <td class="print text-center col-1 ">
                                         {{ $sale_detail->quantity }}
                                     </td>
                                     <td class=" d-print-none text-center">
-                                        {{ number_format($sale_detail->quantity *  $sale_detail->product_price , 2,',',',') }} {{ __('header.currency') }}
+                                        {{ number_format($sale_detail->quantity *  $sale_detail->product_price,2,',',',') }} {{ __('header.dolar') }}
+
                                     </td>
                                     <td class=" d-print-none text-center">
                                         {{ $sale_detail->ProductQuantity?->expiry_date }}
                                     </td>
                                     <td class="col-1 text-center  d-print-none">
+                                        @if ($sale_detail->ProductQuantity?->id)
                                         <button class="btn " wire:click.prevent="plus({{ $sale_detail->id }},{{ $sale_detail->ProductQuantity?->id }} ,{{ $sales->id }})">
                                             <i class="fas fa-plus"></i>
                                         </button>
                                         <button class="btn " wire:click.prevent="minus({{ $sale_detail->id }},{{ $sale_detail->ProductQuantity?->id }} ,{{ $sales->id }})">
                                             <i class="fas fa-minus"></i>
                                         </button>
+                                        @endif
                                     </td>
                                 </tr>
                                 @empty
@@ -243,9 +246,12 @@
                                 {{ __('header.TotalPrice') }} :
                                 <span class="fs-3 mx-1">
                                     @if ($sales)
-                                    {{ number_format($sales->total,2,',',',') }} {{ __('header.currency') }}
+                                    <span class="mx-2">
+                                        {{ number_format($sales->total,2,',',',') }} {{ __('header.dolar') }}
+                                    </span>
+                                    {{ $ConvertDolarToDinar($sales->total) }} {{ __('header.dinar') }}
                                     @else
-                                    0 {{ __('header.currency') }}
+                                    0 {{ __('header.dolar') }}
                                     @endif
                                 </span>
                             </p>

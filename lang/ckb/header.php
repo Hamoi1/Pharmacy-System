@@ -168,7 +168,7 @@ return [
     'DeletedAfter30Dayes' => ' دەسڕێتەوە لە بەرواری :date',
     'DeletedAll' => 'سڕینەوەی هەموو',
     'RestoreAll' => 'گەڕاندنەوەی هەموو',
-    'currency' => '$',
+    'dolar' => '$',
     'currentpaid' => 'پارەی ئێستا',
     'Debts' => 'قەرزەکان ',
     'debt seaction' => 'بەشی قەرز',
@@ -253,5 +253,6 @@ return [
     'AddOrEditQuantity' => 'زیادکردنی یان گۆڕینی بڕ',
     'FinalSalePrice' => 'نرخی فرۆشتنی کۆتای',
     'or' => 'یان',
-    'fullscreen' => 'هەموو شاشەکە',
+    'dinar' => 'دینار',
+    'customerIsDeleted' => 'کڕیار سڕاوەتەوە',
 ];

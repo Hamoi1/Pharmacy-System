@@ -40,6 +40,7 @@ class Index extends Component
         $this->sales = Sales::where('invoice', $this->invoice)->where('status', 0)->with('sale_details', function ($query) {
             $query->with(['ProductQuantity'])->orderByDesc('id')->product();
         })->first();
+        // dd($this->sales);
         $this->SupplierSearch != null ?
             $suppliers = DB::table('suppliers')->select(['id', 'name'])->where(function ($query) {
                 $query->where('name', 'like', '%' . $this->SupplierSearch . '%')
@@ -139,9 +140,8 @@ class Index extends Component
                     }
                 }
             }
-            if (is_numeric($this->data)) {
-                $this->data = null;
-            }
+            $this->data = null;
+            $this->product = null;
         }
     }
     public function plus(sale_details $sale_details, $id, Sales $sales)
@@ -193,23 +193,32 @@ class Index extends Component
         $this->dispatchBrowserEvent('play', ['sound' => 'undo']);
         $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.deleted')]);
     }
-    public function destroy(sale_details $sale_details, $id, Sales $sales)
+    public function destroy(sale_details $sale_details, $id, Sales $sales, $totalPrice)
     {
-        $product_quantity = ProductsQuantity::with(['products' => function ($query) {
-            $query->select(['id'])->SalePrice();
-        }])->find($id);
-        if ($product_quantity == null) {
-            flash()->addError(__('header.NoData'));
-            return;
+        if ($id != null) {
+            $product_quantity = ProductsQuantity::with(['products' => function ($query) {
+                $query->select(['id'])->SalePrice();
+            }])->find($id);
+            if ($product_quantity == null) {
+                flash()->addError(__('header.NoData'));
+                return;
+            }
+        }
+        if ($id == null) {
+            $pirce = $totalPrice;
+        } else {
+            $pirce = $product_quantity->products->final_sale_price * $sale_details->quantity;
         }
         $sales->update([
-            'total' => $sales->total - ($product_quantity->products->final_sale_price * $sale_details->quantity)
+            'total' => $sales->total - $pirce
         ]);
         $sales->total = $sales->total < 0 ?  0 : $sales->total;
         $sales->saveQuietly();
-        $product_quantity->update([
-            'quantity' => $product_quantity->quantity + $sale_details->quantity
-        ]);
+        if ($id != null) {
+            $product_quantity->update([
+                'quantity' => $product_quantity->quantity + $sale_details->quantity
+            ]);
+        }
         $sale_details->delete();
         $this->dispatchBrowserEvent('play', ['sound' => 'undo']);
         $this->dispatchBrowserEvent('message', ['type' => 'warning', 'message' => __('header.deleted')]);

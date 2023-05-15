@@ -54,7 +54,7 @@
         @include('sales.pages.delete')
         @endcan
         @include('sales.pages.view')
-        <div class="row mt-3 d-print-none" wire:loading wire:target="previousPage,nextPage,gotoPage,UserID,date">
+        <div class="row mt-3 d-print-none" wire:loading wire:target="previousPage,nextPage,gotoPage,UserID,date,invoice">
             <div class="d-flex  gap-2">
                 <h3>
                     {{ __('header.waiting') }}
@@ -62,7 +62,7 @@
                 <div class="spinner-border" role="status"></div>
             </div>
         </div>
-        <div class="table-responsive mt-3 d-print-none" wire:loading.remove wire:target="previousPage,nextPage,gotoPage,UserID,date">
+        <div class="table-responsive mt-3 d-print-none" wire:loading.remove wire:target="previousPage,nextPage,gotoPage,UserID,date,invoice">
             <table class="table table-vcenter table-nowrap">
                 <thead>
                     <tr>
@@ -71,6 +71,12 @@
                         </th>
                         <th class="col-1 fs-4">
                             {{ __('header.User') }}
+                        </th>
+                        <th class="col-1 fs-4">
+                            {{ __('header.Customer') }}
+                        </th>
+                        <th class="col-1 fs-4">
+                            {{ __('header.quantity') }}
                         </th>
                         <th class="col-1 fs-4">
                             {{ __('header.price') }}
@@ -98,11 +104,20 @@
                         <td class="fw-bolder">
                             {{ $sale->user_name }}
                         </td>
-                        <td>
-                            {{ number_format($sale->total,2,',',',')  }} {{ __('header.currency') }}
+                        <td class="fw-bolder">
+                            {{ $sale->customer_name }}
                         </td>
                         <td>
-                            {{ $sale->discount != null ?  number_format($sale->discount,2,',',',') . __('header.currency') : __('header.Not-discount') }}
+                            {{ $sale->quantity }}
+                        </td>
+                        <td>
+                            <span class="mx-2">
+                                {{ number_format($sale->total,2,',',',')  }} {{ __('header.dolar') }}
+                            </span>
+                            {{ $ConvertDolarToDinar($sale->total) }} {{ __('header.dinar') }}
+                        </td>
+                        <td>
+                            {{ $sale->discount != 0 ?  number_format($sale->discount,2,',',',') . __('header.dolar') : __('header.Not-discount') }}
                         </td>
                         <td>
                             <span class="badge bg-{{ $sale->paid ? 'success' : 'info' }}">

@@ -22,13 +22,6 @@ class Dashboard extends Component
         if (!Gate::allows('View Dashboard')) {
             redirect()->route('sales', app()->getLocale());
         }
-        // $users = DB::table('users')->
-        // withCount('sales')->
-        // orderBy('sales_count', 'desc')->take(10)->get();
-        // $products = sale_details::whereHas('products', function ($query) {
-        //     return $query->whereNull('products.deleted_at');
-        // })->with('products')->whereNotNull('product_id')->selectRaw('sum(quantity) as total_quantity, product_id')
-        //     ->groupBy('product_id')->orderBy('total_quantity', 'desc')->take(10)->get();
         $TotalProducts = Products::Wheredate('created_at', '=', now()->format('Y-m-d'))->count();
         $TotalUsers = User::Wheredate('created_at', '=', now()->format('Y-m-d'))->count();
         $TotalSuppliers = Suppliers::Wheredate('created_at', '=', now()->format('Y-m-d'))->count();
@@ -62,7 +55,7 @@ class Dashboard extends Component
                 'TotalSalesPrice',
                 'TotalSaleProduct',
                 'ProductCount',
-                'UsersCount'
+                'UsersCount',
             )
         );
     }

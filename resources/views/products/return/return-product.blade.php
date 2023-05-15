@@ -116,7 +116,7 @@
                                         {{ $sale->invoice }}
                                     </td>
                                     <td>
-                                        {{ number_format($sale->total,0,',',',') .' '. __('header.currency') }}
+                                        {{ number_format($sale->total,0,',',',') .' '. __('header.dolar') }}
                                     </td>
                                     <td>
                                         {{ $sale->sale_details[0]->products->name }}
@@ -125,7 +125,7 @@
                                         {{ $sale->sale_details[0]->quantity }}
                                     </td>
                                     <td>
-                                        {{ $sale->discount != null ?  number_format($sale->discount,0) .' '. __('header.currency') : __('header.Not-discount') }}
+                                        {{ $sale->discount != null ?  number_format($sale->discount,0) .' '. __('header.dolar') : __('header.Not-discount') }}
                                     </td>
                                     <td>
                                         <span class="badge bg-{{ $sale->paid ? 'success' : 'info' }}">
@@ -133,13 +133,13 @@
                                         </span>
                                     </td>
                                     <td>
-                                        {{ $sale->debt_sale  ? number_format($sale->debt_sale->amount,0,',',',') .' '. __('header.currency') : '' }}
+                                        {{ $sale->debt_sale  ? number_format($sale->debt_sale->amount,0,',',',') .' '. __('header.dolar') : '' }}
                                     </td>
                                     <td>
-                                        {{ $sale->debt_sale  ? number_format($sale->debt_sale->paid,0,',',',') .' '. __('header.currency') : '' }}
+                                        {{ $sale->debt_sale  ? number_format($sale->debt_sale->paid,0,',',',') .' '. __('header.dolar') : '' }}
                                     </td>
                                     <td>
-                                        {{ $sale->debt_sale  ? number_format($sale->debt_sale->remain,0,',',',') .' '. __('header.currency') : '' }}
+                                        {{ $sale->debt_sale  ? number_format($sale->debt_sale->remain,0,',',',') .' '. __('header.dolar') : '' }}
                                     </td>
                                     <td>
                                         {{ $sale->created_at }}

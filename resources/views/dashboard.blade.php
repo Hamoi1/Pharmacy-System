@@ -126,7 +126,7 @@
                                 </div>
                                 <div class="col ">
                                     <span class="fs-2 fw-bolder ">
-                                        {{ number_format($TotalSalePrice , 2,',',',') }} {{ __('header.currency') }}
+                                        {{ number_format($TotalSalePrice , 2,',',',') }} {{ __('header.dolar') }}
                                     </span>
                                 </div>
                             </div>
@@ -194,7 +194,7 @@
                                             <span class="text-muted fs-2 text-break">
                                                 {{ number_format($TotalSalesPrice , 2,',',',') }}
                                             </span>
-                                            {{ __('header.currency') }}
+                                            {{ __('header.dolar') }}
                                         </span>
                                     </div>
                                 </div>
@@ -244,25 +244,6 @@
                                         {{ number_format($UsersCount  , 0) }}
                                     </span>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row mt-4 gy-3 not-reverse">
-                    <div class="col-12">
-                        <h3 class="">{{ __('Top 10 User Sales') }}</h3>
-                        <div class="card">
-                            <div class="card-body">
-                                <div id="chart" class="chart-lg chart"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="col-12">
-                        <h3 class="">{{ __('Top 10 Product Sales') }}</h3>
-                        <div class="card">
-                            <div class="card-body">
-                                <div id="chart-product" class="chart-lg"></div>
                             </div>
                         </div>
                     </div>

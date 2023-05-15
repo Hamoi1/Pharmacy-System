@@ -45,4 +45,10 @@ class Sales extends Model
     {
         return $query->addSelect(['user_name' => User::select('name')->whereColumn('id', 'sales.user_id')]);
     }
+
+    public function scopeQuantitySale($query){
+        return $query->addSelect([
+            'quantity' => sale_details::selectRaw('sum(quantity)')->whereColumn('sale_id', 'sales.id'),
+        ]);
+    }
 }

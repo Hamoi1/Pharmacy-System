@@ -19,8 +19,7 @@ class ReturnProduct extends Component
     public function render()
     {
         // use Currency
-        // $formattedValue = Currency::convert()->from('USD')->to('IQD')->amount(1)->get();
-        // dd($formattedValue);
+      
         $this->customers = Customers::query();
         if ($this->CustomerSearch) {
             $this->customers =  $this->customers->select('id', 'name')->where('name', 'like', '%' . $this->CustomerSearch . '%')->get();

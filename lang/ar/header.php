@@ -70,7 +70,6 @@ return [
     'resendMessage' => 'تم إرسال رمز التأكيد إلى بريدك الإلكتروني',
     'password_changed_successfully' => 'تم تغیر كلمة المرور الخاصة بك بنجاح',
     'NoData' => 'ليس هنالك معلومات',
-    'fullscreen' => 'ملء الشاشة',
     'choose_image' => 'اختر صورة مفضلة',
     'Dashboard' => 'الصفحة الرئيسية',
     'Users' => 'المستخدمين',
@@ -169,7 +168,7 @@ return [
     'DeletedAfter30Dayes' => ' يحذف بتاريخ :date',
     'DeletedAll' => 'حذف الكل',
     'RestoreAll' => 'استعادة الكل',
-    'currency' => '$',
+    'dolar' => '$',
     'Debts' => 'دیون ',
     'debt seaction' => 'دائرة الدین',
     'PaymnetMethod' => 'طريقة الدفع',
@@ -252,4 +251,6 @@ return [
     'MinExpiryDate' => 'أقل تاريخ انتهاء الصلاحية',
     'AddOrEditQuantity' => 'اضافة او تعديل الكمية',
     'FinalSalePrice' => 'السعر النهائي للبيع',
+    'dinar' => 'دینار',
+    'customerIsDeleted' => 'العميل محذوف',
 ];

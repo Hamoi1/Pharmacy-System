@@ -35,13 +35,13 @@
                                 {{ $sale_detail->product_barcode }}
                             </td>
                             <td class="print text-center">
-                                {{ number_format($sale_detail->product_price,0) }} {{ __('header.currency') }}
+                                {{ number_format($sale_detail->product_price,0) }} {{ __('header.dolar') }}
                             </td>
                             <td class="print text-center">
                                 {{ $sale_detail->quantity }}
                             </td>
                             <td class=" d-print-none text-center">
-                                {{ number_format($sale_detail->quantity *  $sale_detail->product_price, 0) }} {{ __('header.currency') }}
+                                {{ number_format($sale_detail->quantity *  $sale_detail->product_price, 0) }} {{ __('header.dolar') }}
                             </td>
                         </tr>
                         @empty
@@ -67,13 +67,13 @@
                         {{ __('header.phone') }} : {{ $sale->debt_sale->phone }}
                     </div>
                     <div class="col-lg-3 mx-lg-1 mx-2">
-                        {{ __('header.debtPaid') }} : {{ number_format($sale->debt_sale->amount , 0) }} {{ __('header.currency') }}
+                        {{ __('header.debtPaid') }} : {{ number_format($sale->debt_sale->amount , 0) }} {{ __('header.dolar') }}
                     </div>
                     <div class="col-lg-3 mx-lg-1 mx-2">
-                        {{ __('header.currentPaid') }} : {{ number_format($sale->debt_sale->paid, 0) }} {{ __('header.currency') }}
+                        {{ __('header.currentPaid') }} : {{ number_format($sale->debt_sale->paid, 0) }} {{ __('header.dolar') }}
                     </div>
                     <div class="col-lg-3 mx-lg-1 mx-2">
-                        {{ __('header.debtPrice') }} : {{ number_format($sale->debt_sale->remain, 0) }} {{ __('header.currency') }}
+                        {{ __('header.debtPrice') }} : {{ number_format($sale->debt_sale->remain, 0) }} {{ __('header.dolar') }}
                     </div>
                 </div>
                 <hr class=" d-print-none">
@@ -100,15 +100,15 @@
                         </span>
                     </p>
                     <p class="fw-bolder {{ $sale->discount ?? ' d-print-none' }}">
-                        {{ __('header.discount') }} : {{ $sale->discount  ? number_format($sale->discount, 0) .' '. __('header.currency') : __('header.Not-discount') }}
+                        {{ __('header.discount') }} : {{ $sale->discount  ? number_format($sale->discount, 0) .' '. __('header.dolar') : __('header.Not-discount') }}
                     </p>
                     <p class="fw-bolder">
                         {{ __('header.TotalPrice') }} :
                         <span class="mx-1">
                             @if ($sale)
-                            {{ number_format($sale->total,0) }} {{ __('header.currency') }}
+                            {{ number_format($sale->total,0) }} {{ __('header.dolar') }}
                             @else
-                            0 {{ __('header.currency') }}
+                            0 {{ __('header.dolar') }}
                             @endif
                         </span>
                     </p>

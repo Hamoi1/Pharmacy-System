@@ -103,10 +103,10 @@
                                     </a>
                                 </td>
                                 <td>
-                                    {{ number_format($sale->total,0)  }} {{ __('header.currency') }}
+                                    {{ number_format($sale->total,0)  }} {{ __('header.dolar') }}
                                 </td>
                                 <td>
-                                    {{ $sale->discount != null ?  number_format($sale->discount,0) . __('header.currency') : __('header.Not-discount') }}
+                                    {{ $sale->discount != null ?  number_format($sale->discount,0) . __('header.dolar') : __('header.Not-discount') }}
                                 </td>
                                 <td>
                                     <span class="badge bg-{{ $sale->paid ? 'success' : 'info' }}">
@@ -187,10 +187,10 @@
                                     {{ $product->supplier_name ?? __('header.not have',['name'=>__('header.supplier')]) }}
                                 </td>
                                 <td>
-                                    {{ number_format($product->purches_price,0,',',',') }} {{ __('header.currency') }}
+                                    {{ number_format($product->purches_price,0,',',',') }} {{ __('header.dolar') }}
                                 </td>
                                 <td>
-                                    {{ number_format($product->sale_price,0,',',',') }} {{ __('header.currency') }}
+                                    {{ number_format($product->sale_price,0,',',',') }} {{ __('header.dolar') }}
                                 </td>
                                 <td>
                                     {{ number_format($product->quantity,0,',',',')  }}

@@ -38,7 +38,6 @@
     <script src="{{ asset('assets/js/jquery-3.6.1.min.js') }}"></script>
     <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('assets/js/autosize.min.js') }}"></script>
-    <script src="{{ asset('assets/js/apexcharts.min.js') }}"></script>
     <script src="{{ asset('assets/js/main.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js" defer></script>
     <script defer>
@@ -172,7 +171,6 @@
             PusherActions();
         }
     </script>
-
     @stack('js')
 </head>
 

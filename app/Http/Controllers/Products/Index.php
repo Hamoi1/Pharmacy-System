@@ -4,8 +4,6 @@ namespace App\Http\Controllers\Products;
 
 use Livewire\Component;
 use App\Models\Products;
-use App\Models\Categorys;
-use App\Models\Suppliers;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Gate;
@@ -45,7 +43,7 @@ class Index extends Component
         }
         Gate::allows('Product Trash') ? $this->Trashed  : $this->Trashed = false;
     }
-    private function CheckTrashParameter()
+    private function CheckTrash()
     {
         if ($this->Trashed) {
             return Products::onlyTrashed();
@@ -60,7 +58,7 @@ class Index extends Component
     }
     public function render()
     {
-        $products =  $this->CheckTrashParameter();
+        $products =  $this->CheckTrash();
         $this->search ?
             $products->where(function ($query) {
                 $query->where('name', 'like', '%' . $this->search . '%')
@@ -76,6 +74,7 @@ class Index extends Component
         $GetTrashDate = function ($date) {
             return $date->addMonth()->format('Y-m-d');
         };
+
         return view('products.index', [
             'products' => $products->orderByDesc('id')->SalePrice()->ExpiryDate()->TotalQuantity()->suppliers()->categorys()->paginate(10),
             'categorys' => DB::table('categorys')->select(['id', 'name'])->get(),
@@ -289,7 +288,7 @@ class Index extends Component
     }
     public function DeleteAll()
     {
-        $products = $this->CheckTrashParameter()->with('sale_details')->get();
+        $products = $this->CheckTrash()->with('sale_details')->get();
         $ProductName = [];
         foreach ($products as $product) {
             foreach ($product->sale_details as $p) {
@@ -311,7 +310,7 @@ class Index extends Component
     }
     public function RestoreAll()
     {
-        $products = $this->CheckTrashParameter()->get();
+        $products = $this->CheckTrash()->get();
         $ProductName = [];
         foreach ($products as $product) {
             $ProductName[] = '( ' . $product->name . ' )';
@@ -351,7 +350,7 @@ class Index extends Component
         );
 
         if (count($this->ExportDataSelected) == 0) {
-            flash()->addError(__('header.SelectData'));
+            $this->dispatchBrowserEvent('message', ['type' => 'error', 'message' => __('header.SelectData')]);
             return;
         }
         $data = '';

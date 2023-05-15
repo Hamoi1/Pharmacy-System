@@ -46,21 +46,21 @@
                                 <span class="fw-bolder mx-1 fs-3">
                                     {{ number_format($amount , 0) }}
                                 </span>
-                                {{ __('header.currency') }}
+                                {{ __('header.dolar') }}
                             </p>
                             <p class="fw-bold">
                                 {{ __('header.currentPaid') }} :
                                 <span class="fw-bolder mx-1 fs-3">
                                     {{ number_format($currentPaid , 0) }}
                                 </span>
-                                {{ __('header.currency') }}
+                                {{ __('header.dolar') }}
                             </p>
                             <p class="fw-bold">
                                 {{ __('header.debtPrice') }} :
                                 <span class="fw-bolder mx-1 fs-3">
                                     {{ number_format($remain , 0) }}
                                 </span>
-                                {{ __('header.currency') }}
+                                {{ __('header.dolar') }}
                             </p>
                         </div>
                         <div class="col-12">
@@ -200,15 +200,15 @@
                         </td>
 
                         <td>
-                            {{ number_format($debt->amount , 0) }} {{ __('header.currency') }}
+                            {{ number_format($debt->amount , 0) }} {{ __('header.dolar') }}
                         </td>
 
                         <td>
-                            {{ number_format($debt->paid , 0) }} {{ __('header.currency') }}
+                            {{ number_format($debt->paid , 0) }} {{ __('header.dolar') }}
                         </td>
 
                         <td>
-                            {{ number_format($debt->remain , 0) }} {{ __('header.currency') }}
+                            {{ number_format($debt->remain , 0) }} {{ __('header.dolar') }}
                         </td>
 
                         <td>

@@ -34,14 +34,14 @@
                     <tr>
                         <th>{{ $sale_detail->products->name }}</th>
                         <th>{{ $sale_detail->quantity }}</th>
-                        <th>{{ number_format($sale_detail->products->sale_price,2,',',',') }} {{ __('header.currency') }}</th>
+                        <th>{{ number_format($sale_detail->products->sale_price,2,',',',') }} {{ __('header.dolar') }}</th>
                     </tr>
                     @endforeach
                 </tbody>
             </table>
         </div>
         <p>
-            {{ __('header.TotalPrice') }} : {{ number_format($sale->total,0,',',',') }} {{ __('header.currency') }}
+            {{ __('header.TotalPrice') }} : {{ number_format($sale->total,0,',',',') }} {{ __('header.dolar') }}
         </p>
     </div>
 </div>

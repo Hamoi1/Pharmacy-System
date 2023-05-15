@@ -1,4 +1,4 @@
-<x-modal.view target="view" title="{{ __('header.SaleInformation') }}" modalWidth="modal" wire="wire:click=done">
+<x-modal.view target="view" title="{{ __('header.SaleInformation') }}" modalWidth="modal" wire="">
     <div wire:loading wire:target="View">
         <div class="d-flex justify-content-center">
             <h3>
@@ -15,17 +15,20 @@
                     <span class="fw-bold">Invoice : </span>
                     <span>{{ $saleView->invoice }}</span>
                 </div>
-                <div class="col-lg-6 col-12">
-                    <span class="fw-bold">{{ __('header.by') }} : </span>
-                    <span>{{ $saleView->user->name ?? __('header.userIsDeleted') }}</span>
+                <div class="col-lg-7 col-12">
+                    <span class="fw-bold">{{ __('header.salesBy') }} : </span>
+                    <span>{{ $saleView->user_name ?? __('header.userIsDeleted') }}</span>
                 </div>
-                <div class="col-lg-6 col-12">
+                <div class="col-lg-5 col-12">
                     <span class="fw-bold">{{ __('header.date') }} : </span>
                     <span class="not-reverse">{{ $saleView->created_at->format('Y-m-d') }}</span>
                 </div>
                 <div class="col-lg-6 col-12">
                     <span class="fw-bold">{{ __('header.TotalPrice') }} : </span>
-                    <span>{{ number_format($saleView->total,0)  }} {{ __('header.currency')}}</span>
+                    <span class="mx-2">
+                        {{ number_format($saleView->total,2,',',',')  }} {{ __('header.dolar')}}
+                        {{ $ConvertDolarToDinar($saleView->total) }} {{ __('header.dinar') }}
+                    </span>
                 </div>
                 <div class="col-lg-6 col-12">
                     <span class="fw-bold">{{ __('header.TotalQuantity') }} : </span>
@@ -35,9 +38,16 @@
                 </div>
                 <div class="col-lg-6 col-12">
                     <span class="fw-bold">{{ __('header.discount') }} : </span>
-                    <span>
-                        {{ $saleView->discount != null ? number_format($saleView->discount,0) .' '. __('header.currency') : __('header.Not-discount') }}
+                    @if ($saleView->discount != 0)
+                    <span class="mx-2">
+                        {{ number_format($saleView->discount,2,',',',') .' '. __('header.dolar') }}
                     </span>
+                    {{ $ConvertDolarToDinar($saleView->discount) }} {{ __('header.dinar') }}
+                    @else
+                    <span class="mx-2">
+                        {{ __('header.Not-discount')}}
+                    </span>
+                    @endif
                 </div>
                 <div class="col-lg-6 col-12">
                     <span class="fw-bold">{{ __('header.PaymnetMethod') }} : </span>
@@ -46,6 +56,12 @@
                     </span>
                 </div>
                 <div class="hr-text mb-2 mt-3"></div>
+                <div class="col-12">
+                    <span class="fw-bold">{{ __('header.Customer') }} : </span>
+                    <span>
+                        {{ $saleView->customer_name ?? __('header.customerIsDeleted') }}
+                    </span>
+                </div>
                 <div class="col-12 ">
                     <p>
                         {{ __('header.Products') }}
@@ -72,10 +88,10 @@
                                         {{ $sale_detail->products->name }}
                                     </td>
                                     <td>
-                                        {{ number_format($sale_detail->products->sale_price, 2,',',',') }} {{ __('header.currency') }}
+                                        {{ number_format($sale_detail->products->sale_price, 2,',',',') }} {{ __('header.dolar') }}
                                     </td>
                                     <td>
-                                        {{ number_format($sale_detail->quantity, 2,',',',') }}
+                                        {{ number_format($sale_detail->quantity, 0,',',',') }}
                                     </td>
                                 </tr>
                                 @empty

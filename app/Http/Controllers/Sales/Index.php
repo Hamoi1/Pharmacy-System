@@ -35,7 +35,7 @@ class Index extends Component
     {
         $sales =  Sales::query();
         if ($this->date) {
-            $sales->whereDate('created_at', $this->date);
+            $sales = $sales->whereDate('created_at', date('Y-m-d', strtotime($this->date)));
         }
         if ($this->invoice) {
             $invoice = Str::start($this->invoice, 'inv-');
@@ -44,7 +44,7 @@ class Index extends Component
         if ($this->UserID) {
             $sales = $sales->where('user_id', $this->UserID);
         }
-        $sales =  $sales->Where('status', '=', 1)->User()->latest()->paginate(10);
+        $sales =  $sales->Where('status', '=', 1)->QuantitySale()->customersData()->User()->latest()->paginate(10);
         $users = DB::table('users')->select(['id', 'name'])->get();
         return view('sales.index', [
             'sales' => $sales,
@@ -67,13 +67,21 @@ class Index extends Component
     }
     public function View($id)
     {
-        $this->saleView = Sales::with(['sale_details' => function ($query) {
-            return $query->whereNotNull('product_id')
-                ->with('products');
-        }, 'user', 'debt_sale', 'customers'])->findOrFail($id);
+        $this->saleView = Sales::with([
+            'sale_details' => function ($query) {
+                return $query
+                    ->whereNotNull('product_id')
+                    ->with(['products' => function ($query) {
+                        return $query->select(['id', 'name', 'sale_price']);
+                    }])
+                    ->selectRaw('sale_id, product_id, SUM(quantity) as quantity')
+                    ->groupBy('sale_id', 'product_id');
+            },
+            'debt_sale'
+        ])->customersData()->User()->findOrFail($id);
     }
 
-    
+
     // public function convertToPdf($id)
     // {
     //     $sale  = Sales::with(['sale_details' => function ($query) {

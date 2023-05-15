@@ -151,7 +151,7 @@
                     @forelse ($products as $product )
                     <tr>
                         <td>
-                            <img src="{{  $product->image != '' ? asset('storage/product/' . $product->image) : asset('assets/images/image_not_available.png') }}" class="object-cover " width="70px"  alt="">
+                            <img src="{{  $product->image != '' ? asset('storage/product/' . $product->image) : asset('assets/images/image_not_available.png') }}" class="object-cover " width="70px" alt="">
                         </td>
                         <td>
                             <a href="" class="" data-bs-toggle="modal" data-bs-target="#view" wire:click.prevent="show({{ $product->id }})">
@@ -173,7 +173,9 @@
                             {{ $product->supplier_name ?? __('header.not have',['name'=>__('header.supplier')]) }}
                         </td>
                         <td>
-                            {{__('header.FinalSalePrice')}} : {{ number_format($product->final_sale_price,3,',',',') }} {{ __('header.currency') }}
+                            {{__('header.FinalSalePrice')}} : {{ $product->final_sale_price }} {{ __('header.dolar') }}
+                            <br>
+                            {{ $ConvertDolarToDinar($product->final_sale_price) }} {{ __('header.dinar') }}
                         </td>
                         <td>
                             {{ __('header.TotalQuantity') }} : {{ number_format($product->total_quantity,0,',',',')  }}

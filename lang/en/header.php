@@ -167,7 +167,7 @@ return [
     'DeletedAfter30Dayes' => 'Deleted After :date',
     'DeletedAll' => 'Deleted All',
     'RestoreAll' => 'Restore All',
-    'currency' => '$',
+    'dolar' => '$',
     'currentpaid' => 'Paid Price',
     'Debts' => 'Debts',
     'debt seaction' => 'Debt Seaction',
@@ -251,5 +251,6 @@ return [
     'MinExpiryDate' => 'Min Expiry Date',
     'AddOrEditQuantity' => 'Add Or Update Quantity',
     'FinalSalePrice' => 'Final Sale Price',
-    'fullscreen' => 'Fullscreen',
+    'dinar' => 'IQD',
+    'customerIsDeleted' => 'Customer is deleted',
 ];
