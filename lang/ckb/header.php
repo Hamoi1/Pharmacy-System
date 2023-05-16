@@ -255,4 +255,5 @@ return [
     'or' => 'یان',
     'dinar' => 'دینار',
     'customerIsDeleted' => 'کڕیار سڕاوەتەوە',
+    'exchangeRate' => 'نرخی 1 دۆلار',
 ];

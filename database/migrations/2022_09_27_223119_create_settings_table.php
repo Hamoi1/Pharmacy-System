@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('email')->nullable();
             $table->string('address')->nullable();
             $table->string('logo')->nullable();
-            $table->decimal('dolarChange')->nullable()->comment('Dolar to dinar');
+            $table->integer('exchange_rate')->nullable();
             $table->timestamps();
         });
     }

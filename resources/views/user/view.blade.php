@@ -1,4 +1,4 @@
-<x-modal.view target="view" title="{{ __('header.title_view' , ['name'=>__('header.User')]) }}" modalWidth="modal-fullscreen" wire="wire:click=done(false)">
+<x-modal.view target="view" title="{{ __('header.title_view' , ['name'=>__('header.User')]) }}" modalWidth="modal-fullscreen" wire="">
     <div wire:loading>
         <div class="d-flex justify-content-center">
             <h3>
@@ -9,10 +9,10 @@
     </div>
     @if($user)
     <div wire:loading.remove class="viewUser-Grid px-md-4 py-md-2  {{ app()->getLocale() == 'ckb'   || app()->getLocale() == 'ar' ? 'reverse' : '' }}"">
-                    <div class=" text-center">
-        <img src=" {{ $user->image($user->user_details->image) }}" width="300" height="300" class="img-fluid rounded-2 shadow-sm">
+    <div class=" text-center">
+        <img src=" {{ $user->image($user->user_details->image) }}" width="300" height="300" class="img-fluid rounded-2 shadow-sm" wire:loading.remove>
     </div>
-    <div class="">
+    <div class="" wire:loading.remove>
         <p class=" fw-bolder fs-3">
             {{ __('header.UserDetails') }}
         </p>
@@ -158,7 +158,6 @@
                                 <th class="col-1 fs-4">{{ __('header.barcode') }}</th>
                                 <th class="fs-4">{{ __('header.Category') }}</th>
                                 <th class="fs-4">{{ __('header.supplier') }}</th>
-                                <th class="fs-4">{{ __('header.purches_price') }}</th>
                                 <th class="fs-4">{{ __('header.sale_price') }}</th>
                                 <th class="fs-4">{{ __('header.quantity') }}</th>
                                 <th class="fs-4 text-center">{{ __('header.expire_date') }}</th>
@@ -187,9 +186,6 @@
                                     {{ $product->supplier_name ?? __('header.not have',['name'=>__('header.supplier')]) }}
                                 </td>
                                 <td>
-                                    {{ number_format($product->purches_price,0,',',',') }} {{ __('header.dolar') }}
-                                </td>
-                                <td>
                                     {{ number_format($product->sale_price,0,',',',') }} {{ __('header.dolar') }}
                                 </td>
                                 <td>
@@ -200,7 +196,7 @@
                                     @endif
                                 </td>
                                 <td class="text-center p-0 m-0">
-                                    {{ $product->expiry_date }}
+                                    {{ __('header.MinExpiryDate') }} : <span class="badge bg-azure"> {{ $product->expiry_date }}</span>
                                     @if ($product->expiry_date <= now()) <span class="badge bg-danger mx-2">
                                         {{ __('header.expired') }}
                                         </span>
@@ -234,7 +230,7 @@
             <div class="tab-pane fade" id="pills-permission" role="tabpanel" aria-labelledby="pills-permission-tab" tabindex="0">
                 <div class="d-flex align-items-center flex-wrap">
                     @forelse ($user->GetPermissionName($user->id) as $permission)
-                    <span class="bg-blue rounded-2 p-1 m-1 ">{{ $permission }}</span>
+                    <span class="badge bg-azure p-1 m-1 ">{{ $permission }}</span>
                     @empty
                     <p class="fw-bold">{{ __('header.no_permission') }}</p>
                     @endforelse

@@ -2,7 +2,7 @@
 <div>
     <div class="{{ app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }} container-lg pt-4">
         <div class="row g-4 shadow-sm pb-5 ">
-            
+
             <div class="col-lg-4 col-12">
                 <div class="col-12 my-2 fs-3 px-2 py-2">
                     <span class="fw-bold">{{ __('header.settings.name') }} :</span>
@@ -38,6 +38,13 @@
             <div class="col-lg-8 col-12">
                 <form wire:submit.prevent="submit">
                     <div class="row gy-2">
+                        <div class="col-12 mb-2">
+                            <label class="form-label">
+                                {{ __('header.exchangeRate') }}
+                            </label>
+                            <input type="text" class="form-control exchangeRate" wire:model.defer="exchangeRate" placeholder="{{ __('header.enter_' , ['name' => __('header.exchangeRate')]) }}">
+                            @error('exchangeRate') <span class="text-danger">{{ $message }}</span> @enderror
+                        </div>
                         <div class="col-lg-6 col-12">
                             <label class="form-label">{{ __('header.settings.name') }}</label>
                             <input type="text" class="form-control" wire:model.defer="name" placeholder="{{ __('header.enter_' , ['name' => __('header.settings.name')]) }}">
@@ -103,3 +110,21 @@
         </div>
     </div>
 </div>
+
+@push('js')
+<script defer>
+    $(document).ready(function() {
+        ChangePrice = (price) => {
+            var change = price.toLocaleString(
+                undefined, {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 2,
+                }
+            );
+            return change;
+        }
+        var change = ChangePrice(Number($('.exchangeRate').val()));
+        $('.exchangeRate').val(change);
+    });
+</script>
+@endpush

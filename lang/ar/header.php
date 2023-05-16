@@ -253,4 +253,5 @@ return [
     'FinalSalePrice' => 'السعر النهائي للبيع',
     'dinar' => 'دینار',
     'customerIsDeleted' => 'العميل محذوف',
+    'exchangeRate' => 'سنقوم بتبادل 1 دولار',
 ];

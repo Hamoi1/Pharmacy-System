@@ -14,7 +14,7 @@ return [
     'user' => [
         'index' => 'User',
     ],
-    'or' => 'Or', 
+    'or' => 'Or',
     'select' => 'User :name',
     'update_' => 'Update :name',
     'add_' => 'Add :name',
@@ -253,4 +253,5 @@ return [
     'FinalSalePrice' => 'Final Sale Price',
     'dinar' => 'IQD',
     'customerIsDeleted' => 'Customer is deleted',
+    'exchangeRate' => 'Exchange rate $1',
 ];

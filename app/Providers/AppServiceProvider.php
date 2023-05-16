@@ -30,10 +30,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $ConvertDolarToDinar = function ($value) {
-            if ($value != null) {
-                $convert = Currency::convert()->from('USD')->to('IQD')->amount($value)->get();
-                return number_format(round($convert / 250) * 250, 0, ',', ',');
+        $ConvertDolarToDinar = function ($price) {
+            if ($price != null) {
+                $exchange_rate = \App\Models\Settings::first()->exchange_rate ?? 1450;
+                $price = $price * $exchange_rate;
+                $price = round($price / 250) * 250;
+                return number_format($price, 0, ',', ',');
             } else {
                 return 0;
             }

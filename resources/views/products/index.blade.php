@@ -173,7 +173,7 @@
                             {{ $product->supplier_name ?? __('header.not have',['name'=>__('header.supplier')]) }}
                         </td>
                         <td>
-                            {{__('header.FinalSalePrice')}} : {{ $product->final_sale_price }} {{ __('header.dolar') }}
+                            {{__('header.FinalSalePrice')}} : {{ number_format($product->final_sale_price,0,',',',') }} {{ __('header.dolar') }}
                             <br>
                             {{ $ConvertDolarToDinar($product->final_sale_price) }} {{ __('header.dinar') }}
                         </td>

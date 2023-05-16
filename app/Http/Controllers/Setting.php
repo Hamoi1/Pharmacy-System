@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Gate;
 class Setting extends Component
 {
     use WithFileUploads;
-    public $name, $phone, $email, $address, $logo, $oldLogo;
+    public $name, $phone, $email, $address, $logo, $oldLogo, $exchangeRate;
     public  $setting;
     protected $listeners = ['ChangeTheme' => '$refresh'];
     public function mount()
@@ -29,16 +29,19 @@ class Setting extends Component
         $this->email = $this->setting->email;
         $this->address = $this->setting->address;
         $this->oldLogo = $this->setting->logo;
+        $this->exchangeRate = $this->setting->exchange_rate;
         return view('setting');
     }
     public function submit()
     {
+        $this->exchangeRate = str_replace([',', '.'], '', $this->exchangeRate);
         $this->validate([
             'name' => 'required|string|max:255',
             'phone' => 'required|numeric|digits:11',
             'email' => 'required|email|regex:/^[a-zA-Z0-9_.+-]+@[a-zA-Z]+\.[a-zA-Z]+$/u',
             'address' => 'required|string|max:255',
             'logo' => 'nullable|image|max:20000|mimes:jpg,jpeg,png,gif,svg,webp,ico',
+            'exchangeRate' => 'required|numeric|min:0|regex:/^\d+(\.\d{1,2})?$/'
         ], [
             'name.required' => __('validation.required', ['attribute' => __('header.settings.name')]),
             'name.string' => __('validation.string', ['attribute' => __('header.settings.name')]),
@@ -55,6 +58,10 @@ class Setting extends Component
             'logo.image' => __('validation.image', ['attribute' => __('header.image')]),
             'logo.max' => __('validation.max.file', ['attribute' => __('header.image'), 'max' => 20000]),
             'logo.mimes' => __('validation.mimes', ['attribute' => __('header.image'), 'values' => 'jpg,jpeg,png,gif,svg,webp,ico']),
+            'exchangeRate.required' => __('validation.required', ['attribute' => __('header.exchangeRate')]),
+            'exchangeRate.numeric' => __('validation.numeric', ['attribute' => __('header.exchangeRate')]),
+            'exchangeRate.min' => __('validation.min.numeric', ['attribute' => __('header.exchangeRate'), 'min' => 0]),
+            'exchangeRate.regex' => __('validation.regex', ['attribute' => __('header.exchangeRate')]),
         ]);
         if ($this->logo) {
             $logoName = time() . '-' . uniqid() . '.' . $this->logo->getClientOriginalExtension();
@@ -69,6 +76,7 @@ class Setting extends Component
             'email' => $this->email,
             'address' => $this->address,
             'logo' => $logoName ?? $this->oldLogo,
+            'exchange_rate' => $this->exchangeRate,
         ]);
         $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.updated')]);
         $this->resetValidation();
