@@ -150,7 +150,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse ( $users as $user )
+                    @forelse ($users as $user)
                     <tr class="">
                         <td>
                             <div class="d-flex py-1 align-items-center">

@@ -322,7 +322,7 @@ class Index extends Component
                 'status' => $this->statu,
                 'role_id' => json_encode(array_values($this->permission))
             ]);
-            $user->save();
+            $user->saveQuietly();
             $user->user_details->update([
                 'address' => $this->address,
             ]);
