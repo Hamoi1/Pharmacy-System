@@ -68,7 +68,6 @@ class Products extends Model
         return  $query->addSelect([
             'min_expiry_date' => ProductsQuantity::selectRaw('min(expiry_date)')->whereColumn('product_id', 'products.id')
                 ->whereDate('expiry_date', '>', now()->format('Y-m-d')),
-
         ]);
     }
 

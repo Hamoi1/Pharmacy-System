@@ -8,6 +8,7 @@
         "php": "^8.1.2",
         "amrshawky/laravel-currency": "^6.0",
         "barryvdh/laravel-dompdf": "^2.0",
+        "consoletvs/charts": "6.*",
         "guzzlehttp/guzzle": "^7.5",
         "intervention/image": "^2.7",
         "laravel/framework": "^9.33",

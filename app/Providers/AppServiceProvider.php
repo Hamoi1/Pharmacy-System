@@ -40,6 +40,15 @@ class AppServiceProvider extends ServiceProvider
                 return 0;
             }
         };
+        $ConvertDolarToDinarWithOutRound = function ($price) {
+            if ($price != null) {
+                $exchange_rate = \App\Models\Settings::first()->exchange_rate ?? 1450;
+                $price = $price * $exchange_rate;
+                return number_format($price, 0, ',', ',');
+            } else {
+                return 0;
+            }
+        };
         view()->share([
             'settings' => \App\Models\Settings::firstOrCreate(),
             'ConvertDolarToDinar' => $ConvertDolarToDinar,

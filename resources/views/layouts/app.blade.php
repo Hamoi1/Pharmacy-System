@@ -18,7 +18,6 @@
     <link rel="stylesheet" href="{{ asset('assets/css/print.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css" defer>
-
     @stack('css')
     @livewireStyles
     @if (app()->getLocale() == 'ckb')
