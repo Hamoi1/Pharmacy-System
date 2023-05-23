@@ -1,7 +1,7 @@
 @push('title') POS @endpush
 <div class="point-of-sales" wire:ignore.self>
     <div class="px-lg-5 px-3 mt-4 user-select-none {{  app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }}">
-        <div wire:loading wire:target="invoice,SaleType,submit">
+        <div wire:loading wire:target="invoice,SaleType,submit,destroy,AddNewInvoce">
             <div class="loading">
                 <div class="loading-content">
                     <div class="loading-icon">

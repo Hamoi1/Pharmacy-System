@@ -44,8 +44,8 @@
                 var notyf = new Notyf({
                     duration: 3000,
                     position: {
-                        x: 'center',
-                        y: 'top',
+                        x: `{{ app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'left' : 'right' }}`,
+                        y: 'bottom',
                     },
                     types: [{
                             type: 'info',
@@ -354,7 +354,7 @@
             </div>
         </div>
     </aside>
-    <div class="page-wrapper ">
+    <div class="page-wrapper">
         {{ $slot }}
     </div>
     </div>
