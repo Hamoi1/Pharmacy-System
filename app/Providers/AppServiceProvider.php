@@ -3,11 +3,6 @@
 namespace App\Providers;
 
 use AmrShawky\LaravelCurrency\Facade\Currency;
-use App\Models\Sales;
-use App\Models\Products;
-use App\Models\sale_details;
-use App\Models\User;
-use Illuminate\Support\Str;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider

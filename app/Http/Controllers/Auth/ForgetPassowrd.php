@@ -7,7 +7,6 @@ use Livewire\Component;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Mail;
 
 class ForgetPassowrd extends Component
 {
@@ -46,7 +45,7 @@ class ForgetPassowrd extends Component
         // create random code with length 8
         $code = rand(1, 100000) . Str::random(1) . rand(1, 1000000);
         $code = substr($code, 0, 8);
-        $passwrodReset =  DB::table('password_resets')->select('email')->where('email', $this->email)->first() == null
+        DB::table('password_resets')->select('email')->where('email', $this->email)->first() == null
             ? DB::table('password_resets')->insert([
                 'email' => $this->email,
                 'token' => $token,
