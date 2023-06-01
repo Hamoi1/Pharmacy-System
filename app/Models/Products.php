@@ -71,17 +71,18 @@ class Products extends Model
         ]);
     }
 
-    public function scopeSalePrice($query)
-    {
-        return  $query->addSelect([
-            'final_sale_price' => ProductsQuantity::selectRaw('ROUND(sum(sale_price * quantity) / sum(quantity) , 2) as sale_price_total')->whereColumn('product_id', 'products.id'),
-        ]);
-    }
-
     // public function scopeSalePrice($query)
     // {
-    //     return $query->addSelect([
-    //         'final_sale_price' => ProductsQuantity::selectRaw('CEIL(sum(sale_price * quantity) / sum(quantity)) as sale_price_total')->whereColumn('product_id', 'products.id'),
-    //     ]);
-    // }
+    // //     return  $query->addSelect([
+    // //         'final_sale_price' => ProductsQuantity::selectRaw('sum(sale_price * quantity) / sum(quantity) as sale_price_total')->whereColumn('product_id', 'products.id'),
+    // //     ]);
+    // // }
+
+    public function scopeSalePrice($query)
+    {
+        return $query->addSelect([
+            'final_sale_price' => ProductsQuantity::selectRaw('CAST(sum(sale_price * quantity) / sum(quantity) AS DECIMAL(10,2))')
+            ->whereColumn('product_id', 'products.id')
+        ]);
+    }
 }

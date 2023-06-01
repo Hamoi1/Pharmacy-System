@@ -63,13 +63,21 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @php
+                        $var1=0;
+                        $var2=0;
+                    @endphp
                     @foreach ($product->product_quantity as $p )
                     <tr>
+                        @php
+                            $var1+=$p->sale_price * $p->quantity;
+                            $var2+= $p->quantity;
+                        @endphp
                         <td>
-                            {{ number_format($p->purches_price,0,',',',') }} {{ __('header.dolar') }}
+                            {{ $p->purches_price }} {{ __('header.dolar') }}
                         </td>
                         <td>
-                            {{ number_format($p->sale_price,0,',',',') }} {{ __('header.dolar') }}
+                            {{ $p->sale_price }} {{ __('header.dolar') }}
                         </td>
                         <td>
                             {{ $p->quantity }}

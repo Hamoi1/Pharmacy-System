@@ -44,8 +44,8 @@
                 var notyf = new Notyf({
                     duration: 3000,
                     position: {
-                        x: `{{ app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'left' : 'right' }}`,
-                        y: 'bottom',
+                        x: 'center',
+                        y: 'top',
                     },
                     types: [{
                             type: 'info',
