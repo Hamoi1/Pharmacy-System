@@ -125,7 +125,7 @@ class Index extends Component
         $customer = Customers::find($id);
         $data = ["delete $customer->name from " . now()->format('Y-m-d h:i:s')];
         $customer->delete();
-        auth()->user()->InsertToLogsTable(auth()->user()->id, "User", 'Export',  $data,  $data);
+        auth()->user()->InsertToLogsTable(auth()->user()->id, "User", 'Delete',  $data,  $data);
         $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' =>   __('header.Customer') . ' ' . __('header.deleted')]);
         $this->done();
     }

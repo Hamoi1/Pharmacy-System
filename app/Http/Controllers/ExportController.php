@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Products;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ExportController extends Controller
@@ -36,15 +35,12 @@ class ExportController extends Controller
         ];
         $datas = [];
         if ($Table == 'users') {
-            // get function ExportUser
             $datas = self::ExportUser($Columns, $quantity);
             $Columns = $userData;
         } elseif ($Table == 'products') {
-            // get function ExportProduct
             $datas = self::ExportProduct($Columns, $quantity);
             $Columns = $productData;
         }
-
         // get file name
         $file_name = $Table . '.csv';
         // cretae a herder of file data excel
@@ -69,10 +65,11 @@ class ExportController extends Controller
             $haveAddress = true;
         }
         $Columns = implode(',', $Columns);
+        $users = User::select('id', DB::raw($Columns))->with('user_details');
         if ($quantity != null) {
-            $users = User::select('id', DB::raw($Columns))->with('user_details')->limit($quantity)->get();
+            $users = $users->limit($quantity)->get();
         } else {
-            $users = User::select('id', DB::raw($Columns))->with('user_details')->get();
+            $users = $users->get();
         }
         // get address and give a users
         if ($haveAddress) {
@@ -92,7 +89,7 @@ class ExportController extends Controller
             $created_at = $user->created_at ? $user->created_at->format('Y-m-d') : '';
             $updated_at = $user->updated_at ? $user->updated_at->format('Y-m-d') : '';
             $deleted_at = $user->deleted_at ? $user->deleted_at->format('Y-m-d') : '';
-            return compact('name', 'username', 'email', 'phone', 'address', 'created_at', 'updated_at', 'deleted_at');
+            return compact('name', 'username', 'phone', 'email', 'address', 'created_at', 'updated_at', 'deleted_at');
         });
         return $users->toArray();
     }
@@ -111,10 +108,11 @@ class ExportController extends Controller
             $havesupplier = true;
         }
         $Columns = implode(',', $Columns);
+        $products = Products::select('id', DB::raw($Columns))->with('category', 'supplier');
         if ($quantity != null) {
-            $products = Products::select('id', DB::raw($Columns))->with('category', 'supplier')->limit($quantity)->get();
+            $products =  $products->limit($quantity)->get();
         } else {
-            $products = Products::select('id', DB::raw($Columns))->with('category', 'supplier')->get();
+            $products = $products->get();
         }
         foreach ($products as $product) {
             if ($haveCategory) {
@@ -124,7 +122,7 @@ class ExportController extends Controller
             }
             if ($havesupplier) {
                 $product->supplier = $product->supplier->name;
-            }else{
+            } else {
                 $product->supplier = '';
             }
         }
@@ -139,12 +137,11 @@ class ExportController extends Controller
             $category = $product->category;
             $supplier = $product->supplier;
             $quantity = $product->quantity;
-            $expiry_date = $product->expiry_date ? $product->expiry_date->format('Y-m-d') : '';
+            $expiry_date = $product->expiry_date  ? $product->expiry_date : '';
             $description = $product->description;
-            $created_at = $product->created_at ? $product->created_at->format('Y-m-d') : '';
-            $updated_at = $product->updated_at ? $product->updated_at->format('Y-m-d') : '';
-            $deleted_at = $product->deleted_at ? $product->deleted_at->format('Y-m-d') : '';
-
+            $created_at = $product->created_at  ? $product->created_at : '';
+            $updated_at = $product->updated_at  ? $product->updated_at : '';
+            $deleted_at = $product->deleted_at  ? $product->deleted_at : '';
             return compact('name', 'barcode', 'purches_price', 'sale_price', 'category', 'supplier', 'quantity', 'expiry_date', 'description', 'created_at', 'updated_at', 'deleted_at');
         });
         return $products->toArray();

@@ -15,8 +15,6 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\ExportController;
 use Illuminate\Support\Facades\DB;
 
-use function PHPSTORM_META\exitPoint;
-
 class Index extends Component
 {
     use WithPagination, WithFileUploads;

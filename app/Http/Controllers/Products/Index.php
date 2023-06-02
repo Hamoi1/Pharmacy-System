@@ -348,7 +348,6 @@ class Index extends Component
                 'Productquantity' => 'nullable|numeric',
             ]
         );
-
         if (count($this->ExportDataSelected) == 0) {
             $this->dispatchBrowserEvent('message', ['type' => 'error', 'message' => __('header.SelectData')]);
             return;

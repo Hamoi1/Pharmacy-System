@@ -164,7 +164,7 @@ class Index extends Component
             $this->restore($category->id, false);
         }
         $data = ['Restore ' . implode(',', $categoryName) . ' form :' . now()];
-        auth()->user()->InsertToLogsTable(auth()->user()->id, "User", 'Export',  $data,  $data);
+        auth()->user()->InsertToLogsTable(auth()->user()->id, "User", 'Restore',  $data,  $data);
 
         $this->dispatchBrowserEvent('message', ['type' => 'success', 'message' => __('header.RestoreMessage')]);
         $this->done();
