@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -17,25 +18,24 @@ class DeletingTrashe
      */
     public function handle(Request $request, Closure $next)
     {
-        $products = \App\Models\Products::onlyTrashed()->get();
-        $users = \App\Models\User::onlyTrashed()->get();
-        $categorys = \App\Models\Categorys::onlyTrashed()->get();
-        $suppliers = \App\Models\Suppliers::onlyTrashed()->get();
-        
-        $this->Deleteing($products);
-        $this->Deleteing($users);
-        $this->Deleteing($categorys);
-        $this->Deleteing($suppliers);
-        
+        $Models = [
+            \App\Models\Products::onlyTrashed()->get(),
+            \App\Models\User::onlyTrashed()->get(),
+            \App\Models\Categorys::onlyTrashed()->get(),
+            \App\Models\Suppliers::onlyTrashed()->get(),
+        ];
+        foreach ($Models as $Model) {
+            $this->Deleteing($Model);
+        }
         return $next($request);
     }
 
-    private function Deleteing($models)
+    private function Deleteing($Model): void
     {
-        foreach ($models as $model) {
-            if ($model->deleted_at != null) {
-                if ($model->deleted_at->format('Y-m-d') <= now()->subMonth()->format('Y-m-d')) { // if deleted_at date is less than 1 month after that data will be delete forever
-                    $model->forceDelete();
+        foreach ($Model as $data) {
+            if ($data->deleted_at != null) {
+                if ($data->deleted_at->format('Y-m-d') <= now()->subMonth()->format('Y-m-d')) { // if deleted_at date is less than 1 month after that data will be delete forever
+                    $data->forceDelete();
                 }
             }
         }
