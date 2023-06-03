@@ -180,13 +180,13 @@
                                         {{ $sale_detail->product_barcode }}
                                     </td>
                                     <td class="print text-center">
-                                        {{ number_format($sale_detail->product_price,2,',',',') }} {{ __('header.dolar') }}
+                                        {{$sale_detail->product_price }} {{ __('header.dolar') }}
                                     </td>
                                     <td class="print text-center col-1 ">
                                         {{ $sale_detail->quantity }}
                                     </td>
                                     <td class=" d-print-none text-center">
-                                        {{ number_format($sale_detail->quantity *  $sale_detail->product_price,2,',',',') }} {{ __('header.dolar') }}
+                                        {{ $sale_detail->quantity *  $sale_detail->product_price }} {{ __('header.dolar') }}
 
                                     </td>
                                     <td class=" d-print-none text-center">
@@ -247,7 +247,7 @@
                                 <span class="fs-3 mx-1">
                                     @if ($sales)
                                     <span class="mx-2">
-                                        {{ number_format($sales->total,2,',',',') }} {{ __('header.dolar') }}
+                                        {{ $sales->total }} {{ __('header.dolar') }}
                                     </span>
                                     {{ $ConvertDolarToDinar($sales->total) }} {{ __('header.dinar') }}
                                     @else
