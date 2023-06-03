@@ -23,7 +23,6 @@ class Backup extends Component
             'email.email' => __('validation.email', ['attribute' => __('header.email')]),
         ]);
         $email = $this->email;
-        // run <backup></backup>
         exec(
             'php ' . base_path() . '/artisan backup:run --only-db --disable-notifications',
             $output,
