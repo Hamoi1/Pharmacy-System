@@ -175,7 +175,7 @@
                         <td>
                             {{__('header.FinalSalePrice')}} : {{ $product->final_sale_price }} {{ __('header.dolar') }}
                             <br>
-                            {{ $ConvertDolarToDinar($product->final_sale_price) }} {{ __('header.dinar') }}
+                            {{ $ConvertDollarToDinar($product->final_sale_price) }} {{ __('header.dinar') }}
                         </td>
                         <td>
                             {{ __('header.TotalQuantity') }} : {{ number_format($product->total_quantity,0,',',',')  }}

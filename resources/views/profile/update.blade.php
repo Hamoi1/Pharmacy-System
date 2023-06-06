@@ -1,5 +1,5 @@
 @push('title') Profile @endpush
-<div class="mt-md-4 mt-2 ">
+<div class="mt-1 pt-lg-5 pt-1 mt-lg-5">
     <div wire:loading wire:target="image,deleteImage">
         <div class="loading profile">
             <div class="loading-content">

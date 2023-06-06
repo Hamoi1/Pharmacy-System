@@ -126,7 +126,7 @@
                                 </td>
                                 <td>
                                     {{ number_format($sale->total,2,',',',')  }} {{ __('header.dolar') }}
-                                    {{ $ConvertDolarToDinar($sale->total) }} {{ __('header.dinar') }}
+                                    {{ $ConvertDollarToDinar($sale->total) }} {{ __('header.dinar') }}
                                 </td>
                                 <td>
                                     {{ $sale->discount != null ?  number_format($sale->discount,2,',',',') .' '. __('header.dolar') : __('header.Not-discount') }}
@@ -139,19 +139,19 @@
                                 <td>
                                     {{ $sale->debt_sale != null ?  number_format($sale->debt_sale->amount,2,',',',') .' '. __('header.dolar') : __('header.nothing') }}
                                     @if ($sale->debt_sale != null)
-                                    {{ $ConvertDolarToDinar($sale->debt_sale->amount) }} {{ __('header.dinar') }}
+                                    {{ $ConvertDollarToDinar($sale->debt_sale->amount) }} {{ __('header.dinar') }}
                                     @endif
                                 </td>
                                 <td>
                                     {{ $sale->debt_sale != null ?  number_format($sale->debt_sale->paid,2,',',',') .' '. __('header.dolar') : __('header.nothing') }}
                                     @if ($sale->debt_sale != null)
-                                    {{ $ConvertDolarToDinar($sale->debt_sale->paid) }} {{ __('header.dinar') }}
+                                    {{ $ConvertDollarToDinar($sale->debt_sale->paid) }} {{ __('header.dinar') }}
                                     @endif
                                 </td>
                                 <td>
                                     {{ $sale->debt_sale != null ?  number_format($sale->debt_sale->remain,2,',',',') .' '. __('header.dolar') : __('header.nothing') }}
                                     @if ($sale->debt_sale != null)
-                                    {{ $ConvertDolarToDinar($sale->debt_sale->remain) }} {{ __('header.dinar') }}
+                                    {{ $ConvertDollarToDinar($sale->debt_sale->remain) }} {{ __('header.dinar') }}
                                     @endif
                                 </td>
                                 <td>

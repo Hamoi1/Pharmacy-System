@@ -249,7 +249,7 @@
                                     <span class="mx-2">
                                         {{ $sales->total }} {{ __('header.dolar') }}
                                     </span>
-                                    {{ $ConvertDolarToDinar($sales->total) }} {{ __('header.dinar') }}
+                                    {{ $ConvertDollarToDinar($sales->total) }} {{ __('header.dinar') }}
                                     @else
                                     0 {{ __('header.dolar') }}
                                     @endif

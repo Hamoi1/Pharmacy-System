@@ -36,7 +36,7 @@
                 <span class="d-block mt-2">
                     {{ __('header.FinalSalePrice').' : '. $product->final_sale_price }} {{ __('header.dolar') }}
                     <br>
-                    {{ $ConvertDolarToDinar($product->final_sale_price) }} {{ __('header.dinar') }}
+                    {{ $ConvertDollarToDinar($product->final_sale_price) }} {{ __('header.dinar') }}
                 </span>
             </div>
         </div>

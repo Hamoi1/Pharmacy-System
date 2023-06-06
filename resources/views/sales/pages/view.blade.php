@@ -27,7 +27,7 @@
                     <span class="fw-bold">{{ __('header.TotalPrice') }} : </span>
                     <span class="mx-2">
                         {{ number_format($saleView->total,2,',',',')  }} {{ __('header.dolar')}}
-                        {{ $ConvertDolarToDinar($saleView->total) }} {{ __('header.dinar') }}
+                        {{ $ConvertDollarToDinar($saleView->total) }} {{ __('header.dinar') }}
                     </span>
                 </div>
                 <div class="col-lg-6 col-12">
@@ -42,7 +42,7 @@
                     <span class="mx-2">
                         {{ number_format($saleView->discount,2,',',',') .' '. __('header.dolar') }}
                     </span>
-                    {{ $ConvertDolarToDinar($saleView->discount) }} {{ __('header.dinar') }}
+                    {{ $ConvertDollarToDinar($saleView->discount) }} {{ __('header.dinar') }}
                     @else
                     <span class="mx-2">
                         {{ __('header.Not-discount')}}

@@ -114,7 +114,7 @@
                             <span class="mx-2">
                                 {{ number_format($sale->total,2,',',',')  }} {{ __('header.dolar') }}
                             </span>
-                            {{ $ConvertDolarToDinar($sale->total) }} {{ __('header.dinar') }}
+                            {{ $ConvertDollarToDinar($sale->total) }} {{ __('header.dinar') }}
                         </td>
                         <td>
                             {{ $sale->discount != 0 ?  number_format($sale->discount,2,',',',') . __('header.dolar') : __('header.Not-discount') }}

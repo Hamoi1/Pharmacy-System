@@ -43,7 +43,7 @@
             </div>
         </div>
     </div>
-    <button class="btn btn-outline-dark rounded-3 py-2" data-bs-toggle="modal" data-bs-target="#backup">
+    <button class="btn btn-dark rounded-3 py-2" data-bs-toggle="modal" data-bs-target="#backup">
         {{ __('header.backup') }}
     </button>
 </div>

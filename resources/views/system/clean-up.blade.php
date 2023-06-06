@@ -11,7 +11,7 @@
             </div>
         </div>
     </div>
-    <button class="btn btn-outline-dark rounded-3" wire:click.prevent="CleanUp">
+    <button class="btn btn-dark rounded-3 " wire:click.prevent="CleanUp">
         <div class="d-flex align-itmes-center justify-content-center">
             <span class="mt-1">
                 {{ __('header.cleanSystem') }}

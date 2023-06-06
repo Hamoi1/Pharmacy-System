@@ -15,7 +15,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
     }
 
     /**
@@ -25,19 +24,19 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $ConvertDolarToDinar = function ($price) {
+        $settings = \App\Models\Settings::firstOrCreate();
+        $exchange_rate = $settings->exchange_rate ?? 1450;
+        $ConvertDollarToDinar = function ($price) use ($exchange_rate) {
             if ($price != null) {
-                $exchange_rate = \App\Models\Settings::first()->exchange_rate ?? 1450;
-                $price = $price * $exchange_rate;
-                $price = round($price / 250) * 250;
+                $price = round(($price * $exchange_rate)/ 250) * 250;
                 return number_format($price, 0, ',', ',');
             } else {
                 return 0;
             }
         };
         view()->share([
-            'settings' => \App\Models\Settings::firstOrCreate(),
-            'ConvertDolarToDinar' => $ConvertDolarToDinar,
+            'settings' => $settings,
+            'ConvertDollarToDinar' => $ConvertDollarToDinar,
         ]);
     }
 }

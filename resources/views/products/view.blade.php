@@ -28,7 +28,7 @@
         <p>
             <span class="fw-bold mx-1">{{ __('header.FinalSalePrice') }} : </span>
             <span class="fw-normal mx-2">{{ number_format($product->final_sale_price,0,',',',')}} {{ __('header.dolar') }} </span>
-            <span>{{ $ConvertDolarToDinar($product->final_sale_price) }} {{ __('header.dinar') }} </span>
+            <span>{{ $ConvertDollarToDinar($product->final_sale_price) }} {{ __('header.dinar') }} </span>
         </p>
         <p>
             <span class="fw-bold mx-1">{{ __('header.TotalQuantity') }} : </span>

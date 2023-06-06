@@ -1,5 +1,5 @@
 @push('title') Setting @endpush
-<div>
+<div class="mt-1 pt-lg-5 pt-1 mt-lg-5">
     <div class="{{ app()->getLocale() == 'ckb'  || app()->getLocale() == 'ar' ? 'reverse' : '' }} container-lg pt-4">
         <div class="row g-4 shadow-sm pb-5 ">
 
@@ -91,14 +91,14 @@
                 <h4>
                     {{ __('header.changetheme') }}
                 </h4>
-                <form>
+                <div>
                     <button class="changeThemeBtn shadow-sm " wire:click.prevent="ChangeTheme({{ auth()->user()->theme == 0 ? 0 : 1  }})">
                         <span class="fs-3 {{ auth()->user()->theme == 0 ? 'mb-2' : 'mt-2'  }} text-light"> {{ auth()->user()->theme == 0 ? "🌙" : "☀️"  }}</span>
                     </button>
                     <span class=" fs-3 mx-2  {{ auth()->user()->theme == 0 ? 'txet-dark' : 'text-light'  }}">
                         {{ auth()->user()->theme == 0 ? "dark" : "light"  }}
                     </span>
-                </form>
+                </div>
             </div>
 
             <div class="col-12">
