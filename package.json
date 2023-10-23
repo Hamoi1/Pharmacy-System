@@ -2,7 +2,7 @@
     "dependencies": {
         "download": "^8.0.0",
         "laravel-echo": "^1.15.0",
-        "pusher-js": "^8.0.2",
+        "pusher-js": "^8.3.0",
         "turbolinks": "^5.2.0"
     },
     "devDependencies": {
